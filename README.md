@@ -1,148 +1,227 @@
 
-# MESI Directory-Based Coherence Simulator
+# RL-Integrated Multicore Cache System (Prototype)
 
-A simple C++ simulator that models **directory-based MESI cache coherence** for a small multicore system.  
-This project was developed as **Task 2 (Foundation Phase)** of an RL-based cache replacement project targeting **ChampSim**.
+This repository contains **standalone C++ prototypes** developed as part of a project on **reinforcement learning–based cache replacement** for multicore processors, targeting future integration with **ChampSim**.
 
-The goal is not performance accuracy, but **correct architectural modeling** of coherence metadata that will later be used as **features for a Reinforcement Learning agent**.
-
----
-
-## What This Project Does (Task 2)
-
-- Models MESI state transitions for cache lines
-- Simulates directory-based coherence (not bus snooping)
-- Tracks which cores share a cache line
-- Generates synthetic read/write traffic across multiple cores
-- Extracts coherence metadata (MESI state, sharer count)
-
-This simulator is intentionally **standalone** to validate logic before integration into ChampSim.
+The work focuses on **foundational validation**, not final performance optimization.
 
 ---
 
-## Background
+## Project Overview
 
-### MESI Cache Coherence Protocol
+The project is divided into two core components:
 
-MESI is a hardware-level protocol used to maintain consistency across private caches in a shared-memory multicore system.
+1. **Directory-Based MESI Coherence Simulator**  
+   - Validates coherence state transitions
+   - Tracks sharer information explicitly
+   - Extracts coherence-related metadata
 
-Each cache line can be in one of four states:
+2. **RL-Based Cache Replacement Simulator**  
+   - Uses tabular Q-learning
+   - Learns cache insertion vs bypass decisions
+   - Differentiates streaming and looping access patterns
 
-- **Modified (M)**  
-  Cache holds the only up-to-date copy. Memory is stale.
-
-- **Exclusive (E)**  
-  Cache holds the only copy and matches memory. Can transition to Modified on write.
-
-- **Shared (S)**  
-  Multiple caches hold the same clean copy. Reads allowed, writes require invalidation.
-
-- **Invalid (I)**  
-  Cache line is not valid.
-
-### Why Directory-Based Coherence
-
-Bus snooping does not scale with core count.  
-Directory-based coherence replaces broadcast with **targeted messages**.
-
-A **Directory**:
-- Tracks the state of each cache line
-- Knows exactly which cores have a copy
-- Sends invalidations only to relevant cores
+Both modules are implemented as **standalone simulators** to reduce integration risk before modifying ChampSim.
 
 ---
 
-## Sharer Tracking
+## Repository Structure
 
-Each cache line maintains a **Sharer List**.
+```
 
-- Logical model: which cores currently hold the line
-- Hardware model: **Bitmask (Bit-Vector)**
+.
+├── mesi_sim.cpp        # Directory-based MESI coherence simulator
+├── rl_cache_sim.cpp    # RL-based cache replacement simulator
+├── README.md           # Project documentation
+└── report/             # Project report and screenshots (if applicable)
 
-Example for 4 cores:
+```
+
+---
+
+## Module 1: Directory-Based MESI Coherence Simulator
+
+### What This Module Does
+
+- Models a **directory-based MESI protocol**
+- Simulates read (`GetS`) and write (`GetM`) requests
+- Tracks which cores share each cache line
+- Prints detailed debug information for verification
+
+### Key Features
+
+- 4-core synthetic multicore system
+- Centralized directory
+- MESI states: Modified, Exclusive, Shared, Invalid
+- Explicit sharer tracking per cache line
+- Randomized synthetic workload generation
+
+This simulator focuses on **correctness and clarity**, not timing accuracy.
+
+---
+
+### Sharer Tracking
+
+Each cache line maintains a **sharer list**, representing which cores currently hold a copy.
+
+- Current implementation: `std::set<int>`
+- Hardware-equivalent representation: **bitmask / bit-vector**
+
+Example (4-core system):
+
 ```
 
 Bitmask: 1001
 Meaning: Core 0 and Core 3 share the line
 
-```
-
-From this, we derive:
-
-- **Sharer Count** = number of bits set  
-  This indicates how *popular* a cache line is.
-
----
-
-## Current Design Decision (Important)
-
-- The simulator currently uses `std::set<int>` to track sharers.
-- This was chosen for **clarity and correctness** during early development.
-
-**Planned optimization for ChampSim integration:**
-- Replace `std::set` with a **bitmask / bit-vector**
-- Lower memory overhead
-- Faster state updates
-- Closer to real hardware implementation
-
-This separation allows rapid prototyping without locking into premature low-level optimizations.
-
----
-
-## Synthetic Traffic Generation
-
-- Simulates **4 cores** (configurable)
-- Random Read / Write memory accesses
-- Triggers MESI state transitions
-- Exercises invalidations and sharer updates
-
-Each access conceptually looks like:
-```
-
-(core_id, address, access_type)
-
 ````
 
----
+From this, the simulator derives:
 
-## Why This Matters for Reinforcement Learning
-
-Traditional cache replacement (LRU) ignores coherence behavior.
-
-This simulator enables extraction of **coherence-aware features** for an RL agent:
-
-**Planned RL State Inputs:**
-1. MESI State
-2. Sharer Count
-3. Access frequency (future extension)
-
-**Intuition:**
-- High sharer count → widely shared data → should be kept
-- Low sharer count → private or cold data → eviction candidate
-
-This project validates that such features can be computed correctly.
+- **Sharer Count** – number of active sharers  
+  This will be used as a feature for reinforcement learning.
 
 ---
 
-## Usage
+### Design Decision
 
-Compile:
+The use of `std::set` was chosen intentionally for:
+- Readability
+- Debugging clarity
+- Correctness verification
+
+**Planned optimization (ChampSim integration):**
+- Replace `std::set` with a bitmask
+- Lower memory overhead
+- Faster updates
+- Closer to real hardware behavior
+
+---
+
+## Module 2: RL-Based Cache Replacement Simulator
+
+### Objective
+
+To evaluate whether a **simple reinforcement learning agent** can learn better cache insertion decisions than fixed heuristics such as LRU.
+
+The agent learns to:
+- Cache reuse-heavy (looping) data
+- Bypass streaming data that causes cache pollution
+
+---
+
+### RL Formulation
+
+- **Learning algorithm:** Tabular Q-learning
+- **State:** Program Counter (PC), hashed into a fixed-size table
+- **Actions:**
+  - Cache (insert line)
+  - Bypass (do not insert)
+- **Policy:** Epsilon-greedy
+
+---
+
+### Reward Design
+
+| Event | Reward |
+|------|--------|
+| Cache hit (reuse) | +10 |
+| Cache bypass | +0.5 |
+| Cache insert cost | −0.1 |
+
+This reward structure encourages reuse-aware cache behavior while discouraging pollution.
+
+---
+
+### Experimental Setup
+
+- Small set-associative cache (intentionally constrained)
+- Synthetic mixed workload:
+  - Looping accesses (high reuse)
+  - Streaming accesses (no reuse)
+- Multiple training epochs
+
+---
+
+### Key Observations
+
+- The agent learns to favor **CACHE** for looping PCs
+- The agent learns to favor **BYPASS** for streaming PCs
+- Cache hit rate improves during early training
+- Minor fluctuations occur due to exploration (ε-greedy policy)
+
+These results validate that even lightweight RL can capture useful cache behavior.
+
+---
+
+## Relationship to ChampSim
+
+ChampSim is a **trace-based microarchitectural simulator** used for realistic cache evaluation.
+
+Key characteristics:
+- Uses instruction traces (IP, branch outcome, memory addresses)
+- Models timing and cache hierarchy
+- Does not execute real instructions or store data values
+
+In ChampSim, users modify **policy components**, not the CPU core:
+- Cache replacement
+- Prefetching
+- Branch prediction
+
+---
+
+### Planned ChampSim Integration
+
+In later phases, this project will:
+- Port the RL agent into `replacement.cc`
+- Expose coherence-derived features (e.g., sharer count)
+- Compare RL-based replacement against baseline LRU
+- Evaluate using SPEC CPU 2006 traces
+
+---
+
+## How to Build and Run
+
+### MESI Coherence Simulator
+
 ```bash
 g++ mesi_sim.cpp -o mesi_sim
+./mesi_sim
 ````
 
-Run:
+---
+
+### RL Cache Replacement Simulator
 
 ```bash
-./mesi_sim
+g++ rl_cache_sim.cpp -o rl_cache_sim
+./rl_cache_sim
 ```
 
 ---
 
-## Project Context
+## Project Scope and Status
 
-* Course/Research Project: RL-based Cache Replacement
-* Simulator: ChampSim (integration in later phase)
-* Current Phase: Foundation / Feature Validation
+* **Current Phase:** Foundation / Prototyping
+* **Focus:** Correctness, learning behavior, architectural understanding
+* **Not yet implemented:**
 
-This module focuses on **architecture decisions and correctness**, not final performance numbers.
+  * ChampSim RL integration
+  * Timing-aware learning
+  * Multi-step reward modeling
+
+---
+
+## Key Takeaway
+
+This repository demonstrates that:
+
+* Coherence metadata can be extracted correctly
+* Reinforcement learning can distinguish memory access patterns
+* A staged prototyping approach reduces full-system integration risk
+
+The work lays a solid foundation for coherence-aware, learning-based cache replacement in realistic multicore simulators.
+
+---
+
+```
