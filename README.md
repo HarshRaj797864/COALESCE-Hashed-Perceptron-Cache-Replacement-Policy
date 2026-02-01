@@ -1,227 +1,180 @@
+# COALESCE: Coherence-Aware Learning for Scalable Cache Efficiency
 
-# RL-Integrated Multicore Cache System (Prototype)
+This repository contains **standalone systems research prototypes** developed for **Project COALESCE**, a study on designing a **coherence-aware, hardware-friendly learning-based cache replacement policy** for multicore processors.
 
-This repository contains **standalone C++ prototypes** developed as part of a project on **reinforcement learning–based cache replacement** for multicore processors, targeting future integration with **ChampSim**.
+The project follows a **Systems-First AI** philosophy:  
+instead of large models or heavy metadata, COALESCE explores **Hashed Perceptron learning**, **Ghost Buffers**, and **coherence-derived features** that are feasible under **Last-Level Cache (LLC) hardware constraints**.
 
-The work focuses on **foundational validation**, not final performance optimization.
-
----
-
-## Project Overview
-
-The project is divided into two core components:
-
-1. **Directory-Based MESI Coherence Simulator**  
-   - Validates coherence state transitions
-   - Tracks sharer information explicitly
-   - Extracts coherence-related metadata
-
-2. **RL-Based Cache Replacement Simulator**  
-   - Uses tabular Q-learning
-   - Learns cache insertion vs bypass decisions
-   - Differentiates streaming and looping access patterns
-
-Both modules are implemented as **standalone simulators** to reduce integration risk before modifying ChampSim.
+This repository serves as a **logic validation and experimentation ground** prior to integration with a full microarchitectural simulator.
 
 ---
 
-## Repository Structure
+## 🚀 Project Status: Phase 2 — COALESCE Architecture
 
-```
+**Current Focus:**  
+Validating a **Hashed Perceptron–based cache replacement policy** augmented with **Ghost Buffers** to distinguish *streaming* versus *reusing* memory access patterns with minimal storage overhead.
 
+---
+
+## 📂 Repository Structure
+
+The project is intentionally developed in **incremental stages** to reduce architectural risk:
+
+```text
 .
-├── mesi_sim.cpp        # Directory-based MESI coherence simulator
-├── rl_cache_sim.cpp    # RL-based cache replacement simulator
-├── README.md           # Project documentation
-└── report/             # Project report and screenshots (if applicable)
-
-```
-
----
-
-## Module 1: Directory-Based MESI Coherence Simulator
-
-### What This Module Does
-
-- Models a **directory-based MESI protocol**
-- Simulates read (`GetS`) and write (`GetM`) requests
-- Tracks which cores share each cache line
-- Prints detailed debug information for verification
-
-### Key Features
-
-- 4-core synthetic multicore system
-- Centralized directory
-- MESI states: Modified, Exclusive, Shared, Invalid
-- Explicit sharer tracking per cache line
-- Randomized synthetic workload generation
-
-This simulator focuses on **correctness and clarity**, not timing accuracy.
-
----
-
-### Sharer Tracking
-
-Each cache line maintains a **sharer list**, representing which cores currently hold a copy.
-
-- Current implementation: `std::set<int>`
-- Hardware-equivalent representation: **bitmask / bit-vector**
-
-Example (4-core system):
-
-```
-
-Bitmask: 1001
-Meaning: Core 0 and Core 3 share the line
-
+├── src/
+│   ├── coalesce_sim.cpp    # Phase 2: Hashed Perceptron + Ghost Buffer simulator
+│   ├── mesi_sim.cpp        # Phase 1: Directory-based MESI coherence simulator
+│   └── rl_cache_sim.cpp    # Phase 1: Tabular Q-learning cache simulator
+├── docs/                   # Architecture notes and design documentation
+└── README.md               # Project overview
 ````
 
-From this, the simulator derives:
+---
 
-- **Sharer Count** – number of active sharers  
-  This will be used as a feature for reinforcement learning.
+## 🧠 Phase 2: The COALESCE Engine
+
+**Primary File:** `coalesce_sim.cpp`
+
+This simulator implements the **COALESCE policy**, combining **learning-based prediction** with **coherence awareness** while respecting realistic hardware limits.
+
+The goal is not peak ML accuracy, but **predictable, low-cost decisions** suitable for cache controllers.
 
 ---
 
-### Design Decision
+### Core Architectural Components
 
-The use of `std::set` was chosen intentionally for:
-- Readability
-- Debugging clarity
-- Correctness verification
+#### 1. Hashed Perceptron Learning Engine
 
-**Planned optimization (ChampSim integration):**
-- Replace `std::set` with a bitmask
-- Lower memory overhead
-- Faster updates
-- Closer to real hardware behavior
+* Replaces large Q-tables with a **single-layer perceptron**.
+* Program Counter (PC) values are mapped to weights via **hash functions**.
+* Supports bounded, saturating integer weights to model hardware registers.
 
----
+**Decision Rule:**
 
-## Module 2: RL-Based Cache Replacement Simulator
+* `weight > threshold` → **Cache**
+* `weight ≤ threshold` → **Bypass**
 
-### Objective
-
-To evaluate whether a **simple reinforcement learning agent** can learn better cache insertion decisions than fixed heuristics such as LRU.
-
-The agent learns to:
-- Cache reuse-heavy (looping) data
-- Bypass streaming data that causes cache pollution
+This enables fast inference with constant-time updates.
 
 ---
 
-### RL Formulation
+#### 2. Ghost Buffers (Bloom Filters)
 
-- **Learning algorithm:** Tabular Q-learning
-- **State:** Program Counter (PC), hashed into a fixed-size table
-- **Actions:**
-  - Cache (insert line)
-  - Bypass (do not insert)
-- **Policy:** Epsilon-greedy
+* Lightweight structures that track **recently evicted cache lines**.
+* Used to identify **zero-reuse streaming behavior** without storing data.
+* Prevents cache pollution caused by scans and one-time accesses.
 
----
-
-### Reward Design
-
-| Event | Reward |
-|------|--------|
-| Cache hit (reuse) | +10 |
-| Cache bypass | +0.5 |
-| Cache insert cost | −0.1 |
-
-This reward structure encourages reuse-aware cache behavior while discouraging pollution.
+Ghost Buffers allow COALESCE to reason about *reuse* rather than just *recency*.
 
 ---
 
-### Experimental Setup
+#### 3. Adaptive Hashing
 
-- Small set-associative cache (intentionally constrained)
-- Synthetic mixed workload:
-  - Looping accesses (high reuse)
-  - Streaming accesses (no reuse)
-- Multiple training epochs
+* Dual hashing is used to reduce weight collisions.
+* Improves convergence stability under limited perceptron table size.
+* Mimics realistic constraints on hardware storage budgets.
 
 ---
 
-### Key Observations
+### Standalone Validation Results
 
-- The agent learns to favor **CACHE** for looping PCs
-- The agent learns to favor **BYPASS** for streaming PCs
-- Cache hit rate improves during early training
-- Minor fluctuations occur due to exploration (ε-greedy policy)
+The simulator evaluates mixed workloads consisting of looping and streaming access patterns.
 
-These results validate that even lightweight RL can capture useful cache behavior.
+**Observed Behavior:**
 
----
+* **Looping PCs:** Weights converge to strong positive saturation → **Cache**
+* **Streaming PCs:** Weights converge to negative saturation → **Bypass**
+* **Result:**
 
-## Relationship to ChampSim
+  * ~97% bypass rate for streaming data
+  * Cache capacity preserved for high-reuse lines
 
-ChampSim is a **trace-based microarchitectural simulator** used for realistic cache evaluation.
-
-Key characteristics:
-- Uses instruction traces (IP, branch outcome, memory addresses)
-- Models timing and cache hierarchy
-- Does not execute real instructions or store data values
-
-In ChampSim, users modify **policy components**, not the CPU core:
-- Cache replacement
-- Prefetching
-- Branch prediction
+This demonstrates that **simple linear learning + minimal metadata** is sufficient for effective cache decisions.
 
 ---
 
-### Planned ChampSim Integration
+## 🏗️ Phase 1: Foundational Prototypes
 
-In later phases, this project will:
-- Port the RL agent into `replacement.cc`
-- Expose coherence-derived features (e.g., sharer count)
-- Compare RL-based replacement against baseline LRU
-- Evaluate using SPEC CPU 2006 traces
+Phase 1 simulators were built to validate individual subsystems before combining them in COALESCE.
 
 ---
 
-## How to Build and Run
+### A. Directory-Based MESI Coherence Simulator
 
-### MESI Coherence Simulator
+**File:** `mesi_sim.cpp`
+
+* Models a 4-core system with a centralized directory.
+* Explicitly tracks sharers per cache line.
+* Validates MESI state transitions and invalidation behavior.
+
+**Key Insight:**
+Sharer count is a strong signal of contention and reuse, making it a valuable **learning feature** for cache policies.
+
+---
+
+### B. Tabular Q-Learning Cache Simulator
+
+**File:** `rl_cache_sim.cpp`
+
+* Implements a basic epsilon-greedy Q-learning agent.
+* Learns cache vs. bypass decisions from hit/miss rewards.
+* Serves as a conceptual baseline for learning-driven caching.
+
+**Outcome:**
+Confirmed that learning-based policies can converge, motivating the move to a **more hardware-feasible perceptron model**.
+
+---
+
+## 🔬 Relationship to ChampSim
+
+This repository is **not** a performance benchmark by itself.
+Instead, it functions as a **pre-integration validation layer** for ChampSim.
+
+### Planned Integration Path (Phase 3)
+
+| Component      | Standalone Prototype | ChampSim Target         |
+| -------------- | -------------------- | ----------------------- |
+| Input          | Synthetic traces     | SPEC CPU / GAP          |
+| Coherence Info | Explicit tracking    | Directory bitvectors    |
+| Learning Logic | C++ perceptron       | Replacement module      |
+| Metadata       | Ghost buffers        | Tag-adjacent structures |
+
+Only logic proven stable and useful here will be ported to ChampSim.
+
+---
+
+## 🛠️ Build & Run
+
+### Run COALESCE (Phase 2)
+
+```bash
+g++ coalesce_sim.cpp -o coalesce_sim
+./coalesce_sim
+```
+
+**Expected Output:**
+Verbose logs showing perceptron weight updates, hash behavior, and cache/bypass decisions.
+
+---
+
+### Run Phase 1 Simulators
 
 ```bash
 g++ mesi_sim.cpp -o mesi_sim
 ./mesi_sim
-````
-
----
-
-### RL Cache Replacement Simulator
-
-```bash
-g++ rl_cache_sim.cpp -o rl_cache_sim
-./rl_cache_sim
 ```
 
 ---
 
-## Project Scope and Status
+## 🎯 Research Direction
 
-* **Current Phase:** Foundation / Prototyping
-* **Focus:** Correctness, learning behavior, architectural understanding
-* **Not yet implemented:**
+COALESCE explores the intersection of:
 
-  * ChampSim RL integration
-  * Timing-aware learning
-  * Multi-step reward modeling
+* Cache coherence
+* Lightweight machine learning
+* Hardware-aware systems design
 
----
-
-## Key Takeaway
-
-This repository demonstrates that:
-
-* Coherence metadata can be extracted correctly
-* Reinforcement learning can distinguish memory access patterns
-* A staged prototyping approach reduces full-system integration risk
-
-The work lays a solid foundation for coherence-aware, learning-based cache replacement in realistic multicore simulators.
-
----
+The long-term objective is a **scalable, interpretable, and implementable** learning-based cache replacement policy suitable for modern multicore processors.
 
 ```
