@@ -807,13 +807,13 @@ int main()
     // - Should adapt within ~20K accesses
     run_scenario("Phase Change (Veto Adaptation)", [](Simulator &sim) {
         // Phase 1: 0x50B is Good (200K accesses, high reuse)
-        for(int i = 0; i < 20000000; i++) {
+        for(int i = 0; i < 10000000; i++) {
             sim.access(i % 100, 0x50B, 4, MODIFIED); // Hits
             sim.access(10000 + i, 0xD0015E, 0, EXCLUSIVE); // Misses
         }
         
         // Phase 2: 0x50B becomes Streaming (200K accesses, zero reuse)
-        for(int i = 0; i < 20000000; i++) {
+        for(int i = 0; i < 10000000; i++) {
             sim.access(20000 + i, 0x50B, 0, EXCLUSIVE); // Now it's dead!
         }
     });
