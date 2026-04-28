@@ -1,0 +1,25 @@
+{
+    "executable_name": "champsim_8core_coalesce",
+    "block_size": 64,
+    "page_size": 4096,
+    "heartbeat_frequency": 10000000,
+    "num_cores": 8,
+    "L1I": { "sets": 64, "ways": 8, "rq_size": 64, "wq_size": 64, "pq_size": 32, "mshr_size": 8, "latency": 4, "prefetcher": "no", "replacement": "lru" },
+    "L1D": { "sets": 64, "ways": 8, "rq_size": 64, "wq_size": 64, "pq_size": 32, "mshr_size": 8, "latency": 4, "prefetcher": "no", "replacement": "lru" },
+    "L2C": { "sets": 1024, "ways": 8, "rq_size": 32, "wq_size": 32, "pq_size": 16, "mshr_size": 16, "latency": 10, "prefetcher": "no", "replacement": "lru" },
+    "LLC": {
+        "sets": 2048,
+        "ways": 16,
+        "rq_size": 32,
+        "wq_size": 32,
+        "pq_size": 16,
+        "mshr_size": 16,
+        "latency": 20,
+        "prefetcher": "no",
+        "replacement": "coalesce"
+    },
+    "physical_memory": {
+        "size": 17179869184,
+        "latency": 50
+    }
+}

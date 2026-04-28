@@ -1,3 +1,11 @@
 AIM.md
 ARCHITECTURE.md
 latex/
+
+# Ignore heavy simulator files
+simulator/traces/
+simulator/bin/
+simulator/vcpkg/
+simulator/vcpkg_installed/
+simulator/archive_logs/
+simulator/tracer/pin/*.tar.gz
