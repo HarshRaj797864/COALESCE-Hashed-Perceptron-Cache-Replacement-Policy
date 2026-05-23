@@ -1,4 +1,5 @@
 #include "coalesce.h"
+#include <algorithm>
 #include <cmath>
 
 // --- CompactGhostEntry Implementation ---
@@ -20,11 +21,19 @@ bool CompactGhostEntry::matches(uint64_t tag, uint64_t pc) const {
 }
 
 // --- BloomFilter Implementation ---
-BloomFilter::BloomFilter() {
+BloomFilter::BloomFilter() : insert_count(0) {
     bit_array.resize(BLOOM_SIZE, false);
     ghost_tags.resize(GHOST_CAPACITY);
 }
 void BloomFilter::insert(uint64_t tag, uint64_t pc, int sharers, MESI_State state) {
+    // Periodic reset keeps bit_array occupancy bounded so FP rate stays near
+    // the design point (see B7). Without this, bit_array saturates over long
+    // runs and the early-exit check in lookup() always succeeds.
+    if (insert_count >= BLOOM_RESET_THRESHOLD) {
+        std::fill(bit_array.begin(), bit_array.end(), false);
+        insert_count = 0;
+    }
+    insert_count++;
     for (int i = 0; i < BLOOM_HASHES; i++) {
         uint64_t hash = (tag ^ pc ^ (i * 0x9e3779b9)) % BLOOM_SIZE;
         bit_array[hash] = true;

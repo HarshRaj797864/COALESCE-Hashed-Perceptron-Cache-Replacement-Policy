@@ -289,16 +289,30 @@ bool CACHE::try_hit(const tag_lookup_type& handle_pkt)
     way->dirty |= (handle_pkt.type == access_type::WRITE);
 
     // COALESCE: Update dynamic coherence state on hit
-    way->sharer_mask |= (1 << handle_pkt.cpu);
+    // 2026-05-21 — Added invalidation modeling (A.1 + A.2 in OPEN_DECISIONS):
+    //   - Write hit: clear other sharers' bits from sharer_mask (synthetic
+    //     invalidation broadcast) and count the event.
+    //   - LLC-bookkeeping only; ChampSim has no inter-level coherence, so the
+    //     actual L1/L2 tags of "invalidated" cores still hold stale copies.
+    //   - See coalesce_paper/COHERENCE_HOOK_AUDIT.md for full discussion.
     if (handle_pkt.type == access_type::WRITE) {
-        way->state = MODIFIED;
-    } else if (way->state != MODIFIED) {
-        int sharer_count = 0;
-        for (int i = 0; i < 8; i++) {
-            if ((way->sharer_mask >> i) & 1) sharer_count++;
+        uint8_t other_sharers = way->sharer_mask & static_cast<uint8_t>(~(1u << handle_pkt.cpu));
+        if (other_sharers != 0) {
+            sim_stats.coherence_invalidations += __builtin_popcount(other_sharers);
         }
-        if (sharer_count > 1) {
-            way->state = SHARED;
+        way->sharer_mask = static_cast<uint8_t>(1u << handle_pkt.cpu);  // writer now sole owner
+        way->state = MODIFIED;
+    } else {
+        // Read hit
+        way->sharer_mask |= static_cast<uint8_t>(1u << handle_pkt.cpu);
+        if (way->state != MODIFIED) {
+            int sharer_count = 0;
+            for (int i = 0; i < 8; i++) {
+                if ((way->sharer_mask >> i) & 1) sharer_count++;
+            }
+            if (sharer_count > 1) {
+                way->state = SHARED;
+            }
         }
     }
 
@@ -896,6 +910,8 @@ void CACHE::end_phase(unsigned finished_cpu)
   roi_stats.pf_useful = sim_stats.pf_useful;
   roi_stats.pf_useless = sim_stats.pf_useless;
   roi_stats.pf_fill = sim_stats.pf_fill;
+
+  roi_stats.coherence_invalidations = sim_stats.coherence_invalidations;
 
   for (auto* ul : upper_levels) {
     ul->roi_stats.RQ_ACCESS = ul->sim_stats.RQ_ACCESS;
