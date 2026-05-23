@@ -1,0 +1,173 @@
+% references.bib — COALESCE paper master BibTeX file
+% Status: Day 1 + Week 1 + Week 2 batches complete (May 21, 2026) — 18 entries
+% See coalesce_paper/citations/citation_map.md for the per-entry plan.
+%
+% Verification rule: every entry should be cross-checked against DBLP / ACM DL / IEEE Xplore
+% for accurate volume/page numbers before paper submission. Don't ship a paper with a
+% fabricated reference.
+%
+% Note: the current paper draft (latex/paper/coalesce_hipc.tex) uses an inline bibliography
+% with 5 entries and the key `jaleel2010high`. When the paper migrates to BibTeX, update
+% \cite{jaleel2010high} → \cite{jaleel2010rrip} (matches DBLP-style naming used here).
+
+%% =============================================================================
+%% Day 1 batch — Foundations
+%% =============================================================================
+
+@inproceedings{jimenez2017multiperspective,
+  author    = {Daniel A. Jiménez},
+  title     = {Multiperspective Reuse Prediction},
+  booktitle = {Proc. IEEE/ACM Int. Symp. Microarchitecture (MICRO)},
+  pages     = {436--448},
+  year      = {2017}
+}
+
+@inproceedings{jaleel2010rrip,
+  author    = {Aamer Jaleel and Kevin B. Theobald and Simon C. Steely Jr. and Joel Emer},
+  title     = {High Performance Cache Replacement Using Re-Reference Interval Prediction (RRIP)},
+  booktitle = {Proc. Int. Symp. Computer Architecture (ISCA)},
+  pages     = {60--71},
+  year      = {2010}
+}
+
+@inproceedings{wu2011ship,
+  author    = {Carole-Jean Wu and Aamer Jaleel and Will Hasenplaugh and Margaret Martonosi and Simon C. Steely Jr. and Joel Emer},
+  title     = {{SHiP}: Signature-Based Hit Predictor for High Performance Caching},
+  booktitle = {Proc. IEEE/ACM Int. Symp. Microarchitecture (MICRO)},
+  pages     = {430--441},
+  year      = {2011}
+}
+
+@book{sorin2011coherence,
+  author    = {Daniel J. Sorin and Mark D. Hill and David A. Wood},
+  title     = {A Primer on Memory Consistency and Cache Coherence},
+  publisher = {Morgan \& Claypool},
+  series    = {Synthesis Lectures on Computer Architecture},
+  year      = {2011}
+}
+
+@book{hennessy2017quantitative,
+  author    = {John L. Hennessy and David A. Patterson},
+  title     = {Computer Architecture: A Quantitative Approach},
+  edition   = {6},
+  publisher = {Morgan Kaufmann},
+  year      = {2017}
+}
+
+%% =============================================================================
+%% Week 1 batch — ML cache replacement lineage
+%% =============================================================================
+
+@inproceedings{jain2016hawkeye,
+  author    = {Akanksha Jain and Calvin Lin},
+  title     = {Back to the Future: Leveraging {Belady's} Algorithm for Improved Cache Replacement},
+  booktitle = {Proc. Int. Symp. Computer Architecture (ISCA)},
+  pages     = {78--89},
+  year      = {2016}
+}
+
+@inproceedings{shi2019glider,
+  author    = {Zhan Shi and Xiangru Huang and Akanksha Jain and Calvin Lin},
+  title     = {Applying Deep Learning to the Cache Replacement Problem},
+  booktitle = {Proc. IEEE/ACM Int. Symp. Microarchitecture (MICRO)},
+  pages     = {413--425},
+  year      = {2019}
+}
+
+@inproceedings{shah2022mockingjay,
+  author    = {Ishan Shah and Akanksha Jain and Calvin Lin},
+  title     = {Effective Mimicry of {Belady's} {MIN} Policy},
+  booktitle = {Proc. IEEE Int. Symp. High-Performance Computer Architecture (HPCA)},
+  year      = {2022}
+}
+
+@inproceedings{jimenez2001perceptron,
+  author    = {Daniel A. Jiménez and Calvin Lin},
+  title     = {Dynamic Branch Prediction with Perceptrons},
+  booktitle = {Proc. IEEE Int. Symp. High-Performance Computer Architecture (HPCA)},
+  pages     = {197--206},
+  year      = {2001}
+}
+
+@article{belady1966study,
+  author  = {L. A. Belady},
+  title   = {A Study of Replacement Algorithms for a Virtual-Storage Computer},
+  journal = {IBM Systems Journal},
+  volume  = {5},
+  number  = {2},
+  pages   = {78--101},
+  year    = {1966}
+}
+
+%% =============================================================================
+%% Week 2 batch — Coherence-aware optimization + measurement + supporting
+%% =============================================================================
+
+@inproceedings{cuesta2011coherence,
+  author    = {Blas Cuesta and Alberto Ros and María E. Gómez and Antonio Robles and José Duato},
+  title     = {Increasing the Effectiveness of Directory Caches by Deactivating Coherence for Private Memory Blocks},
+  booktitle = {Proc. Int. Symp. Computer Architecture (ISCA)},
+  pages     = {93--104},
+  year      = {2011}
+}
+
+@inproceedings{hardavellas2009rnuca,
+  author    = {Nikos Hardavellas and Michael Ferdman and Babak Falsafi and Anastasia Ailamaki},
+  title     = {Reactive {NUCA}: Near-Optimal Block Placement and Replication in Distributed Caches},
+  booktitle = {Proc. Int. Symp. Computer Architecture (ISCA)},
+  pages     = {184--195},
+  year      = {2009}
+}
+
+@inproceedings{molka2009memory,
+  author    = {Daniel Molka and Daniel Hackenberg and Robert Schöne and Matthias S. Müller},
+  title     = {Memory Performance and Cache Coherency Effects on an {Intel} {Nehalem} Multiprocessor System},
+  booktitle = {Proc. Int. Conf. Parallel Architectures and Compilation Techniques (PACT)},
+  pages     = {261--270},
+  year      = {2009}
+}
+
+@inproceedings{sethumurugan2021designing,
+  author    = {Subhash Sethumurugan and Jieming Yin and John Sartori},
+  title     = {Designing a Cost-Effective Cache Replacement Policy Using Machine Learning},
+  booktitle = {Proc. IEEE Int. Symp. High-Performance Computer Architecture (HPCA)},
+  pages     = {291--303},
+  year      = {2021}
+}
+
+@article{souza2024rl,
+  author  = {Marco A. Z. Souza and Henrique C. Freitas},
+  title   = {Reinforcement Learning-Based Cache Replacement Policies for Multicore Processors},
+  journal = {IEEE Access},
+  volume  = {12},
+  year    = {2024}
+}
+
+@inproceedings{wu2025camp,
+  author    = {Yujie Wu and others},
+  title     = {Concurrency-Aware Cache Miss Cost Prediction with Perceptron Learning},
+  booktitle = {Proc. ACM Great Lakes Symp. VLSI (GLSVLSI)},
+  year      = {2025}
+}
+
+@inproceedings{bienia2008parsec,
+  author    = {Christian Bienia and Sanjeev Kumar and Jaswinder Pal Singh and Kai Li},
+  title     = {The {PARSEC} Benchmark Suite: Characterization and Architectural Implications},
+  booktitle = {Proc. Int. Conf. Parallel Architectures and Compilation Techniques (PACT)},
+  pages     = {72--81},
+  year      = {2008}
+}
+
+@misc{champsim,
+  title        = {{ChampSim} Simulator},
+  howpublished = {\url{https://github.com/ChampSim/ChampSim}},
+  note         = {Accessed: May 2026}
+}
+
+@inproceedings{luk2005pin,
+  author    = {Chi-Keung Luk and Robert Cohn and Robert Muth and Harish Patil and Artur Klauser and Geoff Lowney and Steven Wallace and Vijay Janapa Reddi and Kim Hazelwood},
+  title     = {Pin: Building Customized Program Analysis Tools with Dynamic Instrumentation},
+  booktitle = {Proc. ACM SIGPLAN Conf. Programming Language Design and Implementation (PLDI)},
+  pages     = {190--200},
+  year      = {2005}
+}
