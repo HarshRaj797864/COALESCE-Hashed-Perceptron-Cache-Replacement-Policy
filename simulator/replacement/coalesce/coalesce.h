@@ -14,8 +14,14 @@ constexpr int THRESHOLD = 35;
 constexpr int VETO_OVERRIDE = -100;
 constexpr int BLOOM_SIZE = 1024;
 constexpr int BLOOM_HASHES = 3;
-constexpr int SAMPLING_MODULO = 16;
-constexpr int GHOST_CAPACITY = 256;
+// Reset bit_array after this many insertions. Keeps occupancy below the design
+// point of 237 entries (12.5% FP rate); see coalesce_paper/citations/justifications/B7.
+constexpr int BLOOM_RESET_THRESHOLD = 150;
+// V2 parameters (2026-05-21): sample 1/32 sets, 128 ghost entries per sampled set.
+// Total per-set storage = 128 B (Bloom) + 512 B (ghost) = 640 B; with 64 sampled sets
+// (2048/32) the total is ~41 KB — a 3.6× reduction from the original V0 design.
+constexpr int SAMPLING_MODULO = 32;
+constexpr int GHOST_CAPACITY = 128;
 
 struct CompactGhostEntry {
     uint32_t packed;
@@ -32,6 +38,7 @@ struct CompactGhostEntry {
 class BloomFilter {
     std::vector<bool> bit_array;
     std::vector<CompactGhostEntry> ghost_tags;
+    int insert_count;   // tracks insertions since last bit_array reset
 public:
     BloomFilter();
     void insert(uint64_t tag, uint64_t pc, int sharers, MESI_State state);

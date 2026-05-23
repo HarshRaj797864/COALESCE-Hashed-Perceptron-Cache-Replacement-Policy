@@ -124,6 +124,10 @@ std::vector<std::string> champsim::plain_printer::format(CACHE::stats_type stats
         fmt::format("cpu{}->{} AVERAGE MISS LATENCY: {} cycles", cpu, stats.name, ::print_ratio(stats.total_miss_latency_cycles, total_downstream_demands)));
   }
 
+  // COALESCE A.2: report synthetic invalidations counted at this cache level.
+  // Printed once per cache (not per CPU) because invalidations are a cache-level event.
+  lines.push_back(fmt::format("{} COHERENCE INVALIDATIONS: {:10}", stats.name, stats.coherence_invalidations));
+
   return lines;
 }
 
