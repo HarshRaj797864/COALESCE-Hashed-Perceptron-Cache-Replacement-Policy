@@ -19,9 +19,11 @@
 
 #include <cstdint>
 #include <deque>
+#include <limits>
 #include <map>
 #include <optional>
 #include <random>
+#include <vector>
 
 #include "address.h"
 #include "champsim.h"
@@ -39,10 +41,27 @@ private:
   std::optional<uint64_t> randomization_seed;
   MEMORY_CONTROLLER& dram;
 
+  // COALESCE: per-CPU effective ASID for va_to_pa key. Default behavior treats cpu_num
+  // as the ASID (each core gets its own physical address space). Cores added to
+  // shared_cpu_ids via set_shared_cpus() are remapped to SHARED_ASID, so identical VAs
+  // from any of those cores alias on the same physical page.
+  std::map<uint32_t, uint32_t> cpu_to_shared_asid;
+  // Tracks first allocator of each shared vpage, for cross-CPU alias accounting.
+  std::map<champsim::page_number, uint32_t> shared_first_allocator;
+
 public:
   const champsim::chrono::clock::duration minor_fault_penalty;
   const std::size_t pt_levels;
   const pte_entry pte_page_size; // Size of a PTE page
+
+  // COALESCE: sentinel ASID value indicating "share this core's translations".
+  static constexpr uint32_t SHARED_ASID = std::numeric_limits<uint32_t>::max();
+
+  // COALESCE: global counter of cross-CPU shared-page alias events.
+  // Incremented inside va_to_pa whenever a request for a shared vpage finds it
+  // already mapped by a DIFFERENT core. Static so it can be read at end-of-sim
+  // without plumbing an accessor through generated_environment.
+  static inline std::uint64_t aliased_fills = 0;
 
 private:
   std::deque<champsim::page_number> ppage_free_list;
@@ -118,6 +137,23 @@ public:
    * :returns: A pair of the page table page address and the latency to be applied to the operation.
    */
   std::pair<champsim::address, champsim::chrono::clock::duration> get_pte_pa(uint32_t cpu_num, champsim::page_number vaddr, std::size_t level);
+
+  /**
+   * COALESCE: enable cross-CPU page aliasing for the given cores.
+   *
+   * Cores listed in shared_cpu_ids will use SHARED_ASID as their effective ASID
+   * when calling va_to_pa, so any two such cores accessing the same virtual page
+   * collapse to the same physical page (mimicking pthread shared memory).
+   *
+   * Cores NOT listed are unaffected — they continue using cpu_num as their ASID
+   * and remain isolated. Idempotent and additive.
+   *
+   * Default (never called or called with empty vector): all cores private,
+   * preserving existing ChampSim semantics.
+   *
+   * Does NOT change get_pte_pa: PTEs remain per-CPU (page tables are not shared).
+   */
+  void set_shared_cpus(const std::vector<uint32_t>& shared_cpu_ids);
 };
 
 #endif

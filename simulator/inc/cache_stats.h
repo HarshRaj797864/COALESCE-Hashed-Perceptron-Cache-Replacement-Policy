@@ -29,6 +29,18 @@ struct cache_stats {
   // traffic (ChampSim has no inter-level coherence). See COHERENCE_HOOK_AUDIT.md.
   uint64_t coherence_invalidations = 0;
 
+  // COALESCE 2026-05-31: count of *events* (not bits) where a write hit found
+  // other_sharers != 0. Distinct from coherence_invalidations: that counts bits
+  // cleared (popcount), this counts the number of times the clearing happened.
+  // Useful for distinguishing "rare multi-sharer events with many bits each"
+  // from "frequent two-sharer events" in the histogram analysis.
+  uint64_t coherence_write_hit_other_sharer_events = 0;
+
+  // COALESCE 2026-05-29 sharer-count histogram. Index = popcount(sharer_mask)
+  // observed in find_victim's per-way scan. Settles whether cross-core sharing
+  // actually exists in the workload — see docs SESSION_CONTEXT.md sec 16.
+  uint64_t coherence_sharer_hist[17] = {0};
+
   long total_miss_latency_cycles{};
 };
 

@@ -106,11 +106,28 @@ std::size_t VirtualMemory::available_ppages() const { return (ppage_free_list.si
 
 std::pair<champsim::page_number, champsim::chrono::clock::duration> VirtualMemory::va_to_pa(uint32_t cpu_num, champsim::page_number vaddr)
 {
-  auto [ppage, fault] = vpage_to_ppage_map.try_emplace({cpu_num, champsim::page_number{vaddr}}, ppage_front());
+  // COALESCE: resolve cpu_num to its effective ASID. Cores not in cpu_to_shared_asid
+  // keep cpu_num as ASID (existing isolated behavior). Cores in the map (set via
+  // set_shared_cpus) use SHARED_ASID so they alias to the same physical pages.
+  uint32_t asid = cpu_num;
+  if (auto it = cpu_to_shared_asid.find(cpu_num); it != cpu_to_shared_asid.end()) {
+    asid = it->second;
+  }
+
+  auto [ppage, fault] = vpage_to_ppage_map.try_emplace({asid, champsim::page_number{vaddr}}, ppage_front());
 
   // this vpage doesn't yet have a ppage mapping
   if (fault) {
     ppage_pop();
+  }
+
+  // COALESCE: alias accounting. Only meaningful when this access is shared.
+  if (asid == SHARED_ASID) {
+    auto [first_it, first_inserted] = shared_first_allocator.try_emplace(champsim::page_number{vaddr}, cpu_num);
+    if (!first_inserted && first_it->second != cpu_num) {
+      // A different core had already mapped this shared vpage — real cross-CPU alias.
+      ++aliased_fills;
+    }
   }
 
   auto penalty = fault ? minor_fault_penalty : champsim::chrono::clock::duration::zero();
@@ -120,6 +137,16 @@ std::pair<champsim::page_number, champsim::chrono::clock::duration> VirtualMemor
   }
 
   return std::pair{ppage->second, penalty};
+}
+
+void VirtualMemory::set_shared_cpus(const std::vector<uint32_t>& shared_cpu_ids)
+{
+  // COALESCE: mark each listed core as sharing the SHARED_ASID address space.
+  // Idempotent and additive — repeating with the same ids is a no-op; calling with
+  // a subset only marks that subset. Cores not listed remain isolated.
+  for (auto id : shared_cpu_ids) {
+    cpu_to_shared_asid[id] = SHARED_ASID;
+  }
 }
 
 std::pair<champsim::address, champsim::chrono::clock::duration> VirtualMemory::get_pte_pa(uint32_t cpu_num, champsim::page_number vaddr, std::size_t level)

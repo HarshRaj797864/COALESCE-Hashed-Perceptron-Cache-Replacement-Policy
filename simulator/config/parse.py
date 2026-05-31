@@ -339,7 +339,10 @@ class NormalizedConfiguration:
         vmem = util.chain(
             transform_for_keys(self.vmem, ('pte_page_size',), int_or_prefixed_size),
             self.vmem,
-            { 'pte_page_size': int_or_prefixed_size("4kB"), 'num_levels': 5, 'minor_fault_penalty': 200, 'randomization': 1}
+            # COALESCE: vmem_shared_cpus is a list of CPU indices that share an address
+            # space (i.e., their VAs alias on the same physical pages). Default empty
+            # preserves the standard per-CPU isolated behavior. See vmem.h SHARED_ASID.
+            { 'pte_page_size': int_or_prefixed_size("4kB"), 'num_levels': 5, 'minor_fault_penalty': 200, 'randomization': 1, 'vmem_shared_cpus': [] }
         )
 
         # Give cores numeric indices and default cache names

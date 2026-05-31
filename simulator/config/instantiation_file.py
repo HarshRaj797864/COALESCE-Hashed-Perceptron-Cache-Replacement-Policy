@@ -391,6 +391,12 @@ def get_instantiation_lines(cores, caches, ptws, pmem, vmem, build_id):
     yield from cache_instantiation_body
     yield from core_instantiation_body
     yield '{'
+    # COALESCE: enable cross-CPU page aliasing if vmem_shared_cpus is non-empty.
+    # No-op when the list is empty (default), so existing configs are unaffected.
+    shared_cpus = vmem.get('vmem_shared_cpus', [])
+    if shared_cpus:
+        shared_list = ', '.join(str(int(c)) for c in shared_cpus)
+        yield f'  vmem.set_shared_cpus({{{shared_list}}});'
     yield '}'
     yield ''
 
