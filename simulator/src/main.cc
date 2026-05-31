@@ -126,6 +126,10 @@ int main(int argc, char** argv) // NOLINT(bugprone-exception-escape)
 
   champsim::plain_printer{std::cout}.print(phase_stats);
 
+  // COALESCE: report VMEM aliased-fill count (cross-CPU shared-page hits via set_shared_cpus).
+  // Zero unless vmem_shared_cpus is configured. Smoking-gun number for shared-VMEM ablation.
+  fmt::print("\nVMEM ALIASED FILLS (cross-CPU shared-page hits): {}\n", VirtualMemory::aliased_fills);
+
   for (CACHE& cache : gen_environment.cache_view()) {
     cache.impl_prefetcher_final_stats();
   }

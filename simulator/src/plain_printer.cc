@@ -127,6 +127,20 @@ std::vector<std::string> champsim::plain_printer::format(CACHE::stats_type stats
   // COALESCE A.2: report synthetic invalidations counted at this cache level.
   // Printed once per cache (not per CPU) because invalidations are a cache-level event.
   lines.push_back(fmt::format("{} COHERENCE INVALIDATIONS: {:10}", stats.name, stats.coherence_invalidations));
+  lines.push_back(fmt::format("{} COHERENCE WRITE-HIT OTHER-SHARER EVENTS: {:10}", stats.name, stats.coherence_write_hit_other_sharer_events));
+
+  // COALESCE 2026-05-29 sharer-count histogram (settles cross-core sharing question).
+  uint64_t hist_total = 0;
+  for (int i = 0; i < 17; i++) hist_total += stats.coherence_sharer_hist[i];
+  if (hist_total > 0) {
+    lines.push_back(fmt::format("{} SHARER HIST TOTAL: {:14}", stats.name, hist_total));
+    for (int i = 0; i < 17; i++) {
+      if (stats.coherence_sharer_hist[i] > 0) {
+        double pct = 100.0 * stats.coherence_sharer_hist[i] / hist_total;
+        lines.push_back(fmt::format("{} SHARER HIST[{:2}]: {:14}  ({:6.3f}%)", stats.name, i, stats.coherence_sharer_hist[i], pct));
+      }
+    }
+  }
 
   return lines;
 }

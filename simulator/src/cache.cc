@@ -296,18 +296,19 @@ bool CACHE::try_hit(const tag_lookup_type& handle_pkt)
     //     actual L1/L2 tags of "invalidated" cores still hold stale copies.
     //   - See coalesce_paper/COHERENCE_HOOK_AUDIT.md for full discussion.
     if (handle_pkt.type == access_type::WRITE) {
-        uint8_t other_sharers = way->sharer_mask & static_cast<uint8_t>(~(1u << handle_pkt.cpu));
+        uint16_t other_sharers = way->sharer_mask & static_cast<uint16_t>(~(1u << handle_pkt.cpu));
         if (other_sharers != 0) {
             sim_stats.coherence_invalidations += __builtin_popcount(other_sharers);
+            ++sim_stats.coherence_write_hit_other_sharer_events;
         }
-        way->sharer_mask = static_cast<uint8_t>(1u << handle_pkt.cpu);  // writer now sole owner
+        way->sharer_mask = static_cast<uint16_t>(1u << handle_pkt.cpu);  // writer now sole owner
         way->state = MODIFIED;
     } else {
         // Read hit
-        way->sharer_mask |= static_cast<uint8_t>(1u << handle_pkt.cpu);
+        way->sharer_mask |= static_cast<uint16_t>(1u << handle_pkt.cpu);
         if (way->state != MODIFIED) {
             int sharer_count = 0;
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 16; i++) {
                 if ((way->sharer_mask >> i) & 1) sharer_count++;
             }
             if (sharer_count > 1) {
@@ -912,6 +913,10 @@ void CACHE::end_phase(unsigned finished_cpu)
   roi_stats.pf_fill = sim_stats.pf_fill;
 
   roi_stats.coherence_invalidations = sim_stats.coherence_invalidations;
+  roi_stats.coherence_write_hit_other_sharer_events = sim_stats.coherence_write_hit_other_sharer_events;
+  for (int i = 0; i < 17; i++) {
+    roi_stats.coherence_sharer_hist[i] = sim_stats.coherence_sharer_hist[i];
+  }
 
   for (auto* ul : upper_levels) {
     ul->roi_stats.RQ_ACCESS = ul->sim_stats.RQ_ACCESS;

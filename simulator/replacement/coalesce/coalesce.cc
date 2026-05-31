@@ -113,9 +113,12 @@ long coalesce::find_victim(uint32_t triggering_cpu, uint64_t instr_id, long set,
         if (!current_set[w].valid) return w;
 
         // Decode the bitmask
-        int current_sharers = 0;
-        for (int i = 0; i < 8; i++) {
-            if ((current_set[w].sharer_mask >> i) & 1) current_sharers++;
+        int current_sharers = __builtin_popcount(current_set[w].sharer_mask);
+
+        // Histogram: record sharer count of every valid way considered for eviction.
+        // Indexed 0..16; clamps defensively though popcount of a 16-bit mask is <=16.
+        if (current_sharers >= 0 && current_sharers <= 16) {
+            intern_->sim_stats.coherence_sharer_hist[current_sharers]++;
         }
 
         // NO .to<uint64_t>() here, current_set[w].ip is already a uint64_t
@@ -136,7 +139,7 @@ long coalesce::find_victim(uint32_t triggering_cpu, uint64_t instr_id, long set,
     if (is_sampled[set]) {
         uint64_t tag = full_addr.to<uint64_t>() >> 6;
         int victim_sharers = 0;
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 16; i++) {
             if ((current_set[victim].sharer_mask >> i) & 1) victim_sharers++;
         }
         // NO .to<uint64_t>() here either
@@ -157,7 +160,7 @@ void coalesce::update_replacement_state(uint32_t triggering_cpu, long set, long 
             
             // Decode the bitmask to get real sharer count
             int current_sharers = 0;
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 16; i++) {
                 if ((block_meta.sharer_mask >> i) & 1) current_sharers++;
             }
 

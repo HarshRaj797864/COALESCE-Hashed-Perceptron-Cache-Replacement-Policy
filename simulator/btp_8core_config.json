@@ -21,5 +21,8 @@
     "physical_memory": {
         "size": 17179869184,
         "latency": 50
+    },
+    "virtual_memory": {
+        "vmem_shared_cpus": []
     }
 }

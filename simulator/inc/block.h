@@ -22,7 +22,7 @@ struct cache_block {
 
   // COALESCE Coherence Extensions
   MESI_State state = INVALID;
-  uint8_t sharer_mask = 0;
+  uint16_t sharer_mask = 0;  // 16-bit to support up to 16 cores (scaling study)
 };
 } // namespace champsim
 
