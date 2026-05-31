@@ -393,3 +393,98 @@ Do tell Harsh if:
 ## 14. Summary in one paragraph
 
 COALESCE is a coherence-aware perceptron-based LLC replacement policy with current results showing +24% IPC over LRU at 4-core canneal (but losing to DRRIP/SHiP by 1.8%) and 33% cycle reduction over SRRIP at 8-core canneal (sole 8-core baseline so far). For HiPC 2026 (deadline Jun 17), the experimental gap is filling out the 5×3×2 baseline matrix (5 policies × 3 PARSEC benchmarks × 4-core/8-core), then a scaling study, LLC sweep, bias sweep, and statistical re-runs. Code is currently in V2 config (SAMPLING_MODULO=32, GHOST_CAPACITY=128, BLOOM_RESET_THRESHOLD=150) — reduces metadata storage from ~148 KB to ~44 KB. A coherence-hook audit found the simulator does not model invalidation traffic, only writebacks; the wins we measure are retention-driven hit-rate effects on bottleneck cores, which is real but the paper's mechanism narrative needs honest reframing. Next step: launch Phase 2A baseline matrix.
+
+---
+
+## 15. Session log — 2026-05-28/29 (Phase 2A 8-core complete + 16-core prep)
+
+### Server reality (iiitsgpu)
+
+- Host: dual Xeon E5-2670 v3, 24 physical / 48 logical cores, 251 GB RAM, 1.6 TB free on /home. NUMA: node0 = even CPUs, node1 = odd CPUs.
+- Server path: `/home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/` (NOT the same path as local; local is `/home/rajharsh/...`).
+- Connect: `ssh -p 2222 harshraj@61.1.175.170`. scp uses `-P 2222` (capital P). The hostname `iiitsgpu` does NOT resolve from local WSL — use the IP.
+- **Box is shared and busy.** During this run, load average was ~22–30. Two other users (`mohanganesh` ~19 cores of Python, `saketh` ~9 cores) held most of the box. Effective budget was ~3–5 contended cores, NOT the full 24. This is why runs are ~10× slower than a dedicated box.
+- Server `simulator/absolute.options` points `-I` at the **local** `simulator/inc` (single source of truth) — so the two-tree header gotcha (OPEN_DECISIONS #16) does NOT apply on the server. Header edits build directly. (The two-tree problem is local-WSL-only.)
+
+### Git state (important)
+
+- Server can't push to GitHub (storage/quota issue). All code transfer is via patches generated locally + applied with `git apply` on the server.
+- Server HEAD `1b56a25` ("Final 8-core simulation results: COALESCE complete, SRRIP partial") is a server-only commit not on origin.
+- Origin is ahead of the server by `0ddc2ee` + `79da2c8` (research paper + 8-core results) — server never pulled these.
+- Local has `33645cb` (V2 code) + `099628d` (docs) that never reached origin. The V2 commit (`33645cb`) was manually applied to the server this session via heredoc patch.
+- **Divergence is intentional and unresolved.** Do NOT attempt a git merge of server↔origin until after HiPC — both committed similar result files and would conflict. Work on the server's working tree directly.
+
+### Workflow lesson learned
+
+- Pasting multi-line scripts directly into the SSH terminal **corrupts them** (strips quotes, adds leading whitespace, splits at backslash continuations). This wasted ~2 hours across two stalls (a hung `jq` waiting on stdin, a runaway smoke loop).
+- **Fixed workflow**: Claude writes script to local `/tmp/*.sh` → user `scp -P 2222`s it to server → runs `bash ~/script.sh` inside `tmux`. Single-line commands paste fine; multi-line scripts must go via scp.
+- Always launch long runs inside `tmux` (`tmux new -s NAME`, detach Ctrl-B then D, reattach `tmux attach -t NAME`) so SSH drops don't kill them. Run sims `nice -n 19` to be a polite citizen on the shared box.
+
+### ✅ Phase 2A — 8-core canneal baseline matrix COMPLETE (resolves weakness A2)
+
+All 5 policies ran 50M warmup + 100M sim/core, 2 MB shared LLC, V2 code. **All completed full 100M on all 8 cores** (verified via `Simulation finished CPU N instructions: 100000000` lines — note this fork uses "Simulation finished", NOT "Finished CPU").
+
+| Policy | Max cycles | COALESCE faster by | Bottleneck IPC (CPU1/6 avg) | Worker IPC (CPU0/5 avg) |
+|---|---|---|---|---|
+| **COALESCE** | **415,157,549** | — | **0.2415** | 2.057 |
+| SRRIP | 619,411,244 | 33.0% | 0.1616 | 2.104 |
+| SHiP | 621,172,900 | 33.2% | 0.1612 | 2.0985 |
+| DRRIP | 627,034,759 | 33.8% | 0.1598 | 2.099 |
+| LRU | 640,322,745 | 35.2% | 0.1565 | 1.5415 |
+
+Bottleneck-core IPC gain: +49.4% vs SRRIP, +49.8% vs SHiP, +51.1% vs DRRIP, +54.3% vs LRU.
+
+- **COALESCE now beats ALL FOUR baselines** at 8-core, not just SRRIP. Weakness A2 (cherry-picked weakest baseline) is dead.
+- **V2 reproduces V0 almost exactly**: V0 was COALESCE 415.9M / SRRIP 620.6M; V2 is 415.2M / 619.4M. The 3.6× storage cut (148→44 KB) and accurate (non-monotonic) sharer_mask cost nothing. Reproducibility = strength to cite.
+- **Coherence invalidations = 0 for every policy** over the full run. Confirms COHERENCE_HOOK_AUDIT: canneal write-hits rarely hit multi-sharer LLC lines, so the win is **retention-driven hit-rate** on bottleneck cores, NOT invalidation savings. Mechanism narrative in the paper must say this.
+- **Worker regression (A9) persists**: COALESCE workers ~2% below RRIP variants but +33% above LRU. Net win is dominated by bottleneck cores that gate canneal completion. Frame as favourable critical-path trade-off.
+- **Aggregate LLC-miss counts are NOT comparable across policies** — faster completion means fast cores stream fewer extra instructions (COALESCE CPU7 ran 1.66B instr vs LRU's 2.56B). Use per-core ROI-normalized stats for any miss-rate claim; never compare summed misses directly.
+
+**Saved artifacts (local, since server can't push):**
+- `simulator/results/phase2a_8core_canneal_V2/summary_8core_canneal_V2.csv` — machine-readable
+- `simulator/results/phase2a_8core_canneal_V2/RESULTS_8core_canneal_V2.md` — paper-ready writeup
+- Raw logs remain on server at `results/phase2a_8core_canneal_V2/logs/{policy}_50M_100M.log` (~2 MB total; not yet backed up locally — TODO scp them down).
+
+### ⏱️ Run timing (and a ⚠️ flag worth investigating)
+
+Wall-clock per policy (under heavy server contention, so absolute numbers are inflated ~10×; the RELATIVE picture is what matters):
+
+| Policy | Wall time |
+|---|---|
+| SHiP | ~8 hr 06 min |
+| DRRIP | ~8 hr 12 min |
+| SRRIP | ~8 hr 33 min |
+| LRU | ~8 hr 49 min |
+| **COALESCE** | **~22 hr 28 min** |
+
+⚠️ **COALESCE took ~2.7× longer in wall-clock than the simple policies — flag this as suspicious / worth investigating.** Two competing explanations:
+1. **Benign**: COALESCE does real extra per-access work (2 perceptron-table lookups + bloom-filter ops + ghost-buffer insert/lookup on sampled sets) AND it finishes the simulated workload in far fewer CYCLES (415M vs ~620M), but cycles ≠ wall-clock. The wall-clock is dominated by how many trace records get processed. Because the fast streaming cores (2,3,4,7) keep running at IPC≈4 until the bottleneck cores hit 100M, and COALESCE's bottleneck cores are faster, the run length in *events processed* could differ. Need to confirm.
+2. **Concerning**: a hot path in the COALESCE module (e.g. the per-way sharer-decode loops, now widened to i<16) could be disproportionately expensive, OR COALESCE was simply unlucky with which foreign jobs shared its cores during its 22 hr window. The 8-core SHiP/DRRIP/SRRIP/LRU all clustered at ~8 hr while COALESCE alone ran 22 hr — if it were pure contention luck we'd expect more spread among the others too.
+- **To investigate** (cheap): compare `instructions:` totals on the fast cores across logs (COALESCE CPU7 = 1.66B vs LRU CPU7 = 2.56B). If COALESCE processed FEWER total trace events but still took 2.7× longer, that points to per-access overhead (explanation 2). If it processed similar/more events, explanation 1. Also re-run COALESCE alone on an idle box and time it to remove the contention variable. Not a blocker for the result (cycles are what we report), but matters for the paper's "practicality / overhead" framing and for estimating future run budgets.
+
+### 🔧 16-core enablement (code change — done locally, applied to server)
+
+16-core was NOT a simple config bump. `sharer_mask` was `uint8_t` (max 8 cores) with five hardcoded `for(i=0;i<8)` sharer-count loops + three `static_cast<uint8_t>` truncations. At 16 cores, cores 8–15 would silently vanish from coherence tracking (no crash, just wrong sharer counts → corrupts COALESCE's whole premise). Widened to `uint16_t` / `i<16` everywhere:
+- `simulator/inc/block.h`: `uint8_t sharer_mask` → `uint16_t`
+- `simulator/src/cache.cc`: 3 casts → uint16_t, 1 read-hit loop → i<16
+- `simulator/replacement/coalesce/coalesce.cc`: 3 sharer-decode loops → i<16
+- Patch: `/tmp/16core_widening.patch` (71 lines, verified well-formed). Applied to server via `git apply` (must `cd` into repo root first — paths are repo-relative).
+- Helper scripts (local `/tmp`, scp'd to server): `setup_16core.sh` (guards patch applied, builds 5 binaries, runs a CPU-15 validation smoke), `run_16core_matrix.sh` (5 policies, 50M+100M, tmux), `status_16core.sh` (monitor).
+- Config: `btp_16core_config.json` = 8-core config with `num_cores=16`, LLC unchanged at 2 MB. Trace pattern replicates the 5 unique canneal traces to fill 16 inputs.
+- **Decision**: running all 5 policies at 16-core (strategy doc said 3; parallelism is free on the box, and a complete 16-core matrix matches the complete 8-core matrix for a clean 4→8→16 scaling figure).
+- **Time estimate**: 16-core ≈ 2× the work per policy; COALESCE could be ~40+ hr under contention. Budget ~2 days wall. Still fine vs Jun 17.
+
+### Parser / tooling notes
+
+- `parse_phase2a.py` (local `/tmp`, scp'd to server) parses the `Simulation finished CPU N instructions: ... cycles: ... cumulative IPC: ...` format. The earlier parser failed because it grepped for "Finished CPU" — this ChampSim fork emits "Simulation finished CPU".
+- ROI completion lines have `instructions: 100000000` exactly; the fast cores also emit much higher cumulative `instructions:` in "Simulation complete" lines (their total trace consumption) — don't confuse the two.
+
+### Remaining sprint queue (priority order per Harsh: 8→16→4, then breadth)
+
+1. ✅ 8-core canneal (DONE)
+2. 🔄 16-core canneal (setup running / matrix next)
+3. ⏳ 4-core canneal V2 redo (5 policies — supersedes V0 4-core data)
+4. ⏳ PIN install + fluidanimate/dedup trace generation (PIN binary NOT present on server; PARSEC source IS at `simulator/tracer/pin/parsec-3.0`). Parallel overnight track.
+5. ⏳ Phase 2D sweeps (bias, perceptron size, ablation)
+6. ⏳ Phase 2E 3-seed statistical re-runs
+7. ⏳ Aggregate → CSVs + paper figures ("the bang")
