@@ -14,6 +14,7 @@
 > - 🧾 Phase 1 citation work (in progress): `coalesce_paper/citations/`
 > - 🔌 Coherence event hook audit (LLC MESI is simplified — no invalidation modeling): `coalesce_paper/COHERENCE_HOOK_AUDIT.md`
 > - 📦 Self-contained handoff doc for fresh chats: `docs/SESSION_CONTEXT.md`
+> - 🧠 **NEW (2026-05-31)** — Coherence-aware reframe + complete Saga 1/2 plan: `docs/coherence_aware.md` (the central reference doc going forward)
 
 ---
 
