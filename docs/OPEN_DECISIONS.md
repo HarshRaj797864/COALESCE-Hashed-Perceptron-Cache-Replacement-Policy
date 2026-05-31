@@ -278,6 +278,33 @@ The worker regression is small but real. The paper currently hand-waves it as "t
 
 ---
 
+### 17. Coherence inertness empirically confirmed; VMEM shared-overlay mechanism added 🟢 RESOLVED IN-PROGRESS 2026-05-31
+
+**Problem**: The 8-core canneal V2 run produced a sharer-count histogram of **19,908,624 evictions, with bin[1] = 100.000%**. Every LLC eviction had exactly one sharer. `coherence_invalidations = 0`. `coherence_write_hit_other_sharer_events = 0`. This empirically confirms what items #1 and #6 hypothesized: the `+20×sharers` bias never fires; the sharer-count feature contributes constant input (no signal) to the perceptron hash; the A.1/A.2 invalidation hook is inert. The 33% headline win is real but is **retention-driven dead-block prediction**, not coherence-aware.
+
+**Root cause located**: `simulator/src/vmem.cc:107` keys `vpage_to_ppage_map` on `(cpu_num, vaddr)`. CPU-id is used as ASID, so each core deterministically gets its own physical address space. Two cores cannot reference the same LLC line by construction. The MT-Sync tracer preserves VAs across per-thread traces, but ChampSim VMEM remaps each core's VAs to distinct PAs at runtime.
+
+**Impact**: 🔴 Critical for the paper's stated mechanism narrative.
+
+**Decision (per plan approved 2026-05-31)**: implement an ASID-keyed VMEM overlay (Option 1 + Option 4 hybrid from `/home/rajharsh/.claude/plans/ok-analyzew-the-entire-crystalline-reef.md`), validate with a synthetic microbenchmark, and reframe the paper around TWO regimes:
+
+1. **Regime 1 — Capacity-pressure** (existing 33% canneal result, default ChampSim semantics). COALESCE's perceptron features generalize beyond the coherence regime they were designed for.
+2. **Regime 2 — True-sharing** (new VMEM overlay enabled). Synthetic Mode B + canneal-overlay reruns demonstrate the coherence machinery is real and load-bearing when sharing actually exists.
+
+**Implementation status (2026-05-31)**:
+- ✅ `VirtualMemory::SHARED_ASID` sentinel + `cpu_to_shared_asid` map + `set_shared_cpus(...)` method added (`simulator/inc/vmem.h`, mirrored to sibling). `va_to_pa` keys by effective ASID. `static aliased_fills` counter.
+- ✅ Config plumbing: `vmem_shared_cpus: []` field in JSON, propagates through `parse.py` + `instantiation_file.py` to a `vmem.set_shared_cpus({...})` call in the generated env constructor body. Empty default preserves all existing semantics.
+- ✅ Observability: `coherence_write_hit_other_sharer_events` counter (distinct from `coherence_invalidations` which counts bits; this counts events). `VMEM ALIASED FILLS` line printed at end of sim.
+- ✅ Smoke verified locally:
+  - Default config (no shared CPUs): `ALIASED FILLS=0`, `INVALIDATIONS=0`, `EVENTS=0` → regression test passes; default semantics preserved byte-for-byte.
+  - Shared config (CPUs 0–3): `ALIASED FILLS=30` in a 50 k-instruction canneal smoke → the mechanism fires. LLC-level sharing still 0 in the smoke because in 50 k instructions the aliased pages don't make it to LLC tag-mask propagation. That's what Mode B is for.
+- ✅ Synthetic microbenchmark `bench/synth_coherence.c` (~150 LOC, three modes A/B/C). Compiles cleanly with `-O0 -pthread`; runs each mode in <10 ms locally with 100 k iters/thread. Ready for PIN tracing on the server.
+- ✅ Catch2 SCENARIOs added to `simulator/test/cpp/src/801-vmem-duplicated.cc`: default-isolation (negative), shared-aliasing (positive), idempotent-additive setter.
+
+**Open**: server-side PIN tracing of synth bench → V4/V5 validation runs → canneal-overlay reruns. See plan file phasing.
+
+---
+
 ### 16. Two ChampSim source trees on disk; build reads headers from the sibling repo 🟠 NEW 2026-05-21
 
 **Problem**: The COALESCE simulator at `/home/rajharsh/programming-playground/repos/COALESCE/simulator/` has its own copy of `inc/`, `src/`, `replacement/`, etc. But the build's `absolute.options` points the compiler's `-I` flag at `/home/rajharsh/programming-playground/repos/ChampSim/inc/` (a sibling ChampSim repo on the same machine). Consequence:
@@ -328,5 +355,7 @@ The worker regression is small but real. The paper currently hand-waves it as "t
 | 2026-05-21 | 2 (overhead reduction) | **V2 applied** — SAMPLING_MODULO 16→32, GHOST_CAPACITY 256→128 | Phase 2A baselines will measure V2 config. Adapt to V1/V0/V3 based on observed accuracy. |
 | 2026-05-21 | 6 (coherence hooks) | **A.1 + A.2 IMPLEMENTED** — sharer_mask cleared on write hit, invalidation counter added (was originally going to be Option C; user picked A) | See `coalesce_paper/COHERENCE_HOOK_AUDIT.md` and code changes in cache.cc:296-318, cache_stats.h:26-30, plain_printer.cc:130-132 |
 | 2026-05-21 | 16 (two-tree gotcha) | **DISCOVERED + sync'd cache_stats.h** | Build's -I reads `/home/rajharsh/programming-playground/repos/ChampSim/inc/`, not the local `simulator/inc/`. Header edits must mirror. Long-term: fix absolute.options. |
+| 2026-05-29 | (new finding) | **Sharer histogram = 100% bin[1] on 19.9 M evictions; coherence mechanism empirically inert in current setup** | Drove the decision in item #17. |
+| 2026-05-31 | 17 (VMEM overlay) | **ASID-keyed shared-VMEM mechanism implemented + synth bench written + Catch2 SCENARIOs added** | Default behavior preserved (empty `vmem_shared_cpus`). Server-side PIN tracing of synth bench next; canneal-overlay reruns after that. Two-regime paper framing approved (see plan file). |
 | | | | |
 | (your decisions go below) | | | |
