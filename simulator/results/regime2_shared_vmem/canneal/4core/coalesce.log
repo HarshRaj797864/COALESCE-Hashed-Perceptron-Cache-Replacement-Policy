@@ -1,0 +1,1485 @@
+[VMEM] WARNING: physical memory size is smaller than virtual memory size.
+
+*** ChampSim Multicore Out-of-Order Simulator ***
+Warmup Instructions: 50000000
+Simulation Instructions: 100000000
+Number of CPUs: 4
+Page size: 4096
+
+Off-chip DRAM Size: 16 GiB Channels: 1 Width: 64-bit Data Rate: 3205 MT/s
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 10000001 cycles: 2504204 heartbeat IPC: 3.993 cumulative IPC: 3.993 (Simulation time: 00 hr 03 min 15 sec)
+Heartbeat CPU 3 instructions: 10000001 cycles: 2504251 heartbeat IPC: 3.993 cumulative IPC: 3.993 (Simulation time: 00 hr 03 min 15 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 10000003 cycles: 4035952 heartbeat IPC: 2.478 cumulative IPC: 2.478 (Simulation time: 00 hr 05 min 17 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 20000001 cycles: 5004204 heartbeat IPC: 4 cumulative IPC: 3.997 (Simulation time: 00 hr 06 min 46 sec)
+Heartbeat CPU 3 instructions: 20000001 cycles: 5004251 heartbeat IPC: 4 cumulative IPC: 3.997 (Simulation time: 00 hr 06 min 46 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 30000001 cycles: 7504204 heartbeat IPC: 4 cumulative IPC: 3.998 (Simulation time: 00 hr 10 min 21 sec)
+Heartbeat CPU 3 instructions: 30000001 cycles: 7504251 heartbeat IPC: 4 cumulative IPC: 3.998 (Simulation time: 00 hr 10 min 21 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+Heartbeat CPU 1 instructions: 10000002 cycles: 7816328 heartbeat IPC: 1.279 cumulative IPC: 1.279 (Simulation time: 00 hr 10 min 46 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 20000006 cycles: 7885358 heartbeat IPC: 2.598 cumulative IPC: 2.536 (Simulation time: 00 hr 10 min 51 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 40000001 cycles: 10004204 heartbeat IPC: 4 cumulative IPC: 3.998 (Simulation time: 00 hr 13 min 53 sec)
+Heartbeat CPU 3 instructions: 40000001 cycles: 10004251 heartbeat IPC: 4 cumulative IPC: 3.998 (Simulation time: 00 hr 13 min 53 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 30000009 cycles: 11734809 heartbeat IPC: 2.598 cumulative IPC: 2.556 (Simulation time: 00 hr 16 min 20 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 50000001 cycles: 12504204 heartbeat IPC: 4 cumulative IPC: 3.999 (Simulation time: 00 hr 17 min 23 sec)
+Warmup finished CPU 2 instructions: 50000001 cycles: 12504204 cumulative IPC: 3.999 (Simulation time: 00 hr 17 min 23 sec)
+Heartbeat CPU 3 instructions: 50000001 cycles: 12504251 heartbeat IPC: 4 cumulative IPC: 3.999 (Simulation time: 00 hr 17 min 23 sec)
+Warmup finished CPU 3 instructions: 50000001 cycles: 12504251 cumulative IPC: 3.999 (Simulation time: 00 hr 17 min 23 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+Heartbeat CPU 1 instructions: 20000004 cycles: 13498144 heartbeat IPC: 1.76 cumulative IPC: 1.482 (Simulation time: 00 hr 18 min 41 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 60000001 cycles: 15004204 heartbeat IPC: 4 cumulative IPC: 3.999 (Simulation time: 00 hr 20 min 47 sec)
+Heartbeat CPU 3 instructions: 60000001 cycles: 15004251 heartbeat IPC: 4 cumulative IPC: 3.999 (Simulation time: 00 hr 20 min 47 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 40000012 cycles: 15584260 heartbeat IPC: 2.598 cumulative IPC: 2.567 (Simulation time: 00 hr 21 min 34 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 70000001 cycles: 17504204 heartbeat IPC: 4 cumulative IPC: 3.999 (Simulation time: 00 hr 24 min 18 sec)
+Heartbeat CPU 3 instructions: 70000001 cycles: 17504251 heartbeat IPC: 4 cumulative IPC: 3.999 (Simulation time: 00 hr 24 min 18 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+Heartbeat CPU 1 instructions: 30000004 cycles: 19179925 heartbeat IPC: 1.76 cumulative IPC: 1.564 (Simulation time: 00 hr 26 min 40 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Warmup finished CPU 0 instructions: 50000000 cycles: 19433708 cumulative IPC: 2.573 (Simulation time: 00 hr 27 min 00 sec)
+Heartbeat CPU 0 instructions: 50000015 cycles: 19433711 heartbeat IPC: 2.598 cumulative IPC: 2.573 (Simulation time: 00 hr 27 min 00 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 80000001 cycles: 20004204 heartbeat IPC: 4 cumulative IPC: 3.999 (Simulation time: 00 hr 27 min 49 sec)
+Heartbeat CPU 3 instructions: 80000001 cycles: 20004251 heartbeat IPC: 4 cumulative IPC: 3.999 (Simulation time: 00 hr 27 min 49 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 90000001 cycles: 22504204 heartbeat IPC: 4 cumulative IPC: 3.999 (Simulation time: 00 hr 31 min 14 sec)
+Heartbeat CPU 3 instructions: 90000001 cycles: 22504251 heartbeat IPC: 4 cumulative IPC: 3.999 (Simulation time: 00 hr 31 min 14 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 60000018 cycles: 23283162 heartbeat IPC: 2.598 cumulative IPC: 2.577 (Simulation time: 00 hr 32 min 16 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+Heartbeat CPU 1 instructions: 40000006 cycles: 24861710 heartbeat IPC: 1.76 cumulative IPC: 1.609 (Simulation time: 00 hr 34 min 27 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 100000001 cycles: 25004204 heartbeat IPC: 4 cumulative IPC: 3.999 (Simulation time: 00 hr 34 min 39 sec)
+Heartbeat CPU 3 instructions: 100000001 cycles: 25004251 heartbeat IPC: 4 cumulative IPC: 3.999 (Simulation time: 00 hr 34 min 39 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 70000021 cycles: 27132613 heartbeat IPC: 2.598 cumulative IPC: 2.58 (Simulation time: 00 hr 37 min 32 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 110000001 cycles: 27504204 heartbeat IPC: 4 cumulative IPC: 3.999 (Simulation time: 00 hr 38 min 06 sec)
+Heartbeat CPU 3 instructions: 110000001 cycles: 27504251 heartbeat IPC: 4 cumulative IPC: 3.999 (Simulation time: 00 hr 38 min 06 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 120000001 cycles: 30004204 heartbeat IPC: 4 cumulative IPC: 3.999 (Simulation time: 00 hr 41 min 42 sec)
+Heartbeat CPU 3 instructions: 120000001 cycles: 30004251 heartbeat IPC: 4 cumulative IPC: 3.999 (Simulation time: 00 hr 41 min 42 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+Warmup finished CPU 1 instructions: 50000000 cycles: 30543495 cumulative IPC: 1.637 (Simulation time: 00 hr 42 min 25 sec)
+Warmup complete CPU 3 instructions: 122156977 cycles: 30543495 cumulative IPC: 3.999 (Simulation time: 00 hr 42 min 25 sec)
+Warmup complete CPU 2 instructions: 122157165 cycles: 30543495 cumulative IPC: 3.999 (Simulation time: 00 hr 42 min 25 sec)
+Warmup complete CPU 1 instructions: 50000000 cycles: 30543495 cumulative IPC: 1.637 (Simulation time: 00 hr 42 min 25 sec)
+Warmup complete CPU 0 instructions: 78940559 cycles: 30543495 cumulative IPC: 2.585 (Simulation time: 00 hr 42 min 25 sec)
+Heartbeat CPU 1 instructions: 50000008 cycles: 30543847 heartbeat IPC: 1.76 cumulative IPC: 0.02273 (Simulation time: 00 hr 42 min 25 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 80000024 cycles: 30933371 heartbeat IPC: 2.631 cumulative IPC: 2.717 (Simulation time: 00 hr 42 min 57 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 130000001 cycles: 32504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 00 hr 45 min 03 sec)
+Heartbeat CPU 3 instructions: 130000001 cycles: 32504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 00 hr 45 min 03 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 140000001 cycles: 35004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 00 hr 48 min 08 sec)
+Heartbeat CPU 3 instructions: 140000001 cycles: 35004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 00 hr 48 min 08 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 90000024 cycles: 35244690 heartbeat IPC: 2.319 cumulative IPC: 2.352 (Simulation time: 00 hr 48 min 28 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 150000001 cycles: 37504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 00 hr 51 min 23 sec)
+Heartbeat CPU 3 instructions: 150000001 cycles: 37504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 00 hr 51 min 23 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 100000025 cycles: 39545390 heartbeat IPC: 2.325 cumulative IPC: 2.339 (Simulation time: 00 hr 54 min 06 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 160000001 cycles: 40004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 00 hr 54 min 43 sec)
+Heartbeat CPU 3 instructions: 160000001 cycles: 40004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 00 hr 54 min 43 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 170000001 cycles: 42504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 00 hr 58 min 10 sec)
+Heartbeat CPU 3 instructions: 170000001 cycles: 42504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 00 hr 58 min 10 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 110000028 cycles: 43850388 heartbeat IPC: 2.323 cumulative IPC: 2.334 (Simulation time: 01 hr 00 min 01 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 180000001 cycles: 45004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 01 min 29 sec)
+Heartbeat CPU 3 instructions: 180000001 cycles: 45004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 01 min 29 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 190000001 cycles: 47504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 04 min 45 sec)
+Heartbeat CPU 3 instructions: 190000001 cycles: 47504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 04 min 45 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 120000028 cycles: 48164542 heartbeat IPC: 2.318 cumulative IPC: 2.33 (Simulation time: 01 hr 05 min 38 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 200000001 cycles: 50004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 08 min 02 sec)
+Heartbeat CPU 3 instructions: 200000001 cycles: 50004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 08 min 02 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 130000029 cycles: 52469754 heartbeat IPC: 2.323 cumulative IPC: 2.329 (Simulation time: 01 hr 11 min 12 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 210000001 cycles: 52504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 11 min 15 sec)
+Heartbeat CPU 3 instructions: 210000001 cycles: 52504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 11 min 15 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 220000001 cycles: 55004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 15 min 07 sec)
+Heartbeat CPU 3 instructions: 220000001 cycles: 55004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 15 min 08 sec)
+Simulation finished CPU 3 instructions: 100000000 cycles: 25000000 cumulative IPC: 4 (Simulation time: 01 hr 16 min 05 sec)
+Simulation finished CPU 2 instructions: 100000000 cycles: 25000000 cumulative IPC: 4 (Simulation time: 01 hr 16 min 05 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 140000032 cycles: 56776570 heartbeat IPC: 2.322 cumulative IPC: 2.328 (Simulation time: 01 hr 18 min 14 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+Heartbeat CPU 1 instructions: 60000010 cycles: 57279933 heartbeat IPC: 0.374 cumulative IPC: 0.374 (Simulation time: 01 hr 18 min 59 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 230000001 cycles: 57504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 19 min 19 sec)
+Heartbeat CPU 3 instructions: 230000001 cycles: 57504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 19 min 19 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 240000001 cycles: 60004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 22 min 53 sec)
+Heartbeat CPU 3 instructions: 240000001 cycles: 60004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 22 min 53 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 150000032 cycles: 61074187 heartbeat IPC: 2.327 cumulative IPC: 2.327 (Simulation time: 01 hr 24 min 27 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 250000001 cycles: 62504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 26 min 39 sec)
+Heartbeat CPU 3 instructions: 250000001 cycles: 62504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 26 min 39 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 260000001 cycles: 65004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 30 min 23 sec)
+Heartbeat CPU 3 instructions: 260000001 cycles: 65004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 30 min 23 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 160000033 cycles: 65373269 heartbeat IPC: 2.326 cumulative IPC: 2.327 (Simulation time: 01 hr 30 min 56 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 270000001 cycles: 67504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 34 min 06 sec)
+Heartbeat CPU 3 instructions: 270000001 cycles: 67504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 34 min 06 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 170000036 cycles: 69671775 heartbeat IPC: 2.326 cumulative IPC: 2.327 (Simulation time: 01 hr 37 min 23 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 280000001 cycles: 70004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 37 min 56 sec)
+Heartbeat CPU 3 instructions: 280000001 cycles: 70004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 37 min 56 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 290000001 cycles: 72504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 41 min 33 sec)
+Heartbeat CPU 3 instructions: 290000001 cycles: 72504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 41 min 33 sec)
+Simulation finished CPU 0 instructions: 100000000 cycles: 43041102 cumulative IPC: 2.323 (Simulation time: 01 hr 43 min 17 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 180000036 cycles: 73974454 heartbeat IPC: 2.324 cumulative IPC: 2.327 (Simulation time: 01 hr 43 min 49 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 300000001 cycles: 75004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 45 min 23 sec)
+Heartbeat CPU 3 instructions: 300000001 cycles: 75004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 45 min 23 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 310000001 cycles: 77504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 49 min 15 sec)
+Heartbeat CPU 3 instructions: 310000001 cycles: 77504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 49 min 15 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 190000037 cycles: 78280013 heartbeat IPC: 2.323 cumulative IPC: 2.327 (Simulation time: 01 hr 50 min 28 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 320000001 cycles: 80004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 53 min 23 sec)
+Heartbeat CPU 3 instructions: 320000001 cycles: 80004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 53 min 23 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 330000001 cycles: 82504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 57 min 36 sec)
+Heartbeat CPU 3 instructions: 330000001 cycles: 82504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 01 hr 57 min 36 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 200000040 cycles: 82580394 heartbeat IPC: 2.325 cumulative IPC: 2.326 (Simulation time: 01 hr 57 min 43 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+Heartbeat CPU 1 instructions: 70000012 cycles: 84004584 heartbeat IPC: 0.3742 cumulative IPC: 0.3741 (Simulation time: 02 hr 00 min 07 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 340000001 cycles: 85004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 01 min 45 sec)
+Heartbeat CPU 3 instructions: 340000001 cycles: 85004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 01 min 45 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 210000040 cycles: 86893356 heartbeat IPC: 2.319 cumulative IPC: 2.326 (Simulation time: 02 hr 04 min 30 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 350000001 cycles: 87504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 05 min 26 sec)
+Heartbeat CPU 3 instructions: 350000001 cycles: 87504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 05 min 26 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 360000001 cycles: 90004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 09 min 23 sec)
+Heartbeat CPU 3 instructions: 360000001 cycles: 90004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 09 min 23 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 220000041 cycles: 91205148 heartbeat IPC: 2.319 cumulative IPC: 2.325 (Simulation time: 02 hr 11 min 14 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 370000001 cycles: 92504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 13 min 15 sec)
+Heartbeat CPU 3 instructions: 370000001 cycles: 92504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 13 min 15 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 380000001 cycles: 95004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 17 min 03 sec)
+Heartbeat CPU 3 instructions: 380000001 cycles: 95004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 17 min 03 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 230000041 cycles: 95507247 heartbeat IPC: 2.324 cumulative IPC: 2.325 (Simulation time: 02 hr 17 min 49 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 390000001 cycles: 97504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 20 min 48 sec)
+Heartbeat CPU 3 instructions: 390000001 cycles: 97504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 20 min 48 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 240000044 cycles: 99826490 heartbeat IPC: 2.315 cumulative IPC: 2.325 (Simulation time: 02 hr 24 min 14 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 400000001 cycles: 100004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 24 min 33 sec)
+Heartbeat CPU 3 instructions: 400000001 cycles: 100004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 24 min 33 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 410000001 cycles: 102504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 28 min 10 sec)
+Heartbeat CPU 3 instructions: 410000001 cycles: 102504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 28 min 10 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 250000045 cycles: 104133092 heartbeat IPC: 2.322 cumulative IPC: 2.325 (Simulation time: 02 hr 30 min 30 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 420000001 cycles: 105004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 31 min 49 sec)
+Heartbeat CPU 3 instructions: 420000001 cycles: 105004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 31 min 49 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 430000001 cycles: 107504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 35 min 39 sec)
+Heartbeat CPU 3 instructions: 430000001 cycles: 107504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 35 min 39 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 260000045 cycles: 108435341 heartbeat IPC: 2.324 cumulative IPC: 2.324 (Simulation time: 02 hr 37 min 15 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 440000001 cycles: 110004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 39 min 49 sec)
+Heartbeat CPU 3 instructions: 440000001 cycles: 110004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 39 min 49 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+Heartbeat CPU 1 instructions: 80000014 cycles: 110717860 heartbeat IPC: 0.3743 cumulative IPC: 0.3742 (Simulation time: 02 hr 41 min 05 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 450000001 cycles: 112504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 44 min 19 sec)
+Heartbeat CPU 3 instructions: 450000001 cycles: 112504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 44 min 19 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 270000046 cycles: 112744723 heartbeat IPC: 2.321 cumulative IPC: 2.324 (Simulation time: 02 hr 44 min 40 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 460000001 cycles: 115004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 48 min 36 sec)
+Heartbeat CPU 3 instructions: 460000001 cycles: 115004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 48 min 36 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 280000049 cycles: 117040619 heartbeat IPC: 2.328 cumulative IPC: 2.324 (Simulation time: 02 hr 52 min 14 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 470000001 cycles: 117504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 53 min 03 sec)
+Heartbeat CPU 3 instructions: 470000001 cycles: 117504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 53 min 03 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 480000001 cycles: 120004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 56 min 44 sec)
+Heartbeat CPU 3 instructions: 480000001 cycles: 120004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 02 hr 56 min 44 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 290000049 cycles: 121338743 heartbeat IPC: 2.327 cumulative IPC: 2.325 (Simulation time: 02 hr 58 min 43 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 490000001 cycles: 122504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 00 min 16 sec)
+Heartbeat CPU 3 instructions: 490000001 cycles: 122504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 00 min 16 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 500000001 cycles: 125004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 03 min 37 sec)
+Heartbeat CPU 3 instructions: 500000001 cycles: 125004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 03 min 37 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 300000052 cycles: 125644117 heartbeat IPC: 2.323 cumulative IPC: 2.324 (Simulation time: 03 hr 04 min 30 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 510000001 cycles: 127504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 07 min 18 sec)
+Heartbeat CPU 3 instructions: 510000001 cycles: 127504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 07 min 18 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 310000055 cycles: 129951170 heartbeat IPC: 2.322 cumulative IPC: 2.324 (Simulation time: 03 hr 10 min 45 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 520000001 cycles: 130004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 10 min 51 sec)
+Heartbeat CPU 3 instructions: 520000001 cycles: 130004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 10 min 51 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 530000001 cycles: 132504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 14 min 29 sec)
+Heartbeat CPU 3 instructions: 530000001 cycles: 132504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 14 min 29 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 320000058 cycles: 134252106 heartbeat IPC: 2.325 cumulative IPC: 2.324 (Simulation time: 03 hr 17 min 03 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 540000001 cycles: 135004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 18 min 09 sec)
+Heartbeat CPU 3 instructions: 540000001 cycles: 135004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 18 min 09 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+Heartbeat CPU 1 instructions: 90000016 cycles: 137464621 heartbeat IPC: 0.3739 cumulative IPC: 0.3741 (Simulation time: 03 hr 21 min 45 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 550000001 cycles: 137504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 21 min 49 sec)
+Heartbeat CPU 3 instructions: 550000001 cycles: 137504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 21 min 49 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 330000061 cycles: 138550042 heartbeat IPC: 2.327 cumulative IPC: 2.324 (Simulation time: 03 hr 23 min 21 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 560000001 cycles: 140004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 25 min 28 sec)
+Heartbeat CPU 3 instructions: 560000001 cycles: 140004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 25 min 28 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 570000001 cycles: 142504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 29 min 23 sec)
+Heartbeat CPU 3 instructions: 570000001 cycles: 142504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 29 min 23 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 340000062 cycles: 142861404 heartbeat IPC: 2.319 cumulative IPC: 2.324 (Simulation time: 03 hr 29 min 55 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 580000001 cycles: 145004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 32 min 54 sec)
+Heartbeat CPU 3 instructions: 580000001 cycles: 145004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 32 min 54 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 350000062 cycles: 147160008 heartbeat IPC: 2.326 cumulative IPC: 2.324 (Simulation time: 03 hr 36 min 03 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 590000001 cycles: 147504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 36 min 35 sec)
+Heartbeat CPU 3 instructions: 590000001 cycles: 147504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 36 min 35 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 600000001 cycles: 150004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 40 min 09 sec)
+Heartbeat CPU 3 instructions: 600000001 cycles: 150004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 40 min 09 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 360000065 cycles: 151465054 heartbeat IPC: 2.323 cumulative IPC: 2.324 (Simulation time: 03 hr 42 min 16 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 610000001 cycles: 152504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 43 min 42 sec)
+Heartbeat CPU 3 instructions: 610000001 cycles: 152504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 43 min 42 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 620000001 cycles: 155004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 47 min 09 sec)
+Heartbeat CPU 3 instructions: 620000001 cycles: 155004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 47 min 09 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 370000068 cycles: 155777860 heartbeat IPC: 2.319 cumulative IPC: 2.324 (Simulation time: 03 hr 48 min 14 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 630000001 cycles: 157504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 50 min 32 sec)
+Heartbeat CPU 3 instructions: 630000001 cycles: 157504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 50 min 32 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 640000001 cycles: 160004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 53 min 49 sec)
+Heartbeat CPU 3 instructions: 640000001 cycles: 160004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 53 min 49 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 380000071 cycles: 160076756 heartbeat IPC: 2.326 cumulative IPC: 2.324 (Simulation time: 03 hr 53 min 54 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 650000001 cycles: 162504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 57 min 06 sec)
+Heartbeat CPU 3 instructions: 650000001 cycles: 162504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 03 hr 57 min 06 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+Heartbeat CPU 1 instructions: 100000018 cycles: 164161697 heartbeat IPC: 0.3746 cumulative IPC: 0.3742 (Simulation time: 03 hr 59 min 23 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 390000072 cycles: 164380403 heartbeat IPC: 2.324 cumulative IPC: 2.324 (Simulation time: 03 hr 59 min 43 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 660000001 cycles: 165004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 00 min 35 sec)
+Heartbeat CPU 3 instructions: 660000001 cycles: 165004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 00 min 35 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 670000001 cycles: 167504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 04 min 11 sec)
+Heartbeat CPU 3 instructions: 670000001 cycles: 167504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 04 min 11 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 400000075 cycles: 168692674 heartbeat IPC: 2.319 cumulative IPC: 2.324 (Simulation time: 04 hr 05 min 49 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 680000001 cycles: 170004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 07 min 35 sec)
+Heartbeat CPU 3 instructions: 680000001 cycles: 170004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 07 min 35 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 690000001 cycles: 172504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 10 min 55 sec)
+Heartbeat CPU 3 instructions: 690000001 cycles: 172504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 10 min 55 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 410000075 cycles: 172994521 heartbeat IPC: 2.325 cumulative IPC: 2.324 (Simulation time: 04 hr 11 min 34 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 700000001 cycles: 175004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 14 min 31 sec)
+Heartbeat CPU 3 instructions: 700000001 cycles: 175004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 14 min 31 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 420000078 cycles: 177295314 heartbeat IPC: 2.325 cumulative IPC: 2.324 (Simulation time: 04 hr 17 min 41 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 710000001 cycles: 177504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 17 min 58 sec)
+Heartbeat CPU 3 instructions: 710000001 cycles: 177504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 17 min 58 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 720000001 cycles: 180004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 21 min 28 sec)
+Heartbeat CPU 3 instructions: 720000001 cycles: 180004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 21 min 28 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 430000079 cycles: 181600761 heartbeat IPC: 2.323 cumulative IPC: 2.324 (Simulation time: 04 hr 23 min 40 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 730000001 cycles: 182504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 24 min 55 sec)
+Heartbeat CPU 3 instructions: 730000001 cycles: 182504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 24 min 55 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 740000001 cycles: 185004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 28 min 19 sec)
+Heartbeat CPU 3 instructions: 740000001 cycles: 185004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 28 min 19 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 440000079 cycles: 185897390 heartbeat IPC: 2.327 cumulative IPC: 2.324 (Simulation time: 04 hr 29 min 31 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 750000001 cycles: 187504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 31 min 51 sec)
+Heartbeat CPU 3 instructions: 750000001 cycles: 187504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 31 min 51 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 760000001 cycles: 190004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 35 min 25 sec)
+Heartbeat CPU 3 instructions: 760000001 cycles: 190004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 35 min 25 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 450000080 cycles: 190196512 heartbeat IPC: 2.326 cumulative IPC: 2.324 (Simulation time: 04 hr 35 min 40 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+Heartbeat CPU 1 instructions: 110000020 cycles: 190911473 heartbeat IPC: 0.3738 cumulative IPC: 0.3741 (Simulation time: 04 hr 36 min 39 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 770000001 cycles: 192504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 38 min 46 sec)
+Heartbeat CPU 3 instructions: 770000001 cycles: 192504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 38 min 46 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 460000080 cycles: 194497796 heartbeat IPC: 2.325 cumulative IPC: 2.324 (Simulation time: 04 hr 41 min 24 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 780000001 cycles: 195004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 42 min 03 sec)
+Heartbeat CPU 3 instructions: 780000001 cycles: 195004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 42 min 03 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 790000001 cycles: 197504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 45 min 18 sec)
+Heartbeat CPU 3 instructions: 790000001 cycles: 197504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 45 min 18 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 470000081 cycles: 198800616 heartbeat IPC: 2.324 cumulative IPC: 2.324 (Simulation time: 04 hr 47 min 04 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 800000001 cycles: 200004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 48 min 38 sec)
+Heartbeat CPU 3 instructions: 800000001 cycles: 200004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 48 min 38 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 810000001 cycles: 202504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 52 min 03 sec)
+Heartbeat CPU 3 instructions: 810000001 cycles: 202504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 52 min 03 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 480000081 cycles: 203103202 heartbeat IPC: 2.324 cumulative IPC: 2.324 (Simulation time: 04 hr 52 min 53 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 820000001 cycles: 205004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 55 min 25 sec)
+Heartbeat CPU 3 instructions: 820000001 cycles: 205004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 55 min 25 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 490000084 cycles: 207408721 heartbeat IPC: 2.323 cumulative IPC: 2.324 (Simulation time: 04 hr 58 min 42 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 830000001 cycles: 207504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 58 min 49 sec)
+Heartbeat CPU 3 instructions: 830000001 cycles: 207504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 04 hr 58 min 49 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 840000001 cycles: 210004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 02 min 17 sec)
+Heartbeat CPU 3 instructions: 840000001 cycles: 210004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 02 min 17 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 500000087 cycles: 211710422 heartbeat IPC: 2.325 cumulative IPC: 2.324 (Simulation time: 05 hr 04 min 35 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 850000001 cycles: 212504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 05 min 38 sec)
+Heartbeat CPU 3 instructions: 850000001 cycles: 212504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 05 min 38 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 860000001 cycles: 215004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 08 min 52 sec)
+Heartbeat CPU 3 instructions: 860000001 cycles: 215004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 08 min 52 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 510000088 cycles: 216007214 heartbeat IPC: 2.327 cumulative IPC: 2.324 (Simulation time: 05 hr 10 min 06 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 870000001 cycles: 217504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 11 min 54 sec)
+Heartbeat CPU 3 instructions: 870000001 cycles: 217504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 11 min 54 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+Heartbeat CPU 1 instructions: 120000022 cycles: 217609024 heartbeat IPC: 0.3746 cumulative IPC: 0.3742 (Simulation time: 05 hr 12 min 01 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 880000001 cycles: 220004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 14 min 58 sec)
+Heartbeat CPU 3 instructions: 880000001 cycles: 220004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 14 min 59 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 520000091 cycles: 220316852 heartbeat IPC: 2.32 cumulative IPC: 2.324 (Simulation time: 05 hr 15 min 22 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 890000001 cycles: 222504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 18 min 07 sec)
+Heartbeat CPU 3 instructions: 890000001 cycles: 222504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 18 min 07 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 530000091 cycles: 224625681 heartbeat IPC: 2.321 cumulative IPC: 2.324 (Simulation time: 05 hr 20 min 46 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 900000001 cycles: 225004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 21 min 13 sec)
+Heartbeat CPU 3 instructions: 900000001 cycles: 225004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 21 min 13 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 910000001 cycles: 227504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 24 min 15 sec)
+Heartbeat CPU 3 instructions: 910000001 cycles: 227504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 24 min 15 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 540000094 cycles: 228929560 heartbeat IPC: 2.323 cumulative IPC: 2.324 (Simulation time: 05 hr 26 min 01 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 920000001 cycles: 230004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 27 min 20 sec)
+Heartbeat CPU 3 instructions: 920000001 cycles: 230004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 27 min 20 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 930000001 cycles: 232504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 30 min 30 sec)
+Heartbeat CPU 3 instructions: 930000001 cycles: 232504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 30 min 30 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 550000097 cycles: 233238181 heartbeat IPC: 2.321 cumulative IPC: 2.324 (Simulation time: 05 hr 31 min 22 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 940000001 cycles: 235004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 33 min 31 sec)
+Heartbeat CPU 3 instructions: 940000001 cycles: 235004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 33 min 31 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 950000001 cycles: 237504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 36 min 36 sec)
+Heartbeat CPU 3 instructions: 950000001 cycles: 237504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 36 min 36 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 560000098 cycles: 237545475 heartbeat IPC: 2.322 cumulative IPC: 2.324 (Simulation time: 05 hr 36 min 39 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 960000001 cycles: 240004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 39 min 39 sec)
+Heartbeat CPU 3 instructions: 960000001 cycles: 240004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 39 min 39 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 570000101 cycles: 241853094 heartbeat IPC: 2.321 cumulative IPC: 2.324 (Simulation time: 05 hr 41 min 58 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 970000001 cycles: 242504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 42 min 48 sec)
+Heartbeat CPU 3 instructions: 970000001 cycles: 242504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 42 min 48 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+Heartbeat CPU 1 instructions: 130000024 cycles: 244339575 heartbeat IPC: 0.3741 cumulative IPC: 0.3742 (Simulation time: 05 hr 44 min 58 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 980000001 cycles: 245004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 45 min 44 sec)
+Heartbeat CPU 3 instructions: 980000001 cycles: 245004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 45 min 44 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 580000104 cycles: 246152120 heartbeat IPC: 2.326 cumulative IPC: 2.324 (Simulation time: 05 hr 47 min 07 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 990000001 cycles: 247504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 48 min 45 sec)
+Heartbeat CPU 3 instructions: 990000001 cycles: 247504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 48 min 45 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1000000001 cycles: 250004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 51 min 48 sec)
+Heartbeat CPU 3 instructions: 1000000001 cycles: 250004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 51 min 48 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 590000107 cycles: 250455753 heartbeat IPC: 2.324 cumulative IPC: 2.324 (Simulation time: 05 hr 52 min 20 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1010000001 cycles: 252504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 54 min 58 sec)
+Heartbeat CPU 3 instructions: 1010000001 cycles: 252504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 54 min 58 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 600000110 cycles: 254753229 heartbeat IPC: 2.327 cumulative IPC: 2.324 (Simulation time: 05 hr 57 min 55 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1020000001 cycles: 255004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 58 min 14 sec)
+Heartbeat CPU 3 instructions: 1020000001 cycles: 255004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 05 hr 58 min 14 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1030000001 cycles: 257504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 01 min 26 sec)
+Heartbeat CPU 3 instructions: 1030000001 cycles: 257504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 01 min 26 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 610000113 cycles: 259057618 heartbeat IPC: 2.323 cumulative IPC: 2.324 (Simulation time: 06 hr 03 min 19 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1040000001 cycles: 260004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 04 min 32 sec)
+Heartbeat CPU 3 instructions: 1040000001 cycles: 260004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 04 min 32 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1050000001 cycles: 262504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 07 min 32 sec)
+Heartbeat CPU 3 instructions: 1050000001 cycles: 262504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 07 min 32 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 620000116 cycles: 263361189 heartbeat IPC: 2.324 cumulative IPC: 2.324 (Simulation time: 06 hr 08 min 32 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1060000001 cycles: 265004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 10 min 30 sec)
+Heartbeat CPU 3 instructions: 1060000001 cycles: 265004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 10 min 30 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1070000001 cycles: 267504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 13 min 34 sec)
+Heartbeat CPU 3 instructions: 1070000001 cycles: 267504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 13 min 34 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 630000116 cycles: 267662555 heartbeat IPC: 2.325 cumulative IPC: 2.324 (Simulation time: 06 hr 13 min 45 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1080000001 cycles: 270004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 17 min 02 sec)
+Heartbeat CPU 3 instructions: 1080000001 cycles: 270004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 17 min 02 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+Heartbeat CPU 1 instructions: 140000026 cycles: 271074481 heartbeat IPC: 0.374 cumulative IPC: 0.3742 (Simulation time: 06 hr 18 min 20 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 640000117 cycles: 271961210 heartbeat IPC: 2.326 cumulative IPC: 2.324 (Simulation time: 06 hr 19 min 29 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1090000001 cycles: 272504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 20 min 09 sec)
+Heartbeat CPU 3 instructions: 1090000001 cycles: 272504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 20 min 09 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1100000001 cycles: 275004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 23 min 06 sec)
+Heartbeat CPU 3 instructions: 1100000001 cycles: 275004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 23 min 06 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 650000117 cycles: 276271619 heartbeat IPC: 2.32 cumulative IPC: 2.324 (Simulation time: 06 hr 24 min 42 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1110000001 cycles: 277504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 26 min 07 sec)
+Heartbeat CPU 3 instructions: 1110000001 cycles: 277504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 26 min 07 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1120000001 cycles: 280004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 29 min 01 sec)
+Heartbeat CPU 3 instructions: 1120000001 cycles: 280004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 29 min 01 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 660000118 cycles: 280579591 heartbeat IPC: 2.321 cumulative IPC: 2.324 (Simulation time: 06 hr 29 min 46 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1130000001 cycles: 282504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 32 min 14 sec)
+Heartbeat CPU 3 instructions: 1130000001 cycles: 282504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 32 min 14 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 670000118 cycles: 284885445 heartbeat IPC: 2.322 cumulative IPC: 2.324 (Simulation time: 06 hr 35 min 21 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1140000001 cycles: 285004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 35 min 32 sec)
+Heartbeat CPU 3 instructions: 1140000001 cycles: 285004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 35 min 32 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1150000001 cycles: 287504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 38 min 46 sec)
+Heartbeat CPU 3 instructions: 1150000001 cycles: 287504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 38 min 46 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 680000119 cycles: 289202179 heartbeat IPC: 2.317 cumulative IPC: 2.324 (Simulation time: 06 hr 40 min 50 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1160000001 cycles: 290004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 41 min 47 sec)
+Heartbeat CPU 3 instructions: 1160000001 cycles: 290004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 41 min 47 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1170000001 cycles: 292504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 44 min 55 sec)
+Heartbeat CPU 3 instructions: 1170000001 cycles: 292504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 44 min 55 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+Heartbeat CPU 0 instructions: 690000122 cycles: 293499785 heartbeat IPC: 2.327 cumulative IPC: 2.324 (Simulation time: 06 hr 46 min 13 sec)
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1180000001 cycles: 295004204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 48 min 13 sec)
+Heartbeat CPU 3 instructions: 1180000001 cycles: 295004251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 48 min 13 sec)
+*** Reached end of trace: (0, "traces/canneal_big0.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+*** Reached end of trace: (2, "traces/canneal_big2.champsimtrace")
+*** Reached end of trace: (3, "traces/canneal_big3.champsimtrace")
+Heartbeat CPU 2 instructions: 1190000001 cycles: 297504204 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 51 min 15 sec)
+Heartbeat CPU 3 instructions: 1190000001 cycles: 297504251 heartbeat IPC: 4 cumulative IPC: 4 (Simulation time: 06 hr 51 min 15 sec)
+*** Reached end of trace: (1, "traces/canneal_big1.champsimtrace")
+Simulation finished CPU 1 instructions: 100000000 cycles: 267251645 cumulative IPC: 0.3742 (Simulation time: 06 hr 51 min 37 sec)
+Simulation complete CPU 3 instructions: 1069006580 cycles: 267251645 cumulative IPC: 4 (Simulation time: 06 hr 51 min 37 sec)
+Simulation complete CPU 2 instructions: 1069006580 cycles: 267251645 cumulative IPC: 4 (Simulation time: 06 hr 51 min 37 sec)
+Simulation complete CPU 1 instructions: 100000000 cycles: 267251645 cumulative IPC: 0.3742 (Simulation time: 06 hr 51 min 37 sec)
+Simulation complete CPU 0 instructions: 621032296 cycles: 267251645 cumulative IPC: 2.324 (Simulation time: 06 hr 51 min 37 sec)
+
+ChampSim completed all CPUs
+
+=== Simulation ===
+CPU 0 runs traces/canneal_big0.champsimtrace
+CPU 1 runs traces/canneal_big1.champsimtrace
+CPU 2 runs traces/canneal_big2.champsimtrace
+CPU 3 runs traces/canneal_big3.champsimtrace
+
+Total Simulation Statistics (not including warmup)
+
+CPU 3 cumulative IPC: 4 instructions: 1069006580 cycles: 267251645
+CPU 3 Branch Prediction Accuracy: -% MPKI: 0 Average ROB Occupancy at Mispredict: -
+Branch type MPKI
+BRANCH_DIRECT_JUMP: 0
+BRANCH_INDIRECT: 0
+BRANCH_CONDITIONAL: 0
+BRANCH_DIRECT_CALL: 0
+BRANCH_INDIRECT_CALL: 0
+BRANCH_RETURN: 0
+
+
+CPU 2 cumulative IPC: 4 instructions: 1069006580 cycles: 267251645
+CPU 2 Branch Prediction Accuracy: -% MPKI: 0 Average ROB Occupancy at Mispredict: -
+Branch type MPKI
+BRANCH_DIRECT_JUMP: 0
+BRANCH_INDIRECT: 0
+BRANCH_CONDITIONAL: 0
+BRANCH_DIRECT_CALL: 0
+BRANCH_INDIRECT_CALL: 0
+BRANCH_RETURN: 0
+
+
+CPU 1 cumulative IPC: 0.3742 instructions: 100000000 cycles: 267251645
+CPU 1 Branch Prediction Accuracy: -% MPKI: 0 Average ROB Occupancy at Mispredict: -
+Branch type MPKI
+BRANCH_DIRECT_JUMP: 0
+BRANCH_INDIRECT: 0
+BRANCH_CONDITIONAL: 0
+BRANCH_DIRECT_CALL: 0
+BRANCH_INDIRECT_CALL: 0
+BRANCH_RETURN: 0
+
+
+CPU 0 cumulative IPC: 2.324 instructions: 621032296 cycles: 267251645
+CPU 0 Branch Prediction Accuracy: -% MPKI: 0 Average ROB Occupancy at Mispredict: -
+Branch type MPKI
+BRANCH_DIRECT_JUMP: 0
+BRANCH_INDIRECT: 0
+BRANCH_CONDITIONAL: 0
+BRANCH_DIRECT_CALL: 0
+BRANCH_INDIRECT_CALL: 0
+BRANCH_RETURN: 0
+
+cpu3_STLB COHERENCE INVALIDATIONS:          0
+cpu3_STLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu3_L2C COHERENCE INVALIDATIONS:          0
+cpu3_L2C COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu3->cpu3_L1I TOTAL        ACCESS:  152911409 HIT:  152911409 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_L1I LOAD         ACCESS:  152911409 HIT:  152911409 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_L1I RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_L1I PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_L1I WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_L1I TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_L1I PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu3->cpu3_L1I AVERAGE MISS LATENCY: - cycles
+cpu3_L1I COHERENCE INVALIDATIONS:          0
+cpu3_L1I COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu3_L1D COHERENCE INVALIDATIONS:          0
+cpu3_L1D COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu3->cpu3_ITLB TOTAL        ACCESS:  128056441 HIT:  128056441 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_ITLB LOAD         ACCESS:  128056441 HIT:  128056441 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_ITLB RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_ITLB PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_ITLB WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_ITLB TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_ITLB PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu3->cpu3_ITLB AVERAGE MISS LATENCY: - cycles
+cpu3_ITLB COHERENCE INVALIDATIONS:          0
+cpu3_ITLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu3_DTLB COHERENCE INVALIDATIONS:          0
+cpu3_DTLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu2_STLB COHERENCE INVALIDATIONS:          0
+cpu2_STLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu2_L2C COHERENCE INVALIDATIONS:          0
+cpu2_L2C COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu2->cpu2_L1I TOTAL        ACCESS:  153595406 HIT:  153595406 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_L1I LOAD         ACCESS:  153595406 HIT:  153595406 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_L1I RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_L1I PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_L1I WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_L1I TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_L1I PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu2->cpu2_L1I AVERAGE MISS LATENCY: - cycles
+cpu2_L1I COHERENCE INVALIDATIONS:          0
+cpu2_L1I COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu2_L1D COHERENCE INVALIDATIONS:          0
+cpu2_L1D COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu2->cpu2_ITLB TOTAL        ACCESS:  128158305 HIT:  128158305 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_ITLB LOAD         ACCESS:  128158305 HIT:  128158305 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_ITLB RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_ITLB PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_ITLB WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_ITLB TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_ITLB PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu2->cpu2_ITLB AVERAGE MISS LATENCY: - cycles
+cpu2_ITLB COHERENCE INVALIDATIONS:          0
+cpu2_ITLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu2_DTLB COHERENCE INVALIDATIONS:          0
+cpu2_DTLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu1->cpu1_STLB TOTAL        ACCESS:    2220717 HIT:    2024506 MISS:     196211 MSHR_MERGE:          0
+cpu1->cpu1_STLB LOAD         ACCESS:    2220717 HIT:    2024506 MISS:     196211 MSHR_MERGE:          0
+cpu1->cpu1_STLB RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_STLB PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_STLB WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_STLB TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_STLB PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu1->cpu1_STLB AVERAGE MISS LATENCY: 308.6 cycles
+cpu1_STLB COHERENCE INVALIDATIONS:          0
+cpu1_STLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu1->cpu1_L2C TOTAL        ACCESS:    2352660 HIT:     413454 MISS:    1939206 MSHR_MERGE:          0
+cpu1->cpu1_L2C LOAD         ACCESS:    1963846 HIT:     412134 MISS:    1551712 MSHR_MERGE:          0
+cpu1->cpu1_L2C RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L2C PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L2C WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L2C TRANSLATION  ACCESS:     388814 HIT:       1320 MISS:     387494 MSHR_MERGE:          0
+cpu1->cpu1_L2C PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu1->cpu1_L2C AVERAGE MISS LATENCY: 188.3 cycles
+cpu1_L2C COHERENCE INVALIDATIONS:          0
+cpu1_L2C COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu1->cpu1_L1I TOTAL        ACCESS:   34172409 HIT:   31995230 MISS:    2177179 MSHR_MERGE:     213333
+cpu1->cpu1_L1I LOAD         ACCESS:   34172409 HIT:   31995230 MISS:    2177179 MSHR_MERGE:     213333
+cpu1->cpu1_L1I RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L1I PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L1I WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L1I TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L1I PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu1->cpu1_L1I AVERAGE MISS LATENCY: 165.5 cycles
+cpu1_L1I COHERENCE INVALIDATIONS:          0
+cpu1_L1I COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu1->cpu1_L1D TOTAL        ACCESS:     392559 HIT:       3745 MISS:     388814 MSHR_MERGE:          0
+cpu1->cpu1_L1D LOAD         ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L1D RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L1D PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L1D WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L1D TRANSLATION  ACCESS:     392559 HIT:       3745 MISS:     388814 MSHR_MERGE:          0
+cpu1->cpu1_L1D PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu1->cpu1_L1D AVERAGE MISS LATENCY: 149.7 cycles
+cpu1_L1D COHERENCE INVALIDATIONS:          0
+cpu1_L1D COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu1->cpu1_ITLB TOTAL        ACCESS:   33648102 HIT:   31376520 MISS:    2271582 MSHR_MERGE:      50865
+cpu1->cpu1_ITLB LOAD         ACCESS:   33648102 HIT:   31376520 MISS:    2271582 MSHR_MERGE:      50865
+cpu1->cpu1_ITLB RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_ITLB PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_ITLB WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_ITLB TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_ITLB PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu1->cpu1_ITLB AVERAGE MISS LATENCY: 31.35 cycles
+cpu1_ITLB COHERENCE INVALIDATIONS:          0
+cpu1_ITLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu1_DTLB COHERENCE INVALIDATIONS:          0
+cpu1_DTLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu0->cpu0_STLB TOTAL        ACCESS:     232600 HIT:     232600 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_STLB LOAD         ACCESS:     232600 HIT:     232600 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_STLB RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_STLB PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_STLB WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_STLB TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_STLB PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu0->cpu0_STLB AVERAGE MISS LATENCY: - cycles
+cpu0_STLB COHERENCE INVALIDATIONS:          0
+cpu0_STLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu0->cpu0_L2C TOTAL        ACCESS:    7444655 HIT:    3603973 MISS:    3840682 MSHR_MERGE:          0
+cpu0->cpu0_L2C LOAD         ACCESS:    1172546 HIT:     389480 MISS:     783066 MSHR_MERGE:          0
+cpu0->cpu0_L2C RFO          ACCESS:    3112075 HIT:      54583 MISS:    3057492 MSHR_MERGE:          0
+cpu0->cpu0_L2C PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L2C WRITE        ACCESS:    3160034 HIT:    3159910 MISS:        124 MSHR_MERGE:          0
+cpu0->cpu0_L2C TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L2C PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu0->cpu0_L2C AVERAGE MISS LATENCY: 60.41 cycles
+cpu0_L2C COHERENCE INVALIDATIONS:          0
+cpu0_L2C COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu0->cpu0_L1I TOTAL        ACCESS:   96002077 HIT:   95762581 MISS:     239496 MSHR_MERGE:      71228
+cpu0->cpu0_L1I LOAD         ACCESS:   96002077 HIT:   95762581 MISS:     239496 MSHR_MERGE:      71228
+cpu0->cpu0_L1I RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L1I PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L1I WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L1I TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L1I PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu0->cpu0_L1I AVERAGE MISS LATENCY: 234 cycles
+cpu0_L1I COHERENCE INVALIDATIONS:          0
+cpu0_L1I COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu0->cpu0_L1D TOTAL        ACCESS:  125473870 HIT:  113247405 MISS:   12226465 MSHR_MERGE:    8106048
+cpu0->cpu0_L1D LOAD         ACCESS:   12801433 HIT:   10668881 MISS:    2132552 MSHR_MERGE:    1128274
+cpu0->cpu0_L1D RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L1D PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L1D WRITE        ACCESS:  112672437 HIT:  102578524 MISS:   10093913 MSHR_MERGE:    6977774
+cpu0->cpu0_L1D TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L1D PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu0->cpu0_L1D AVERAGE MISS LATENCY: 55.02 cycles
+cpu0_L1D COHERENCE INVALIDATIONS:          0
+cpu0_L1D COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu0->cpu0_ITLB TOTAL        ACCESS:   82666872 HIT:   82633883 MISS:      32989 MSHR_MERGE:      11785
+cpu0->cpu0_ITLB LOAD         ACCESS:   82666872 HIT:   82633883 MISS:      32989 MSHR_MERGE:      11785
+cpu0->cpu0_ITLB RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_ITLB PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_ITLB WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_ITLB TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_ITLB PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu0->cpu0_ITLB AVERAGE MISS LATENCY: 3.88 cycles
+cpu0_ITLB COHERENCE INVALIDATIONS:          0
+cpu0_ITLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu0->cpu0_DTLB TOTAL        ACCESS:  104524713 HIT:  104252096 MISS:     272617 MSHR_MERGE:      61221
+cpu0->cpu0_DTLB LOAD         ACCESS:  104524713 HIT:  104252096 MISS:     272617 MSHR_MERGE:      61221
+cpu0->cpu0_DTLB RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_DTLB PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_DTLB WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_DTLB TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_DTLB PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu0->cpu0_DTLB AVERAGE MISS LATENCY: 4 cycles
+cpu0_DTLB COHERENCE INVALIDATIONS:          0
+cpu0_DTLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu0->LLC TOTAL        ACCESS:    6931164 HIT:    6035105 MISS:     896059 MSHR_MERGE:          0
+cpu0->LLC LOAD         ACCESS:     783066 HIT:      36534 MISS:     746532 MSHR_MERGE:          0
+cpu0->LLC RFO          ACCESS:    3057492 HIT:    2982395 MISS:      75097 MSHR_MERGE:          0
+cpu0->LLC PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->LLC WRITE        ACCESS:    3090606 HIT:    3016176 MISS:      74430 MSHR_MERGE:          0
+cpu0->LLC TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->LLC PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu0->LLC AVERAGE MISS LATENCY: 567.5 cycles
+cpu1->LLC TOTAL        ACCESS:    1939206 HIT:     254196 MISS:    1685010 MSHR_MERGE:          0
+cpu1->LLC LOAD         ACCESS:    1551712 HIT:     115128 MISS:    1436584 MSHR_MERGE:          0
+cpu1->LLC RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->LLC PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->LLC WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->LLC TRANSLATION  ACCESS:     387494 HIT:     139068 MISS:     248426 MSHR_MERGE:          0
+cpu1->LLC PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu1->LLC AVERAGE MISS LATENCY: 301.8 cycles
+LLC COHERENCE INVALIDATIONS:     106667
+LLC COHERENCE WRITE-HIT OTHER-SHARER EVENTS:     106667
+LLC SHARER HIST TOTAL:       41297104
+LLC SHARER HIST[ 1]:       40698882  (98.551%)
+LLC SHARER HIST[ 2]:         573037  ( 1.388%)
+LLC SHARER HIST[ 3]:          19952  ( 0.048%)
+LLC SHARER HIST[ 4]:           5233  ( 0.013%)
+
+Region of Interest Statistics
+
+CPU 3 cumulative IPC: 4 instructions: 100000000 cycles: 25000000
+CPU 3 Branch Prediction Accuracy: -% MPKI: 0 Average ROB Occupancy at Mispredict: -
+Branch type MPKI
+BRANCH_DIRECT_JUMP: 0
+BRANCH_INDIRECT: 0
+BRANCH_CONDITIONAL: 0
+BRANCH_DIRECT_CALL: 0
+BRANCH_INDIRECT_CALL: 0
+BRANCH_RETURN: 0
+
+
+CPU 2 cumulative IPC: 4 instructions: 100000000 cycles: 25000000
+CPU 2 Branch Prediction Accuracy: -% MPKI: 0 Average ROB Occupancy at Mispredict: -
+Branch type MPKI
+BRANCH_DIRECT_JUMP: 0
+BRANCH_INDIRECT: 0
+BRANCH_CONDITIONAL: 0
+BRANCH_DIRECT_CALL: 0
+BRANCH_INDIRECT_CALL: 0
+BRANCH_RETURN: 0
+
+
+CPU 1 cumulative IPC: 0.3742 instructions: 100000000 cycles: 267251645
+CPU 1 Branch Prediction Accuracy: -% MPKI: 0 Average ROB Occupancy at Mispredict: -
+Branch type MPKI
+BRANCH_DIRECT_JUMP: 0
+BRANCH_INDIRECT: 0
+BRANCH_CONDITIONAL: 0
+BRANCH_DIRECT_CALL: 0
+BRANCH_INDIRECT_CALL: 0
+BRANCH_RETURN: 0
+
+
+CPU 0 cumulative IPC: 2.323 instructions: 100000000 cycles: 43041102
+CPU 0 Branch Prediction Accuracy: -% MPKI: 0 Average ROB Occupancy at Mispredict: -
+Branch type MPKI
+BRANCH_DIRECT_JUMP: 0
+BRANCH_INDIRECT: 0
+BRANCH_CONDITIONAL: 0
+BRANCH_DIRECT_CALL: 0
+BRANCH_INDIRECT_CALL: 0
+BRANCH_RETURN: 0
+
+cpu3_STLB COHERENCE INVALIDATIONS:          0
+cpu3_STLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu3_L2C COHERENCE INVALIDATIONS:          0
+cpu3_L2C COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu3->cpu3_L1I TOTAL        ACCESS:  152911409 HIT:  152911409 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_L1I LOAD         ACCESS:  152911409 HIT:  152911409 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_L1I RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_L1I PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_L1I WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_L1I TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_L1I PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu3->cpu3_L1I AVERAGE MISS LATENCY: - cycles
+cpu3_L1I COHERENCE INVALIDATIONS:          0
+cpu3_L1I COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu3_L1D COHERENCE INVALIDATIONS:          0
+cpu3_L1D COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu3->cpu3_ITLB TOTAL        ACCESS:  128056441 HIT:  128056441 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_ITLB LOAD         ACCESS:  128056441 HIT:  128056441 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_ITLB RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_ITLB PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_ITLB WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_ITLB TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu3->cpu3_ITLB PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu3->cpu3_ITLB AVERAGE MISS LATENCY: - cycles
+cpu3_ITLB COHERENCE INVALIDATIONS:          0
+cpu3_ITLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu3_DTLB COHERENCE INVALIDATIONS:          0
+cpu3_DTLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu2_STLB COHERENCE INVALIDATIONS:          0
+cpu2_STLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu2_L2C COHERENCE INVALIDATIONS:          0
+cpu2_L2C COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu2->cpu2_L1I TOTAL        ACCESS:  153595406 HIT:  153595406 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_L1I LOAD         ACCESS:  153595406 HIT:  153595406 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_L1I RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_L1I PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_L1I WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_L1I TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_L1I PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu2->cpu2_L1I AVERAGE MISS LATENCY: - cycles
+cpu2_L1I COHERENCE INVALIDATIONS:          0
+cpu2_L1I COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu2_L1D COHERENCE INVALIDATIONS:          0
+cpu2_L1D COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu2->cpu2_ITLB TOTAL        ACCESS:  128158305 HIT:  128158305 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_ITLB LOAD         ACCESS:  128158305 HIT:  128158305 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_ITLB RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_ITLB PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_ITLB WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_ITLB TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu2->cpu2_ITLB PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu2->cpu2_ITLB AVERAGE MISS LATENCY: - cycles
+cpu2_ITLB COHERENCE INVALIDATIONS:          0
+cpu2_ITLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu2_DTLB COHERENCE INVALIDATIONS:          0
+cpu2_DTLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu1->cpu1_STLB TOTAL        ACCESS:    2220717 HIT:    2024506 MISS:     196211 MSHR_MERGE:          0
+cpu1->cpu1_STLB LOAD         ACCESS:    2220717 HIT:    2024506 MISS:     196211 MSHR_MERGE:          0
+cpu1->cpu1_STLB RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_STLB PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_STLB WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_STLB TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_STLB PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu1->cpu1_STLB AVERAGE MISS LATENCY: 308.6 cycles
+cpu1_STLB COHERENCE INVALIDATIONS:          0
+cpu1_STLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu1->cpu1_L2C TOTAL        ACCESS:    2352660 HIT:     413454 MISS:    1939206 MSHR_MERGE:          0
+cpu1->cpu1_L2C LOAD         ACCESS:    1963846 HIT:     412134 MISS:    1551712 MSHR_MERGE:          0
+cpu1->cpu1_L2C RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L2C PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L2C WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L2C TRANSLATION  ACCESS:     388814 HIT:       1320 MISS:     387494 MSHR_MERGE:          0
+cpu1->cpu1_L2C PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu1->cpu1_L2C AVERAGE MISS LATENCY: 188.3 cycles
+cpu1_L2C COHERENCE INVALIDATIONS:          0
+cpu1_L2C COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu1->cpu1_L1I TOTAL        ACCESS:   34172409 HIT:   31995230 MISS:    2177179 MSHR_MERGE:     213333
+cpu1->cpu1_L1I LOAD         ACCESS:   34172409 HIT:   31995230 MISS:    2177179 MSHR_MERGE:     213333
+cpu1->cpu1_L1I RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L1I PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L1I WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L1I TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L1I PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu1->cpu1_L1I AVERAGE MISS LATENCY: 165.5 cycles
+cpu1_L1I COHERENCE INVALIDATIONS:          0
+cpu1_L1I COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu1->cpu1_L1D TOTAL        ACCESS:     392559 HIT:       3745 MISS:     388814 MSHR_MERGE:          0
+cpu1->cpu1_L1D LOAD         ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L1D RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L1D PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L1D WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_L1D TRANSLATION  ACCESS:     392559 HIT:       3745 MISS:     388814 MSHR_MERGE:          0
+cpu1->cpu1_L1D PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu1->cpu1_L1D AVERAGE MISS LATENCY: 149.7 cycles
+cpu1_L1D COHERENCE INVALIDATIONS:          0
+cpu1_L1D COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu1->cpu1_ITLB TOTAL        ACCESS:   33648102 HIT:   31376520 MISS:    2271582 MSHR_MERGE:      50865
+cpu1->cpu1_ITLB LOAD         ACCESS:   33648102 HIT:   31376520 MISS:    2271582 MSHR_MERGE:      50865
+cpu1->cpu1_ITLB RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_ITLB PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_ITLB WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_ITLB TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->cpu1_ITLB PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu1->cpu1_ITLB AVERAGE MISS LATENCY: 31.35 cycles
+cpu1_ITLB COHERENCE INVALIDATIONS:          0
+cpu1_ITLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu1_DTLB COHERENCE INVALIDATIONS:          0
+cpu1_DTLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu0->cpu0_STLB TOTAL        ACCESS:     232600 HIT:     232600 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_STLB LOAD         ACCESS:     232600 HIT:     232600 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_STLB RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_STLB PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_STLB WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_STLB TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_STLB PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu0->cpu0_STLB AVERAGE MISS LATENCY: - cycles
+cpu0_STLB COHERENCE INVALIDATIONS:          0
+cpu0_STLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu0->cpu0_L2C TOTAL        ACCESS:    7444655 HIT:    3603973 MISS:    3840682 MSHR_MERGE:          0
+cpu0->cpu0_L2C LOAD         ACCESS:    1172546 HIT:     389480 MISS:     783066 MSHR_MERGE:          0
+cpu0->cpu0_L2C RFO          ACCESS:    3112075 HIT:      54583 MISS:    3057492 MSHR_MERGE:          0
+cpu0->cpu0_L2C PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L2C WRITE        ACCESS:    3160034 HIT:    3159910 MISS:        124 MSHR_MERGE:          0
+cpu0->cpu0_L2C TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L2C PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu0->cpu0_L2C AVERAGE MISS LATENCY: 60.41 cycles
+cpu0_L2C COHERENCE INVALIDATIONS:          0
+cpu0_L2C COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu0->cpu0_L1I TOTAL        ACCESS:   96002077 HIT:   95762581 MISS:     239496 MSHR_MERGE:      71228
+cpu0->cpu0_L1I LOAD         ACCESS:   96002077 HIT:   95762581 MISS:     239496 MSHR_MERGE:      71228
+cpu0->cpu0_L1I RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L1I PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L1I WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L1I TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L1I PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu0->cpu0_L1I AVERAGE MISS LATENCY: 234 cycles
+cpu0_L1I COHERENCE INVALIDATIONS:          0
+cpu0_L1I COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu0->cpu0_L1D TOTAL        ACCESS:  125473870 HIT:  113247405 MISS:   12226465 MSHR_MERGE:    8106048
+cpu0->cpu0_L1D LOAD         ACCESS:   12801433 HIT:   10668881 MISS:    2132552 MSHR_MERGE:    1128274
+cpu0->cpu0_L1D RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L1D PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L1D WRITE        ACCESS:  112672437 HIT:  102578524 MISS:   10093913 MSHR_MERGE:    6977774
+cpu0->cpu0_L1D TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_L1D PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu0->cpu0_L1D AVERAGE MISS LATENCY: 55.02 cycles
+cpu0_L1D COHERENCE INVALIDATIONS:          0
+cpu0_L1D COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu0->cpu0_ITLB TOTAL        ACCESS:   82666872 HIT:   82633883 MISS:      32989 MSHR_MERGE:      11785
+cpu0->cpu0_ITLB LOAD         ACCESS:   82666872 HIT:   82633883 MISS:      32989 MSHR_MERGE:      11785
+cpu0->cpu0_ITLB RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_ITLB PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_ITLB WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_ITLB TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_ITLB PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu0->cpu0_ITLB AVERAGE MISS LATENCY: 3.88 cycles
+cpu0_ITLB COHERENCE INVALIDATIONS:          0
+cpu0_ITLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu0->cpu0_DTLB TOTAL        ACCESS:  104524713 HIT:  104252096 MISS:     272617 MSHR_MERGE:      61221
+cpu0->cpu0_DTLB LOAD         ACCESS:  104524713 HIT:  104252096 MISS:     272617 MSHR_MERGE:      61221
+cpu0->cpu0_DTLB RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_DTLB PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_DTLB WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_DTLB TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->cpu0_DTLB PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu0->cpu0_DTLB AVERAGE MISS LATENCY: 4 cycles
+cpu0_DTLB COHERENCE INVALIDATIONS:          0
+cpu0_DTLB COHERENCE WRITE-HIT OTHER-SHARER EVENTS:          0
+cpu0->LLC TOTAL        ACCESS:    6931164 HIT:    6035105 MISS:     896059 MSHR_MERGE:          0
+cpu0->LLC LOAD         ACCESS:     783066 HIT:      36534 MISS:     746532 MSHR_MERGE:          0
+cpu0->LLC RFO          ACCESS:    3057492 HIT:    2982395 MISS:      75097 MSHR_MERGE:          0
+cpu0->LLC PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->LLC WRITE        ACCESS:    3090606 HIT:    3016176 MISS:      74430 MSHR_MERGE:          0
+cpu0->LLC TRANSLATION  ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu0->LLC PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu0->LLC AVERAGE MISS LATENCY: 567.5 cycles
+cpu1->LLC TOTAL        ACCESS:    1939206 HIT:     254196 MISS:    1685010 MSHR_MERGE:          0
+cpu1->LLC LOAD         ACCESS:    1551712 HIT:     115128 MISS:    1436584 MSHR_MERGE:          0
+cpu1->LLC RFO          ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->LLC PREFETCH     ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->LLC WRITE        ACCESS:          0 HIT:          0 MISS:          0 MSHR_MERGE:          0
+cpu1->LLC TRANSLATION  ACCESS:     387494 HIT:     139068 MISS:     248426 MSHR_MERGE:          0
+cpu1->LLC PREFETCH REQUESTED:          0 ISSUED:          0 USEFUL:          0 USELESS:          0
+cpu1->LLC AVERAGE MISS LATENCY: 301.8 cycles
+LLC COHERENCE INVALIDATIONS:     106667
+LLC COHERENCE WRITE-HIT OTHER-SHARER EVENTS:     106667
+LLC SHARER HIST TOTAL:       41297104
+LLC SHARER HIST[ 1]:       40698882  (98.551%)
+LLC SHARER HIST[ 2]:         573037  ( 1.388%)
+LLC SHARER HIST[ 3]:          19952  ( 0.048%)
+LLC SHARER HIST[ 4]:           5233  ( 0.013%)
+
+DRAM Statistics
+
+Channel 0 RQ ROW_BUFFER_HIT:      22813
+  ROW_BUFFER_MISS:    2483789
+  AVG DBUS CONGESTED CYCLE: 14.57
+Channel 0 WQ ROW_BUFFER_HIT:      25620
+  ROW_BUFFER_MISS:      50026
+  FULL:          0
+Channel 0 REFRESHES ISSUED:      22271
+
+VMEM ALIASED FILLS (cross-CPU shared-page hits): 7874
