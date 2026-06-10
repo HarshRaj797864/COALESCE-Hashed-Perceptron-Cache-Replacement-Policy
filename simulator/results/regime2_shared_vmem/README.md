@@ -16,7 +16,7 @@ of the overlay (V1..V6 synthetic matrix) is in `bench/scripts/`.
 | Workload | Cores | bin[2+] of sharer hist | INVALIDATIONS | VMEM ALIASED FILLS |
 |---|---|---|---|---|
 | canneal | 4 | **1.45 %** | 106,667 | 7,874 |
-| canneal | 8 | **25.6 %** | **6,894,555** | 304,516 |
+| canneal | 8 | **25.6 %** | **6,894,555** (coalesce) / 6,930,421 (no-sharer) | 304,516 / 304,964 |
 | canneal | 16 | TBD (instrument logs) | TBD | TBD |
 | fluidanimate | 4 | 0.30 % | 0 (read-only) | small |
 | fluidanimate | 8 | TBD | 0 (read-only) | 249 |
@@ -68,29 +68,36 @@ histogram. The MESI half of COALESCE (PC × MESI state hash + +40 MODIFIED
 bias) carries all the contribution. This justifies a simpler policy with one
 less hyperparameter to defend in the paper.
 
-### canneal 8-core shared (100 M sim/core, all 7 policies)
+### canneal 8-core shared (100 M sim/core, all 7 policies + ablation)
 
-| Rank | Policy | max cycles | vs COALESCE | Bottleneck IPC |
+| Rank | Policy | max cycles | vs full COALESCE | Bottleneck IPC (CPU 1 / 6) |
 |---|---|---|---|---|
-| 1 | **COALESCE** | **301,945,789** | – | **0.3318** |
-| 2 | SRRIP | 303,011,899 | +0.4 % | 0.3306 |
-| 3 | SHiP | 316,393,994 | +4.8 % | 0.3166 |
-| 4 | Hawkeye | 317,172,523 | +5.0 % | 0.3157 |
-| 5 | DRRIP | 325,848,199 | +7.9 % | 0.3073 |
-| 6 | LRU | 392,564,736 | +30.0 % | 0.2549 |
-| 7 | Mockingjay | 393,934,080 | +30.5 % | 0.2543 |
+| 1 | **coalesce_no_sharer** (ablation) | **300,714,619** | **−0.41 %** (wins) | **0.3354 / 0.3325** |
+| 2 | **COALESCE** | **301,945,789** | – | **0.3325 / 0.3312** |
+| 3 | SRRIP | 303,011,899 | +0.4 % | 0.3306 (avg) |
+| 4 | SHiP | 316,393,994 | +4.8 % | 0.3166 |
+| 5 | Hawkeye | 317,172,523 | +5.0 % | 0.3157 |
+| 6 | DRRIP | 325,848,199 | +7.9 % | 0.3073 |
+| 7 | LRU | 392,564,736 | +30.0 % | 0.2549 |
+| 8 | Mockingjay | 393,934,080 | +30.5 % | 0.2543 |
 
-COALESCE is 1st but the lead over SRRIP shrinks from +33 % (under default
-ChampSim VMEM, archived) to **+0.4 %** here. Page aliasing alleviates the
-capacity pressure that COALESCE was disproportionately good at handling; SRRIP
-recovers more headroom from the regime change than COALESCE does. The lead
-over the ML state-of-the-art (Hawkeye) is **+5.0 %** — defensible. The +30 %
-over LRU + Mockingjay is the floor.
+Full COALESCE leads SRRIP by +0.4 % (down from the archived +33 % under default
+ChampSim VMEM — the regime change exposes how much of the original "win" was
+the per-CPU isolation artefact). The lead over Hawkeye is **+5.0 %**, over
+Mockingjay/LRU **+30 %**.
 
-⚠️ **The 8-core ablation point (`coalesce_no_sharer` at 8-core canneal shared)
-is the headline-scale verification of the 4-core ablation tie.** Currently
-queued on the server. If it also ties at 8-core, the paper presents a clean
-simplified-policy story.
+**Ablation result at 8-core (the headline-scale finding)**: `coalesce_no_sharer`
+**beats full COALESCE by 0.41 %** (300.71 M vs 301.95 M cycles) — 1.23 M fewer
+cycles, bottleneck IPC +0.87 % on CPU 1 and +0.39 % on CPU 6. At 4-core the two
+were dead-tied (−0.0015 %); at 8-core, under genuine coherence pressure (6.93 M
+LLC invalidations, 305 K VMEM-aliased fills), **the +20×sharers bias actively
+mis-fires and hurts**. The simplified policy (PC × MESI hash + +40 MODIFIED
+bias only) is the better policy. The MESI half carries the entire contribution
+plus some; the sharer half is dead weight that introduces noise.
+
+This is the cleanest paper finding: dropping a feature *and* a hyperparameter
+strictly improves the policy. Reframe the paper around an MESI-state-aware
+perceptron and drop the sharer-axis defense entirely.
 
 ### canneal 16-core shared (COALESCE only — baselines pending)
 
@@ -128,7 +135,7 @@ workload-generalization conclusions.
 | Directory | Status |
 |---|---|
 | `canneal/4core/` | All 7 policies. ⚠️ COALESCE ran 100 M sim/core, baselines ran 50 M sim/core — use IPC for fair comparison. |
-| `canneal/8core/` | 1 policy (coalesce). 100 M sim/core. Baselines pending. |
-| `canneal/16core/` | 1 policy (coalesce) — `coalesce_in_progress.log`, incomplete. Wait for server. |
+| `canneal/8core/` | 8 policies (lru, srrip, drrip, ship, hawkeye, mockingjay, coalesce, coalesce_no_sharer). 100 M sim/core. **Ablation result: no-sharer beats full COALESCE by 0.41 %.** |
+| `canneal/16core/` | 1 policy (coalesce.log) — COALESCE-only scaling figure data. |
 | `fluidanimate/4core/` | All 7 policies (lru, srrip, drrip, ship, hawkeye, mockingjay, coalesce). Sim lengths match. |
 | `fluidanimate/8core/` | TBD — in flight. |
