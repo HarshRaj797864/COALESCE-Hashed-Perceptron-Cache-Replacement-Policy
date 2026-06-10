@@ -276,3 +276,63 @@ ablation row maps to `coalesce`.
 
 End of plan. Server chat gets § 3 (batch definitions) and § 4 (cadence) as
 the handoff. Local work tracked against § 5 (paper plan) and § 10 (timeline).
+
+---
+
+# ADDENDUM (2026-06-11) — ocean 4-core invalidates yesterday's pivot
+
+## What happened
+
+Ocean 4-core shared landed (7 of 8 policies; mockingjay pending). Two findings
+overturn the v2 "simplified policy is headline" call:
+
+| Policy | max_cycles | vs SHIP |
+|---|---|---|
+| SHiP (best) | 549,605,858 | – |
+| COALESCE (full) | 569,457,207 | +3.6 % |
+| coalesce_no_sharer | 611,083,533 | **+11.2 %** |
+
+1. **COALESCE loses on ocean 4-core**: 4th of 7. RRIP-family (SHiP/SRRIP/DRRIP)
+   wins. The canneal-only-wins narrative is now the honest description.
+2. **The ablation FLIPS direction**: on ocean, full COALESCE beats
+   `coalesce_no_sharer` by 7.3 % — the sharer feature **is** information-bearing
+   under genuine cross-thread sharing.
+
+## Revised headline policy: full COALESCE (as before the v2 pivot)
+
+The simplified-policy pivot from yesterday is reverted. Full COALESCE stays
+the headline policy with both feature axes intact. The ablation section becomes
+a *workload-dependent feature activation* finding:
+
+- canneal (shallow sharing): sharer axis inert, +0.4 % from removing it.
+- ocean (genuine sharing): sharer axis carries +7.3 %.
+
+This is a more interesting scientific story than "sharer feature is dead" —
+it characterizes when each feature matters.
+
+## Plan adjustments
+
+| § | Change |
+|---|---|
+| § 1 pivot | REVERTED. Full COALESCE is the headline policy. |
+| § 3 Batch 1 (Track C) | UNCHANGED. 16 runs, 2 seeds × 8 policies × 8c canneal shared. CI needed for COALESCE-vs-SRRIP +0.4 % significance. |
+| § 3 Batch 2 (16c no-sharer canneal) | KEEP. Needed for the ablation scaling table (canneal 4/8/16 ablation row). |
+| § 3 Batch 3 (16c ocean coalesce) | DOWNGRADE to "skip unless 8c ocean shows COALESCE competitive." If COALESCE places 4th-5th on 8c ocean too, 16c ocean adds nothing — just more disclosure of losing. |
+| **NEW § 3 Batch 4 (conditional)** | If 8c ocean lands by D-5 and COALESCE is still losing, server chat picks ONE new SPLASH-3 trace (water-nsquared is the top candidate — heavy sharing + writes) and runs 4-core + 8-core with all 8 policies. Cut threshold: trace must build + run in 36 h or skip. |
+| § 5 Paper rewrite | Title shifts to something more workload-characterization-y: e.g. "Workload-Dependent Feature Activation in Perceptron-Based LLC Replacement" or "COALESCE: a Coherence-Aware Perceptron Cache Policy with Workload-Bounded Wins". Abstract leads with canneal 8c headline AND honest characterization of where the policy doesn't generalize. |
+| § 6 Ablation | Workload-contrast story: canneal (sharer inert) vs ocean (sharer carries +7.3 %). Frame as scientific finding, not simplification call. |
+| § 7 Threats to Validity | Keep workload-coverage limit. Add the explicit phrase: "COALESCE's wins are bounded to workloads with capacity-pressured working sets, mixed RFO/WRITE LLC mix, and shallow cross-thread sharing (canneal-class). On ocean-class workloads with deeper sharing the policy is competitive but not winning." |
+
+## What to commit today
+
+1. `ocean/4core/*.log` + `ocean/README.md` — ocean 4c data + analysis
+2. Updated `regime2_shared_vmem/README.md` — ablation contrast disclosed
+3. This addendum
+
+## What stays the same
+
+- Track C is non-negotiable.
+- 16c canneal no-sharer is non-negotiable.
+- Paper writing starts D-6 (today, after this commit).
+- Submission D-0 (Jun 17). Abstract D-1 (Jun 16).
+- Stretch (water-nsquared / 16c ocean) decided after 8c ocean lands.
