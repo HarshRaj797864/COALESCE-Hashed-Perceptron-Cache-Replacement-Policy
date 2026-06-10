@@ -86,18 +86,21 @@ ChampSim VMEM — the regime change exposes how much of the original "win" was
 the per-CPU isolation artefact). The lead over Hawkeye is **+5.0 %**, over
 Mockingjay/LRU **+30 %**.
 
-**Ablation result at 8-core (the headline-scale finding)**: `coalesce_no_sharer`
-**beats full COALESCE by 0.41 %** (300.71 M vs 301.95 M cycles) — 1.23 M fewer
-cycles, bottleneck IPC +0.87 % on CPU 1 and +0.39 % on CPU 6. At 4-core the two
-were dead-tied (−0.0015 %); at 8-core, under genuine coherence pressure (6.93 M
-LLC invalidations, 305 K VMEM-aliased fills), **the +20×sharers bias actively
-mis-fires and hurts**. The simplified policy (PC × MESI hash + +40 MODIFIED
-bias only) is the better policy. The MESI half carries the entire contribution
-plus some; the sharer half is dead weight that introduces noise.
+**Ablation result at 8-core**: `coalesce_no_sharer` beats full COALESCE by
+0.41 % (300.71 M vs 301.95 M cycles). At 4-core the two were dead-tied
+(−0.0015 %). On canneal — where genuine cross-thread sharing is shallow
+(bin[2+] = 1.45 % at 4c, 25.6 % at 8c) — the +20×sharers bias mis-fires on
+noise and the simplified policy is better.
 
-This is the cleanest paper finding: dropping a feature *and* a hyperparameter
-strictly improves the policy. Reframe the paper around an MESI-state-aware
-perceptron and drop the sharer-axis defense entirely.
+⚠️ **This finding does NOT generalize.** On ocean 4-core (genuine boundary-cell
+sharing, ~6× higher LLC invalidations per access than canneal), full COALESCE
+beats `coalesce_no_sharer` by +7.3 % (569 M vs 611 M cycles). The sharer
+feature is **workload-dependent**: inert on canneal, information-bearing on
+ocean. See `ocean/README.md` for the full ocean data.
+
+**Paper narrative**: full COALESCE is the headline policy. The
+canneal-vs-ocean ablation contrast is presented in § 6 as a *workload-dependent
+feature activation* finding, not a policy-simplification recommendation.
 
 ### canneal 16-core shared (COALESCE only — baselines pending)
 
