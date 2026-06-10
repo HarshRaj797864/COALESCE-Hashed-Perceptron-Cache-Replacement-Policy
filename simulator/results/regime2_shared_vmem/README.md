@@ -17,12 +17,14 @@ of the overlay (V1..V6 synthetic matrix) is in `bench/scripts/`.
 |---|---|---|---|---|
 | canneal | 4 | **1.45 %** | 106,667 | 7,874 |
 | canneal | 8 | **25.6 %** | **6,894,555** | 304,516 |
-| fluidanimate | 4 | 0.30 % | 0 (read-only sharing) | (TBD) |
+| canneal | 16 | TBD (instrument logs) | TBD | TBD |
+| fluidanimate | 4 | 0.30 % | 0 (read-only) | small |
+| fluidanimate | 8 | TBD | 0 (read-only) | 249 |
 
 canneal at 8-core is where the mechanism *visibly* dominates: a quarter of
 all evictions involve LLC lines shared by 2+ cores; the invalidation
-machinery is busy. Fluidanimate at 4-core has trivial sharing — bin[1]
-still 99.7 %, no invalidations.
+machinery is busy. Fluidanimate has trivial cross-core writes (LLC mix is
+100 % LOAD) — sharer/MODIFIED features structurally cannot fire.
 
 ## ⚠️ Methodology gotcha — sim-length mismatch in 4-core canneal
 
@@ -49,7 +51,7 @@ trust the IPC normalization.
 | 5 | SHIP | 288,163,881 | +7.8 % | 0.347 | 88,298 |
 | 6 | DRRIP | 294,947,400 | +10.4 % | 0.339 | 94,724 |
 | 7 | Mockingjay | 311,277,369 | +16.5 % | 0.3213 | 36,555 |
-| (?) | LRU | — | still running on server (lru_in_progress.log) | — | — |
+| 8 | LRU | 392,999,637 | **+47.1 %** | 0.2545 | — |
 
 COALESCE wins outright. The +7.3 % lead over Hawkeye (the strongest ML baseline)
 is direct max-cycles comparison at matched length — no IPC-normalisation
@@ -66,21 +68,42 @@ histogram. The MESI half of COALESCE (PC × MESI state hash + +40 MODIFIED
 bias) carries all the contribution. This justifies a simpler policy with one
 less hyperparameter to defend in the paper.
 
-### canneal 8-core shared (100 M sim/core, COALESCE only so far)
+### canneal 8-core shared (100 M sim/core, all 7 policies)
 
-| Metric | Regime 1 V2 | Regime 2 | Δ |
+| Rank | Policy | max cycles | vs COALESCE | Bottleneck IPC |
+|---|---|---|---|---|
+| 1 | **COALESCE** | **301,945,789** | – | **0.3318** |
+| 2 | SRRIP | 303,011,899 | +0.4 % | 0.3306 |
+| 3 | SHiP | 316,393,994 | +4.8 % | 0.3166 |
+| 4 | Hawkeye | 317,172,523 | +5.0 % | 0.3157 |
+| 5 | DRRIP | 325,848,199 | +7.9 % | 0.3073 |
+| 6 | LRU | 392,564,736 | +30.0 % | 0.2549 |
+| 7 | Mockingjay | 393,934,080 | +30.5 % | 0.2543 |
+
+COALESCE is 1st but the lead over SRRIP shrinks from +33 % (under default
+ChampSim VMEM, archived) to **+0.4 %** here. Page aliasing alleviates the
+capacity pressure that COALESCE was disproportionately good at handling; SRRIP
+recovers more headroom from the regime change than COALESCE does. The lead
+over the ML state-of-the-art (Hawkeye) is **+5.0 %** — defensible. The +30 %
+over LRU + Mockingjay is the floor.
+
+⚠️ **The 8-core ablation point (`coalesce_no_sharer` at 8-core canneal shared)
+is the headline-scale verification of the 4-core ablation tie.** Currently
+queued on the server. If it also ties at 8-core, the paper presents a clean
+simplified-policy story.
+
+### canneal 16-core shared (COALESCE only — baselines pending)
+
+| Metric | Default ChampSim (archived) | Shared VMEM | Δ |
 |---|---|---|---|
-| max_cycles (COALESCE) | 415,157,549 | **301,945,789** | **−27.3 %** |
-| bottleneck IPC (avg of CPU 1, 6) | 0.2415 | **0.3318** | **+37.4 %** |
+| max_cycles (COALESCE) | 921,717,448 | **348,247,158** | **−62.2 %** |
+| bottleneck IPC (avg CPU 1, 6, 11) | 0.1088 | **0.294** | +170 % |
+| worker IPC (CPU 0, 5, 10, 15 avg) | 1.183 | 2.645 | +124 % |
 
-This is COALESCE vs its regime-1 self. Comparing to other policies at
-8-core under shared VMEM is pending (server chat is queuing those runs).
-
-### canneal 16-core shared (in progress)
-
-`canneal/16core/coalesce_in_progress.log` contains a partial run — heartbeats
-through CPU 0 at ~510 M instructions, ~192 M cycles. No `Simulation complete`
-lines yet. Either still running on server or scp'd mid-run. Treat as TBD.
+COALESCE at 16-core under shared VMEM hits 348 M cycles — 62 % faster than
+its default-VMEM-archive self at the same core count. The mechanism scales:
+bottleneck cores nearly triple their IPC, worker cores more than double.
+Baselines at 16-core shared (SRRIP, Hawkeye, LRU at minimum) are queued.
 
 ### fluidanimate 4-core shared (all 7 policies — same sim length, comparable)
 
