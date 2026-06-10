@@ -38,24 +38,33 @@ trust the IPC normalization.
 
 ## Headline numbers landed so far
 
-### canneal 4-core shared (all 7 policies, bottleneck-IPC ranking)
+### canneal 4-core shared (matched 50M warmup + 100M sim across all policies)
 
-| Rank | Policy | Bottleneck IPC (CPU 1) | Projected cycles @ 100 M sim | vs Best |
-|---|---|---|---|---|
-| 1 | **COALESCE** | **0.3742** | 267.3 M (actual) | — |
-| 2 | Hawkeye | 0.3501 | 285.7 M | +6.9 % |
-| 3 | SRRIP | 0.3492 | 286.4 M | +7.2 % |
-| 4 | SHIP | 0.3481 | 287.3 M | +7.5 % |
-| 5 | DRRIP | 0.3402 | 294.0 M | +10.0 % |
-| 6 | Mockingjay | 0.3206 | 311.9 M | +16.7 % |
-| 7 | LRU | 0.2547 | 392.6 M | +46.9 % |
+| Rank | Policy | max cycles | vs COALESCE | Bottleneck IPC | INV |
+|---|---|---|---|---|---|
+| 1 | **COALESCE** | **267,251,645** | – | **0.3742** | 106,667 |
+| 2 | **coalesce_no_sharer** (ablation) | **267,247,657** | **−0.0015 %** (tied) | 0.3742 | 105,710 |
+| 3 | Hawkeye | 286,865,528 | +7.3 % | 0.3486 | 88,918 |
+| 4 | SRRIP | 287,031,501 | +7.4 % | 0.3484 | 91,764 |
+| 5 | SHIP | 288,163,881 | +7.8 % | 0.347 | 88,298 |
+| 6 | DRRIP | 294,947,400 | +10.4 % | 0.339 | 94,724 |
+| 7 | Mockingjay | 311,277,369 | +16.5 % | 0.3213 | 36,555 |
+| (?) | LRU | — | still running on server (lru_in_progress.log) | — | — |
 
-COALESCE has the **highest bottleneck-core IPC** — beating the best ML
-baseline (Hawkeye) by ~6.9 %. This is the **flip from regime 1 to regime 2
-that the paper needed**: at 4-core under default ChampSim (regime 1) COALESCE
-was 4th of 5; with sharing exposed (regime 2) it wins outright. The
-mechanism narrative — "coherence features activate under sharing" — now
-has empirical support across two regimes at the same core count.
+COALESCE wins outright. The +7.3 % lead over Hawkeye (the strongest ML baseline)
+is direct max-cycles comparison at matched length — no IPC-normalisation
+caveat. This is the **regime-flip narrative**: at 4-core under default
+ChampSim (default VMEM) COALESCE was 4th of 5; with sharing exposed it wins
+outright over six other policies.
+
+**Ablation result (the big finding)**: `coalesce_no_sharer` (full COALESCE
+minus the sharer-count hash and the +20×sharer bias, with a PC-only
+orthogonal hash1) is dead-tied with full COALESCE at this scale (difference:
+4 K cycles over 267 M = 0.0015 %). The sharer feature contributes nothing
+measurable on canneal — empirically confirming the inert-bin[1]=98.5% sharer
+histogram. The MESI half of COALESCE (PC × MESI state hash + +40 MODIFIED
+bias) carries all the contribution. This justifies a simpler policy with one
+less hyperparameter to defend in the paper.
 
 ### canneal 8-core shared (100 M sim/core, COALESCE only so far)
 
