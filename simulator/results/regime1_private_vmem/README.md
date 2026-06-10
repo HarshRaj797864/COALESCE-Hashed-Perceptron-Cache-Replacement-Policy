@@ -1,4 +1,14 @@
-# Regime 1 — Private VMEM (default ChampSim)
+# Regime 1 — Private VMEM (default ChampSim) — ⚠️ ARCHIVED, NOT USED IN PAPER
+
+> **Status (2026-06-10):** the two-regime framing is dropped. The +33 % canneal-
+> 8-core "win" here came from per-CPU address-space isolation — a ChampSim
+> simulator artefact, not a property of the policy under realistic multicore
+> conditions. Under shared VMEM (the paper's canonical setup) COALESCE's lead
+> over SRRIP collapses from +33 % to +0.4 %. We keep the data on disk for
+> historical reference; **the paper reports only the shared-VMEM regime**
+> (`../regime2_shared_vmem/`). See `docs/hipc_final_implementation.md` for the
+> framing decision and `docs/OPEN_DECISIONS.md` item #17 for the empirical
+> trigger.
 
 Each CPU has its own physical address space. Two cores accessing the same
 virtual address get **different** physical pages — by construction of
