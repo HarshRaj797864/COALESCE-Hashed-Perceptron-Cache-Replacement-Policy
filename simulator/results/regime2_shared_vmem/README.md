@@ -19,7 +19,7 @@ of the overlay (V1..V6 synthetic matrix) is in `bench/scripts/`.
 | canneal | 8 | **25.6 %** | **6,894,555** (coalesce) / 6,930,421 (no-sharer) | 304,516 / 304,964 |
 | canneal | 16 | TBD (instrument logs) | TBD | TBD |
 | fluidanimate | 4 | 0.30 % | 0 (read-only) | small |
-| fluidanimate | 8 | TBD | 0 (read-only) | 249 |
+| fluidanimate | 8 | n/a (no sharing) | **0** (read-only) | 249 |
 
 canneal at 8-core is where the mechanism *visibly* dominates: a quarter of
 all evictions involve LLC lines shared by 2+ cores; the invalidation
@@ -130,8 +130,25 @@ Baselines at 16-core shared (SRRIP, Hawkeye, LRU at minimum) are queued.
 COALESCE is last by ~5 % across a 5 % policy spread. The whole workload
 barely discriminates at 4-core. Sharing is read-only at this scale
 (`INVALIDATIONS = 0`), so neither the coherence machinery nor capacity-
-pressure win helps. Wait for 8-core fluidanimate before drawing
-workload-generalization conclusions.
+pressure win helps.
+
+### fluidanimate 8-core shared (all 7 policies — matched lengths)
+
+| Rank | Policy | max_cycles | vs best | CPU 0 IPC |
+|---|---|---|---|---|
+| 1 | DRRIP | 106,901,485 | — | 0.9354 |
+| 2 | SHiP / SRRIP (tie) | 106,925,560 | +0.02 % | – |
+| 3 | Hawkeye | 107,086,325 | +0.2 % | – |
+| 4 | LRU | 108,798,167 | +1.8 % | – |
+| 5 | Mockingjay | 109,921,513 | +2.8 % | – |
+| 6 | **COALESCE** | **112,179,646** | **+4.9 %** | 0.8914 |
+
+Perfectly consistent with 4-core: COALESCE last by ~5 % across a ~5 %
+total spread, `LLC INVALIDATIONS = 0`, only 249 aliased fills. The LLC
+access mix is 100 % LOAD — MESI state never leaves EXCLUSIVE, neither
+the +40 MODIFIED bias nor the sharer feature can fire. This is the
+structural boundary of the policy's sweet spot, and the consistency
+across core counts confirms it's principled, not noise.
 
 ## Sub-directory provenance
 
@@ -141,4 +158,13 @@ workload-generalization conclusions.
 | `canneal/8core/` | 8 policies (lru, srrip, drrip, ship, hawkeye, mockingjay, coalesce, coalesce_no_sharer). 100 M sim/core. **Ablation result: no-sharer beats full COALESCE by 0.41 %.** |
 | `canneal/16core/` | 1 policy (coalesce.log) — COALESCE-only scaling figure data. |
 | `fluidanimate/4core/` | All 7 policies (lru, srrip, drrip, ship, hawkeye, mockingjay, coalesce). Sim lengths match. |
-| `fluidanimate/8core/` | TBD — in flight. |
+| `fluidanimate/8core/` | All 7 policies. COALESCE last by 4.9 % — consistent with 4-core. |
+| `ocean/4core/` | 7 policies (mockingjay pending on server). COALESCE 4th; ablation flip — see `ocean/README.md`. |
+| `ocean/8core/` | In flight on server (5 done, 3 finishing as of Jun 11 13:44). |
+
+### Still on the server (queued / running, Jun 11)
+
+- Track C seeds: canneal 8c coalesce seed2/seed3 (baseline seeds still to queue)
+- Bias sweep: cb_0_0, cb_0_20, cb_40_0, cb_150_75 (canneal 8c)
+- barnes 4c × 8 policies (traces done, sims running)
+- Missing: ocean 4c mockingjay, canneal 16c coalesce_no_sharer, barnes 8t traces |
