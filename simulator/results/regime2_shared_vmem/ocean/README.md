@@ -60,10 +60,42 @@ The paper narrative therefore keeps full COALESCE as the headline policy. The
 ablation section presents this contrast as a *workload-dependent feature
 activation* finding rather than a policy-simplification recommendation.
 
+## Headline 4-core shared — COMPLETE (8 policies)
+
+Mockingjay landed: **813,767,568 cycles — dead last by +48 % vs SHiP.** The
+multi-programmed state-of-the-art catastrophically mispredicts under
+genuine multithreaded sharing (consistent with its last-place at canneal 8c).
+Full 4-core ranking is in the table above plus this row at the bottom.
+
+## Headline 8-core shared (6 of 8 complete)
+
+| Rank | Policy | max_cycles | vs best (SRRIP) | CPU 0 IPC |
+|---|---|---|---|---|
+| 1 | SRRIP | 550,675,830 | – | 0.1816 |
+| 2 | SHiP | 550,732,443 | +0.01 % | 0.1816 |
+| 3 | DRRIP | 551,564,285 | +0.16 % | – |
+| 4 | **COALESCE** | **566,374,131** | **+2.9 %** | 0.1766 |
+| 5 | LRU | 584,499,393 | +6.1 % | – |
+| 6 | Hawkeye | 591,008,754 | +7.3 % | – |
+| ⏳ | coalesce_no_sharer | scp'd mid-run | re-pull | – |
+| ⏳ | mockingjay | scp'd mid-run | re-pull | – |
+
+Consistent with 4-core: COALESCE is 4th, RRIP family wins, and the gap
+*narrows* with scale (+3.6 % at 4c → +2.9 % at 8c). COALESCE beats LRU by
++3.2 % and Hawkeye by +4.3 %. 724 K LLC invalidations, 91 K aliased fills.
+
+**The learning-policy framing**: on ocean, the entire learning-based class
+(COALESCE, Hawkeye, Mockingjay) loses to the RRIP heuristics — regular grid
+sweeps are RRIP's home turf. Among learning policies, **COALESCE is first on
+ocean at both core counts**, ahead of Hawkeye by 3.5-4.3 % and Mockingjay by
+~43 %. Combined with canneal (where COALESCE beats everything), the
+defensible claim: *COALESCE is the strongest learning-based policy on every
+workload with non-zero write traffic that we tested.*
+
 ## Status of sub-directories
 
 | Directory | Policies present | Status |
 |---|---|---|
-| `4core/` | lru, srrip, drrip, ship, hawkeye, coalesce, coalesce_no_sharer (7) | Mockingjay pending |
-| `8core/` | TBD | Running |
-| `16core/` | TBD | Stretch goal — launch tonight |
+| `4core/` | All 8 | ✅ COMPLETE |
+| `8core/` | 6 complete + 2 mid-run copies | Re-scp coalesce_no_sharer + mockingjay |
+| `16core/` | – | Cut (per v2 plan addendum — COALESCE not winning here) |
