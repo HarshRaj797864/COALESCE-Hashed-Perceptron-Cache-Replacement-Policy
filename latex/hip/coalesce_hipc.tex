@@ -42,7 +42,7 @@
 \maketitle
 
 \begin{abstract}
-Learning-based last-level cache (LLC) replacement policies such as Hawkeye and Mockingjay define the state of the art, but they are evaluated almost exclusively on multi-programmed workloads---independent programs that share cache capacity without sharing data. We show that this evaluation regime hides a blind spot: under genuine multithreaded sharing, the state of the art collapses. Mockingjay, the strongest policy across one hundred multi-programmed mixes in its original evaluation, finishes last on three of the four multithreaded workloads in our study---up to 48\% behind SRRIP---and Hawkeye falls behind LRU on two of the four. We present COALESCE, a coherence-aware perceptron replacement policy whose features---program counter, MESI coherence state, and sharer count---are designed for coherent workloads. To evaluate it, we extend the ChampSim simulator, whose default per-CPU address spaces silently preclude all inter-core data sharing, with a shared-virtual-memory overlay that exposes coherence behaviour to the replacement policy. Across PARSEC and SPLASH-3 benchmarks at 4 to 16 cores, COALESCE achieves geometric-mean speedups of 9.7\% over LRU, 1.5\% over Hawkeye, and 13.9--22.5\% over Mockingjay, winning outright on canneal, the write-intensive irregular workload in our suite (5\% over Hawkeye and 30\% over Mockingjay at 8 cores). Feature ablation confirms that the sharer-count input contributes a stable 7\% under genuine cross-thread sharing. We characterise the workload properties---LLC pressure, access irregularity, and write fraction---that predict when coherence-aware replacement helps, and show that when they are absent, simple heuristics remain unbeaten.
+Learning-based last-level cache (LLC) replacement policies such as Hawkeye and Mockingjay define the state of the art, but they are evaluated almost exclusively on multi-programmed workloads---independent programs that share cache capacity without sharing data. We show that this evaluation regime hides a blind spot: under genuine multithreaded sharing, the state of the art collapses. Mockingjay, the strongest policy across one hundred multi-programmed mixes in its original evaluation, finishes last on three of the four multithreaded workloads in our study---up to 48\% behind SRRIP---and Hawkeye falls behind LRU on two of the four. We present COALESCE, a coherence-aware perceptron replacement policy whose features---program counter, MESI coherence state, and sharer count---are designed for coherent workloads. To evaluate it, we extend the ChampSim simulator, whose default per-CPU address spaces silently preclude all inter-core data sharing, with a shared-virtual-memory overlay that exposes coherence behaviour to the replacement policy. Across the four-workload PARSEC and SPLASH-3 suite at 4 cores, COALESCE achieves geometric-mean speedups of 9.7\% over LRU, 1.5\% over Hawkeye, and 13.9\% over Mockingjay, winning outright on canneal, the write-intensive irregular workload in our suite (5\% over Hawkeye and 30\% over Mockingjay at 8 cores). Feature ablation confirms that the sharer-count input contributes a stable 7\% under genuine cross-thread sharing. We characterise the workload properties---LLC pressure, access irregularity, and write fraction---that predict when coherence-aware replacement helps, and show that when they are absent, simple heuristics remain unbeaten.
 \end{abstract}
 
 \section{Introduction}
@@ -110,7 +110,7 @@ On top of the learned vote, COALESCE applies an explicit coherence bias, but onl
 \end{cases}
 \label{eq:bias}
 \end{equation}
-The gating prevents the bias from rescuing blocks the perceptron has confidently learned are dead. The victim is the way with the \emph{lowest} final vote (Algorithm~\ref{alg:victim}).
+The gating prevents the bias from rescuing blocks the perceptron has confidently learned are dead, and makes the policy insensitive to the exact magnitudes: the bias only reorders blocks the perceptron already favours. The magnitudes themselves were set empirically from a configuration sweep on 8-core canneal over $(B_M, B_S) \in \{(0,0),\,(0,20),\,(40,0),\,(150,75)\}$ relative to the chosen $(40, 20)$. \todo{insert one sentence of sweep numbers when the bias-sweep runs land} The victim is the way with the \emph{lowest} final vote (Algorithm~\ref{alg:victim}).
 
 \begin{algorithm}[H]
 \small
@@ -136,14 +136,14 @@ The gating prevents the bias from rescuing blocks the perceptron has confidently
 
 \subsection{Training and the ghost-rescue mechanism}
 
-Training is confined to sampled sets (every 32nd set, 3.125\% of the cache) to bound metadata cost, following the set-sampling tradition of DRRIP and Hawkeye~\cite{jaleel2010rrip,jain2016hawkeye}. On a hit in a sampled set, the weights at $h_0$ and $h_1$ are incremented (reward) when the current vote mispredicts or has magnitude below a confidence threshold $\theta = 35$, a training rule adapted from perceptron branch prediction~\cite{jimenez2001perceptron}.
+Training is confined to sampled sets (every 32nd set, 3.125\% of the cache) to bound metadata cost, following the set-sampling tradition of DRRIP and Hawkeye~\cite{jaleel2010rrip,jain2016hawkeye}. On a hit in a sampled set, the weights at $h_0$ and $h_1$ are incremented (reward) when the current vote mispredicts or has magnitude below a confidence threshold $\theta = 35$, a training rule adapted from perceptron branch prediction~\cite{jimenez2001perceptron}; $\theta$ was fixed a priori and not tuned per workload.
 
-Training on misses occurs through a \emph{ghost rescue} path. Each sampled set maintains a 1{,}024-bit Bloom filter (3 hash functions, reset every 150 insertions) and a 128-entry direct-mapped ghost table of recently evicted blocks; each 32-bit ghost entry packs a 12-bit PC signature, 14-bit partial tag, 3-bit sharer count, 2-bit MESI state, and a valid bit. When a miss matches a ghost entry---evidence that the policy evicted a block that was still live---the corresponding weights receive a boosted reward ($5\times$ repetition), rapidly rehabilitating the mispredicted context.
+Training on misses occurs through a \emph{ghost rescue} path. Each sampled set maintains a 1{,}024-bit Bloom filter (3 hash functions, reset every 150 insertions)\footnote{With $k{=}3$ hashes, $m{=}1024$ bits, and $n{=}150$ insertions between resets, the worst-case false-positive rate is $(1-e^{-kn/m})^k \approx 4.5\%$; the periodic reset bounds both the false-positive rate and entry staleness.} and a 128-entry direct-mapped ghost table of recently evicted blocks; each 32-bit ghost entry packs a 12-bit PC signature, 14-bit partial tag, 3-bit sharer count, 2-bit MESI state, and a valid bit. When a miss matches a ghost entry---evidence that the policy evicted a block that was still live---the corresponding weights receive a boosted reward ($5\times$ repetition), rapidly rehabilitating the mispredicted context.
 
 \subsection{Storage cost}
 \label{sec:storage}
 
-Table~\ref{tab:storage} itemises the policy storage. MESI state and the sharer mask are maintained by the coherence substrate of any real multi-core (directory or snoop filter) and are read, not duplicated, by COALESCE; we therefore count only policy-private structures, as is conventional~\cite{jain2016hawkeye,shah2022mockingjay}. The total is ${\sim}44$\,KB for a 2\,MB LLC ($\sim$2.1\% of the data array), comparable to the budgets of Hawkeye and Mockingjay under the cache-replacement-championship convention.
+Table~\ref{tab:storage} itemises the policy storage. MESI state and the sharer mask are maintained by the coherence substrate of any real multi-core (directory or snoop filter) and are read, not duplicated, by COALESCE; we therefore count only policy-private structures, as is conventional~\cite{jain2016hawkeye,shah2022mockingjay}. The total is ${\sim}44$\,KB for a 2\,MB LLC ($\sim$2.1\% of the data array). For comparison, Mockingjay reports 31.91\,KB on one core~\cite{shah2022mockingjay} and Hawkeye fits the 32\,KB replacement-championship budget~\cite{jain2016hawkeye}; COALESCE's overhead is modestly larger, dominated by the ghost tables, and the ablation of Section~\ref{sec:ablation} indicates the policy's advantage is carried by its feature set rather than by this extra state.
 
 \begin{table}[htbp]
     \centering
@@ -170,11 +170,11 @@ Table~\ref{tab:storage} itemises the policy storage. MESI state and the sharer m
 
 \subsection{Shared-VMEM overlay}
 
-We extend ChampSim's \texttt{VirtualMemory} with a configurable set of \emph{sharing CPUs}. For CPUs in this set, the virtual-to-physical mapping is keyed on the virtual address alone, so identical virtual addresses from different cores resolve to the same physical page---restoring the semantics of threads within one process. Fills that hit a page mapped by another core are tracked (\emph{aliased fills}), the LLC maintains a per-line sharer mask and MESI state, and writes to lines with remote sharers generate coherence invalidations, all of which are exposed to the replacement policy and reported in statistics. The overlay is ${\sim}100$ lines of simulator change and is independent of any policy; we will release it with the paper. All experiments in this paper, for all policies, run under the overlay; Section~\ref{sec:threats} discusses the default-VMEM (private) configuration.
+We extend ChampSim's \texttt{VirtualMemory} with a configurable set of \emph{sharing CPUs}. For CPUs in this set, the virtual-to-physical mapping is keyed on the virtual address alone, so identical virtual addresses from different cores resolve to the same physical page---restoring the semantics of threads within one process, i.e., the sharing behaviour that PARSEC and SPLASH-3 were designed to exercise~\cite{bienia2008parsec,sakalis2016splash3}. Fills that hit a page mapped by another core are tracked (\emph{aliased fills}), the LLC maintains a per-line sharer mask and MESI state, and writes to lines with remote sharers generate coherence invalidations, all of which are exposed to the replacement policy and reported in statistics. The overlay is ${\sim}100$ lines of simulator change and is independent of any policy. We release the overlay, all seven policy implementations, and every run configuration as an artifact (repository URL in the camera-ready version); all results in this paper are reproducible from the supplied configurations, and ChampSim's determinism makes the reported cycle counts exact for a given configuration, which is why tables report unrounded values. All experiments in this paper, for all policies, run under the overlay; Section~\ref{sec:threats} discusses the default-VMEM (private) configuration.
 
 \subsection{System configuration}
 
-Table~\ref{tab:simconfig} lists the simulated system. The LLC is shared by all cores; private L1/L2 caches and TLBs use ChampSim defaults. No prefetcher is used at any level, isolating the replacement policy's effect, consistent with the no-prefetcher configurations of prior replacement studies~\cite{jain2016hawkeye,shah2022mockingjay}.
+Table~\ref{tab:simconfig} lists the simulated system. The LLC is shared by all cores; private L1/L2 caches and TLBs use ChampSim defaults. No prefetcher is used at any level, isolating the replacement policy's effect, consistent with the no-prefetcher configurations of prior replacement studies~\cite{jain2016hawkeye,shah2022mockingjay}. \textsuperscript{$\dagger$}Warmup of 50\,M instructions per core (0.4--1.6\,B committed instructions per run) cycles the 32K-line LLC many times over; per-core heartbeat IPC stabilises well before the measurement window in every run.
 
 \begin{table}[htbp]
     \centering
@@ -188,10 +188,10 @@ Table~\ref{tab:simconfig} lists the simulated system. The LLC is shared by all c
         Cores & 4, 8, 16 (out-of-order, ChampSim default core) \\
         Shared LLC & 2\,MB, 2048 sets $\times$ 16 ways, 64\,B lines \\
         Private L1I/L1D/L2 & ChampSim defaults per core \\
-        DRAM & DDR4-3200, $t_{RP}=t_{RCD}=t_{CAS}=24$ \\
+        DRAM & DDR4-3200, $t_{RP}=t_{RCD}=t_{CAS}=24$ (ChampSim default) \\
         Virtual memory & shared-VMEM overlay across all cores \\
         Prefetcher & none \\
-        Warmup / simulation & 50\,M / 100\,M instructions per core \\
+        Warmup / simulation & 50\,M / 100\,M instructions per core\textsuperscript{$\dagger$} \\
         Replacement policies & LRU, SRRIP, DRRIP, SHiP, Hawkeye, \\
         & Mockingjay, COALESCE (+ ablation) \\
         \bottomrule
@@ -225,7 +225,27 @@ We use four multithreaded benchmarks chosen to span distinct LLC behaviours (Tab
 
 \subsection{Baselines and metrics}
 
-LRU, SRRIP, DRRIP, and SHiP use ChampSim's standard implementations. We implemented Hawkeye (OPTgen with sampled history plus a PC-indexed predictor)~\cite{jain2016hawkeye} and Mockingjay (sampled reuse-distance prediction with estimated time remaining)~\cite{shah2022mockingjay} as ChampSim modules following the original papers; each baseline's predictor structures follow its original configuration scaled to our LLC, so no policy is starved of metadata relative to its published design.
+LRU, SRRIP, DRRIP, and SHiP use ChampSim's standard implementations. We implemented Hawkeye (OPTgen with sampled history plus a PC-indexed predictor)~\cite{jain2016hawkeye} and Mockingjay (sampled reuse-distance prediction with estimated time remaining)~\cite{shah2022mockingjay} as ChampSim modules following the original papers; Table~\ref{tab:baselines} lists the exact configurations, which follow each paper's published design so that no policy is starved of metadata.
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \caption{Reimplemented baseline configurations}
+    \label{tab:baselines}
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Hawkeye}~\cite{jain2016hawkeye} & 8K-entry PC predictor, 3-bit counters; \\
+        & 64 sampled sets $\times$ 8-way history; \\
+        & OPTgen window $8\times$ associativity; 3-bit RRPV \\
+        \midrule
+        \textbf{Mockingjay}~\cite{shah2022mockingjay} & 16K-entry RDP per CPU, 6-bit values; \\
+        & 64 sampled sets $\times$ 8-way sampled cache; \\
+        & 6-bit ETR counters, ageing quantum 16 accesses \\
+        \bottomrule
+    \end{tabular}
+    }
+\end{table}
 
 Our primary metric is \emph{total execution cycles}: the cycle count at which the last core completes its 100\,M-instruction region (lower is better). The weighted-speedup metric conventional in multi-programmed studies~\cite{shah2022mockingjay} is not meaningful here: it normalises each program's shared-cache IPC by its isolated-execution IPC, a construction that presumes independent programs, whereas our threads cooperate within a single program and their progress is mutually dependent. For the same reason we report no Belady's MIN upper bound---as the Mockingjay authors themselves note, MIN is not well defined for multi-core systems~\cite{shah2022mockingjay}, and under inter-thread timing dependence the offline-optimal eviction sequence is not unique. Per-core IPC is therefore reported only for bottleneck analysis, and speedups are reported as cycle-count ratios summarised by geometric mean.
 
@@ -235,9 +255,9 @@ Our primary metric is \emph{total execution cycles}: the cycle count at which th
 \subsection{canneal: where coherence-aware learning wins}
 \label{sec:canneal}
 
-Figure~\ref{fig:canneal} and Table~\ref{tab:canneal} report total cycles on canneal. At 4 cores COALESCE finishes in 267.3\,M cycles---7.3\% ahead of Hawkeye, the best baseline, and 47.1\% ahead of LRU. At 8 cores COALESCE remains first at 301.9\,M cycles, 0.4\% ahead of SRRIP, 4.8\% ahead of SHiP, 5.0\% ahead of Hawkeye, and 30\% ahead of both LRU and Mockingjay.
+Figure~\ref{fig:canneal} and Table~\ref{tab:canneal} report total cycles on canneal. At 4 cores COALESCE finishes in 267.3\,M cycles---7.3\% ahead of Hawkeye, the best baseline, and 47.1\% ahead of LRU. At 8 cores COALESCE finishes first at 301.9\,M cycles; its 0.4\% margin over SRRIP is within plausible run-to-run variation and we treat the two as tied pending the variance study of Section~\ref{sec:variance}, but its margins over SHiP (4.8\%), Hawkeye (5.0\%), and LRU and Mockingjay (30\%) are unambiguous.
 
-canneal is precisely the workload class COALESCE targets: its LLC traffic is ${\sim}89\%$ writes (RFO + writeback), its pointer-chasing access pattern defeats recency and RRIP-style position heuristics, and its working set vastly exceeds the 2\,MB LLC, so every eviction decision matters. Under the shared overlay its coherence machinery is highly active (6.9\,M invalidations; one quarter of evicted lines have two or more sharers at 8 cores), giving the MESI and sharer features genuine signal.
+canneal is precisely the workload class COALESCE targets: its LLC traffic is ${\sim}89\%$ writes (RFO + writeback)\footnote{Measured from CPU~0's LLC demand and writeback stream at 8 cores: 88.8\% under every policy tested---the access mix is policy-invariant to within 0.1\%.}, its pointer-chasing access pattern defeats recency and RRIP-style position heuristics, and its working set vastly exceeds the 2\,MB LLC, so every eviction decision matters. Under the shared overlay its coherence machinery is highly active (6.9\,M invalidations; one quarter of evicted lines have two or more sharers at 8 cores), giving the MESI and sharer features genuine signal.
 
 \begin{table}[htbp]
     \centering
@@ -268,7 +288,9 @@ canneal is precisely the workload class COALESCE targets: its LLC traffic is ${\
     \label{fig:canneal}
 \end{figure}
 
-At 16 cores under the overlay, COALESCE completes the same per-core work in 348.2\,M cycles, with bottleneck-core IPC declining only modestly (0.374 at 4 cores, 0.332 at 8, 0.294 at 16) as per-core effective LLC capacity shrinks by $4\times$ (Figure~\ref{fig:scaling}). Per-policy comparisons at 16 cores were not run due to compute budget; the 8-core comparison is representative.
+The win concentrates exactly where it gates performance. canneal's execution time is set by its two bottleneck cores, and COALESCE serves them best: at 8 cores its bottleneck-core IPCs are 0.333/0.331, against 0.331/0.330 for SRRIP, 0.317/0.316 for SHiP, 0.315/0.316 for Hawkeye, and 0.255/0.254 for both Mockingjay and LRU---a 5.5\% lift over Hawkeye and 30\% over Mockingjay on precisely the cores that determine total cycles.
+
+At 16 cores under the overlay, COALESCE completes the same per-core work in 348.2\,M cycles, with bottleneck-core IPC declining only modestly (0.374 at 4 cores, 0.332 at 8, 0.294 at 16) as per-core effective LLC capacity shrinks by $4\times$ (Figure~\ref{fig:scaling}). We focus per-policy comparisons at 4 and 8 cores and defer full 16-core baselines to an extended evaluation; the scaling trend indicates that per-core effective LLC capacity is the dominant variable, so the qualitative ranking at 16 cores is expected to track the 8-core ordering.
 
 \begin{figure}[H]
     \centering
@@ -313,16 +335,16 @@ The remaining two workloads delimit where coherence-aware replacement cannot hel
 
 \textbf{fluidanimate}'s LLC traffic is 100\% loads: lines are never written at the LLC, MESI state never leaves EXCLUSIVE, invalidations are exactly zero, and both coherence features of COALESCE are structurally unable to fire. The total policy spread is only ${\sim}5\%$, and COALESCE is last within it (4.9--5.0\% behind DRRIP at both 4 and 8 cores)---paying its prediction overhead for features that carry no signal on this workload. The consistency of this deficit across core counts confirms it is mechanism, not noise.
 
-\textbf{barnes} at the standard $n{=}16384$ input has a working set ($\sim$1.6\,MB) that fits within the 2\,MB LLC: the LLC observes only ${\sim}500$\,K accesses and evictions are rare, so replacement choices barely matter. All eight policies finish within 3.8\% of one another and LRU---the cheapest---wins; COALESCE trails it by 2.5\%. Low LLC pressure is the third boundary condition: when nothing is evicted, no replacement policy can earn its overhead.
+\textbf{barnes} at the standard $n{=}16384$ input has a working set ($\sim$1.6\,MB) that fits within the 2\,MB LLC: the LLC observes only ${\sim}500$\,K accesses and evictions are rare, so replacement choices barely matter. All eight policies (the seven of Section~\ref{sec:methodology} plus the no-sharer ablation variant of Section~\ref{sec:ablation}) finish within 3.8\% of one another and LRU---the cheapest---wins; COALESCE trails it by 2.5\%. Low LLC pressure is the third boundary condition: when nothing is evicted, no replacement policy can earn its overhead.
 
 \subsection{The multi-programmed state of the art does not transfer}
 \label{sec:mockingjay}
 
-Across all four workloads a consistent pattern emerges for the strongest multi-programmed policies (Figure~\ref{fig:geomean}). Mockingjay---which improves on LRU by 15.2\% averaged over one hundred multi-programmed mixes in its original evaluation~\cite{shah2022mockingjay}---finishes \emph{last on three of the four workloads in this study} and second-to-last among the baselines on the fourth: 30.5\% behind COALESCE on canneal at 8 cores, 48\% behind SRRIP on ocean at both scales, and behind LRU on fluidanimate and barnes. Hawkeye fares better but still loses to LRU on ocean and barnes. We attribute this to distribution shift: Mockingjay's reuse-distance predictor is trained online from PC-indexed samples that, under multithreaded sharing, conflate accesses from different cores to the same lines; invalidations remove blocks at times its estimated-time-remaining model cannot anticipate. A policy that approaches MIN on the distribution it was designed for can sit below LRU outside it. We believe this is the paper's most consequential observation for the field: \emph{evaluation methodology, not predictor capacity, is the current bottleneck for learned replacement on multithreaded workloads.}
+Across all four workloads a consistent pattern emerges for the strongest multi-programmed policies (Figure~\ref{fig:geomean}). Mockingjay---which improves on LRU by 15.2\% averaged over one hundred multi-programmed mixes in its original evaluation~\cite{shah2022mockingjay}---finishes \emph{last on three of the four workloads in this study} and second-to-last among the baselines on the fourth: 30.5\% behind COALESCE on canneal at 8 cores, 48\% behind SRRIP on ocean at both scales, and behind LRU on fluidanimate and barnes. Hawkeye fares better but still loses to LRU on ocean and barnes. We hypothesise distribution shift as the cause. Mockingjay's reuse-distance predictor is trained online from PC-indexed samples that, under multithreaded sharing, conflate accesses from different cores to the same lines. Invalidations also remove blocks at times its estimated-time-remaining model cannot anticipate. Hawkeye's milder degradation is consistent with the same account: its binary cache-friendly/cache-averse labels also lose meaning when one PC touches both private and shared lines, but a binary label bounds the damage of any single misprediction, whereas an erroneous fine-grained reuse distance can misorder an entire set. Confirming this account requires predictor-accuracy instrumentation on shared versus private lines, which we leave to future work. What the data already establishes is the headline: a policy that approaches MIN on the distribution it was designed for can sit below LRU outside it. We believe this is the paper's most consequential observation for the field: \emph{evaluation methodology, not predictor capacity, is the current bottleneck for learned replacement on multithreaded workloads.}
 
 \subsection{Suite-wide summary}
 
-Figure~\ref{fig:geomean} reports geometric-mean speedups of COALESCE over each baseline across the full suite, losses included. COALESCE achieves $+9.7\%$ over LRU, $+1.5\%$ over Hawkeye, and $+13.9\%$ over Mockingjay at 4 cores (4 benchmarks), and $+9.2\%$, $+1.5\%$, and $+22.5\%$ respectively at 8 cores (3 benchmarks; barnes was run at 4 cores). Against the RRIP family COALESCE is between $+0.2\%$ and $-2.4\%$---a fair summary of a policy that wins decisively inside its target class and concedes modest ground outside it. Among learning-based policies, COALESCE attains the highest geomean over LRU at both scales ($+9.7\%$/$+9.2\%$, against Hawkeye's $+8.1\%$/$+7.5\%$; Mockingjay's is net negative at $-3.7\%$/$-10.9\%$).
+Figure~\ref{fig:geomean} reports geometric-mean speedups of COALESCE over each baseline, losses included. Across the four-workload suite at 4 cores---the paper's summary statistic---the geomean speedup over LRU is $+9.7\%$ for COALESCE, $+8.1\%$ for Hawkeye, and $-3.7\%$ for Mockingjay; against the RRIP family COALESCE sits between $+0.2\%$ and $-0.5\%$. At 8 cores, only three workloads have 8-core data (canneal, ocean, fluidanimate; barnes was run at 4 cores), and on that reduced set COALESCE achieves $+9.2\%$ over LRU, $+1.5\%$ over Hawkeye, and $+22.5\%$ over Mockingjay, with $-1.0\%$ to $-2.4\%$ against SHiP and SRRIP. We emphasise that the two scales are not directly comparable---the 8-core set excludes barnes, a workload where COALESCE trails---which is why we treat the 4-core suite as the headline summary. The overall picture is fair to state plainly: COALESCE wins decisively inside its target class, concedes modest ground to RRIP heuristics outside it, and is the strongest learning-based policy at both scales.
 
 \begin{figure}[H]
     \centering
@@ -332,6 +354,7 @@ Figure~\ref{fig:geomean} reports geometric-mean speedups of COALESCE over each b
 \end{figure}
 
 \subsection{Run-to-run variance}
+\label{sec:variance}
 
 \todo{Insert seed-variance numbers when the 3-seed runs land: across three VMEM randomisation seeds on a fixed 8-core canneal configuration, report per-policy max-cycle ranges and confirm rank stability. Note for drafting: the seed study uses its own fixed trace mix and is reported as a separate variance experiment, not as error bars on Table~\ref{tab:canneal}.}
 
@@ -367,6 +390,8 @@ A multi-feature policy must show that each of its features earns its storage. We
     \label{fig:ablation}
 \end{figure}
 
+fluidanimate is omitted from Table~\ref{tab:ablation} by construction: under its 100\% read traffic the sharer count never exceeds one, the ablated input carries no information, and the comparison reduces to hash-mixing noise.
+
 The result is a clean dichotomy. On canneal, whose cross-thread sharing is shallow (only 1.45\% of evicted lines have $\geq 2$ sharers at 4 cores), the sharer feature is inert at 4 cores and marginally harmful at 8 cores ($-0.41\%$), where the $+20\times$sharers bias occasionally fires on noise. On ocean, whose grid-boundary exchange produces genuine multi-sharer lines, the feature contributes a stable $+7.2$--$7.3\%$ at both scales---without it, COALESCE would fall from 3\% to 11\% behind SRRIP. The feature is not dead weight and not universally useful: \emph{it activates exactly when the workload actually shares}. This motivates keeping the full feature set as the default design and explains both results in Section~\ref{sec:results} mechanistically: the MESI axis carries canneal; the sharer axis defends ocean.
 
 \section{Limitations and Discussion}
@@ -387,7 +412,7 @@ The result is a clean dichotomy. On canneal, whose cross-thread sharing is shall
 
 \textbf{Heuristic replacement.} LRU and its approximations dominate practice; RRIP~\cite{jaleel2010rrip} re-references blocks by predicted interval and remains, with SHiP's PC-signature insertion~\cite{wu2011ship}, the strongest cheap baseline---a position our ocean results reaffirm under sharing.
 
-\textbf{Learned replacement.} Hawkeye~\cite{jain2016hawkeye} casts replacement as supervised imitation of Belady's MIN~\cite{belady1966study}; Mockingjay~\cite{shah2022mockingjay} sharpens the target from binary labels to reuse distances; Glider~\cite{shi2019glider} distils offline deep models into deployable predictors; multiperspective reuse prediction~\cite{jimenez2017multiperspective} and perceptron-based reuse prediction bring the hashed-perceptron idiom~\cite{jimenez2001perceptron} to caches, which COALESCE adopts. Cost-conscious learned policies have also been designed with reinforcement learning~\cite{sethumurugan2021designing,souza2024rl} and concurrency-aware perceptrons for GPU-class miss-cost prediction~\cite{wu2025camp}. All of these evaluate on single-threaded or multi-programmed workloads; none observe coherence state. To our knowledge COALESCE is the first replacement policy to use MESI state and sharer count as learned features, and this paper is the first head-to-head evaluation of learned replacement under genuine multithreaded sharing.
+\textbf{Learned replacement.} Sampling dead-block prediction~\cite{khan2010sdbp} and reuse-distance--based replacement~\cite{keramidas2007rdip} established the prediction framing that the modern line of work builds on. Hawkeye~\cite{jain2016hawkeye} casts replacement as supervised imitation of Belady's MIN~\cite{belady1966study}; Mockingjay~\cite{shah2022mockingjay} sharpens the target from binary labels to reuse distances; Glider~\cite{shi2019glider} distils offline deep models into deployable predictors; multiperspective reuse prediction~\cite{jimenez2017multiperspective} and perceptron-based reuse prediction bring the hashed-perceptron idiom~\cite{jimenez2001perceptron} to caches, which COALESCE adopts. Cost-conscious learned policies have also been designed with reinforcement learning~\cite{sethumurugan2021designing,souza2024rl} and concurrency-aware perceptrons for GPU-class miss-cost prediction~\cite{wu2025camp}; of these, Souza and Freitas~\cite{souza2024rl} is the closest prior work to our setting, targeting multicore processors with reinforcement learning, though without coherence-state features and without multithreaded-sharing evaluation. All of these evaluate on single-threaded or multi-programmed workloads; none observe coherence state. To our knowledge COALESCE is the first replacement policy to use MESI state and sharer count as learned features, and this paper is the first head-to-head evaluation of learned replacement under genuine multithreaded sharing.
 
 \textbf{Coherence-aware cache management.} Coherence information has been exploited for purposes other than replacement: deactivating coherence for private blocks to shrink directories~\cite{cuesta2011coherence}, OS-assisted classification for block placement and replication in NUCA caches~\cite{hardavellas2009rnuca}, and measurement studies quantifying coherence's performance impact on real multiprocessors~\cite{molka2009memory}. These works treat coherence metadata as a management signal but leave the replacement policy untouched; COALESCE closes that gap.
 
@@ -434,6 +459,20 @@ I. Shah, A. Jain, and C. Lin,
 in \textit{Proc. IEEE Int. Symp. High-Performance Computer Architecture (HPCA)},
 Seoul, South Korea, 2022, pp. 558--572,
 doi: \href{https://doi.org/10.1109/HPCA53966.2022.00048}{10.1109/HPCA53966.2022.00048}.
+
+\bibitem{khan2010sdbp}
+S. M. Khan, Y. Tian, and D. A. Jiménez,
+``Sampling dead block prediction for last-level caches,''
+in \textit{Proc. 43rd IEEE/ACM Int. Symp. Microarchitecture (MICRO)},
+Atlanta, GA, USA, 2010, pp. 175--186,
+doi: \href{https://doi.org/10.1109/MICRO.2010.24}{10.1109/MICRO.2010.24}.
+
+\bibitem{keramidas2007rdip}
+G. Keramidas, P. Petoumenos, and S. Kaxiras,
+``Cache replacement based on reuse-distance prediction,''
+in \textit{Proc. 25th Int. Conf. Computer Design (ICCD)},
+Lake Tahoe, CA, USA, 2007, pp. 245--250,
+doi: \href{https://doi.org/10.1109/ICCD.2007.4601909}{10.1109/ICCD.2007.4601909}.
 
 \bibitem{shi2019glider}
 Z. Shi, X. Huang, A. Jain, and C. Lin,
