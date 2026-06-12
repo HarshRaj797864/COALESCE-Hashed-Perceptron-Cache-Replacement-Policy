@@ -1,6 +1,11 @@
 AIM.md
 ARCHITECTURE.md
-latex/
+latex/*
+!latex/hip/
+latex/hip/*.pdf
+latex/hip/*.aux
+latex/hip/*.log
+latex/hip/*.out
 
 # Ignore heavy simulator files
 simulator/traces/
