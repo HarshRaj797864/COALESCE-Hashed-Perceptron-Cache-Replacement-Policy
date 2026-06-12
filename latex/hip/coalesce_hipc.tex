@@ -387,7 +387,11 @@ Across seeds, the per-policy spread in total cycles is \todo{X}\% of the mean or
 
 A multi-feature policy must show that each of its features earns its storage. We ablate COALESCE's sharer-count axis: the ablated variant (\emph{no-sharer}) replaces $h_1$'s sharer input with a second PC-only hash (a distinct mixing constant, after~\cite{jimenez2017multiperspective}) and removes the $+20\times$sharers bias, leaving the MESI axis and all other machinery intact. Figure~\ref{fig:ablation} and Table~\ref{tab:ablation} compare the two on every workload.
 
-\begin{table}[htbp]
+fluidanimate is omitted from Table~\ref{tab:ablation} by construction: under its 100\% read traffic the sharer count never exceeds one, the ablated input carries no information, and the comparison reduces to hash-mixing noise.
+
+The result is a clean dichotomy. On canneal, whose cross-thread sharing is shallow (only 1.45\% of evicted lines have $\geq 2$ sharers at 4 cores), the sharer feature is inert at 4 cores and marginally harmful at 8 cores ($-0.41\%$), where the $+20\times$sharers bias occasionally fires on noise. On ocean, whose grid-boundary exchange produces genuine multi-sharer lines, the feature contributes a stable $+7.2$--$7.3\%$ at both scales---without it, COALESCE would fall from 3\% to 11\% behind SRRIP. The feature is not dead weight and not universally useful: \emph{it activates exactly when the workload actually shares}. This motivates keeping the full feature set as the default design and explains both results in Section~\ref{sec:results} mechanistically: the MESI axis carries canneal; the sharer axis defends ocean.
+
+\begin{table}[tbp]
     \centering
     \renewcommand{\arraystretch}{1.15}
     \caption{Ablation: full COALESCE vs.\ no-sharer variant (total cycles; $\Delta>0$ means the sharer feature helps)}
@@ -407,16 +411,12 @@ A multi-feature policy must show that each of its features earns its storage. We
     }
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[tbp]
     \centering
     \includegraphics[width=0.95\linewidth]{fig_ablation.png}
     \caption{Contribution of the sharer-count feature (positive = full COALESCE faster than the no-sharer ablation).}
     \label{fig:ablation}
 \end{figure}
-
-fluidanimate is omitted from Table~\ref{tab:ablation} by construction: under its 100\% read traffic the sharer count never exceeds one, the ablated input carries no information, and the comparison reduces to hash-mixing noise.
-
-The result is a clean dichotomy. On canneal, whose cross-thread sharing is shallow (only 1.45\% of evicted lines have $\geq 2$ sharers at 4 cores), the sharer feature is inert at 4 cores and marginally harmful at 8 cores ($-0.41\%$), where the $+20\times$sharers bias occasionally fires on noise. On ocean, whose grid-boundary exchange produces genuine multi-sharer lines, the feature contributes a stable $+7.2$--$7.3\%$ at both scales---without it, COALESCE would fall from 3\% to 11\% behind SRRIP. The feature is not dead weight and not universally useful: \emph{it activates exactly when the workload actually shares}. This motivates keeping the full feature set as the default design and explains both results in Section~\ref{sec:results} mechanistically: the MESI axis carries canneal; the sharer axis defends ocean.
 
 \section{Limitations and Discussion}
 \label{sec:threats}
