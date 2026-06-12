@@ -162,14 +162,16 @@ expected: duplicate trace copies alias to the same physical pages under
 shared VMEM, and the seed changes which copy wins the warmup race. Verify
 each seed log has all 8 CPUs finished + sane max_cycles before use.
 
-## Pending (as of 2026-06-12 early)
+## Pending (as of 2026-06-12 — DATA FREEZE at D-3 / Jun 14)
 
 | Item | Status |
 |---|---|
-| Track C: hawkeye/srrip/ship seeds 1,2,3 | running (seed1 launched 03:17) |
-| Track C: **coalesce seed1 (new mix) — MISSING, must launch** | ❌ |
-| Track C: coalesce_no_sharer seeds — optional | not launched |
-| canneal seed3 coalesce log | on server, scp + verify |
-| Bias sweep: cb_40_0 + cb_150_75 done; cb_0_0 + cb_0_20 at 6/8 | scp when done |
-| canneal 16c coalesce_no_sharer | still to queue |
-| barnes 8c | CUT (low discrimination at 4c; not worth server time) |
+| Track C: canneal 8c seed runs (new mix) | running — verify coalesce seed1 (new mix) is among them |
+| canneal seed3 coalesce log | on server, scp + verify (relaunch only if truncated — ChampSim is deterministic) |
+| Bias sweep: cb_40_0 + cb_150_75 done; cb_0_0 + cb_0_20 finishing | scp when done |
+| barnes 8c × 8 policies (duplicated 4t traces, same mix pattern as canneal) | running — expect low spread (aliased pages keep union working set < LLC) |
+| barnes n65536 | DEAD — binary has hardcoded static limit at n=16384; dropped |
+| canneal 16c coalesce_no_sharer | dropped from queue per calendar; ablation stands on 4c+8c+ocean |
+
+After these land: **no more experiments**. Paper writing is the critical path
+(draft → advisor Jun 15 → abstract Jun 16 → paper Jun 17).

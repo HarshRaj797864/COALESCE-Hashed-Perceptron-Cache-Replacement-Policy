@@ -4,10 +4,13 @@
 >
 > **Owner**: Harsh Raj (S20240010084) · **Advisor**: Dr. Bheemappa Halavar · **Context**: B.Tech project, IIIT Sri City
 >
-> **Status banner (as of 2026-05-21)**
-> - 🔒 **Architecture FROZEN** — no structural changes. Only parameter sweeps to justify current choices.
-> - 🎯 **Active sprint**: 28-day HiPC 2026 push. Deadline = **June 17, 2026**. Today = Day 1.
-> - 📋 Full strategy: `docs/PUBLICATION_STRATEGY.md`
+> **Status banner (as of 2026-06-12 — PAPER-WRITING PHASE)**
+> - 🏁 **Experiments complete / data frozen** (stragglers landing: seed runs, bias sweep, barnes 8c). **No new experiments.**
+> - 📊 **All results + geomeans + findings**: `docs/results_compendium.md` (source of truth for paper numbers)
+> - 📋 **Active plan**: `docs/hipc_implementation_v2.md` (note: § 1's simplified-policy pivot was REVERTED by the addendum at the bottom — full COALESCE is the headline policy; the paper's evaluation is shared-VMEM only, regime 1 archived)
+> - ✍️ **Critical path**: paper rewrite of `latex/paper/coalesce_hipc.tex` → advisor draft Jun 15 → abstract Jun 16 → **full paper Jun 17**
+> - 🔒 Architecture still FROZEN — no structural changes.
+> - 📋 Original strategy: `docs/PUBLICATION_STRATEGY.md`
 > - ⚠️ **CRITICAL BUILD GOTCHA**: the build's `-I` path reads headers from **`/home/rajharsh/programming-playground/repos/ChampSim/inc/`** (sibling repo), not `simulator/inc/`. Edits to anything in `simulator/inc/` must be **mirrored** in the sibling repo, or the build won't see them. Source files (`simulator/src/*.cc` and `simulator/replacement/coalesce/*`) DO get picked up via relative path. See `docs/OPEN_DECISIONS.md` item #16.
 > - 📖 Narrative explainer of the project: `docs/COALESCE_EXPLAINED.md`
 > - ⚠️ All known bugs / discrepancies / pending decisions: `docs/OPEN_DECISIONS.md`
