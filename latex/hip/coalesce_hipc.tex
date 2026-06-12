@@ -112,7 +112,7 @@ On top of the learned vote, COALESCE applies an explicit coherence bias, but onl
 \end{equation}
 The gating prevents the bias from rescuing blocks the perceptron has confidently learned are dead, and makes the policy insensitive to the exact magnitudes: the bias only reorders blocks the perceptron already favours. The magnitudes themselves were set empirically from a configuration sweep on 8-core canneal over $(B_M, B_S) \in \{(0,0),\,(0,20),\,(40,0),\,(150,75)\}$ relative to the chosen $(40, 20)$: the chosen configuration finishes \todo{X}\% ahead of the bias-free variant $(0,0)$ and \todo{Y}\% ahead of the over-biased $(150,75)$, with the single-component variants in between, confirming that a moderate gated bias helps and that the policy is not hypersensitive to its exact magnitude. The victim is the way with the \emph{lowest} final vote (Algorithm~\ref{alg:victim}).
 
-\begin{algorithm}[H]
+\begin{algorithm}[tbp]
 \small
 \caption{Victim Selection in COALESCE}
 \label{alg:victim}
