@@ -9,3 +9,6 @@ simulator/vcpkg/
 simulator/vcpkg_installed/
 simulator/archive_logs/
 simulator/tracer/pin/*.tar.gz
+# PIN kit tarball staged at repo root for scp to server
+pin-external-*.tar.gz
+*:Zone.Identifier
