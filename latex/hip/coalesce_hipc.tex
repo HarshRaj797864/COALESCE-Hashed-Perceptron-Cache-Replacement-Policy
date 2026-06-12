@@ -216,6 +216,7 @@ We use four multithreaded benchmarks chosen to span distinct LLC behaviours (Tab
         Access pattern & irregular & regular & regular & irregular \\
         LLC write fraction & ${\sim}89\%$ & ${\sim}40\%$ & $0\%$ & mixed \\
         Working set vs.\ LLC & $\gg$ & $\gg$ & $>$ & $<$ \\
+        LLC MPKI (range) & 13--31 & 37--146 & $<0.3$ & ${\sim}1$ \\
         LLC invalidations & 6.9\,M & 0.72\,M & 0 & 0.03\,M \\
         Lines with $\geq$2 sharers & 25.6\% & high & ${\sim}0$ & low \\
         \bottomrule
@@ -247,7 +248,7 @@ LRU, SRRIP, DRRIP, and SHiP use ChampSim's standard implementations. We implemen
     }
 \end{table}
 
-Our primary metric is \emph{total execution cycles}: the cycle count at which the last core completes its 100\,M-instruction region (lower is better). The weighted-speedup metric conventional in multi-programmed studies~\cite{shah2022mockingjay} is not meaningful here: it normalises each program's shared-cache IPC by its isolated-execution IPC, a construction that presumes independent programs, whereas our threads cooperate within a single program and their progress is mutually dependent. For the same reason we report no Belady's MIN upper bound---as the Mockingjay authors themselves note, MIN is not well defined for multi-core systems~\cite{shah2022mockingjay}, and under inter-thread timing dependence the offline-optimal eviction sequence is not unique. Per-core IPC is therefore reported only for bottleneck analysis, and speedups are reported as cycle-count ratios summarised by geometric mean.
+Our primary metric is \emph{total execution cycles}: the cycle count at which the last core completes its 100\,M-instruction region (lower is better). The weighted-speedup metric conventional in multi-programmed studies~\cite{shah2022mockingjay} is not meaningful here: it normalises each program's shared-cache IPC by its isolated-execution IPC, a construction that presumes independent programs, whereas our threads cooperate within a single program and their progress is mutually dependent. For the same reason we report no Belady's MIN upper bound---as the Mockingjay authors themselves note, MIN is not well defined for multi-core systems~\cite{shah2022mockingjay}, and under inter-thread timing dependence the offline-optimal eviction sequence is not unique. Per-core IPC is therefore reported only for bottleneck analysis, and speedups are reported as cycle-count ratios summarised by geometric mean. We additionally report LLC misses per kilo-instruction (MPKI) as a secondary metric, but note that on multithreaded workloads MPKI and execution time can \emph{invert}---Section~\ref{sec:ocean} shows LRU attaining the lowest MPKI on ocean while finishing 6--7\% slower than SHiP---because misses differ in criticality and writeback cost when threads contend on a coherent LLC. This inversion is itself a reason total cycles must be the primary metric in this setting.
 
 \section{Results}
 \label{sec:results}
@@ -255,7 +256,7 @@ Our primary metric is \emph{total execution cycles}: the cycle count at which th
 \subsection{canneal: where coherence-aware learning wins}
 \label{sec:canneal}
 
-Figure~\ref{fig:canneal} and Table~\ref{tab:canneal} report total cycles on canneal. At 4 cores COALESCE finishes in 267.3\,M cycles---7.3\% ahead of Hawkeye, the best baseline, and 47.1\% ahead of LRU. At 8 cores COALESCE finishes first at 301.9\,M cycles; its 0.4\% margin over SRRIP is within plausible run-to-run variation and we treat the two as tied pending the variance study of Section~\ref{sec:variance}, but its margins over SHiP (4.8\%), Hawkeye (5.0\%), and LRU and Mockingjay (30\%) are unambiguous.
+Figure~\ref{fig:canneal} and Table~\ref{tab:canneal} report total cycles and LLC MPKI on canneal. At 4 cores COALESCE finishes in 267.3\,M cycles---7.3\% ahead of Hawkeye, the best baseline, and 47.1\% ahead of LRU---and the mechanism is visible in raw misses: 12.9 MPKI against 24.1--30.9 for every baseline, roughly \emph{half} the misses of the best competitor. At 8 cores COALESCE finishes first at 301.9\,M cycles; its 0.4\% margin over SRRIP is within plausible run-to-run variation and we treat the two as tied pending the variance study of Section~\ref{sec:variance}, but its margins over SHiP (4.8\%), Hawkeye (5.0\%), and LRU and Mockingjay (30\%) are unambiguous.
 
 canneal is precisely the workload class COALESCE targets: its LLC traffic is ${\sim}89\%$ writes (RFO + writeback)\footnote{Measured from CPU~0's LLC demand and writeback stream at 8 cores: 88.8\% under every policy tested---the access mix is policy-invariant to within 0.1\%.}, its pointer-chasing access pattern defeats recency and RRIP-style position heuristics, and its working set vastly exceeds the 2\,MB LLC, so every eviction decision matters. Under the shared overlay its coherence machinery is highly active (6.9\,M invalidations; one quarter of evicted lines have two or more sharers at 8 cores), giving the MESI and sharer features genuine signal.
 
@@ -265,17 +266,17 @@ canneal is precisely the workload class COALESCE targets: its LLC traffic is ${\
     \caption{canneal total cycles (lower is better)}
     \label{tab:canneal}
     \resizebox{0.9\linewidth}{!}{%
-    \begin{tabular}{lrrrr}
+    \begin{tabular}{lrrrrrr}
         \toprule
-        \textbf{Policy} & \textbf{4-core} & vs.\ C. & \textbf{8-core} & vs.\ C. \\
+        \textbf{Policy} & \textbf{4-core} & vs.\ C. & MPKI & \textbf{8-core} & vs.\ C. & MPKI \\
         \midrule
-        \textbf{COALESCE} & \textbf{267{,}251{,}645} & --- & \textbf{301{,}945{,}789} & --- \\
-        Hawkeye & 286{,}865{,}528 & $+7.3\%$ & 317{,}172{,}523 & $+5.0\%$ \\
-        SRRIP & 287{,}031{,}501 & $+7.4\%$ & 303{,}011{,}899 & $+0.4\%$ \\
-        SHiP & 288{,}163{,}881 & $+7.8\%$ & 316{,}393{,}994 & $+4.8\%$ \\
-        DRRIP & 294{,}947{,}400 & $+10.4\%$ & 325{,}848{,}199 & $+7.9\%$ \\
-        Mockingjay & 311{,}277{,}369 & $+16.5\%$ & 393{,}934{,}080 & $+30.5\%$ \\
-        LRU & 392{,}999{,}637 & $+47.1\%$ & 392{,}564{,}736 & $+30.0\%$ \\
+        \textbf{COALESCE} & \textbf{267{,}251{,}645} & --- & \textbf{12.9} & \textbf{301{,}945{,}789} & --- & 13.3 \\
+        Hawkeye & 286{,}865{,}528 & $+7.3\%$ & 24.1 & 317{,}172{,}523 & $+5.0\%$ & 19.4 \\
+        SRRIP & 287{,}031{,}501 & $+7.4\%$ & 24.3 & 303{,}011{,}899 & $+0.4\%$ & 13.1 \\
+        SHiP & 288{,}163{,}881 & $+7.8\%$ & 24.8 & 316{,}393{,}994 & $+4.8\%$ & 15.2 \\
+        DRRIP & 294{,}947{,}400 & $+10.4\%$ & 27.6 & 325{,}848{,}199 & $+7.9\%$ & 16.9 \\
+        Mockingjay & 311{,}277{,}369 & $+16.5\%$ & 30.8 & 393{,}934{,}080 & $+30.5\%$ & 30.6 \\
+        LRU & 392{,}999{,}637 & $+47.1\%$ & 30.9 & 392{,}564{,}736 & $+30.0\%$ & 30.9 \\
         \bottomrule
     \end{tabular}
     }
@@ -304,6 +305,8 @@ At 16 cores under the overlay, COALESCE completes the same per-core work in 348.
 
 On ocean (Table~\ref{tab:ocean}) the RRIP family wins: SHiP, SRRIP, and DRRIP finish within 0.4\% of one another, with COALESCE fourth, 3.6\% behind at 4 cores and 2.9\% behind at 8 cores. The mechanism is no mystery: ocean's multigrid sweeps are regular and stride-predictable---exactly the re-reference geometry that RRIP's insertion heuristics were designed around~\cite{jaleel2010rrip}---and although its coherence traffic is substantial ($6\times$ canneal's invalidation rate per LLC access), regularity, not sharing, dominates the eviction decision.
 
+The MPKI column of Table~\ref{tab:ocean} carries two observations. First, LRU attains the \emph{lowest} miss count at both scales (74.0 and 36.7 MPKI) yet finishes 6--7\% behind SHiP: on a coherent LLC, miss counts and performance can invert, because LRU's recency bias retains dirty lines whose eventual misses are cheap while evicting lines whose refetches sit on the critical path. Second, Mockingjay's degradation is a genuine miss explosion---146.1 MPKI, $1.7\times$ SHiP's---not a latency artefact, which further argues against an implementation-fidelity explanation.
+
 The notable result is the fate of the \emph{learning} policies. COALESCE is the best of them at both scales: it beats Hawkeye by 3.5--4.3\% and LRU by ${\sim}3\%$, while Mockingjay degrades sharply, to 48\% behind SRRIP (Section~\ref{sec:mockingjay}). On coherent workloads, learning does not automatically lose to heuristics---but learning \emph{tuned on the wrong distribution} does.
 
 \begin{table}[htbp]
@@ -312,17 +315,17 @@ The notable result is the fate of the \emph{learning} policies. COALESCE is the 
     \caption{ocean total cycles (lower is better)}
     \label{tab:ocean}
     \resizebox{0.9\linewidth}{!}{%
-    \begin{tabular}{lrrrr}
+    \begin{tabular}{lrrrrrr}
         \toprule
-        \textbf{Policy} & \textbf{4-core} & vs.\ best & \textbf{8-core} & vs.\ best \\
+        \textbf{Policy} & \textbf{4-core} & vs.\ best & MPKI & \textbf{8-core} & vs.\ best & MPKI \\
         \midrule
-        SHiP & \textbf{549{,}605{,}858} & --- & 550{,}732{,}443 & $+0.01\%$ \\
-        SRRIP & 550{,}297{,}702 & $+0.1\%$ & \textbf{550{,}675{,}830} & --- \\
-        DRRIP & 551{,}685{,}991 & $+0.4\%$ & 551{,}564{,}285 & $+0.2\%$ \\
-        \textbf{COALESCE} & 569{,}457{,}207 & $+3.6\%$ & 566{,}374{,}131 & $+2.9\%$ \\
-        LRU & 587{,}215{,}973 & $+6.8\%$ & 584{,}499{,}393 & $+6.1\%$ \\
-        Hawkeye & 589{,}923{,}943 & $+7.3\%$ & 591{,}008{,}754 & $+7.3\%$ \\
-        Mockingjay & 813{,}767{,}568 & $+48.1\%$ & 814{,}696{,}310 & $+47.9\%$ \\
+        SHiP & \textbf{549{,}605{,}858} & --- & 84.8 & 550{,}732{,}443 & $+0.01\%$ & 42.7 \\
+        SRRIP & 550{,}297{,}702 & $+0.1\%$ & 85.0 & \textbf{550{,}675{,}830} & --- & 42.6 \\
+        DRRIP & 551{,}685{,}991 & $+0.4\%$ & 85.3 & 551{,}564{,}285 & $+0.2\%$ & 42.7 \\
+        \textbf{COALESCE} & 569{,}457{,}207 & $+3.6\%$ & 89.9 & 566{,}374{,}131 & $+2.9\%$ & 44.6 \\
+        LRU & 587{,}215{,}973 & $+6.8\%$ & \textbf{74.0} & 584{,}499{,}393 & $+6.1\%$ & \textbf{36.7} \\
+        Hawkeye & 589{,}923{,}943 & $+7.3\%$ & 94.7 & 591{,}008{,}754 & $+7.3\%$ & 47.6 \\
+        Mockingjay & 813{,}767{,}568 & $+48.1\%$ & 146.1 & 814{,}696{,}310 & $+47.9\%$ & 73.2 \\
         \bottomrule
     \end{tabular}
     }
@@ -333,9 +336,9 @@ The notable result is the fate of the \emph{learning} policies. COALESCE is the 
 
 The remaining two workloads delimit where coherence-aware replacement cannot help, and we report them as such.
 
-\textbf{fluidanimate}'s LLC traffic is 100\% loads: lines are never written at the LLC, MESI state never leaves EXCLUSIVE, invalidations are exactly zero, and both coherence features of COALESCE are structurally unable to fire. The total policy spread is only ${\sim}5\%$, and COALESCE is last within it (4.9--5.0\% behind DRRIP at both 4 and 8 cores)---paying its prediction overhead for features that carry no signal on this workload. The consistency of this deficit across core counts confirms it is mechanism, not noise.
+\textbf{fluidanimate}'s LLC traffic is 100\% loads: lines are never written at the LLC, MESI state never leaves EXCLUSIVE, invalidations are exactly zero, and both coherence features of COALESCE are structurally unable to fire. The LLC is also nearly irrelevant in absolute terms---MPKI is below 0.3 under every policy, two orders of magnitude below canneal's. The total policy spread is only ${\sim}5\%$, and COALESCE is last within it (4.9--5.0\% behind DRRIP at both 4 and 8 cores)---paying its prediction overhead for features that carry no signal on this workload. The consistency of this deficit across core counts confirms it is mechanism, not noise.
 
-\textbf{barnes} at the standard $n{=}16384$ input has a working set ($\sim$1.6\,MB) that fits within the 2\,MB LLC: the LLC observes only ${\sim}500$\,K accesses and evictions are rare, so replacement choices barely matter. All eight policies (the seven of Section~\ref{sec:methodology} plus the no-sharer ablation variant of Section~\ref{sec:ablation}) finish within 3.8\% of one another and LRU---the cheapest---wins; COALESCE trails it by 2.5\%. Low LLC pressure is the third boundary condition: when nothing is evicted, no replacement policy can earn its overhead.
+\textbf{barnes} at the standard $n{=}16384$ input has a working set ($\sim$1.6\,MB) that fits within the 2\,MB LLC: the LLC observes only ${\sim}500$\,K accesses per core, MPKI stays near 1 under every policy, and evictions are rare, so replacement choices barely matter. All eight policies (the seven of Section~\ref{sec:methodology} plus the no-sharer ablation variant of Section~\ref{sec:ablation}) finish within 3.8\% of one another and LRU---the cheapest---wins; COALESCE trails it by 2.5\%. Low LLC pressure is the third boundary condition: when nothing is evicted, no replacement policy can earn its overhead.
 
 \subsection{The multi-programmed state of the art does not transfer}
 \label{sec:mockingjay}
