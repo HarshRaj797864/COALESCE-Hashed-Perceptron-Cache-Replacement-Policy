@@ -225,7 +225,9 @@ We use four multithreaded benchmarks chosen to span distinct LLC behaviours (Tab
 
 \subsection{Baselines and metrics}
 
-LRU, SRRIP, DRRIP, and SHiP use ChampSim's standard implementations. We implemented Hawkeye (OPTgen with sampled history plus a PC-indexed predictor)~\cite{jain2016hawkeye} and Mockingjay (sampled reuse-distance prediction with estimated time remaining)~\cite{shah2022mockingjay} as ChampSim modules following the original papers. Our primary metric is \emph{total execution cycles}: the cycle count at which the last core completes its 100\,M-instruction region (lower is better). Because multithreaded cores interact through the shared LLC, per-core IPC is reported only for bottleneck analysis. Speedups are reported as cycle-count ratios and summarised by geometric mean.
+LRU, SRRIP, DRRIP, and SHiP use ChampSim's standard implementations. We implemented Hawkeye (OPTgen with sampled history plus a PC-indexed predictor)~\cite{jain2016hawkeye} and Mockingjay (sampled reuse-distance prediction with estimated time remaining)~\cite{shah2022mockingjay} as ChampSim modules following the original papers; each baseline's predictor structures follow its original configuration scaled to our LLC, so no policy is starved of metadata relative to its published design.
+
+Our primary metric is \emph{total execution cycles}: the cycle count at which the last core completes its 100\,M-instruction region (lower is better). The weighted-speedup metric conventional in multi-programmed studies~\cite{shah2022mockingjay} is not meaningful here: it normalises each program's shared-cache IPC by its isolated-execution IPC, a construction that presumes independent programs, whereas our threads cooperate within a single program and their progress is mutually dependent. For the same reason we report no Belady's MIN upper bound---as the Mockingjay authors themselves note, MIN is not well defined for multi-core systems~\cite{shah2022mockingjay}, and under inter-thread timing dependence the offline-optimal eviction sequence is not unique. Per-core IPC is therefore reported only for bottleneck analysis, and speedups are reported as cycle-count ratios summarised by geometric mean.
 
 \section{Results}
 \label{sec:results}
@@ -367,7 +369,7 @@ A multi-feature policy must show that each of its features earns its storage. We
 
 The result is a clean dichotomy. On canneal, whose cross-thread sharing is shallow (only 1.45\% of evicted lines have $\geq 2$ sharers at 4 cores), the sharer feature is inert at 4 cores and marginally harmful at 8 cores ($-0.41\%$), where the $+20\times$sharers bias occasionally fires on noise. On ocean, whose grid-boundary exchange produces genuine multi-sharer lines, the feature contributes a stable $+7.2$--$7.3\%$ at both scales---without it, COALESCE would fall from 3\% to 11\% behind SRRIP. The feature is not dead weight and not universally useful: \emph{it activates exactly when the workload actually shares}. This motivates keeping the full feature set as the default design and explains both results in Section~\ref{sec:results} mechanistically: the MESI axis carries canneal; the sharer axis defends ocean.
 
-\section{Threats to Validity}
+\section{Limitations and Discussion}
 \label{sec:threats}
 
 \textbf{Workload coverage.} Four multithreaded benchmarks is small compared to the 30--100 single-threaded traces of multi-programmed studies~\cite{shi2019glider,shah2022mockingjay}; each of our runs, however, is a full multi-core coherent simulation rather than a replicated single-core trace, and the four were chosen to span the characterisation space of Table~\ref{tab:workloads} (write-heavy irregular, write-mixed regular, read-only, and low-pressure). Coherence-stress workloads (e.g., GAP graph kernels run multithreaded, SPLASH-3 water) are future work.
