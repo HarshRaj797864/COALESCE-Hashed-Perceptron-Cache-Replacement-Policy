@@ -1,4 +1,4 @@
-# COALESCE — Results Compendium (frozen 2026-06-11, pre-barnes)
+# COALESCE — Results Compendium (updated 2026-06-12: barnes + complete ocean 8c)
 
 All runs: ChampSim + shared-VMEM overlay, 2 MB shared LLC (2048 sets × 16 ways),
 50 M warmup + 100 M sim per core, ranking by max_cycles (lower = better).
@@ -54,7 +54,7 @@ Ablation + baselines at 16c pending.
 | 7 | coalesce_no_sharer | 611,083,533 | +11.2 % |
 | 8 | Mockingjay | 813,767,568 | **+48.1 %** |
 
-### 8-core (6 of 8; no_sharer + mockingjay re-scp pending)
+### 8-core (8 policies — COMPLETE)
 
 | # | Policy | max_cycles | vs SRRIP |
 |---|---|---|---|
@@ -64,8 +64,31 @@ Ablation + baselines at 16c pending.
 | 4 | **COALESCE** | **566,374,131** | **+2.9 %** |
 | 5 | LRU | 584,499,393 | +6.1 % |
 | 6 | Hawkeye | 591,008,754 | +7.3 % |
+| 7 | coalesce_no_sharer | 607,309,316 | +10.3 % |
+| 8 | Mockingjay | 814,696,310 | **+47.9 %** |
 
 724 K LLC invalidations, 91 K aliased fills at 8c.
+
+## barnes (SPLASH-3 N-body octree, n16384 — LOW LLC pressure)
+
+### 4-core (8 policies — COMPLETE)
+
+| # | Policy | max_cycles | vs LRU |
+|---|---|---|---|
+| 1 | **LRU** | **156,549,335** | – |
+| 2 | DRRIP | 158,994,040 | +1.6 % |
+| 3 | SRRIP | 159,098,740 | +1.6 % |
+| 4 | SHiP | 159,175,321 | +1.7 % |
+| 5 | Hawkeye | 159,500,118 | +1.9 % |
+| 6 | **COALESCE** | **160,448,239** | **+2.5 %** |
+| 7 | coalesce_no_sharer | 160,656,244 | +2.6 % |
+| 8 | Mockingjay | 162,545,897 | +3.8 % |
+
+cpu0→LLC sees only ~500 K accesses (vs canneal's tens of millions) — the
+n16384 working set fits in L1/L2; the LLC is barely pressured. Total policy
+spread 3.8 %. With no capacity pressure, LRU recency is near-optimal and
+every learning policy pays prediction overhead for nothing. Fourth
+characterization corner: low-LLC-pressure → nothing matters, LRU wins.
 
 ## fluidanimate (PARSEC; 100 % LOAD at LLC — coherence features structurally inert)
 
@@ -88,19 +111,24 @@ spread only ~5 % — the workload barely discriminates.
 | canneal 4c | tied (−0.0015 %) | sharer inert (shallow sharing) |
 | canneal 8c | ablation wins +0.41 % | sharer bias mis-fires on noise |
 | ocean 4c | **ablation loses 7.3 %** | sharer carries real information under genuine sharing |
-| ocean 8c | pending re-scp | – |
+| ocean 8c | **ablation loses 7.2 %** | **scale-stable — confirms 4c** |
+| barnes 4c | ablation loses 0.13 % | negligible (low LLC pressure) |
 | canneal 16c | pending (queued) | – |
 
 ## Geomean summary (COALESCE speedup, losses included)
 
-| vs | 4-core (3 benchmarks) | 8-core (3 benchmarks) |
+| vs | 4-core (4 benchmarks) | 8-core (3 benchmarks) |
 |---|---|---|
-| LRU | **+14.0 %** | **+9.2 %** |
-| Hawkeye | **+2.1 %** | **+1.5 %** |
-| Mockingjay | **+18.4 %** | pending ocean 8c |
-| DRRIP | +0.6 % | ~0.0 % |
-| SHiP | −0.3 % | −1.0 % |
-| SRRIP | −0.4 % | −2.4 % |
+| LRU | **+9.7 %** | **+9.2 %** |
+| Hawkeye | **+1.5 %** | **+1.5 %** |
+| Mockingjay | **+13.9 %** | **+22.5 %** |
+| DRRIP | +0.2 % | +0.0 % |
+| SHiP | −0.4 % | −1.0 % |
+| SRRIP | −0.5 % | −2.4 % |
+
+(4-core includes barnes; 8-core = canneal + ocean + fluidanimate. COALESCE is
+positive vs every learning policy and LRU at both scales; flat-to-−2.4 % vs
+the RRIP heuristics, disclosed and explained.)
 
 ## The three load-bearing findings
 
@@ -118,14 +146,30 @@ spread only ~5 % — the workload barely discriminates.
    characterization (write fraction × access irregularity × sharing depth)
    predicts where the policy wins.
 
-## Pending (as of 2026-06-11 evening)
+## ⚠️ Track C seed study — methodology caveat
+
+The seed runs (seed2/seed3 + relaunched seed1 baselines) use trace mix
+**big{0,1,2,3,0,1,2,3}** — NOT the headline mix big{0,1,2,3,4,0,1,2}. The
+seed study is internally consistent but its absolute numbers are NOT
+comparable to the headline 8-core canneal table (e.g. coalesce seed2 =
+273.8 M vs headline 301.9 M — the mix lacks big4). Paper treatment: report
+the seed study as a separate variance experiment ("across 3 VMEM
+randomization seeds on a fixed workload mix, max_cycles varies by X %"),
+NOT as error bars glued onto the headline table.
+
+Seed role-shuffling (e.g. seed3's bottleneck on CPU 4 instead of CPU 0) is
+expected: duplicate trace copies alias to the same physical pages under
+shared VMEM, and the seed changes which copy wins the warmup race. Verify
+each seed log has all 8 CPUs finished + sane max_cycles before use.
+
+## Pending (as of 2026-06-12 early)
 
 | Item | Status |
 |---|---|
-| barnes 4c × 8 policies (SPLASH-3, irregular octree + writes + sharing) | running — results 2026-06-12 |
-| ocean 8c coalesce_no_sharer + mockingjay | finishing on server, re-scp |
-| Track C: canneal 8c coalesce seed2/seed3 | running |
-| Track C: baseline seeds (srrip/hawkeye/no_sharer × 2) | to queue |
-| Bias sweep cb_{0_0, 0_20, 40_0, 150_75} (canneal 8c) | running |
-| canneal 16c coalesce_no_sharer | to queue |
-| barnes 8t traces + 8c sims | after disk check |
+| Track C: hawkeye/srrip/ship seeds 1,2,3 | running (seed1 launched 03:17) |
+| Track C: **coalesce seed1 (new mix) — MISSING, must launch** | ❌ |
+| Track C: coalesce_no_sharer seeds — optional | not launched |
+| canneal seed3 coalesce log | on server, scp + verify |
+| Bias sweep: cb_40_0 + cb_150_75 done; cb_0_0 + cb_0_20 at 6/8 | scp when done |
+| canneal 16c coalesce_no_sharer | still to queue |
+| barnes 8c | CUT (low discrimination at 4c; not worth server time) |
