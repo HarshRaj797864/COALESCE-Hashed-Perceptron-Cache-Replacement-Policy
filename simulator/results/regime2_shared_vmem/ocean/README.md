@@ -77,8 +77,18 @@ Full 4-core ranking is in the table above plus this row at the bottom.
 | 4 | **COALESCE** | **566,374,131** | **+2.9 %** | 0.1766 |
 | 5 | LRU | 584,499,393 | +6.1 % | – |
 | 6 | Hawkeye | 591,008,754 | +7.3 % | – |
-| ⏳ | coalesce_no_sharer | scp'd mid-run | re-pull | – |
-| ⏳ | mockingjay | scp'd mid-run | re-pull | – |
+| 7 | coalesce_no_sharer | 607,309,316 | +10.3 % | 0.1647 |
+| 8 | Mockingjay | 814,696,310 | **+47.9 %** | 0.1227 |
+
+**Ablation consistency confirmed at 8-core**: full COALESCE beats
+`coalesce_no_sharer` by **+7.2 %** (566.4 M vs 607.3 M) — almost identical to
+the +7.3 % at 4-core. The sharer-count feature reliably carries ~7 % on ocean
+at both scales. Combined with canneal (where it's inert/slightly harmful),
+the workload-dependent feature activation finding is now scale-stable on
+both workloads.
+
+**Mockingjay collapse confirmed at 8-core**: +47.9 % behind SRRIP, dead last,
+matching its 4-core result (+48.1 %).
 
 Consistent with 4-core: COALESCE is 4th, RRIP family wins, and the gap
 *narrows* with scale (+3.6 % at 4c → +2.9 % at 8c). COALESCE beats LRU by
@@ -97,5 +107,5 @@ workload with non-zero write traffic that we tested.*
 | Directory | Policies present | Status |
 |---|---|---|
 | `4core/` | All 8 | ✅ COMPLETE |
-| `8core/` | 6 complete + 2 mid-run copies | Re-scp coalesce_no_sharer + mockingjay |
+| `8core/` | All 8 | ✅ COMPLETE |
 | `16core/` | – | Cut (per v2 plan addendum — COALESCE not winning here) |
