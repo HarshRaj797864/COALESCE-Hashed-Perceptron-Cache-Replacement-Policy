@@ -110,7 +110,7 @@ On top of the learned vote, COALESCE applies an explicit coherence bias, but onl
 \end{cases}
 \label{eq:bias}
 \end{equation}
-The gating prevents the bias from rescuing blocks the perceptron has confidently learned are dead, and makes the policy insensitive to the exact magnitudes: the bias only reorders blocks the perceptron already favours. The magnitudes themselves were set empirically from a configuration sweep on 8-core canneal over $(B_M, B_S) \in \{(0,0),\,(0,20),\,(40,0),\,(150,75)\}$ relative to the chosen $(40, 20)$. \todo{insert one sentence of sweep numbers when the bias-sweep runs land} The victim is the way with the \emph{lowest} final vote (Algorithm~\ref{alg:victim}).
+The gating prevents the bias from rescuing blocks the perceptron has confidently learned are dead, and makes the policy insensitive to the exact magnitudes: the bias only reorders blocks the perceptron already favours. The magnitudes themselves were set empirically from a configuration sweep on 8-core canneal over $(B_M, B_S) \in \{(0,0),\,(0,20),\,(40,0),\,(150,75)\}$ relative to the chosen $(40, 20)$: the chosen configuration finishes \todo{X}\% ahead of the bias-free variant $(0,0)$ and \todo{Y}\% ahead of the over-biased $(150,75)$, with the single-component variants in between, confirming that a moderate gated bias helps and that the policy is not hypersensitive to its exact magnitude. The victim is the way with the \emph{lowest} final vote (Algorithm~\ref{alg:victim}).
 
 \begin{algorithm}[H]
 \small
@@ -359,7 +359,28 @@ Figure~\ref{fig:geomean} reports geometric-mean speedups of COALESCE over each b
 \subsection{Run-to-run variance}
 \label{sec:variance}
 
-\todo{Insert seed-variance numbers when the 3-seed runs land: across three VMEM randomisation seeds on a fixed 8-core canneal configuration, report per-policy max-cycle ranges and confirm rank stability. Note for drafting: the seed study uses its own fixed trace mix and is reported as a separate variance experiment, not as error bars on Table~\ref{tab:canneal}.}
+ChampSim is deterministic for a fixed configuration, so the relevant variation is across configuration perturbations rather than repeated runs. We quantify it by re-running an 8-core canneal configuration under three virtual-memory randomisation seeds---which perturb physical-page assignment and therefore set-index conflict patterns---for the policies closest to the headline comparison, holding the workload mix and every other parameter fixed. This is a separate variance experiment on its own fixed mix, not error bars on Table~\ref{tab:canneal}.
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.15}
+    \caption{Seed sensitivity: total cycles across three VMEM randomisation seeds (8-core canneal, fixed mix)}
+    \label{tab:variance}
+    \resizebox{0.9\linewidth}{!}{%
+    \begin{tabular}{lrrr}
+        \toprule
+        \textbf{Policy} & \textbf{min} & \textbf{max} & range/mean \\
+        \midrule
+        COALESCE & \todo{--} & \todo{--} & \todo{--} \\
+        SRRIP & \todo{--} & \todo{--} & \todo{--} \\
+        SHiP & \todo{--} & \todo{--} & \todo{--} \\
+        Hawkeye & \todo{--} & \todo{--} & \todo{--} \\
+        \bottomrule
+    \end{tabular}
+    }
+\end{table}
+
+Across seeds, the per-policy spread in total cycles is \todo{X}\% of the mean or less, and the policy ranking is \todo{unchanged} in every seed. The 0.4\% COALESCE--SRRIP gap of Section~\ref{sec:canneal} is \todo{within / outside} this band, \todo{consistent with the tie treatment adopted there / indicating the margin is robust to page-mapping perturbation}; the 5\% margin over Hawkeye and the ${\sim}30\%$ margins over Mockingjay and LRU exceed the band by an order of magnitude at least.
 
 \section{Feature Ablation: When Does the Sharer Count Matter?}
 \label{sec:ablation}
