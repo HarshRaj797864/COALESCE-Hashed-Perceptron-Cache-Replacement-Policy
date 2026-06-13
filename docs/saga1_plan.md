@@ -1,8 +1,28 @@
 # Saga 1 — Server Execution Plan (HiPC 2026)
 
-> **Author**: drafted in another chat 2026-06-05. **Owner**: server-side execution chat.
-> **Purpose**: a self-contained, day-by-day handoff for everything that must run on `iiitsgpu` between now and the HiPC abstract deadline (2026-06-17).
-> **Calendar**: advisor meeting **Jun 15**, posted draft target **Jun 16**, abstract submission **Jun 17**.
+> ⚠️ **SUPERSEDED (2026-06-14) — HISTORICAL, EARLIEST OF THE PLAN DOCS.**
+> Lineage: `saga1_plan.md` (Jun 5) → `hipc_final_implementation.md` (Jun 10) →
+> `hipc_implementation_v2.md` (Jun 10 eve) → **`docs/final_run.md`** (Jun 14,
+> current). Current numbers: **`docs/results_compendium.md`**.
+>
+> **Two key things in this doc are stale/contradicted by later evidence:**
+> 1. **§ 1.1 says the sharer feature is "inert" and `sharer-count bin[1]=100 %`,
+>    `INVALIDATIONS=0`.** That was true only under *default ChampSim VMEM*
+>    (per-CPU isolation). Under the **shared-VMEM overlay** (now canonical),
+>    sharing is real: canneal 8c has 6.9 M invalidations, bin[2+]=25.6 %, and
+>    the sharer feature contributes **+7.2 % on ocean**. The "inert" finding is
+>    a property of the old simulator default, not the policy.
+> 2. **Deadline is 2026-06-24** (was 06-17). **dedup is dropped.** The paper is
+>    complete; remaining work is 16-core completion + new benchmarks
+>    (`final_run.md`).
+>
+> The shared-VMEM overlay this doc set up IS the canonical paper setup, and its
+> day-by-day server recipes (PIN tracing, config templates) remain accurate
+> reference. Read it for *how to run things*, not *what to run* — for the latter,
+> use `final_run.md`.
+>
+> Original header (historical): *drafted 2026-06-05. Purpose: day-by-day handoff
+> for iiitsgpu up to the HiPC abstract deadline 2026-06-17.*
 >
 > Read this top-to-bottom once. The sections after § 3 are self-contained execution recipes; jump straight to them when you start each phase. Read companion docs only when this file points at them: `docs/coherence_aware.md` (mechanism + Saga-2 roadmap), `docs/OPEN_DECISIONS.md` (issue log, item #17), `docs/PUBLICATION_STRATEGY.md` § 2 (weakness inventory; this plan supersedes its § 4 sprint matrix).
 

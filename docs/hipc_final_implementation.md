@@ -1,8 +1,25 @@
 # HiPC Final Implementation Plan — Three parallel tracks + paper rewrite
 
-> **Today**: 2026-06-10 (D-7) · **Deadline**: 2026-06-17 abstract · **Meeting**: 2026-06-15 advisor.
-> **Owner**: Harsh. Server-side execution split between this chat and the original handoff chat.
-> **Status of prior plan**: `docs/saga1_plan.md` is superseded for the final push. The shared-VMEM overlay it set up is now the canonical setup (regime split dropped).
+> ⚠️ **SUPERSEDED (2026-06-14) — HISTORICAL.** This was the Jun-10 three-track
+> plan; both it and its successor `hipc_implementation_v2.md` are now historical.
+> Current authoritative plan: **`docs/final_run.md`**. Current numbers:
+> **`docs/results_compendium.md`**.
+>
+> **What actually happened (vs the plan below):**
+> - **Track A (ablation)**: done. Sharer feature inert on canneal (−0.41 % at
+>   8c), but **+7.2–7.3 % on ocean** — workload-dependent, kept in the policy.
+> - **Track B (ocean)**: done. COALESCE **loses** to the RRIP family on ocean
+>   (regular access favours RRIP); it is the strongest *learning* policy there.
+>   Added fluidanimate (read-only, inert) and barnes (low LLC pressure) as
+>   characterised boundaries.
+> - **Track C (variance)**: done. 3-seed study, bands non-overlapping, ranking
+>   stable; the 0.4 % canneal-8c gap is within COALESCE's own 2.8 % seed band
+>   (treated as a tie).
+> - **Deadline shifted to 2026-06-24.** Paper is complete; the extension is for
+>   16-core completion + new benchmarks per `final_run.md`.
+>
+> Original header (historical): *Today 2026-06-10 (D-7) · Deadline 06-17 abstract
+> · Meeting 06-15 advisor.*
 
 ---
 
