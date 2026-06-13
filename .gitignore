@@ -17,3 +17,6 @@ simulator/tracer/pin/*.tar.gz
 # PIN kit tarball staged at repo root for scp to server
 pin-external-*.tar.gz
 *:Zone.Identifier
+latex/hip/*.fdb_latexmk
+latex/hip/*.fls
+latex/hip/*.synctex.gz

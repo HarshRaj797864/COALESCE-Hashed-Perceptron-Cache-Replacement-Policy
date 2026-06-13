@@ -1,8 +1,31 @@
-# COALESCE — Results Compendium (updated 2026-06-12: barnes + complete ocean 8c)
+# COALESCE — Results Compendium (updated 2026-06-14: overlay validation)
 
 All runs: ChampSim + shared-VMEM overlay, 2 MB shared LLC (2048 sets × 16 ways),
 50 M warmup + 100 M sim per core, ranking by max_cycles (lower = better).
 Source logs: `simulator/results/regime2_shared_vmem/`.
+
+## Overlay validation (local sanity check, 2026-06-14)
+
+`bash bench/scripts/...` style production check on committed logs. The overlay
+is active on every workload (aliased fills > 0) and invalidations track write
+semantics exactly:
+
+| Workload / cores | aliased fills | LLC invalidations | reading |
+|---|---|---|---|
+| canneal 4c | 7,874 | 106,667 | write-heavy, scales |
+| canneal 8c | 304,516 | 6,894,555 | ↑ with cores |
+| canneal 16c | 611,583 | 23,868,033 | ↑↑ (confirms 16c fully shared) |
+| ocean 4c / 8c | ~91,000 | 780,482 / 724,452 | moderate (write-mixed) |
+| **fluidanimate 4c / 8c** | 101 / 249 | **0 / 0** | **read-only → exactly zero (correctness proof)** |
+| barnes 4c / 8c | 3,513 / 26,698 | 30,416 / 184,151 | nonzero (barnes HAS writes — not read-only) |
+
+Key correctness signal: fluidanimate (100% LLC reads) produces **exactly zero**
+invalidations while write-heavy canneal scales 0.11M→6.9M→23.9M with cores. An
+overlay fabricating sharing could not do both. The 16c invalidation count
+(23.9M, ~3.5× the 8c value) also confirms the committed COALESCE 16c is fully
+shared across all 16 cores — a tripwire for the new 16c baselines: they should
+land near 20M invalidations, not ~6.9M (which would mean the vmem_shared_cpus
+bug bit them). This validation is now cited in the paper's Methodology section.
 
 ## canneal (irregular, write-heavy: 89 % RFO+WRITE at LLC)
 
