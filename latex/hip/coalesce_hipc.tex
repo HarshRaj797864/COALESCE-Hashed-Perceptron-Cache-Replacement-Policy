@@ -293,7 +293,7 @@ The win concentrates exactly where it gates performance. canneal's execution tim
 
 At 16 cores under the overlay, COALESCE completes the same per-core work in 348.2\,M cycles, with bottleneck-core IPC declining only modestly (0.374 at 4 cores, 0.332 at 8, 0.294 at 16) as per-core effective LLC capacity shrinks by $4\times$ (Figure~\ref{fig:scaling}). We focus per-policy comparisons at 4 and 8 cores and defer full 16-core baselines to an extended evaluation; the scaling trend indicates that per-core effective LLC capacity is the dominant variable, so the qualitative ranking at 16 cores is expected to track the 8-core ordering.
 
-\begin{figure}[H]
+\begin{figure}[tbp]
     \centering
     \includegraphics[width=0.95\linewidth]{fig_scaling.png}
     \caption{COALESCE scaling on canneal: total cycles and bottleneck-core IPC at 4, 8, and 16 cores.}
