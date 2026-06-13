@@ -1,9 +1,25 @@
 # HiPC Implementation Plan v2 — Simplified Policy Pivot
 
-> **Status**: 2026-06-10 evening · **Deadline**: 2026-06-17 = D-0 · **Today** = D-7
+> ⚠️ **SUPERSEDED (2026-06-14) — HISTORICAL, DO NOT EXECUTE FROM THIS DOC.**
+> Current authoritative plan: **`docs/final_run.md`**. Current result numbers:
+> **`docs/results_compendium.md`**.
 >
-> Supersedes `docs/hipc_final_implementation.md`. Major pivot: the 8-core ablation
-> result on canneal shared has overturned the policy-under-test.
+> **Three things in this doc are now wrong; corrections:**
+> 1. **Deadline is 2026-06-24, not 06-17** (shifted +7 days).
+> 2. **The § 1 "simplified-policy pivot" was REVERTED.** It proposed making
+>    `coalesce_no_sharer` the headline policy because the sharer feature looked
+>    inert on canneal. The ocean ablation then showed the sharer feature carries
+>    **+7.2–7.3 %** under genuine sharing — so **full COALESCE (both feature
+>    axes) is the headline policy**. The sharer feature is workload-dependent,
+>    not dead. See the addendum at the bottom of this file and `final_run.md`.
+> 3. **The paper is COMPLETE** (`latex/hip/coalesce_hipc.tex`); all three
+>    "tracks" below landed. ocean lost to RRIP (does not generalise beyond
+>    canneal-class); fluidanimate/barnes are characterised boundaries.
+>
+> Original header (historical): *2026-06-10 evening · Deadline 06-17 = D-0 ·
+> Today = D-7. Supersedes `hipc_final_implementation.md`. Major pivot: the
+> 8-core ablation result on canneal shared has overturned the policy-under-test.*
+> The pivot in this sentence is the one that was reverted — see correction #2.
 
 ---
 
