@@ -110,7 +110,7 @@ On top of the learned vote, COALESCE applies an explicit coherence bias, but onl
 \end{cases}
 \label{eq:bias}
 \end{equation}
-The gating prevents the bias from rescuing blocks the perceptron has confidently learned are dead, and makes the policy insensitive to the exact magnitudes: the bias only reorders blocks the perceptron already favours. The magnitudes themselves were set empirically from a configuration sweep on 8-core canneal over $(B_M, B_S) \in \{(0,0),\,(0,20),\,(40,0),\,(150,75)\}$ relative to the chosen $(40, 20)$: the chosen configuration finishes \todo{X}\% ahead of the bias-free variant $(0,0)$ and \todo{Y}\% ahead of the over-biased $(150,75)$, with the single-component variants in between, confirming that a moderate gated bias helps and that the policy is not hypersensitive to its exact magnitude. The victim is the way with the \emph{lowest} final vote (Algorithm~\ref{alg:victim}).
+The gating prevents the bias from rescuing blocks the perceptron has confidently learned are dead, and makes the policy insensitive to the exact magnitudes: the bias only reorders blocks the perceptron already favours. The magnitudes themselves were set empirically from a configuration sweep on 8-core canneal over $(B_M, B_S) \in \{(0,0),\,(0,20),\,(40,0),\,(150,75)\}$ relative to the chosen $(40, 20)$: the chosen configuration finishes \todo{X}\% ahead of the bias-free variant $(0,0)$, 1.1\% ahead of the over-biased $(150,75)$, and 1.5\% ahead of the MODIFIED-only variant $(40,0)$, confirming that a moderate gated bias helps and that the policy is not hypersensitive to its exact magnitude. The victim is the way with the \emph{lowest} final vote (Algorithm~\ref{alg:victim}).
 
 \begin{algorithm}[tbp]
 \small
@@ -347,40 +347,40 @@ Across all four workloads a consistent pattern emerges for the strongest multi-p
 
 \subsection{Suite-wide summary}
 
-Figure~\ref{fig:geomean} reports geometric-mean speedups of COALESCE over each baseline, losses included. Across the four-workload suite at 4 cores---the paper's summary statistic---the geomean speedup over LRU is $+9.7\%$ for COALESCE, $+8.1\%$ for Hawkeye, and $-3.7\%$ for Mockingjay; against the RRIP family COALESCE sits between $+0.2\%$ and $-0.5\%$. At 8 cores, only three workloads have 8-core data (canneal, ocean, fluidanimate; barnes was run at 4 cores), and on that reduced set COALESCE achieves $+9.2\%$ over LRU, $+1.5\%$ over Hawkeye, and $+22.5\%$ over Mockingjay, with $-1.0\%$ to $-2.4\%$ against SHiP and SRRIP. We emphasise that the two scales are not directly comparable---the 8-core set excludes barnes, a workload where COALESCE trails---which is why we treat the 4-core suite as the headline summary. The overall picture is fair to state plainly: COALESCE wins decisively inside its target class, concedes modest ground to RRIP heuristics outside it, and is the strongest learning-based policy at both scales.
+Figure~\ref{fig:geomean} reports geometric-mean speedups over the same four-workload suite at both scales, losses included. Among the learning-based policies, COALESCE has the highest geomean speedup over LRU at both scales---$+9.7\%$ at 4 cores and $+6.2\%$ at 8 cores, against Hawkeye's $+8.1\%$ and $+5.2\%$, while Mockingjay is net negative ($-3.7\%$ and $-9.2\%$). Stated as COALESCE's margin over each baseline, the suite geomean is $+9.7\%$/$+6.2\%$ over LRU and $+13.9\%$/$+17.0\%$ over Mockingjay at 4/8 cores, with $+1.5\%$/$+1.0\%$ over Hawkeye; against the RRIP family COALESCE sits between $+0.2\%$ and $-2.3\%$. The picture is consistent across scales and fair to state plainly: COALESCE wins decisively inside its target class, concedes modest ground to RRIP heuristics outside it, and is the strongest learning-based policy at both scales.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\linewidth]{fig_geomean.png}
-    \caption{Geometric-mean speedup of COALESCE over each baseline across all workloads (losses included), at 4 cores (4 benchmarks) and 8 cores (3 benchmarks).}
+    \caption{Geometric-mean speedup of COALESCE over each baseline across the four-workload suite (losses included), at 4 and 8 cores.}
     \label{fig:geomean}
 \end{figure}
 
 \subsection{Run-to-run variance}
 \label{sec:variance}
 
-ChampSim is deterministic for a fixed configuration, so the relevant variation is across configuration perturbations rather than repeated runs. We quantify it by re-running an 8-core canneal configuration under three virtual-memory randomisation seeds---which perturb physical-page assignment and therefore set-index conflict patterns---for the policies closest to the headline comparison, holding the workload mix and every other parameter fixed. This is a separate variance experiment on its own fixed mix, not error bars on Table~\ref{tab:canneal}.
+ChampSim is deterministic for a fixed configuration, so the relevant variation is across configuration perturbations rather than repeated runs. We quantify it by re-running an 8-core canneal configuration under three virtual-memory randomisation seeds---which perturb physical-page assignment and therefore set-index conflict patterns---for the four policies closest to the headline comparison, holding the workload mix and every other parameter fixed. This is a separate variance experiment on its own fixed mix, not error bars on Table~\ref{tab:canneal}, and the absolute cycle counts therefore differ from that table.
 
-\begin{table}[htbp]
+\begin{table}[tbp]
     \centering
     \renewcommand{\arraystretch}{1.15}
-    \caption{Seed sensitivity: total cycles across three VMEM randomisation seeds (8-core canneal, fixed mix)}
+    \caption{Seed sensitivity: total cycles (millions) across three VMEM randomisation seeds (8-core canneal, fixed mix)}
     \label{tab:variance}
-    \resizebox{0.9\linewidth}{!}{%
-    \begin{tabular}{lrrr}
+    \resizebox{0.95\linewidth}{!}{%
+    \begin{tabular}{lrrrr}
         \toprule
-        \textbf{Policy} & \textbf{min} & \textbf{max} & range/mean \\
+        \textbf{Policy} & \textbf{min} & \textbf{mean} & \textbf{max} & range/mean \\
         \midrule
-        COALESCE & \todo{--} & \todo{--} & \todo{--} \\
-        SRRIP & \todo{--} & \todo{--} & \todo{--} \\
-        SHiP & \todo{--} & \todo{--} & \todo{--} \\
-        Hawkeye & \todo{--} & \todo{--} & \todo{--} \\
+        \textbf{COALESCE} & \textbf{268.6} & \textbf{272.9} & \textbf{276.3} & 2.8\% \\
+        SRRIP & 283.8 & 286.5 & 290.2 & 2.2\% \\
+        SHiP & 294.1 & 295.0 & 296.4 & 0.8\% \\
+        Hawkeye & 316.2 & 318.5 & 322.4 & 2.0\% \\
         \bottomrule
     \end{tabular}
     }
 \end{table}
 
-Across seeds, the per-policy spread in total cycles is \todo{X}\% of the mean or less, and the policy ranking is \todo{unchanged} in every seed. The 0.4\% COALESCE--SRRIP gap of Section~\ref{sec:canneal} is \todo{within / outside} this band, \todo{consistent with the tie treatment adopted there / indicating the margin is robust to page-mapping perturbation}; the 5\% margin over Hawkeye and the ${\sim}30\%$ margins over Mockingjay and LRU exceed the band by an order of magnitude at least.
+Three findings follow (Table~\ref{tab:variance}). First, per-policy variation is small: the range across seeds is at most 2.8\% of the mean (coefficient of variation $\leq 1.2\%$). Second, the policy ranking is identical in every seed---COALESCE $<$ SRRIP $<$ SHiP $<$ Hawkeye---and the bands do not overlap: COALESCE's \emph{slowest} seed (276.3\,M) is still 2.7\% faster than SRRIP's \emph{fastest} (283.8\,M). Third, on this mix COALESCE leads SRRIP by 5.0\% in the mean, well outside either policy's seed band. The 0.4\% COALESCE--SRRIP gap on the headline mix (Section~\ref{sec:canneal}) lies \emph{within} COALESCE's own 2.8\% band, which is why we treat that particular comparison as a tie; the variance study shows the underlying ordering is nonetheless stable, and the 5\% margin over Hawkeye and the ${\sim}30\%$ margins over Mockingjay and LRU exceed the seed band by an order of magnitude.
 
 \section{Feature Ablation: When Does the Sharer Count Matter?}
 \label{sec:ablation}
