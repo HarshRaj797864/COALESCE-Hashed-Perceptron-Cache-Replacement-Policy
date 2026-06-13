@@ -42,13 +42,15 @@ scaling = {  # canneal, COALESCE only
 }
 
 geomean = {
-    # vs-policy: (4-core %, 8-core %)  positive = COALESCE faster
-    "LRU":        (9.7, 9.2),
-    "Hawkeye":    (1.5, 1.5),
-    "Mockingjay": (13.9, 22.5),
-    "DRRIP":      (0.2, 0.0),
-    "SHiP":       (-0.4, -1.0),
-    "SRRIP":      (-0.5, -2.4),
+    # COALESCE speedup vs each baseline: (4-core %, 8-core %), both over the
+    # full 4-benchmark suite (canneal, ocean, fluidanimate, barnes).
+    # positive = COALESCE faster
+    "LRU":        (9.7, 6.2),
+    "Hawkeye":    (1.5, 1.0),
+    "Mockingjay": (13.9, 17.0),
+    "DRRIP":      (0.2, -0.4),
+    "SHiP":       (-0.4, -1.2),
+    "SRRIP":      (-0.5, -2.3),
 }
 
 ablation = {
