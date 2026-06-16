@@ -111,12 +111,17 @@ make                                # → bin/champsim_btp_test
 make                                # → bin/champsim_8core_coalesce
 ```
 
-**Run 4-core**:
+**Run 4-core** (STANDARD params — 50M warmup + 100M sim, matches 8c/16c):
 ```bash
 bin/champsim_btp_test \
-  --warmup-instructions 200000000 --simulation-instructions 50000000 \
+  --warmup-instructions 50000000 --simulation-instructions 100000000 \
   traces/canneal_big{0,1,2,3}.champsimtrace
 ```
+> ⚠️ **Do not use 200M+50M** (an old non-standard config). All regime2 results
+> use **50M warmup + 100M sim per core uniformly**. Verified 2026-06-15: committed
+> canneal 4c/8c/16c and ocean 4c/8c are all 50M+100M; the only straggler was
+> fluidanimate 4c (was 200M+50M, re-run to standard). When in doubt, read the
+> actual warmup/sim from a log, don't trust this example or any chat's memory.
 
 **Run 8-core**:
 ```bash
