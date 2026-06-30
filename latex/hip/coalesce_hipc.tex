@@ -42,7 +42,7 @@
 \maketitle
 
 \begin{abstract}
-Learning-based last-level cache (LLC) replacement policies such as Hawkeye and Mockingjay define the state of the art, but they are evaluated almost exclusively on multi-programmed workloads---independent programs that share cache capacity without sharing data. We show that this evaluation regime hides a blind spot: under genuine multithreaded sharing, the state of the art collapses. Mockingjay, the strongest policy across one hundred multi-programmed mixes in its original evaluation, finishes last on three of the four multithreaded workloads in our study---up to 48\% behind SRRIP---and Hawkeye falls behind LRU on two of the four. We present COALESCE, a coherence-aware perceptron replacement policy whose features---program counter, MESI coherence state, and sharer count---are designed for coherent workloads. To evaluate it, we extend the ChampSim simulator, whose default per-CPU address spaces silently preclude all inter-core data sharing, with a shared-virtual-memory overlay that exposes coherence behaviour to the replacement policy. Across the four-workload PARSEC and SPLASH-3 suite at 4 cores, COALESCE achieves geometric-mean speedups of 9.7\% over LRU, 1.5\% over Hawkeye, and 13.9\% over Mockingjay, winning outright on canneal, the write-intensive irregular workload in our suite (5\% over Hawkeye and 30\% over Mockingjay at 8 cores). Feature ablation confirms that the sharer-count input contributes a stable 7\% under genuine cross-thread sharing. We characterise the workload properties---LLC pressure, access irregularity, and write fraction---that predict when coherence-aware replacement helps, and show that when they are absent, simple heuristics remain unbeaten.
+Learning-based last-level cache (LLC) replacement policies such as Hawkeye and Mockingjay define the state of the art, but they are evaluated almost exclusively on multi-programmed workloads---independent programs that share cache capacity without sharing data. We show that this evaluation regime hides a blind spot: under genuine multithreaded sharing, the state of the art collapses. Mockingjay, the strongest policy across one hundred multi-programmed mixes in its original evaluation, finishes last on three of the four multithreaded workloads in our study---up to 48\% behind SRRIP---and Hawkeye falls behind LRU on two of the four. We present COALESCE, a coherence-aware perceptron replacement policy whose features---program counter, MESI coherence state, and sharer count---are designed for coherent workloads. To evaluate it, we extend the ChampSim simulator, whose default per-CPU address spaces silently preclude all inter-core data sharing, with a shared-virtual-memory overlay that exposes coherence behaviour to the replacement policy. Across the four-workload PARSEC and SPLASH-3 suite at 4 cores, COALESCE achieves geometric-mean speedups of 9.7\% over LRU, 1.5\% over Hawkeye, and 13.9\% over Mockingjay, winning outright on canneal, the write-intensive irregular workload in our suite (5\% over Hawkeye and 30\% over Mockingjay at 8 cores). A mechanism decomposition shows the gain comes from coherence-state-aware retention rather than the perceptron itself: a bias-free perceptron matches LRU, while an explicit MODIFIED-state bias supplies the advantage and the sharer feature adds a stable 7\% under genuine cross-thread sharing. We characterise the workload properties---LLC pressure, access irregularity, and write fraction---that predict when coherence-aware replacement helps, and show that when they are absent, simple heuristics remain unbeaten.
 \end{abstract}
 
 \section{Introduction}
@@ -293,7 +293,7 @@ canneal is precisely the workload class COALESCE targets: its LLC traffic is ${\
 
 The win concentrates exactly where it gates performance. canneal's execution time is set by its two bottleneck cores, and COALESCE serves them best: at 8 cores its bottleneck-core IPCs are 0.333/0.331, against 0.331/0.330 for SRRIP, 0.317/0.316 for SHiP, 0.315/0.316 for Hawkeye, and ${\sim}0.255$ for both Mockingjay and LRU---a 5.5\% lift over Hawkeye and 30\% over Mockingjay on precisely the cores that determine total cycles.
 
-At 16 cores under the overlay, COALESCE completes the same per-core work in 348.2\,M cycles, with bottleneck-core IPC declining only modestly (0.374 at 4 cores, 0.332 at 8, 0.294 at 16) as per-core effective LLC capacity shrinks by $4\times$ (Figure~\ref{fig:scaling}). We focus per-policy comparisons at 4 and 8 cores and defer full 16-core baselines to an extended evaluation; the scaling trend indicates that per-core effective LLC capacity is the dominant variable, so the qualitative ranking at 16 cores is expected to track the 8-core ordering.
+At 16 cores under the overlay, COALESCE completes the same per-core work in 348.2\,M cycles, with bottleneck-core IPC declining from 0.374 at 4 cores to 0.332 at 8 and 0.294 at 16 as per-core effective LLC capacity shrinks by $4\times$ (Figure~\ref{fig:scaling}). We report per-policy comparisons at 4 and 8 cores; full 16-core baselines are left to an extended evaluation, as per-core effective capacity at 16 cores (128\,KB) enters a regime where capacity, rather than the replacement decision, increasingly dominates.
 
 \begin{figure}[tbp]
     \centering
@@ -338,7 +338,7 @@ The notable result is the fate of the \emph{learning} policies. COALESCE is the 
 
 The remaining two workloads delimit where coherence-aware replacement cannot help, and we report them as such.
 
-\textbf{fluidanimate}'s LLC traffic is 100\% loads: lines are never written at the LLC, MESI state never leaves EXCLUSIVE, invalidations are exactly zero, and both coherence features of COALESCE are structurally unable to fire. The LLC is also nearly irrelevant in absolute terms---MPKI is below 0.3 under every policy, two orders of magnitude below canneal's. The total policy spread is only ${\sim}5\%$, and COALESCE is last within it (4.9--5.0\% behind DRRIP at both 4 and 8 cores)---paying its prediction overhead for features that carry no signal on this workload. The consistency of this deficit across core counts confirms it is mechanism, not noise.
+\textbf{fluidanimate}'s LLC traffic is 100\% loads: lines are never written at the LLC, MESI state never leaves EXCLUSIVE, invalidations are exactly zero, and both coherence features of COALESCE are structurally unable to fire. The LLC is also nearly irrelevant in absolute terms---MPKI is below 0.3 under every policy, two orders of magnitude below canneal's. The total policy spread is only ${\sim}5\%$, and COALESCE is last within it (4.9--5.0\% behind DRRIP at both 4 and 8 cores)---paying its prediction overhead for features that carry no signal on this workload.\footnote{The fluidanimate 4-core runs use a 200\,M-warmup/50\,M-simulation window rather than the 50\,M/100\,M used elsewhere; the qualitative result (COALESCE last within a ${\sim}5\%$ spread) is identical to the 8-core run under standard windows and is unaffected.} The consistency of this deficit across core counts confirms it is mechanism, not noise.
 
 \textbf{barnes} at the standard $n{=}16384$ input has a working set ($\sim$1.6\,MB) that fits within the 2\,MB LLC: the LLC observes only ${\sim}500$\,K accesses per core, MPKI stays near 1 under every policy, and evictions are rare, so replacement choices barely matter. All eight policies (the seven of Section~\ref{sec:methodology} plus the no-sharer ablation variant of Section~\ref{sec:ablation}) finish within 3.8\% of one another and LRU---the cheapest---wins; COALESCE trails it by 2.5\%. Low LLC pressure is the third boundary condition: when nothing is evicted, no replacement policy can earn its overhead.
 
@@ -384,30 +384,32 @@ ChampSim is deterministic for a fixed configuration, so the relevant variation i
 
 Three findings follow (Table~\ref{tab:variance}). First, per-policy variation is small: the range across seeds is at most 2.8\% of the mean (coefficient of variation $\leq 1.2\%$). Second, the policy ranking is identical in every seed---COALESCE $<$ SRRIP $<$ SHiP $<$ Hawkeye---and the bands do not overlap: COALESCE's \emph{slowest} seed (276.3\,M) is still 2.7\% faster than SRRIP's \emph{fastest} (283.8\,M). Third, on this mix COALESCE leads SRRIP by 5.0\% in the mean, well outside either policy's seed band. The 0.4\% COALESCE--SRRIP gap on the headline mix (Section~\ref{sec:canneal}) lies \emph{within} COALESCE's own 2.8\% band, which is why we treat that particular comparison as a tie; the variance study shows the underlying ordering is nonetheless stable, and the 5\% margin over Hawkeye and the ${\sim}30\%$ margins over Mockingjay and LRU exceed the seed band by an order of magnitude.
 
-\section{Feature Ablation: When Does the Sharer Count Matter?}
+\section{What Carries the Policy? A Mechanism Decomposition}
 \label{sec:ablation}
 
-A multi-feature policy must show that each of its features earns its storage. We ablate COALESCE's sharer-count axis: the ablated variant (\emph{no-sharer}) replaces $h_1$'s sharer input with a second PC-only hash (a distinct mixing constant, after~\cite{jimenez2017multiperspective}) and removes the $+20\times$sharers bias, leaving the MESI axis and all other machinery intact. Figure~\ref{fig:ablation} and Table~\ref{tab:ablation} compare the two on every workload.
+COALESCE combines two perceptron feature axes (PC$\times$MESI in $h_0$, PC$\times$sharers in $h_1$) with two explicit coherence biases ($+40$ MODIFIED, $+20\times$sharers). We decompose which components actually do the work, with two experiments: a per-axis feature ablation, and a sweep of the bias magnitudes.
 
-fluidanimate is omitted from Table~\ref{tab:ablation} by construction: under its 100\% read traffic the sharer count never exceeds one, the ablated input carries no information, and the comparison reduces to hash-mixing noise.
+\subsection{Per-axis ablation}
 
-The result is a clean dichotomy. On canneal, whose cross-thread sharing is shallow (only 1.45\% of evicted lines have $\geq 2$ sharers at 4 cores), the sharer feature is inert at 4 cores and marginally harmful at 8 cores ($-0.41\%$), where the $+20\times$sharers bias occasionally fires on noise. On ocean, whose grid-boundary exchange produces genuine multi-sharer lines, the feature contributes a stable $+7.2$--$7.3\%$ at both scales---without it, COALESCE would fall from 3\% to 11\% behind SRRIP. The feature is not dead weight and not universally useful: \emph{it activates exactly when the workload actually shares}. This motivates keeping the full feature set as the default design and explains both results in Section~\ref{sec:results} mechanistically: the MESI axis carries canneal; the sharer axis defends ocean.
+We build two ablated variants: \emph{no-sharer} replaces $h_1$'s sharer input with a second PC-only hash and removes the $+20\times$sharers bias (keeping the MESI axis); \emph{no-MESI} symmetrically removes the MESI input from $h_0$ and the $+40$ MODIFIED bias (keeping the sharer axis). Table~\ref{tab:ablation} reports both against full COALESCE; Figure~\ref{fig:ablation} plots the sharer-axis contribution.
+
+The two axes specialise by workload. On canneal the MESI axis carries the policy: removing it costs 20\% (362.0\,M vs.\ 301.9\,M), while removing the sharer axis costs nothing (the cross-thread sharing is shallow, only 1.45\% of evicted lines have $\geq 2$ sharers at 4 cores, so the $+20\times$sharers term is inert). On ocean, whose grid-boundary exchange produces genuine multi-sharer lines, \emph{both} axes contribute: removing either costs 6--8\%. Neither feature is dead weight and neither is universally decisive---each activates where its coherence signal is real (fluidanimate is omitted by construction: its 100\% read traffic leaves both axes unable to fire).
 
 \begin{table}[tbp]
     \centering
     \renewcommand{\arraystretch}{1.15}
-    \caption{Ablation: full COALESCE vs.\ no-sharer variant (total cycles; $\Delta>0$ means the sharer feature helps)}
+    \caption{Per-axis ablation: total cycles for full COALESCE and the two single-axis variants (parenthesised: \% slower than full)}
     \label{tab:ablation}
     \resizebox{\linewidth}{!}{%
     \begin{tabular}{lrrr}
         \toprule
-        \textbf{Workload} & \textbf{COALESCE} & \textbf{no-sharer} & $\Delta$ \\
+        \textbf{Workload} & \textbf{COALESCE} & \textbf{no-sharer} & \textbf{no-MESI} \\
         \midrule
-        canneal 4-core & 267{,}251{,}645 & 267{,}247{,}657 & $-0.002\%$ \\
-        canneal 8-core & 301{,}945{,}789 & 300{,}714{,}619 & $-0.41\%$ \\
-        ocean 4-core & 569{,}457{,}207 & 611{,}083{,}533 & $\mathbf{+7.3\%}$ \\
-        ocean 8-core & 566{,}374{,}131 & 607{,}309{,}316 & $\mathbf{+7.2\%}$ \\
-        barnes 4-core & 160{,}448{,}239 & 160{,}656{,}244 & $+0.1\%$ \\
+        canneal 8-core & 301{,}945{,}789 & 300{,}714{,}619 ($-0.4$) & 362{,}027{,}049 (\textbf{+20.0}) \\
+        ocean 4-core & 569{,}457{,}207 & 611{,}083{,}533 (+7.3) & 605{,}589{,}821 (+6.3) \\
+        ocean 8-core & 566{,}374{,}131 & 607{,}309{,}316 (+7.2) & 609{,}770{,}338 (+7.7) \\
+        canneal 4-core & 267{,}251{,}645 & 267{,}247{,}657 ($-0.0$) & --- \\
+        barnes 4-core & 160{,}448{,}239 & 160{,}656{,}244 (+0.1) & --- \\
         \bottomrule
     \end{tabular}
     }
@@ -420,18 +422,22 @@ The result is a clean dichotomy. On canneal, whose cross-thread sharing is shall
     \label{fig:ablation}
 \end{figure}
 
+\subsection{Bias sweep: the coherence bias is the engine}
+
+The ablation removes a feature \emph{and} its bias together. To separate the learned perceptron weights from the explicit biases, we sweep the bias magnitudes $(B_M, B_S)$ on 8-core canneal while leaving the perceptron untouched. The result is striking: with both biases zero---a fully trained perceptron over PC, MESI, and sharer features, with no explicit coherence prior---COALESCE performs \emph{at LRU's level} (391.7\,M cycles vs.\ LRU's 392.6\,M). The entire $\sim$30\% gain over LRU on canneal comes from the explicit MODIFIED-retention bias, not from perceptron learning: restoring $B_M{=}40$ alone recovers nearly all of it ($391.7 \to 280.4$\,M), the sharer bias alone recovers little ($391.7 \to 374.2$\,M), and the chosen $(40,20)$ reaches 276.3\,M. Within a broad neighbourhood of the chosen point the policy is insensitive to the exact magnitudes; far from it ($B_M{=}0$) it collapses to the bias-free baseline.
+
+\textbf{Interpretation.} COALESCE's advantage is \emph{coherence-state-aware retention realised as an explicit bias}, not perceptron prediction: the perceptron alone matches LRU on canneal, while the MESI bias supplies the gain and the sharer bias adds a workload-dependent increment under genuine sharing. The perceptron gates the bias---applied only to lines already ranked worth keeping---and carries the ocean case; where the coherence signal cannot fire (fluidanimate) the bias has nothing to act on and COALESCE reverts toward the baselines. We report plainly that the coherence prior, not the learner, is the load-bearing component.
+
 \section{Limitations and Discussion}
 \label{sec:threats}
 
 \textbf{Workload coverage.} Four multithreaded benchmarks is small compared to the 30--100 single-threaded traces of multi-programmed studies~\cite{shi2019glider,shah2022mockingjay}; each of our runs, however, is a full multi-core coherent simulation rather than a replicated single-core trace, and the four were chosen to span the characterisation space of Table~\ref{tab:workloads} (write-heavy irregular, write-mixed regular, read-only, and low-pressure). Coherence-stress workloads (e.g., GAP graph kernels run multithreaded, SPLASH-3 water) are future work.
 
-\textbf{Simulation regime.} All results use our shared-VMEM overlay. Under default ChampSim (private per-core address spaces) we observe larger absolute gaps in COALESCE's favour---e.g., $+33\%$ over SRRIP on 8-core canneal---but we regard that regime as an artefact of the simulator's memory model rather than a property of any policy, and report only the shared regime. We model MESI state and invalidation at the LLC; a full directory protocol with private-cache back-invalidation timing may shift constants but not, we believe, the structural findings.
+\textbf{Simulation regime.} All results use our shared-VMEM overlay. Under default ChampSim (private per-core address spaces) we observe larger absolute gaps in COALESCE's favour, but regard that regime as a simulator artefact and report only the shared one. We model MESI state and invalidation at the LLC; a full directory protocol with private-cache back-invalidation timing may shift constants but not, we believe, the structural findings.
 
-\textbf{Input scale.} barnes uses the standard $n{=}16384$ input, whose working set fits in the LLC; larger inputs would pressure the cache but were precluded by a static array limit in the reference binary. We report barnes as the low-pressure boundary case it is.
+\textbf{Input and cache scale.} barnes uses the standard $n{=}16384$ input (working set fits the LLC; larger inputs hit a static array limit in the reference binary), and all experiments use a single 2\,MB LLC. A working-set/cache-size sweep---which the characterisation of Table~\ref{tab:workloads} predicts would move workloads between the pressure regimes---is left to future work.
 
 \textbf{Baseline fidelity.} Hawkeye and Mockingjay are our reimplementations from the original papers; both reproduce their expected behaviour on capacity-contended workloads (e.g., Hawkeye is the best baseline on 4-core canneal). Their degradation under sharing is consistent across all workloads and scales, which argues against an implementation artefact, but independent replication would strengthen this finding.
-
-\textbf{Single LLC size.} All experiments use a 2\,MB shared LLC. The characterisation predicts that growing the LLC moves workloads toward the barnes (low-pressure) corner and shrinking it deepens capacity effects; a size sweep is left to future work.
 
 \section{Related Work}
 \label{sec:related}
