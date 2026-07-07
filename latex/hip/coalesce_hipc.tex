@@ -164,7 +164,7 @@ We validate the overlay by confirming that its coherence statistics track each w
 
 \subsection{System configuration}
 
-Table~\ref{tab:simconfig} lists the simulated system. The LLC is shared by all cores; private L1/L2 caches and TLBs use ChampSim defaults. No prefetcher is used at any level, isolating the replacement policy's effect, consistent with the no-prefetcher configurations of prior replacement studies~\cite{jain2016hawkeye,shah2022mockingjay}. \textsuperscript{$\dagger$}Warmup of 50\,M instructions per core (0.4--1.6\,B committed instructions per run) cycles the 32K-line LLC many times over; per-core heartbeat IPC stabilises well before the measurement window in every run.
+Table~\ref{tab:simconfig} lists the simulated system. The LLC is shared by all cores; private L1/L2 caches and TLBs use ChampSim defaults. No prefetcher is used at any level, isolating the replacement policy's effect, consistent with the no-prefetcher configurations of prior replacement studies~\cite{jain2016hawkeye,shah2022mockingjay}. The 50\,M-instruction-per-core warmup (0.4--1.6\,B committed instructions per run) cycles the 32K-line LLC many times over, and per-core heartbeat IPC stabilises well before the measurement window in every run.
 
 \begin{table}[htbp]
     \centering
@@ -181,7 +181,7 @@ Table~\ref{tab:simconfig} lists the simulated system. The LLC is shared by all c
         DRAM & DDR4-3200, $t_{RP}=t_{RCD}=t_{CAS}=24$ (ChampSim default) \\
         Virtual memory & shared-VMEM overlay across all cores \\
         Prefetcher & none \\
-        Warmup / simulation & 50\,M / 100\,M instructions per core\textsuperscript{$\dagger$} \\
+        Warmup / simulation & 50\,M / 100\,M instructions per core \\
         Replacement policies & LRU, SRRIP, DRRIP, SHiP, Hawkeye, \\
         & Mockingjay, COALESCE (+ ablation) \\
         \bottomrule
