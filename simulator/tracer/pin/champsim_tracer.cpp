@@ -38,7 +38,7 @@ trace_instr_format_t curr_instr[PIN_MAX_THREADS];
 /* ===================================================================== */
 KNOB<std::string> KnobOutputFile(KNOB_MODE_WRITEONCE, "pintool", "o", "champsim.trace", "specify base file name");
 KNOB<UINT64> KnobSkipInstructions(KNOB_MODE_WRITEONCE, "pintool", "s", "0", "Instructions to skip per thread");
-KNOB<UINT64> KnobTraceInstructions(KNOB_MODE_WRITEONCE, "pintool", "t", "1000000", "Instructions to trace per thread");
+KNOB<UINT64> KnobTraceInstructions(KNOB_MODE_WRITEONCE, "pintool", "n", "1000000", "Instructions to trace per thread");
 
 /* ===================================================================== */
 // Analysis routines

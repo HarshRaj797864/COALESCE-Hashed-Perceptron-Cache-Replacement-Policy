@@ -1,166 +1,100 @@
-# COALESCE
+# COALESCE: Coherence-Aware Perceptron Cache Replacement for Multithreaded Workloads
 
-**Coherence-Observant Adaptive Learning for System-wide Cache Efficiency**
+COALESCE is a last-level cache (LLC) replacement policy that uses cache
+coherence state as a first-class eviction signal. It is implemented as a
+[ChampSim](https://github.com/ChampSim/ChampSim) replacement module and
+evaluated under a **shared-virtual-memory overlay** that restores genuine
+inter-core data sharing to the simulator — enabling, to our knowledge, the
+first evaluation of learned LLC replacement under true multithreaded sharing.
 
-A coherence-aware cache replacement policy that uses a lightweight perceptron predictor to make eviction decisions based on program context, MESI coherence state, and sharing patterns across cores.
+This repository accompanies the paper *COALESCE: Coherence-Aware Perceptron
+Cache Replacement for Multithreaded Workloads* (Harsh Raj, Bheemappa Halavar;
+IIIT Sri City).
 
-B.Tech Project — Harsh Raj (S20240010084) — Under Dr. Bheemappa Halavar
+## Why this exists
 
----
+Learned replacement policies (Hawkeye, Mockingjay, …) are evaluated almost
+exclusively on **multi-programmed** workloads — independent programs that
+share cache *capacity* but never share *data*. ChampSim's default per-CPU
+address spaces make genuine sharing impossible, so every multi-core
+evaluation built on it is multi-programmed by construction. We extend
+ChampSim with a shared-VMEM overlay that maps identical virtual addresses
+across participating cores to the same physical page, exposing real
+coherence invalidations and sharer counts to the replacement policy. Under
+this regime, the multi-programmed state of the art degrades sharply, and a
+coherence-state-aware retention bias recovers most of the lost performance on
+write-heavy irregular workloads.
 
-## Project Structure
+## Repository layout
 
 ```
-COALESCE/
-├── simulator/                  # ChampSim-based simulation environment
-│   ├── replacement/            # Cache replacement policies
-│   │   ├── coalesce/           # ★ COALESCE policy (coalesce.h, coalesce.cc)
-│   │   ├── lru/                # LRU baseline
-│   │   ├── srrip/              # SRRIP baseline
-│   │   ├── drrip/              # DRRIP baseline
-│   │   ├── ship/               # SHiP baseline
-│   │   └── random/             # Random baseline
-│   ├── inc/                    # Header files (cache.h with MESI extensions)
-│   ├── src/                    # ChampSim core source files
-│   ├── traces/                 # PARSEC canneal benchmark traces
-│   ├── results/                # Simulation output logs
-│   │   ├── canneal_4core_50M/  # 4-core results (all policies)
-│   │   └── canneal_8core_100M/ # 8-core results (COALESCE vs SRRIP)
-│   ├── bin/                    # Compiled simulator binaries
-│   ├── tracer/                 # Intel PIN 3.31 multi-thread tracer
-│   ├── btp_config.json         # 4-core simulation config
-│   └── btp_8core_config.json   # 8-core simulation config
-├── simulations/                # Phase 1 standalone C++ simulator
-│   └── coalesce_final.cpp      # Event-driven simulator with 5 policies
-├── latex/                      # Presentation files
-│   ├── COALESCE.tex            # Mid-term review slides
-│   └── latex2/end_term.tex     # End-term review slides
-├── reports/                    # Project reports
-├── AIM.md                      # Project aims and objectives
-└── ARCHITECTURE.md             # System architecture documentation
+simulator/
+├── inc/                     # headers (block.h: MESI_State + sharer_mask)
+├── src/                     # ChampSim core + shared-VMEM overlay (vmem.h/.cc)
+├── replacement/
+│   ├── coalesce/            # the COALESCE policy
+│   ├── coalesce_no_sharer/  # ablation: sharer axis removed
+│   ├── coalesce_no_mesi/    # ablation: MESI axis removed
+│   ├── lru/ srrip/ drrip/ ship/  # heuristic baselines
+│   ├── hawkeye/ mockingjay/ # learned baselines (our reimplementations)
+│   └── random/
+├── btp_config.json          # 4-core config (LLC 2 MB, 2048 sets × 16 ways)
+└── btp_8core_config.json    # 8-core config
+bench/                       # overlay-validation scripts
+latex/hip/                   # paper source + figures
 ```
 
----
+## The shared-VMEM overlay (the methodological contribution)
 
-## How to Build
+The overlay lives in `simulator/inc/vmem.h` / `simulator/src/vmem.cc`. A
+config's `virtual_memory.vmem_shared_cpus` lists the cores that share an
+address space; identical virtual addresses from those cores alias onto one
+physical page (`set_shared_cpus()`), so the LLC observes real cross-core
+sharing, MESI transitions, and coherence invalidations. Setting the list
+empty reproduces default ChampSim (per-CPU private memory).
 
-### Prerequisites
+Validation: on a 100%-read workload the overlay reports *exactly zero* LLC
+invalidations, while on write-heavy workloads invalidations scale with core
+count — confirming the recorded coherence activity reflects genuine sharing,
+not an artefact.
 
-- GCC 10+ with C++17 support
-- Make
-- Python 3 (for ChampSim's config script)
+## How COALESCE works
 
-### Build the Simulator
+Two hashed-perceptron tables vote on each candidate way using the block's
+program counter, MESI state, and sharer count. On top of the learned vote,
+a coherence bias is added only to blocks the perceptron already favours
+(`+40` for MODIFIED lines, `+20 × sharers` for shared lines); the lowest-vote
+way is evicted. Training is confined to sampled sets, with a Bloom-filter
+ghost-tag rescue path for wrongly-evicted contexts. See the paper for the
+full design and a mechanism decomposition of which components carry the
+policy.
+
+## Build & run
 
 ```bash
 cd simulator
+./config.sh btp_8core_config.json    # or btp_config.json for 4-core
+make                                  # → bin/champsim_*
 
-# Configure with COALESCE policy (4-core)
-./config.sh btp_config.json
-
-# Build
-make
+bin/champsim_8core_coalesce_shared_v2 \
+  --warmup-instructions 50000000 --simulation-instructions 100000000 \
+  traces/<trace0..N>.champsimtrace
 ```
 
-The binary will be placed in `simulator/bin/`.
+Switch policy via the `"replacement"` field under `"LLC"` in the config JSON
+(`coalesce | coalesce_no_sharer | coalesce_no_mesi | lru | srrip | drrip |
+ship | hawkeye | mockingjay | random`), then `./config.sh <cfg> && make`.
 
-### Build for 8-Core
+**Dependencies:** GCC 10+, Make, Python 3, vcpkg-installed CLI11/LZMA/Bzip2/fmt.
+Traces (PARSEC / SPLASH-3, captured with Intel Pin) are not included; the
+configs and replay scripts reproduce the reported results from them.
 
-```bash
-cd simulator
-./config.sh btp_8core_config.json
-make
-```
+## Citing
 
----
+If you use the overlay or policies, please cite the paper (bibliographic
+details to follow at publication).
 
-## How to Run Simulations
+## License
 
-### 4-Core (50M instructions per core)
-
-```bash
-cd simulator
-bin/champsim_btp_test \
-  --warmup-instructions 200000000 \
-  --simulation-instructions 50000000 \
-  traces/canneal_big0.champsimtrace \
-  traces/canneal_big1.champsimtrace \
-  traces/canneal_big2.champsimtrace \
-  traces/canneal_big3.champsimtrace
-```
-
-### 8-Core (100M instructions per core)
-
-```bash
-cd simulator
-bin/champsim_8core_coalesce \
-  --warmup-instructions 1000000000 \
-  --simulation-instructions 100000000 \
-  traces/canneal_big0.champsimtrace \
-  traces/canneal_big1.champsimtrace \
-  traces/canneal_big2.champsimtrace \
-  traces/canneal_big3.champsimtrace \
-  traces/canneal_big4.champsimtrace \
-  traces/canneal_big0.champsimtrace \
-  traces/canneal_big1.champsimtrace \
-  traces/canneal_big2.champsimtrace
-```
-
-Output is printed to stdout. Redirect to a file:
-
-```bash
-bin/champsim_8core_coalesce ... > results/canneal_8core_100M/coalesce_100M.txt
-```
-
----
-
-## Switching Replacement Policies
-
-Edit the `"replacement"` field under `"LLC"` in the config JSON:
-
-| Policy | Value |
-|---|---|
-| COALESCE | `"coalesce"` |
-| LRU | `"lru"` |
-| SRRIP | `"srrip"` |
-| DRRIP | `"drrip"` |
-| SHiP | `"ship"` |
-| Random | `"random"` |
-
-Then rebuild:
-
-```bash
-./config.sh btp_config.json
-make clean && make
-```
-
----
-
-## Key Source Files
-
-| File | Description |
-|---|---|
-| `replacement/coalesce/coalesce.h` | COALESCE data structures: weight tables, ghost buffer, Bloom filter |
-| `replacement/coalesce/coalesce.cc` | Core logic: `find_victim()`, `update_replacement_state()`, perceptron prediction |
-| `inc/cache.h` | Extended `cache_block` with MESI state and sharer bitmask fields |
-| `simulations/coalesce_final.cpp` | Phase 1 standalone event-driven simulator |
-| `btp_config.json` | 4-core, 2MB LLC (2048 sets × 16 ways) |
-| `btp_8core_config.json` | 8-core, 2MB LLC (2048 sets × 16 ways) |
-
----
-
-## Results Summary
-
-| Configuration | COALESCE | Baseline | Improvement |
-|---|---|---|---|
-| 4-core, 50M instr | IPC 0.4996 | LRU: 0.4023 | +24.2% |
-| 8-core, 100M instr | 415.9M cycles | SRRIP: ~612M cycles | 32% faster |
-
----
-
-## References
-
-1. Jiménez, D. A. *Multiperspective Reuse Prediction*, MICRO 2017
-2. Sethumurugan et al. *Cost-Effective Cache Replacement Using ML*, HPCA 2021
-3. Souza & Freitas. *RL-Based Cache Replacement for Multicore*, IEEE Access 2024
-4. Wu et al. *Concurrency-Aware Cache Miss Cost Prediction*, GLSVLSI 2025
+Baseline simulator code inherits ChampSim's license; the COALESCE modules and
+shared-VMEM overlay are released for research use.

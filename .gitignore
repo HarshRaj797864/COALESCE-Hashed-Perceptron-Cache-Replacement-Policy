@@ -20,3 +20,11 @@ pin-external-*.tar.gz
 latex/hip/*.fdb_latexmk
 latex/hip/*.fls
 latex/hip/*.synctex.gz
+
+# Internal planning / strategy docs (kept local, not for public artifact)
+docs/
+CLAUDE.md
+reports/
+coalesce_paper/
+simulator/results/regime2_shared_vmem/water/
+simulator/results/regime2_shared_vmem/barnes_large/
