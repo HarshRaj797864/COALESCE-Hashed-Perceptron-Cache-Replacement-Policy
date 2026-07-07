@@ -8,8 +8,9 @@ inter-core data sharing to the simulator — enabling, to our knowledge, the
 first evaluation of learned LLC replacement under true multithreaded sharing.
 
 This repository accompanies the paper *COALESCE: Coherence-Aware Perceptron
-Cache Replacement for Multithreaded Workloads* (Harsh Raj, Bheemappa Halavar;
-IIIT Sri City).
+Cache Replacement for Multithreaded Workloads*, currently under double-blind
+review. Author and affiliation details are omitted here during the review
+period.
 
 ## Why this exists
 
