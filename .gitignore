@@ -28,3 +28,6 @@ reports/
 coalesce_paper/
 simulator/results/regime2_shared_vmem/water/
 simulator/results/regime2_shared_vmem/barnes_large/
+
+# Result logs (bulky; contain withheld data; reproducible from configs+traces)
+simulator/results/
