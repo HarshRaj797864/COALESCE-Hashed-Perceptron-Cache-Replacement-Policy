@@ -35,7 +35,7 @@ Learning-based last-level cache (LLC) replacement policies such as Hawkeye and M
 
 \section{Introduction}
 
-Modern multi-core processors share their last-level cache (LLC) among all cores, and the policy that decides which block to evict on a miss has a first-order effect on system throughput~\cite{hennessy2017quantitative}. A long line of work has progressively replaced static heuristics such as Least Recently Used (LRU) and Re-Reference Interval Prediction (RRIP)~\cite{jaleel2010rrip} with predictive, learning-based policies: SHiP learns reuse behaviour per program-counter signature~\cite{wu2011ship}, Hawkeye learns to imitate Belady's provably optimal MIN algorithm~\cite{belady1966study,jain2016hawkeye}, and Mockingjay refines this mimicry with fine-grained reuse-distance prediction, approaching the performance of MIN itself on its evaluation suite~\cite{shah2022mockingjay}.
+Modern multi-core processors share their last-level cache (LLC) among all cores, and the policy that decides which block to evict on a miss has a first-order effect on system throughput. A long line of work has progressively replaced static heuristics such as Least Recently Used (LRU) and Re-Reference Interval Prediction (RRIP)~\cite{jaleel2010rrip} with predictive, learning-based policies: SHiP learns reuse behaviour per program-counter signature~\cite{wu2011ship}, Hawkeye learns to imitate Belady's provably optimal MIN algorithm~\cite{belady1966study,jain2016hawkeye}, and Mockingjay refines this mimicry with fine-grained reuse-distance prediction, approaching the performance of MIN itself on its evaluation suite~\cite{shah2022mockingjay}.
 
 These policies share an evaluation methodology as well as a lineage. They are validated on \emph{multi-programmed} workloads: collections of independent, single-threaded programs (typically drawn from SPEC CPU and GAP) co-scheduled on a multi-core simulator. In such workloads the cores \emph{compete} for LLC capacity but never \emph{share} data: no line is ever read by one core and written by another, no coherence invalidation ever removes a block, and the coherence state of every LLC line is trivial. Multithreaded applications---the very workloads for which shared LLCs are designed---obey different rules: threads communicate through shared lines, writes by one core invalidate copies held by others, and a block's coherence role carries information about its future reuse that no program-counter signature can see.
 
@@ -432,11 +432,11 @@ The ablation removes a feature \emph{and} its bias together. To separate the lea
 
 \textbf{Heuristic replacement.} LRU and its approximations dominate practice; RRIP~\cite{jaleel2010rrip} re-references blocks by predicted interval and remains, with SHiP's PC-signature insertion~\cite{wu2011ship}, the strongest cheap baseline---a position our ocean results reaffirm under sharing.
 
-\textbf{Learned replacement.} Sampling dead-block prediction~\cite{khan2010sdbp} and reuse-distance--based replacement~\cite{keramidas2007rdip} established the prediction framing that the modern line of work builds on. Hawkeye~\cite{jain2016hawkeye} casts replacement as supervised imitation of Belady's MIN~\cite{belady1966study}; Mockingjay~\cite{shah2022mockingjay} sharpens the target from binary labels to reuse distances; Glider~\cite{shi2019glider} distils offline deep models into deployable predictors; multiperspective reuse prediction~\cite{jimenez2017multiperspective} and perceptron-based reuse prediction bring the hashed-perceptron idiom~\cite{jimenez2001perceptron} to caches, which COALESCE adopts. Cost-conscious learned policies have also been designed with reinforcement learning~\cite{sethumurugan2021designing,souza2024rl} and concurrency-aware perceptrons for GPU-class miss-cost prediction~\cite{wu2025camp}; of these, Souza and Freitas~\cite{souza2024rl} is the closest prior work to our setting, targeting multicore processors with reinforcement learning, though without coherence-state features and without multithreaded-sharing evaluation. All of these evaluate on single-threaded or multi-programmed workloads; none observe coherence state. To our knowledge COALESCE is the first replacement policy to use MESI state and sharer count as learned features, and this paper is the first head-to-head evaluation of learned replacement under genuine multithreaded sharing.
+\textbf{Learned replacement.} Dead-block prediction~\cite{khan2010sdbp} established the prediction framing that the modern line of work builds on. Hawkeye~\cite{jain2016hawkeye} casts replacement as supervised imitation of Belady's MIN~\cite{belady1966study}; Mockingjay~\cite{shah2022mockingjay} sharpens the target from binary labels to reuse distances; Glider~\cite{shi2019glider} distils offline deep models into deployable predictors; multiperspective reuse prediction~\cite{jimenez2017multiperspective} and perceptron-based reuse prediction bring the hashed-perceptron idiom~\cite{jimenez2001perceptron} to caches, which COALESCE adopts. Reinforcement learning has also been applied to replacement~\cite{souza2024rl}; Souza and Freitas is the closest prior work to our setting---multicore and learned---though without coherence-state features or multithreaded-sharing evaluation. All of these evaluate on single-threaded or multi-programmed workloads; none observe coherence state. To our knowledge COALESCE is the first replacement policy to use MESI state and sharer count as learned features, and this paper is the first head-to-head evaluation of learned replacement under genuine multithreaded sharing.
 
-\textbf{Coherence-aware cache management.} Coherence information has been exploited for purposes other than replacement: deactivating coherence for private blocks to shrink directories~\cite{cuesta2011coherence}, OS-assisted classification for block placement and replication in NUCA caches~\cite{hardavellas2009rnuca}, and measurement studies quantifying coherence's performance impact on real multiprocessors~\cite{molka2009memory}. These works treat coherence metadata as a management signal but leave the replacement policy untouched; COALESCE closes that gap.
+\textbf{Coherence-aware cache management.} Coherence information has been exploited for purposes other than replacement: deactivating coherence for private blocks to shrink directories~\cite{cuesta2011coherence} and OS-assisted classification for block placement and replication in NUCA caches~\cite{hardavellas2009rnuca}. These works treat coherence metadata as a management signal but leave the replacement policy untouched; COALESCE closes that gap.
 
-\textbf{Multithreaded benchmarking.} PARSEC~\cite{bienia2008parsec} and SPLASH-3~\cite{sakalis2016splash3} (a data-race-free revision of SPLASH-2~\cite{woo1995splash2}) are the standard shared-memory suites; our Pin-based~\cite{luk2005pin} per-thread tracing and shared-VMEM replay bring them to ChampSim-class replacement studies for the first time.
+\textbf{Multithreaded benchmarking.} PARSEC~\cite{bienia2008parsec} and SPLASH-3~\cite{sakalis2016splash3} are the standard shared-memory suites; our Pin-based~\cite{luk2005pin} per-thread tracing and shared-VMEM replay bring them to ChampSim-class replacement studies for the first time.
 
 \section{Conclusion}
 
@@ -448,7 +448,6 @@ Future work follows directly: multithreaded GAP and coherence-stress SPLASH work
 The text of this manuscript was drafted and language-edited with the assistance of a large language model (Anthropic Claude~\cite{claude}), used across the Abstract, Introduction, Evaluation, and Discussion. All research contributions---the shared-VMEM overlay, the policy design, the experimental methodology, and every measurement, analysis, and conclusion---are the authors' own. The authors independently verified the correctness of all results and of any AI-assisted text prior to submission and take full responsibility for the content.
 
 \begin{thebibliography}{20}
-
 
 \bibitem{belady1966study}
 L. A. Belady,
@@ -491,13 +490,6 @@ in \textit{Proc. 43rd IEEE/ACM Int. Symp. Microarchitecture (MICRO)},
 Atlanta, GA, USA, 2010, pp. 175--186,
 doi: \href{https://doi.org/10.1109/MICRO.2010.24}{10.1109/MICRO.2010.24}.
 
-\bibitem{keramidas2007rdip}
-G. Keramidas, P. Petoumenos, and S. Kaxiras,
-``Cache replacement based on reuse-distance prediction,''
-in \textit{Proc. 25th Int. Conf. Computer Design (ICCD)},
-Lake Tahoe, CA, USA, 2007, pp. 245--250,
-doi: \href{https://doi.org/10.1109/ICCD.2007.4601909}{10.1109/ICCD.2007.4601909}.
-
 \bibitem{shi2019glider}
 Z. Shi, X. Huang, A. Jain, and C. Lin,
 ``Applying deep learning to the cache replacement problem,''
@@ -519,22 +511,10 @@ in \textit{Proc. 50th IEEE/ACM Int. Symp. Microarchitecture (MICRO)},
 Cambridge, MA, USA, 2017, pp. 436--448,
 doi: \href{https://doi.org/10.1145/3123939.3123942}{10.1145/3123939.3123942}.
 
-\bibitem{sethumurugan2021designing}
-S. Sethumurugan, J. Yin, and J. Sartori,
-``Designing a cost-effective cache replacement policy using machine learning,''
-in \textit{Proc. IEEE Int. Symp. High-Performance Computer Architecture (HPCA)},
-Seoul, South Korea, 2021, pp. 291--303,
-doi: \href{https://doi.org/10.1109/HPCA51647.2021.00033}{10.1109/HPCA51647.2021.00033}.
-
 \bibitem{souza2024rl}
 M. A. Z. Souza and H. C. Freitas,
 ``Reinforcement learning-based cache replacement policies for multicore processors,''
 \textit{IEEE Access}, vol. 12, 2024.
-
-\bibitem{wu2025camp}
-Y. Wu \textit{et al.},
-``Concurrency-aware cache miss cost prediction with perceptron learning,''
-in \textit{Proc. ACM Great Lakes Symp. VLSI (GLSVLSI)}, 2025.
 
 \bibitem{cuesta2011coherence}
 B. Cuesta, A. Ros, M. E. Gómez, A. Robles, and J. Duato,
@@ -550,22 +530,10 @@ in \textit{Proc. 36th Int. Symp. Computer Architecture (ISCA)},
 Austin, TX, USA, 2009, pp. 184--195,
 doi: \href{https://doi.org/10.1145/1555754.1555779}{10.1145/1555754.1555779}.
 
-\bibitem{molka2009memory}
-D. Molka, D. Hackenberg, R. Schöne, and M. S. Müller,
-``Memory performance and cache coherency effects on an Intel Nehalem multiprocessor system,''
-in \textit{Proc. 18th Int. Conf. Parallel Architectures and Compilation Techniques (PACT)},
-Raleigh, NC, USA, 2009, pp. 261--270,
-doi: \href{https://doi.org/10.1109/PACT.2009.22}{10.1109/PACT.2009.22}.
-
 \bibitem{sorin2011coherence}
 D. J. Sorin, M. D. Hill, and D. A. Wood,
 \textit{A Primer on Memory Consistency and Cache Coherence},
 Synthesis Lectures on Computer Architecture, Morgan \& Claypool, 2011.
-
-\bibitem{hennessy2017quantitative}
-J. L. Hennessy and D. A. Patterson,
-\textit{Computer Architecture: A Quantitative Approach}, 6th ed.,
-Morgan Kaufmann, 2017.
 
 \bibitem{bienia2008parsec}
 C. Bienia, S. Kumar, J. P. Singh, and K. Li,
@@ -580,13 +548,6 @@ C. Sakalis, C. Leonardsson, S. Kaxiras, and A. Ros,
 in \textit{Proc. IEEE Int. Symp. Performance Analysis of Systems and Software (ISPASS)},
 Uppsala, Sweden, 2016, pp. 101--111,
 doi: \href{https://doi.org/10.1109/ISPASS.2016.7482078}{10.1109/ISPASS.2016.7482078}.
-
-\bibitem{woo1995splash2}
-S. C. Woo, M. Ohara, E. Torrie, J. P. Singh, and A. Gupta,
-``The SPLASH-2 programs: Characterization and methodological considerations,''
-in \textit{Proc. 22nd Int. Symp. Computer Architecture (ISCA)},
-Santa Margherita Ligure, Italy, 1995, pp. 24--36,
-doi: \href{https://doi.org/10.1145/223982.223990}{10.1145/223982.223990}.
 
 \bibitem{luk2005pin}
 C.-K. Luk \textit{et al.},
