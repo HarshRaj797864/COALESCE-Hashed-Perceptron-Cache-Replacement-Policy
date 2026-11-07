@@ -1,0 +1,13 @@
+# Instruction mix of the traces, records 50M..150M of each thread: count_rmw.py on the server
+# (verify_b3.sh section 4, 2026-10-11; simulator/results/verify_b3_rmw_20261011_120223.txt).
+# ocean: only thread 0 was counted.
+== 4. RMW instructions in the traces, records 50M..150M ==
+barnes_4t0                   records 100000000 loads 31924181 stores 16872390 rmw 2649525 rmw_per_ki 26.4952 (python)
+barnes_4t1                   records 100000000 loads 31919173 stores 16840208 rmw 2669033 rmw_per_ki 26.6903 (python)
+barnes_4t2                   records 100000000 loads 31977118 stores 16698633 rmw 2750253 rmw_per_ki 27.5025 (python)
+barnes_4t3                   records 100000000 loads 31942033 stores 16843479 rmw 2666194 rmw_per_ki 26.6619 (python)
+canneal_4t_canneal1          records 100000000 loads 37774284 stores 21574382 rmw 1166988 rmw_per_ki 11.6699 (python)
+canneal_4t_canneal2          records 100000000 loads 37765667 stores 21572743 rmw 1165402 rmw_per_ki 11.6540 (python)
+canneal_4t_canneal3          records 100000000 loads 37773670 stores 21573018 rmw 1166624 rmw_per_ki 11.6662 (python)
+canneal_4t_canneal4          records 100000000 loads 37779573 stores 21563869 rmw 1166894 rmw_per_ki 11.6689 (python)
+ocean_4t_ocean0              records 100000000 loads 31714575 stores 6587344 rmw 4631 rmw_per_ki 0.0463 (python)

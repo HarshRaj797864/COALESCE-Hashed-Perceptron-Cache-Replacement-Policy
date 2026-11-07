@@ -12,11 +12,6 @@ cache_stats operator-(cache_stats lhs, cache_stats rhs)
   result.hits = lhs.hits - rhs.hits;
   result.misses = lhs.misses - rhs.misses;
 
-  result.coherence_invalidations = lhs.coherence_invalidations - rhs.coherence_invalidations;
-  result.coherence_write_hit_other_sharer_events = lhs.coherence_write_hit_other_sharer_events - rhs.coherence_write_hit_other_sharer_events;
-  for (int i = 0; i < 17; i++)
-    result.coherence_sharer_hist[i] = lhs.coherence_sharer_hist[i] - rhs.coherence_sharer_hist[i];
-
   result.total_miss_latency_cycles = lhs.total_miss_latency_cycles - rhs.total_miss_latency_cycles;
   return result;
 }

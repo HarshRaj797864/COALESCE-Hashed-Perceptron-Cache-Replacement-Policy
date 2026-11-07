@@ -1,0 +1,27 @@
+# Instruction mix of the traces, records 50M..150M of each thread: count_rmw.py on the server
+# (verify_b3.sh section 4, 2026-10-11; simulator/results/verify_b3_rmw_20261011_120223.txt).
+# ocean: only thread 0 was counted.
+== 4. RMW instructions in the traces, records 50M..150M ==
+barnes_4t0                   records 100000000 loads 31924181 stores 16872390 rmw 2649525 rmw_per_ki 26.4952 (python)
+barnes_4t1                   records 100000000 loads 31919173 stores 16840208 rmw 2669033 rmw_per_ki 26.6903 (python)
+barnes_4t2                   records 100000000 loads 31977118 stores 16698633 rmw 2750253 rmw_per_ki 27.5025 (python)
+barnes_4t3                   records 100000000 loads 31942033 stores 16843479 rmw 2666194 rmw_per_ki 26.6619 (python)
+canneal_4t_canneal1          records 100000000 loads 37774284 stores 21574382 rmw 1166988 rmw_per_ki 11.6699 (python)
+canneal_4t_canneal2          records 100000000 loads 37765667 stores 21572743 rmw 1165402 rmw_per_ki 11.6540 (python)
+canneal_4t_canneal3          records 100000000 loads 37773670 stores 21573018 rmw 1166624 rmw_per_ki 11.6662 (python)
+canneal_4t_canneal4          records 100000000 loads 37779573 stores 21563869 rmw 1166894 rmw_per_ki 11.6689 (python)
+ocean_4t_ocean0              records 100000000 loads 31714575 stores 6587344 rmw 4631 rmw_per_ki 0.0463 (python)
+# The standard barnes, traced 2026-10-13 by barnes_std.sh (aligned; spans as in b3_barnes_std_design_2026-10-13.md);
+# from ~/barnes_std/trace_mix.txt. The start span's thread-0 row is from the unaligned trace, so it holds the serial start.
+barnes_std_4t_force_t0 records 50000000 loads 15400255 stores 9995481 rmw 485794 rmw_per_ki 9.7159 (python)
+barnes_std_4t_force_t1 records 50000000 loads 15393961 stores 9984216 rmw 485428 rmw_per_ki 9.7086 (python)
+barnes_std_4t_force_t2 records 50000000 loads 15399149 stores 9970139 rmw 492716 rmw_per_ki 9.8543 (python)
+barnes_std_4t_force_t3 records 50000000 loads 15416842 stores 9899674 rmw 523119 rmw_per_ki 10.4624 (python)
+barnes_std_4t_start_t0 records 48470006 loads 14457272 stores 8035805 rmw 523869 rmw_per_ki 10.8081 (python)
+barnes_std_4t_start_t1 records 37900000 loads 11508749 stores 7010915 rmw 540566 rmw_per_ki 14.2630 (python)
+barnes_std_4t_start_t2 records 37900000 loads 11486088 stores 7097791 rmw 502403 rmw_per_ki 13.2560 (python)
+barnes_std_4t_start_t3 records 37900000 loads 11484653 stores 7095355 rmw 505336 rmw_per_ki 13.3334 (python)
+barnes_std_4t_window_t0 records 100000000 loads 30787697 stores 20016772 rmw 956760 rmw_per_ki 9.5676 (python)
+barnes_std_4t_window_t1 records 100000000 loads 30791964 stores 19992386 rmw 966314 rmw_per_ki 9.6631 (python)
+barnes_std_4t_window_t2 records 100000000 loads 30662682 stores 19363117 rmw 1168439 rmw_per_ki 11.6844 (python)
+barnes_std_4t_window_t3 records 100000000 loads 30672502 stores 19312350 rmw 1182807 rmw_per_ki 11.8281 (python)

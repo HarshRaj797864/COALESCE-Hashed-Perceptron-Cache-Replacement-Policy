@@ -32,63 +32,15 @@
 #include "util/bits.h"
 #include "util/span.h"
 
-CACHE::CACHE(CACHE&& other)
-    : operable(other),
-
-      upper_levels(std::move(other.upper_levels)), lower_level(std::move(other.lower_level)), lower_translate(std::move(other.lower_translate)),
-
-      cpu(other.cpu), NAME(std::move(other.NAME)), NUM_SET(other.NUM_SET), NUM_WAY(other.NUM_WAY), MSHR_SIZE(other.MSHR_SIZE), PQ_SIZE(other.PQ_SIZE),
-      HIT_LATENCY(other.HIT_LATENCY), FILL_LATENCY(other.FILL_LATENCY), OFFSET_BITS(other.OFFSET_BITS), block(std::move(other.block)), MAX_TAG(other.MAX_TAG),
-      MAX_FILL(other.MAX_FILL), prefetch_as_load(other.prefetch_as_load), match_offset_bits(other.match_offset_bits), virtual_prefetch(other.virtual_prefetch),
-      pref_activate_mask(std::move(other.pref_activate_mask)),
-
-      sim_stats(std::move(other.sim_stats)), roi_stats(std::move(other.roi_stats)),
-
-      pref_module_pimpl(std::move(other.pref_module_pimpl)), repl_module_pimpl(std::move(other.repl_module_pimpl))
+CACHE::CACHE(CACHE&& /*other*/) : champsim::modules::cache_module(champsim::chrono::picoseconds{})
 {
-  pref_module_pimpl->bind(this);
-  repl_module_pimpl->bind(this);
+  assert(false && "CACHE move constructor called, but this is not expected to be used in a way that requires moving. Please report this to the developers.");
 }
 
-auto CACHE::operator=(CACHE&& other) -> CACHE&
+auto CACHE::operator=(CACHE&& /*other*/) -> CACHE&
 {
-  this->clock_period = other.clock_period;
-  this->current_time = other.current_time;
-  this->warmup = other.warmup;
-
-  this->upper_levels = std::move(other.upper_levels);
-  this->lower_level = std::move(other.lower_level);
-  this->lower_translate = std::move(other.lower_translate);
-
-  this->cpu = other.cpu;
-  this->NAME = std::move(other.NAME);
-  this->NUM_SET = other.NUM_SET;
-  this->NUM_WAY = other.NUM_WAY;
-  ;
-  this->MSHR_SIZE = other.MSHR_SIZE;
-  ;
-  this->PQ_SIZE = other.PQ_SIZE;
-  this->HIT_LATENCY = other.HIT_LATENCY;
-  this->FILL_LATENCY = other.FILL_LATENCY;
-  this->OFFSET_BITS = other.OFFSET_BITS;
-  ;
-  this->block = std::move(other.block);
-  this->MAX_TAG = other.MAX_TAG;
-  this->MAX_FILL = other.MAX_FILL;
-  this->prefetch_as_load = other.prefetch_as_load;
-  this->match_offset_bits = other.match_offset_bits;
-  this->virtual_prefetch = other.virtual_prefetch;
-  this->pref_activate_mask = std::move(other.pref_activate_mask);
-
-  this->sim_stats = std::move(other.sim_stats);
-  this->roi_stats = std::move(other.roi_stats);
-
-  this->pref_module_pimpl = std::move(other.pref_module_pimpl);
-  this->repl_module_pimpl = std::move(other.repl_module_pimpl);
-
-  pref_module_pimpl->bind(this);
-  repl_module_pimpl->bind(this);
-
+  assert(false
+         && "CACHE move assignment operator called, but this is not expected to be used in a way that requires moving. Please report this to the developers.");
   return *this;
 }
 
@@ -98,13 +50,13 @@ CACHE::tag_lookup_type::tag_lookup_type(const request_type& req, bool local_pref
 {
 }
 
-CACHE::mshr_type::mshr_type(const tag_lookup_type& req, champsim::chrono::clock::time_point _time_enqueued)
+CACHE::fill_type::fill_type(const tag_lookup_type& req, champsim::chrono::clock::time_point _time_enqueued)
     : address(req.address), v_address(req.v_address), ip(req.ip), instr_id(req.instr_id), cpu(req.cpu), type(req.type),
       prefetch_from_this(req.prefetch_from_this), time_enqueued(_time_enqueued), instr_depend_on_me(req.instr_depend_on_me), to_return(req.to_return)
 {
 }
 
-CACHE::mshr_type CACHE::mshr_type::merge(mshr_type predecessor, mshr_type successor)
+CACHE::fill_type CACHE::fill_type::merge(fill_type predecessor, fill_type successor)
 {
   std::vector<uint64_t> merged_instr{};
   std::vector<std::deque<response_type>*> merged_return{};
@@ -114,7 +66,7 @@ CACHE::mshr_type CACHE::mshr_type::merge(mshr_type predecessor, mshr_type succes
   std::set_union(std::begin(predecessor.to_return), std::end(predecessor.to_return), std::begin(successor.to_return), std::end(successor.to_return),
                  std::back_inserter(merged_return));
 
-  mshr_type retval{(successor.type == access_type::PREFETCH) ? predecessor : successor};
+  fill_type retval{(successor.type == access_type::PREFETCH) ? predecessor : successor};
 
   // set the time enqueued to the predecessor unless its a demand into prefetch, in which case we use the successor
   retval.time_enqueued =
@@ -138,22 +90,25 @@ CACHE::mshr_type CACHE::mshr_type::merge(mshr_type predecessor, mshr_type succes
   return retval;
 }
 
-auto CACHE::fill_block(mshr_type mshr, uint32_t metadata) -> BLOCK
+auto CACHE::fill_block(fill_type fill, uint32_t metadata) -> BLOCK
 {
   CACHE::BLOCK to_fill;
   to_fill.valid = true;
-  to_fill.prefetch = mshr.prefetch_from_this;
-  to_fill.dirty = (mshr.type == access_type::WRITE);
-  to_fill.address = mshr.address;
-  to_fill.v_address = mshr.v_address;
-  to_fill.data = mshr.data_promise->data;
+  to_fill.prefetch = fill.prefetch_from_this;
+  to_fill.dirty = (fill.type == access_type::WRITE);
+  to_fill.address = fill.address;
+  to_fill.v_address = fill.v_address;
+  to_fill.data = fill.data_promise->data;
   to_fill.pf_metadata = metadata;
 
-  // COALESCE: Multi-core dynamic coherence tracking
+  // COALESCE coherence extensions. A freshly filled line is owned solely by the
+  // core that requested it: MODIFIED if the fill was a writeback, EXCLUSIVE
+  // otherwise. The allocating PC is carried so a replacement policy can recover
+  // the context that brought the line in.
   to_fill.state = to_fill.dirty ? MODIFIED : EXCLUSIVE;
-  to_fill.sharer_mask = (1 << mshr.cpu); // Actually assigns the bitmask to the block
-  to_fill.ip = mshr.ip.to<uint64_t>();
-  
+  to_fill.sharer_mask = static_cast<uint16_t>(1u << fill.cpu);
+  to_fill.ip = fill.ip.to<uint64_t>();
+
   return to_fill;
 }
 
@@ -171,36 +126,52 @@ champsim::address CACHE::module_address(const T& element) const
   return champsim::address{address.slice_upper(match_offset_bits ? champsim::data::bits{} : OFFSET_BITS)};
 }
 
-bool CACHE::handle_fill(const mshr_type& fill_mshr)
+bool CACHE::handle_fill(const fill_type& fill)
 {
-  cpu = fill_mshr.cpu;
+  cpu = fill.cpu;
+
+  // B3 v4 (private_coherence 1 and 2): another core took this line while the
+  // fill was in flight. The waiting instruction completes -- it used the data
+  // once, as it would under a real protocol -- and no copy is left behind.
+  if (dir_cpu >= 0 && champsim::coherence::private_coherence() >= 1
+      && champsim::coherence::dir_is_stale(dir_line(fill.address), static_cast<unsigned>(dir_cpu))) {
+    ++sim_stats.coherence_dir_stale_fills;
+    dir_log_event('S', fill, 0, 0);
+    if (fill.type != access_type::PREFETCH)
+      sim_stats.total_miss_latency_cycles += (current_time - (fill.time_enqueued + clock_period)) / clock_period;
+    sim_stats.fill.increment(std::pair{fill.type, fill.cpu});
+
+    response_type response{fill.address, fill.v_address, fill.data_promise->data, fill.data_promise->pf_metadata, fill.instr_depend_on_me};
+    for (auto* ret : fill.to_return) {
+      ret->push_back(response);
+    }
+    return true;
+  }
 
   // find victim
-  auto [set_begin, set_end] = get_set_span(fill_mshr.address);
+  auto [set_begin, set_end] = get_set_span(fill.address);
   auto way = std::find_if_not(set_begin, set_end, [](auto x) { return x.valid; });
   if (way == set_end) {
-    way = std::next(set_begin, impl_find_victim(fill_mshr.cpu, fill_mshr.instr_id, get_set_index(fill_mshr.address), &*set_begin, fill_mshr.ip,
-                                                fill_mshr.address, fill_mshr.type));
+    way = std::next(set_begin, impl_find_victim(fill.cpu, fill.instr_id, get_set_index(fill.address), &*set_begin, fill.ip, fill.address, fill.type));
   }
   assert(set_begin <= way);
   assert(way <= set_end);
-  assert(way != set_end || fill_mshr.type != access_type::WRITE); // Writes may not bypass
-  const auto way_idx = std::distance(set_begin, way);             // cast protected by earlier assertion
+  assert(way != set_end || fill.type != access_type::WRITE); // Writes may not bypass
+  const auto way_idx = std::distance(set_begin, way);        // cast protected by earlier assertion
 
   if constexpr (champsim::debug_print) {
     fmt::print("[{}] {} instr_id: {} address: {} v_address: {} set: {} way: {} type: {} prefetch_metadata: {} cycle_enqueued: {} cycle: {}\n", NAME, __func__,
-               fill_mshr.instr_id, fill_mshr.address, fill_mshr.v_address, get_set_index(fill_mshr.address), way_idx,
-               access_type_names.at(champsim::to_underlying(fill_mshr.type)), fill_mshr.data_promise->pf_metadata,
-               (fill_mshr.time_enqueued.time_since_epoch()) / clock_period, (current_time.time_since_epoch()) / clock_period);
+               fill.instr_id, fill.address, fill.v_address, get_set_index(fill.address), way_idx, access_type_names.at(champsim::to_underlying(fill.type)),
+               fill.data_promise->pf_metadata, (fill.time_enqueued.time_since_epoch()) / clock_period, (current_time.time_since_epoch()) / clock_period);
   }
 
   if (way != set_end && way->valid && way->dirty) {
     request_type writeback_packet;
 
-    writeback_packet.cpu = fill_mshr.cpu;
+    writeback_packet.cpu = fill.cpu;
     writeback_packet.address = way->address;
     writeback_packet.data = way->data;
-    writeback_packet.instr_id = fill_mshr.instr_id;
+    writeback_packet.instr_id = fill.instr_id;
     writeback_packet.ip = champsim::address{};
     writeback_packet.type = access_type::WRITE;
     writeback_packet.pf_metadata = way->pf_metadata;
@@ -208,7 +179,7 @@ bool CACHE::handle_fill(const mshr_type& fill_mshr)
 
     if constexpr (champsim::debug_print) {
       fmt::print("[{}] {} evict address: {} v_address: {} prefetch_metadata: {}\n", NAME, __func__, writeback_packet.address, writeback_packet.v_address,
-                 fill_mshr.data_promise->pf_metadata);
+                 fill.data_promise->pf_metadata);
     }
 
     auto success = lower_level->add_wq(writeback_packet);
@@ -222,30 +193,43 @@ bool CACHE::handle_fill(const mshr_type& fill_mshr)
     evicting_address = module_address(*way);
   }
 
-  auto metadata_thru = impl_prefetcher_cache_fill(module_address(fill_mshr), get_set_index(fill_mshr.address), way_idx,
-                                                  (fill_mshr.type == access_type::PREFETCH), evicting_address, fill_mshr.data_promise->pf_metadata);
-  impl_replacement_cache_fill(fill_mshr.cpu, get_set_index(fill_mshr.address), way_idx, module_address(fill_mshr), fill_mshr.ip, evicting_address,
-                              fill_mshr.type);
+  auto metadata_thru = impl_prefetcher_cache_fill(module_address(fill), get_set_index(fill.address), way_idx, (fill.type == access_type::PREFETCH),
+                                                  evicting_address, fill.data_promise->pf_metadata);
+  impl_replacement_cache_fill(fill.cpu, get_set_index(fill.address), way_idx, module_address(fill), fill.ip, evicting_address, fill.type);
 
   if (way != set_end) {
     if (way->valid && way->prefetch) {
       ++sim_stats.pf_useless;
     }
 
-    if (fill_mshr.type == access_type::PREFETCH) {
+    // B3 v2 sharer directory: the victim leaves this private cache, the fill
+    // enters it. Records only.
+    if (dir_cpu >= 0) {
+      if (way->valid)
+        champsim::coherence::dir_evict(dir_line(way->address), static_cast<unsigned>(dir_cpu), static_cast<unsigned>(dir_level));
+      champsim::coherence::dir_fill(dir_line(fill.address), static_cast<unsigned>(dir_cpu), static_cast<unsigned>(dir_level));
+    }
+    // The LLC's residency, for the bounded view only (b3_bounded_design_2026-10-17.md).
+    if (dir_is_llc) {
+      if (way->valid)
+        champsim::coherence::dir_llc_evict(dir_line(way->address));
+      champsim::coherence::dir_llc_fill(dir_line(fill.address));
+    }
+
+    if (fill.type == access_type::PREFETCH) {
       ++sim_stats.pf_fill;
     }
 
-    *way = fill_block(fill_mshr, metadata_thru);
+    *way = fill_block(fill, metadata_thru);
   }
 
   // COLLECT STATS
-  if (fill_mshr.type != access_type::PREFETCH)
-    sim_stats.total_miss_latency_cycles += (current_time - (fill_mshr.time_enqueued + clock_period)) / clock_period;
-  sim_stats.mshr_return.increment(std::pair{fill_mshr.type, fill_mshr.cpu});
+  if (fill.type != access_type::PREFETCH)
+    sim_stats.total_miss_latency_cycles += (current_time - (fill.time_enqueued + clock_period)) / clock_period;
+  sim_stats.fill.increment(std::pair{fill.type, fill.cpu});
 
-  response_type response{fill_mshr.address, fill_mshr.v_address, fill_mshr.data_promise->data, metadata_thru, fill_mshr.instr_depend_on_me};
-  for (auto* ret : fill_mshr.to_return) {
+  response_type response{fill.address, fill.v_address, fill.data_promise->data, metadata_thru, fill.instr_depend_on_me};
+  for (auto* ret : fill.to_return) {
     ret->push_back(response);
   }
 
@@ -281,6 +265,20 @@ bool CACHE::try_hit(const tag_lookup_type& handle_pkt)
   if (hit) {
     sim_stats.hits.increment(std::pair{handle_pkt.type, handle_pkt.cpu});
 
+    // B3 v2: counted here and in handle_miss/handle_write, where a request is
+    // accepted -- never above this branch, which a miss retried for a full
+    // MSHR runs again.
+    if (dir_is_llc)
+      dir_on_llc_request(handle_pkt);
+
+    // B3 v4, private_coherence 2: a store or RFO that hits a private copy
+    // needs the line to itself. In the L1D that is a store (WRITE) or a
+    // read-modify-write's load (RFO); in the L2C, an RFO that missed the L1D.
+    // A WRITE reaching the L2C is a writeback, not a store.
+    if (dir_cpu >= 0 && champsim::coherence::private_coherence() >= 2
+        && (handle_pkt.type == access_type::RFO || (handle_pkt.type == access_type::WRITE && dir_level == 1)))
+      dir_on_private_ownership_hit(handle_pkt);
+
     response_type response{handle_pkt.address, handle_pkt.v_address, way->data, metadata_thru, handle_pkt.instr_depend_on_me};
     for (auto* ret : handle_pkt.to_return) {
       ret->push_back(response);
@@ -288,33 +286,57 @@ bool CACHE::try_hit(const tag_lookup_type& handle_pkt)
 
     way->dirty |= (handle_pkt.type == access_type::WRITE);
 
-    // COALESCE: Update dynamic coherence state on hit
-    // 2026-05-21 — Added invalidation modeling (A.1 + A.2 in OPEN_DECISIONS):
-    //   - Write hit: clear other sharers' bits from sharer_mask (synthetic
-    //     invalidation broadcast) and count the event.
-    //   - LLC-bookkeeping only; ChampSim has no inter-level coherence, so the
-    //     actual L1/L2 tags of "invalidated" cores still hold stale copies.
-    //   - See coalesce_paper/COHERENCE_HOOK_AUDIT.md for full discussion.
+    // COALESCE: dynamic coherence state on a hit.
+    //   Write hit -- the writer becomes sole owner. Bits cleared from the sharer
+    //   mask are counted as a synthetic invalidation broadcast. This is LLC
+    //   bookkeeping only: ChampSim models no inter-level coherence, so the
+    //   "invalidated" cores' L1/L2 tags still hold stale copies. See
+    //   coalesce_paper/COHERENCE_HOOK_AUDIT.md.
+    //   Read hit  -- the reader joins the sharer set, and the line becomes
+    //   SHARED once more than one core holds it.
+    //
+    //   Known simplification: a read hit on a MODIFIED line adds a sharer
+    //   without downgrading M->S as real MESI would. Measured at 0.3% of
+    //   MODIFIED observations, because the write-hit clearing keeps the state
+    //   transient. Recorded in docs/policy_audit.md, not corrected here.
+    // COALESCE: sharing-degree distribution, sampled at every hit BEFORE the
+    // mask is modified, so it records how widely shared a line was when it was
+    // accessed.
+    //
+    // coherence_sharer_hist has existed since the coherence hooks were written
+    // and was never incremented -- declared in cache_stats.h, copied into
+    // roi_stats, printed by plain_printer. It read as absent rather than zero
+    // because the printer skips the block when the total is 0, which is why it
+    // went unnoticed. docs/PLAN.md names sharing-degree distribution as one of
+    // the three metrics gem5 validation compares against, so it has to work.
+    {
+      const auto observed = static_cast<std::size_t>(__builtin_popcount(way->sharer_mask));
+      const auto bound = std::size(sim_stats.coherence_sharer_hist) - 1;
+      ++sim_stats.coherence_sharer_hist[observed < bound ? observed : bound];
+    }
+
     if (handle_pkt.type == access_type::WRITE) {
-        uint16_t other_sharers = way->sharer_mask & static_cast<uint16_t>(~(1u << handle_pkt.cpu));
-        if (other_sharers != 0) {
-            sim_stats.coherence_invalidations += __builtin_popcount(other_sharers);
-            ++sim_stats.coherence_write_hit_other_sharer_events;
-        }
-        way->sharer_mask = static_cast<uint16_t>(1u << handle_pkt.cpu);  // writer now sole owner
-        way->state = MODIFIED;
+      const auto other_sharers = static_cast<uint16_t>(way->sharer_mask & static_cast<uint16_t>(~(1u << handle_pkt.cpu)));
+      if (other_sharers != 0) {
+        sim_stats.coherence_invalidations += static_cast<uint64_t>(__builtin_popcount(other_sharers));
+        ++sim_stats.coherence_write_hit_other_sharer_events;
+      }
+      way->sharer_mask = static_cast<uint16_t>(1u << handle_pkt.cpu);
+      way->state = MODIFIED;
     } else {
-        // Read hit
-        way->sharer_mask |= static_cast<uint16_t>(1u << handle_pkt.cpu);
-        if (way->state != MODIFIED) {
-            int sharer_count = 0;
-            for (int i = 0; i < 16; i++) {
-                if ((way->sharer_mask >> i) & 1) sharer_count++;
-            }
-            if (sharer_count > 1) {
-                way->state = SHARED;
-            }
+      // Store-time counter (cache_stats.h): an RFO is a store that missed the
+      // private hierarchy. Read the mask BEFORE the storer is added to it.
+      if (handle_pkt.type == access_type::RFO) {
+        const auto rfo_other = static_cast<uint16_t>(way->sharer_mask & static_cast<uint16_t>(~(1u << handle_pkt.cpu)));
+        if (rfo_other != 0) {
+          ++sim_stats.coherence_rfo_hit_other_sharer_events;
+          sim_stats.coherence_rfo_hit_other_sharers += static_cast<uint64_t>(__builtin_popcount(rfo_other));
         }
+      }
+      way->sharer_mask |= static_cast<uint16_t>(1u << handle_pkt.cpu);
+      if (way->state != MODIFIED && __builtin_popcount(way->sharer_mask) > 1) {
+        way->state = SHARED;
+      }
     }
 
     // update prefetch stats and reset prefetch bit
@@ -327,9 +349,9 @@ bool CACHE::try_hit(const tag_lookup_type& handle_pkt)
   return hit;
 }
 
-auto CACHE::mshr_and_forward_packet(const tag_lookup_type& handle_pkt) -> std::pair<mshr_type, request_type>
+auto CACHE::mshr_and_forward_packet(const tag_lookup_type& handle_pkt) -> std::pair<fill_type, request_type>
 {
-  mshr_type to_allocate{handle_pkt, current_time};
+  fill_type to_allocate{handle_pkt, current_time};
 
   request_type fwd_pkt;
 
@@ -359,29 +381,34 @@ bool CACHE::handle_miss(const tag_lookup_type& handle_pkt)
                current_time.time_since_epoch() / clock_period);
   }
 
-  mshr_type to_allocate{handle_pkt, current_time};
+  fill_type to_allocate{handle_pkt, current_time};
 
   cpu = handle_pkt.cpu;
 
   auto mshr_pkt = mshr_and_forward_packet(handle_pkt);
 
   // check mshr
-  auto mshr_entry = std::find_if(std::begin(MSHR), std::end(MSHR), matches_address(handle_pkt.address));
+  auto fill_entry = std::find_if(std::begin(MSHR), std::end(MSHR), matches_address(handle_pkt.address));
   bool mshr_full = (MSHR.size() == MSHR_SIZE);
 
-  if (mshr_entry != MSHR.end()) // miss already inflight
+  // check inflight fills
+  if (fill_entry == MSHR.end()) {
+    fill_entry = std::find_if(inflight_fills.begin(), inflight_fills.end(), matches_address(handle_pkt.address));
+  }
+
+  if (fill_entry != inflight_fills.end()) // miss or fill already inflight
   {
-    if (mshr_entry->type == access_type::PREFETCH && handle_pkt.type != access_type::PREFETCH) {
+    if (fill_entry->type == access_type::PREFETCH && handle_pkt.type != access_type::PREFETCH) {
       // Mark the prefetch as useful
-      if (mshr_entry->prefetch_from_this) {
+      if (fill_entry->prefetch_from_this) {
         ++sim_stats.pf_useful;
       }
     }
 
     // COLLECT STATS
-    sim_stats.mshr_merge.increment(std::pair{to_allocate.type, to_allocate.cpu});
+    sim_stats.miss_merge.increment(std::pair{to_allocate.type, to_allocate.cpu});
 
-    *mshr_entry = mshr_type::merge(*mshr_entry, to_allocate);
+    *fill_entry = fill_type::merge(*fill_entry, to_allocate);
   } else {
     if (mshr_full) { // not enough MSHR resource
       return false;  // TODO should we allow prefetches anyway if they will not be filled to this level?
@@ -400,6 +427,9 @@ bool CACHE::handle_miss(const tag_lookup_type& handle_pkt)
     }
   }
 
+  if (dir_is_llc)
+    dir_on_llc_request(handle_pkt);
+
   sim_stats.misses.increment(std::pair{handle_pkt.type, handle_pkt.cpu});
 
   return true;
@@ -413,9 +443,12 @@ bool CACHE::handle_write(const tag_lookup_type& handle_pkt)
                current_time.time_since_epoch() / clock_period);
   }
 
-  mshr_type to_allocate{handle_pkt, current_time};
+  fill_type to_allocate{handle_pkt, current_time};
   to_allocate.data_promise.ready_at(current_time + (warmup ? champsim::chrono::clock::duration{} : FILL_LATENCY));
-  inflight_writes.push_back(to_allocate);
+  inflight_fills.push_back(to_allocate);
+
+  if (dir_is_llc)
+    dir_on_llc_request(handle_pkt);
 
   sim_stats.misses.increment(std::pair{handle_pkt.type, handle_pkt.cpu});
 
@@ -423,7 +456,7 @@ bool CACHE::handle_write(const tag_lookup_type& handle_pkt)
 }
 
 template <bool UpdateRequest>
-auto CACHE::initiate_tag_check(champsim::channel* ul)
+auto CACHE::initiate_tag_check(champsim::modules::channel_module* ul)
 {
   return [time = current_time + (warmup ? champsim::chrono::clock::duration{} : HIT_LATENCY), ul](const auto& entry) {
     CACHE::tag_lookup_type retval{entry};
@@ -431,7 +464,7 @@ auto CACHE::initiate_tag_check(champsim::channel* ul)
 
     if constexpr (UpdateRequest) {
       if (entry.response_requested) {
-        retval.to_return = {&ul->returned};
+        retval.to_return = {&ul->get_returned()};
       }
     } else {
       (void)ul; // supress warning about ul being unused
@@ -457,42 +490,42 @@ long CACHE::operate()
     return entry.is_translated;
   };
 
-  for (auto* ul : upper_levels) {
-    ul->check_collision();
-  }
-
   // Finish returns
-  std::for_each(std::cbegin(lower_level->returned), std::cend(lower_level->returned), [this](const auto& pkt) { this->finish_packet(pkt); });
-  progress += std::distance(std::cbegin(lower_level->returned), std::cend(lower_level->returned));
-  lower_level->returned.clear();
+  std::for_each(std::cbegin(lower_level->get_returned()), std::cend(lower_level->get_returned()), [this](const auto& pkt) { this->finish_packet(pkt); });
+  progress += std::distance(std::cbegin(lower_level->get_returned()), std::cend(lower_level->get_returned()));
+  lower_level->get_returned().clear();
 
   // Finish translations
   if (lower_translate != nullptr) {
-    std::for_each(std::cbegin(lower_translate->returned), std::cend(lower_translate->returned), [this](const auto& pkt) { this->finish_translation(pkt); });
-    progress += std::distance(std::cbegin(lower_translate->returned), std::cend(lower_translate->returned));
-    lower_translate->returned.clear();
+    std::for_each(std::cbegin(lower_translate->get_returned()), std::cend(lower_translate->get_returned()),
+                  [this](const auto& pkt) { this->finish_translation(pkt); });
+    progress += std::distance(std::cbegin(lower_translate->get_returned()), std::cend(lower_translate->get_returned()));
+    lower_translate->get_returned().clear();
   }
 
   // Perform fills
   champsim::bandwidth fill_bw{MAX_FILL};
-  for (auto q : {std::ref(MSHR), std::ref(inflight_writes)}) {
-    auto [fill_begin, fill_end] = champsim::get_span_p(std::cbegin(q.get()), std::cend(q.get()), fill_bw,
-                                                       [time = current_time](const auto& x) { return x.data_promise.is_ready_at(time); });
-    auto complete_end = std::find_if_not(fill_begin, fill_end, [this](const auto& x) { return this->handle_fill(x); });
-    fill_bw.consume(std::distance(fill_begin, complete_end));
-    q.get().erase(fill_begin, complete_end);
-  }
+  auto [fill_begin, fill_end] = champsim::get_span_p(std::cbegin(inflight_fills), std::cend(inflight_fills), fill_bw,
+                                                     [time = current_time](const auto& x) { return x.data_promise.is_ready_at(time); });
+  auto complete_end = std::find_if_not(fill_begin, fill_end, [this](const auto& x) { return this->handle_fill(x); });
+  fill_bw.consume(std::distance(fill_begin, complete_end));
+  inflight_fills.erase(fill_begin, complete_end);
 
   // Initiate tag checks
   const champsim::bandwidth::maximum_type bandwidth_from_tag_checks{champsim::to_underlying(MAX_TAG) * (long)(HIT_LATENCY / clock_period)
                                                                     - (long)std::size(inflight_tag_check)};
   champsim::bandwidth initiate_tag_bw{std::clamp(bandwidth_from_tag_checks, champsim::bandwidth::maximum_type{0}, MAX_TAG)};
-  auto can_translate = [avail = (std::size(translation_stash) < static_cast<std::size_t>(MSHR_SIZE))](const auto& entry) {
-    return avail || entry.is_translated;
+  // Admission throttle: cap in-flight untranslated tag checks at MSHR_SIZE.
+  // Counted fresh (not a start-of-cycle snapshot) so the cap tightens as
+  // untranslated entries are admitted this cycle. Translated entries and
+  // non-translating caches are never throttled. finish_translation re-admits
+  // translated entries directly, so there is nothing to pull from the stash here.
+  auto can_translate = [this](const auto& entry) {
+    return entry.is_translated || lower_translate == nullptr
+           || (std::count_if(std::begin(inflight_tag_check), std::end(inflight_tag_check), [](const auto& e) { return !e.is_translated; })
+               + static_cast<long>(std::size(translation_stash)))
+                  < static_cast<long>(MSHR_SIZE);
   };
-  auto stash_bandwidth_consumed =
-      champsim::transform_while_n(translation_stash, std::back_inserter(inflight_tag_check), initiate_tag_bw, is_translated, initiate_tag_check<false>());
-  initiate_tag_bw.consume(stash_bandwidth_consumed);
   std::vector<long long> channels_bandwidth_consumed{};
 
   if (std::size(upper_levels) > 1) {
@@ -506,7 +539,7 @@ long CACHE::operate()
           : champsim::bandwidth::maximum_type{};
 
   for (auto* ul : upper_levels) {
-    for (auto q : {std::ref(ul->WQ), std::ref(ul->RQ), std::ref(ul->PQ)}) {
+    for (auto q : {std::ref(ul->get_wq()), std::ref(ul->get_rq()), std::ref(ul->get_pq())}) {
       // this needs to be in this loop, we need to ensure that for cases where bandwidth doesn't divide nicely across upstreams,
       // we don't accidentally consume more bandwidth than expected
       champsim::bandwidth per_upper_tag_bw{std::min(per_upper_bandwidth, champsim::bandwidth::maximum_type{initiate_tag_bw.amount_remaining()})};
@@ -525,11 +558,40 @@ long CACHE::operate()
   std::for_each(std::begin(inflight_tag_check), std::end(inflight_tag_check), [this](auto& x) { this->issue_translation(x); });
   std::for_each(std::begin(translation_stash), std::end(translation_stash), [this](auto& x) { this->issue_translation(x); });
 
-  // Find entries that would be ready except that they have not finished translation, move them to the stash
+  // Park EVERY untranslated entry in the stash, not only those already ready.
+  // The tag check cannot begin before translation resolves the physical set
+  // index, and while parked the entry cannot block translated entries behind it.
+  // finish_translation re-admits it, timing the tag check from translation.
   auto [last_not_missed, stash_end] = champsim::extract_if(std::begin(inflight_tag_check), std::end(inflight_tag_check), std::back_inserter(translation_stash),
-                                                           [is_ready, is_translated](const auto& x) { return is_ready(x) && !is_translated(x); });
+                                                           [is_translated](const auto& x) { return !is_translated(x); });
   progress += std::distance(last_not_missed, std::end(inflight_tag_check));
   inflight_tag_check.erase(last_not_missed, std::end(inflight_tag_check));
+
+  // C0 (bench/policy_sanity/c0_latency_design_2026-10-14.md): an ownership
+  // request that must take its line from other cores waits coherence_latency
+  // cycles for the invalidations, then has its tag check. It waits off the tag
+  // pipeline, as in a directory's transaction buffer, so the requests behind
+  // it go on. Off (0) by default; and never in warm-up, where ChampSim charges
+  // no latency at all.
+  if (const auto lat = champsim::coherence::coherence_latency(); lat > 0) {
+    auto back_begin = std::stable_partition(std::begin(coherence_wait), std::end(coherence_wait), [is_ready](const auto& x) { return !is_ready(x); });
+    std::move(back_begin, std::end(coherence_wait), std::back_inserter(inflight_tag_check));
+    coherence_wait.erase(back_begin, std::end(coherence_wait));
+    if (!warmup) {
+      auto must_wait = [this, is_ready, is_translated](const auto& x) {
+        return !x.coherence_waited && is_ready(x) && is_translated(x) && this->dir_ownership_wait(x);
+      };
+      auto wait_begin =
+          std::stable_partition(std::begin(inflight_tag_check), std::end(inflight_tag_check), [must_wait](const auto& x) { return !must_wait(x); });
+      for (auto it = wait_begin; it != std::end(inflight_tag_check); ++it) {
+        it->coherence_waited = true;
+        it->event_cycle = current_time + lat * clock_period;
+        ++sim_stats.coherence_latency_waits;
+      }
+      std::move(wait_begin, std::end(inflight_tag_check), std::back_inserter(coherence_wait));
+      inflight_tag_check.erase(wait_begin, std::end(inflight_tag_check));
+    }
+  }
 
   // Perform tag checks
   auto do_handle_miss = [this](const auto& pkt) {
@@ -550,10 +612,10 @@ long CACHE::operate()
   impl_prefetcher_cycle_operate();
 
   if constexpr (champsim::debug_print) {
-    fmt::print("[{}] {} cycle completed: {} tags checked: {} remaining: {} stash consumed: {} remaining: {} channel consumed: {} pq consumed {} unused consume "
+    fmt::print("[{}] {} cycle completed: {} tags checked: {} remaining: {} stash remaining: {} channel consumed: {} pq consumed {} unused consume "
                "bw {}\n",
                NAME, __func__, current_time.time_since_epoch() / clock_period, tag_check_bw.amount_consumed(), std::size(inflight_tag_check),
-               stash_bandwidth_consumed, std::size(translation_stash), channels_bandwidth_consumed, pq_bandwidth_consumed, initiate_tag_bw.amount_remaining());
+               std::size(translation_stash), channels_bandwidth_consumed, pq_bandwidth_consumed, initiate_tag_bw.amount_remaining());
   }
 
   return progress + fill_bw.amount_consumed() + initiate_tag_bw.amount_consumed() + tag_check_bw.amount_consumed();
@@ -601,10 +663,169 @@ long CACHE::invalidate_entry(champsim::address inval_addr)
   auto inv_way = std::find_if(begin, end, matches_address(inval_addr));
 
   if (inv_way != end) {
+    if (dir_cpu >= 0 && inv_way->valid)
+      champsim::coherence::dir_evict(dir_line(inv_way->address), static_cast<unsigned>(dir_cpu), static_cast<unsigned>(dir_level));
+    if (dir_is_llc && inv_way->valid)
+      champsim::coherence::dir_llc_evict(dir_line(inv_way->address));
     inv_way->valid = false;
   }
 
   return std::distance(begin, inv_way);
+}
+
+// B3 v2 sharer directory: one request reaching the LLC (counted once).
+void CACHE::dir_on_llc_request(const tag_lookup_type& pkt)
+{
+  using champsim::coherence::dir_req;
+  const dir_req kind = pkt.type == access_type::RFO ? dir_req::store : (pkt.type == access_type::WRITE ? dir_req::writeback : dir_req::read);
+  const auto r = champsim::coherence::dir_llc_request(dir_line(pkt.address), pkt.cpu, kind);
+  dir_log_event(kind == dir_req::store ? 'G' : (kind == dir_req::read ? 'L' : 'W'), pkt, r.protocol_others, r.presence_others, r.g5_others);
+  if (kind != dir_req::store)
+    return;
+  if (r.presence_others != 0) {
+    ++sim_stats.coherence_dir_rfo_presence_events;
+    sim_stats.coherence_dir_rfo_presence_others += static_cast<uint64_t>(__builtin_popcount(r.presence_others));
+  }
+  if (r.protocol_others != 0) {
+    ++sim_stats.coherence_dir_rfo_protocol_events;
+    sim_stats.coherence_dir_rfo_protocol_others += static_cast<uint64_t>(__builtin_popcount(r.protocol_others));
+  }
+  if (r.bounded_others != 0)
+    ++sim_stats.coherence_dir_rfo_bounded_events; // diagnosis: the bounded view
+  if (r.g5_others != 0) { // step 3: the gem5-rule view
+    ++sim_stats.coherence_dir_rfo_g5_events;
+    sim_stats.coherence_dir_rfo_g5_cores += static_cast<uint64_t>(__builtin_popcount(r.g5_others));
+  }
+}
+
+// C0: would this request take its line from other cores? The same cases that
+// invalidate copies at level 2: a store miss (RFO) at the LLC, and a store or
+// RFO that hits a private copy (the upgrade, decided where it hits; a miss
+// goes on and is decided at the next level). Other holders by either view, as
+// the invalidation itself uses. Reads the directory, changes nothing.
+bool CACHE::dir_ownership_wait(const tag_lookup_type& pkt) const
+{
+  using champsim::coherence::dir_peek;
+  if (champsim::coherence::private_coherence() < 2)
+    return false;
+  if (dir_is_llc) {
+    if (pkt.type != access_type::RFO)
+      return false;
+    const auto r = dir_peek(dir_line(pkt.address), pkt.cpu);
+    return (r.protocol_others | r.presence_others) != 0;
+  }
+  if (dir_cpu < 0 || !(pkt.type == access_type::RFO || (pkt.type == access_type::WRITE && dir_level == 1)))
+    return false;
+  auto [set_begin, set_end] = get_set_span(pkt.address);
+  if (std::none_of(set_begin, set_end, [matcher = matches_address(pkt.address)](const auto& x) { return x.valid && matcher(x); }))
+    return false;
+  const auto r = dir_peek(dir_line(pkt.address), static_cast<unsigned>(dir_cpu));
+  return (r.protocol_others | r.presence_others) != 0;
+}
+
+// B3 v4, private_coherence 2: an ownership access that hit this private cache.
+void CACHE::dir_on_private_ownership_hit(const tag_lookup_type& pkt)
+{
+  const auto r = champsim::coherence::dir_private_ownership_hit(dir_line(pkt.address), static_cast<unsigned>(dir_cpu));
+  if (r.protocol_others != 0 || r.presence_others != 0)
+    dir_log_event('U', pkt, r.protocol_others, r.presence_others, r.g5_others);
+  if (r.protocol_others != 0) {
+    ++sim_stats.coherence_dir_upgrade_events;
+    sim_stats.coherence_dir_upgrade_cores += static_cast<uint64_t>(__builtin_popcount(r.protocol_others));
+  }
+  if (r.presence_others != 0)
+    ++sim_stats.coherence_dir_upgrade_presence_events;
+  if (r.bounded_others != 0)
+    ++sim_stats.coherence_dir_upgrade_bounded_events; // diagnosis: the bounded view
+  if (r.g5_others != 0) { // step 3: the gem5-rule view
+    ++sim_stats.coherence_dir_upgrade_g5_events;
+    sim_stats.coherence_dir_upgrade_g5_cores += static_cast<uint64_t>(__builtin_popcount(r.g5_others));
+  }
+  if (r.g5_relisted) // amendment 2: a silent re-listing
+    ++sim_stats.coherence_dir_upgrade_g5_silent;
+}
+
+// B3 v4: another core has taken this line (called through the directory).
+// Drop this private cache's copy. A dirty copy goes without a writeback: the
+// new owner holds the newer data.
+void CACHE::dir_invalidate_line(uint64_t line)
+{
+  const champsim::address addr{line << champsim::to_underlying(OFFSET_BITS)};
+  auto [begin, end] = get_set_span(addr);
+  auto way = std::find_if(begin, end, [matcher = matches_address(addr)](const auto& x) { return x.valid && matcher(x); });
+  if (way == end)
+    return;
+  champsim::coherence::dir_evict(line, static_cast<unsigned>(dir_cpu), static_cast<unsigned>(dir_level));
+  if (auto* f = champsim::coherence::dir_event_log())
+    fmt::print(f, "I {} {} {} {} 0 0 0 {:x} {} 0 0\n", NAME, current_time.time_since_epoch() / clock_period, warmup ? 1 : 0, dir_cpu, line, way->dirty ? 1 : 0);
+  way->valid = false;
+  ++sim_stats.coherence_dir_copies_invalidated;
+}
+
+// One line of the diagnostic event log (sharer_directory.h); off unless asked
+// for. kind: L, G, W -- a load, RFO or writeback accepted at the LLC; U -- an
+// upgrade; S -- a stale fill dropped. (I, a private copy invalidated, is
+// written by dir_invalidate_line, before the G or U line that caused it.)
+//   kind cache cycle warmup cpu instr_id ip v_line line type protocol_others presence_others g5_others
+// (g5_others, the gem5-rule view, since 2026-10-19: readers take 12 fields or more)
+template <typename T>
+void CACHE::dir_log_event(char kind, const T& pkt, uint32_t protocol_others, uint32_t presence_others, uint32_t g5_others) const
+{
+  auto* f = champsim::coherence::dir_event_log();
+  if (f == nullptr)
+    return;
+  fmt::print(f, "{} {} {} {} {} {} {:x} {:x} {:x} {} {:x} {:x} {:x}\n", kind, NAME, current_time.time_since_epoch() / clock_period, warmup ? 1 : 0, pkt.cpu,
+             pkt.instr_id, pkt.ip.template to<uint64_t>(), dir_line(pkt.v_address), dir_line(pkt.address), access_type_names.at(champsim::to_underlying(pkt.type)),
+             protocol_others, presence_others, g5_others);
+}
+
+// Synchronised replay (sync_replay.h): does a store from this L1D's core
+// still wait anywhere here -- in the channel from the core, the tag pipeline,
+// translation, a C0 wait, or a miss in flight?
+bool CACHE::has_pending_writes() const
+{
+  auto is_write = [](const auto& x) { return x.type == access_type::WRITE; };
+  for (auto* ul : upper_levels)
+    if (!std::empty(ul->get_wq()))
+      return true;
+  return std::any_of(std::begin(inflight_tag_check), std::end(inflight_tag_check), is_write)
+         || std::any_of(std::begin(translation_stash), std::end(translation_stash), is_write)
+         || std::any_of(std::begin(coherence_wait), std::end(coherence_wait), is_write)
+         || std::any_of(std::begin(MSHR), std::end(MSHR), is_write) || std::any_of(std::begin(inflight_fills), std::end(inflight_fills), is_write);
+}
+
+// B3 v2 self-check, at the end of each phase. A private cache's valid blocks
+// must be exactly the lines the directory marks present for it: every block
+// marked, and no more marks than blocks. Written to both stats blocks, since
+// the printer shows both and extraction reads the first.
+void CACHE::dir_selfcheck()
+{
+  if (dir_is_llc) {
+    sim_stats.coherence_dir_registered = roi_stats.coherence_dir_registered = champsim::coherence::dir_registered_private_caches();
+    sim_stats.coherence_dir_stale_holders = roi_stats.coherence_dir_stale_holders = champsim::coherence::dir_count_stale_holders();
+    sim_stats.coherence_dir_view_order_violations = roi_stats.coherence_dir_view_order_violations
+        = champsim::coherence::dir_count_view_order_violations();
+    sim_stats.coherence_dir_view_order_by_silent = roi_stats.coherence_dir_view_order_by_silent
+        = champsim::coherence::dir_count_view_order_by_silent_relisting();
+    sim_stats.coherence_dir_view_order_unexplained = roi_stats.coherence_dir_view_order_unexplained
+        = sim_stats.coherence_dir_view_order_violations - sim_stats.coherence_dir_view_order_by_silent;
+  }
+  if (dir_cpu < 0)
+    return;
+  uint64_t valid = 0, unmarked = 0;
+  for (const auto& b : block) {
+    if (!b.valid)
+      continue;
+    ++valid;
+    if (!champsim::coherence::dir_present(dir_line(b.address), static_cast<unsigned>(dir_cpu), static_cast<unsigned>(dir_level)))
+      ++unmarked;
+  }
+  const uint64_t marked = champsim::coherence::dir_count_present(static_cast<unsigned>(dir_cpu), static_cast<unsigned>(dir_level));
+  // marked blocks vs marks: more marks = a stale mark; more marked blocks than
+  // marks = the same line held twice in this cache. Either is a mismatch.
+  const uint64_t marked_blocks = valid - unmarked;
+  const uint64_t skew = marked > marked_blocks ? marked - marked_blocks : marked_blocks - marked;
+  sim_stats.coherence_dir_selfcheck_mismatches = roi_stats.coherence_dir_selfcheck_mismatches = unmarked + skew;
 }
 
 bool CACHE::prefetch_line(champsim::address pf_addr, bool fill_this_level, uint32_t prefetch_metadata)
@@ -645,7 +866,6 @@ void CACHE::finish_packet(const response_type& packet)
 {
   // check MSHR information
   auto mshr_entry = std::find_if(std::begin(MSHR), std::end(MSHR), matches_address(packet.address));
-  auto first_unreturned = std::find_if(MSHR.begin(), MSHR.end(), [](auto x) { return x.data_promise.has_unknown_readiness(); });
 
   // sanity check
   if (mshr_entry == MSHR.end()) {
@@ -654,16 +874,16 @@ void CACHE::finish_packet(const response_type& packet)
   }
 
   // MSHR holds the most updated information about this request
-  mshr_type::returned_value finished_value{packet.data, packet.pf_metadata};
+  fill_type::returned_value finished_value{packet.data, packet.pf_metadata};
   mshr_entry->data_promise = champsim::waitable{finished_value, current_time + (warmup ? champsim::chrono::clock::duration{} : FILL_LATENCY)};
   if constexpr (champsim::debug_print) {
     fmt::print("[{}_MSHR] finish_packet instr_id: {} address: {} data: {} type: {} current: {}\n", this->NAME, mshr_entry->instr_id, mshr_entry->address,
                mshr_entry->data_promise->data, access_type_names.at(champsim::to_underlying(mshr_entry->type)), current_time.time_since_epoch() / clock_period);
   }
 
-  // Order this entry after previously-returned entries, but before non-returned
-  // entries
-  std::iter_swap(mshr_entry, first_unreturned);
+  std::iter_swap(mshr_entry, std::begin(MSHR));
+  inflight_fills.push_back(MSHR.front());
+  MSHR.pop_front();
 }
 
 void CACHE::finish_translation(const response_type& packet)
@@ -671,10 +891,14 @@ void CACHE::finish_translation(const response_type& packet)
   auto matches_vpage = [page_num = champsim::page_number{packet.v_address}](const auto& entry) {
     return (champsim::page_number{entry.v_address} == page_num) && !entry.is_translated;
   };
-  auto mark_translated = [p_page = champsim::page_number{packet.data}, this](auto& entry) {
+  // A physically-indexed tag check cannot begin until translation resolves the
+  // physical set index, so time it from translation completion, not admission.
+  const auto tag_check_ready = current_time + (warmup ? champsim::chrono::clock::duration{} : HIT_LATENCY);
+  auto mark_translated = [p_page = champsim::page_number{packet.data}, tag_check_ready, this](auto& entry) {
     [[maybe_unused]] auto old_address = entry.address;
     entry.address = champsim::address{champsim::splice(p_page, champsim::page_offset{entry.v_address})}; // translated address
     entry.is_translated = true;                                                                          // This entry is now translated
+    entry.event_cycle = tag_check_ready;                                                                 // serialize: tag check waits for translation
 
     if constexpr (champsim::debug_print) {
       fmt::print("[{}_TRANSLATE] finish_translation old: {} paddr: {} vaddr: {} type: {} cycle: {}\n", this->NAME, old_address, entry.address, entry.v_address,
@@ -682,17 +906,17 @@ void CACHE::finish_translation(const response_type& packet)
     }
   };
 
-  // Restart stashed translations
-  auto finish_begin = std::find_if_not(std::begin(translation_stash), std::end(translation_stash), [](const auto& x) { return x.is_translated; });
-  auto finish_end = std::stable_partition(finish_begin, std::end(translation_stash), matches_vpage);
-  std::for_each(finish_begin, finish_end, mark_translated);
-
-  // Find all packets that match the page of the returned packet
-  for (auto& entry : inflight_tag_check) {
-    if (matches_vpage(entry)) {
-      mark_translated(entry);
-    }
-  }
+  // Move every stash entry whose translation just resolved into the timed
+  // tag-check pipeline. Re-admission happens here, not in operate(), so it does
+  // not compete for tag-check bandwidth with newly-admitted entries. Every
+  // untranslated entry is parked, so inflight_tag_check holds only translated
+  // entries and there is nothing left to mark there.
+  auto matched_end = std::stable_partition(std::begin(translation_stash), std::end(translation_stash), matches_vpage);
+  std::for_each(std::begin(translation_stash), matched_end, [&](auto& entry) {
+    mark_translated(entry);
+    inflight_tag_check.push_back(std::move(entry));
+  });
+  translation_stash.erase(std::begin(translation_stash), matched_end);
 }
 
 void CACHE::issue_translation(tag_lookup_type& q_entry) const
@@ -826,50 +1050,82 @@ std::vector<double> CACHE::get_wq_occupancy_ratio() const { return ::occupancy_r
 
 std::vector<double> CACHE::get_pq_occupancy_ratio() const { return ::occupancy_ratio_vec(get_pq_occupancy(), get_pq_size()); }
 
-void CACHE::impl_prefetcher_initialize() const { pref_module_pimpl->impl_prefetcher_initialize(); }
+void CACHE::impl_prefetcher_initialize() const
+{
+  std::for_each(pref_module_pimpl.begin(), pref_module_pimpl.end(), [](const auto pref) { pref->prefetcher_initialize(); });
+}
 
 uint32_t CACHE::impl_prefetcher_cache_operate(champsim::address addr, champsim::address ip, bool cache_hit, bool useful_prefetch, access_type type,
                                               uint32_t metadata_in) const
 {
-  return pref_module_pimpl->impl_prefetcher_cache_operate(addr, ip, cache_hit, useful_prefetch, type, metadata_in);
+  uint32_t metadata_out = metadata_in;
+  std::for_each(pref_module_pimpl.begin(), pref_module_pimpl.end(),
+                [&](const auto pref) { metadata_out = pref->prefetcher_cache_operate(addr, ip, cache_hit, useful_prefetch, type, metadata_out); });
+  return (metadata_out);
 }
 
 uint32_t CACHE::impl_prefetcher_cache_fill(champsim::address addr, long set, long way, bool prefetch, champsim::address evicted_addr,
                                            uint32_t metadata_in) const
 {
-  return pref_module_pimpl->impl_prefetcher_cache_fill(addr, set, way, prefetch, evicted_addr, metadata_in);
+  uint32_t metadata_out = metadata_in;
+  std::for_each(pref_module_pimpl.begin(), pref_module_pimpl.end(),
+                [&](const auto pref) { metadata_out = pref->prefetcher_cache_fill(addr, set, way, prefetch, evicted_addr, metadata_out); });
+  return (metadata_out);
 }
 
-void CACHE::impl_prefetcher_cycle_operate() const { pref_module_pimpl->impl_prefetcher_cycle_operate(); }
+void CACHE::impl_prefetcher_cycle_operate() const
+{
+  std::for_each(pref_module_pimpl.begin(), pref_module_pimpl.end(), [](const auto pref) { pref->prefetcher_cycle_operate(); });
+}
 
-void CACHE::impl_prefetcher_final_stats() const { pref_module_pimpl->impl_prefetcher_final_stats(); }
+void CACHE::impl_prefetcher_final_stats() const
+{
+  std::for_each(pref_module_pimpl.begin(), pref_module_pimpl.end(), [](const auto pref) { pref->prefetcher_final_stats(); });
+}
 
 void CACHE::impl_prefetcher_branch_operate(champsim::address ip, uint8_t branch_type, champsim::address branch_target) const
 {
-  pref_module_pimpl->impl_prefetcher_branch_operate(ip, branch_type, branch_target);
+  std::for_each(pref_module_pimpl.begin(), pref_module_pimpl.end(), [&](const auto pref) { pref->prefetcher_branch_operate(ip, branch_type, branch_target); });
 }
 
-void CACHE::impl_initialize_replacement() const { repl_module_pimpl->impl_initialize_replacement(); }
+void CACHE::impl_initialize_replacement() const
+{
+  std::for_each(repl_module_pimpl.begin(), repl_module_pimpl.end(), [](const auto repl) { repl->initialize_replacement(); });
+}
 
 long CACHE::impl_find_victim(uint32_t triggering_cpu, uint64_t instr_id, long set, const BLOCK* current_set, champsim::address ip, champsim::address full_addr,
                              access_type type) const
 {
-  return repl_module_pimpl->impl_find_victim(triggering_cpu, instr_id, set, current_set, ip, full_addr, type);
+  long victim = -1;
+
+  std::for_each(repl_module_pimpl.begin(), repl_module_pimpl.end(), [&](const auto repl) {
+    long temp_victim = repl->find_victim(triggering_cpu, instr_id, set, current_set, ip, full_addr, type);
+    if (temp_victim != -1)
+      victim = temp_victim;
+  });
+
+  assert(victim >= 0);
+  return (victim);
 }
 
 void CACHE::impl_update_replacement_state(uint32_t triggering_cpu, long set, long way, champsim::address full_addr, champsim::address ip,
                                           champsim::address victim_addr, access_type type, bool hit) const
 {
-  repl_module_pimpl->impl_update_replacement_state(triggering_cpu, set, way, full_addr, ip, victim_addr, type, hit);
+  std::for_each(repl_module_pimpl.begin(), repl_module_pimpl.end(),
+                [&](const auto repl) { repl->update_replacement_state(triggering_cpu, set, way, full_addr, ip, victim_addr, type, hit); });
 }
 
 void CACHE::impl_replacement_cache_fill(uint32_t triggering_cpu, long set, long way, champsim::address full_addr, champsim::address ip,
                                         champsim::address victim_addr, access_type type) const
 {
-  repl_module_pimpl->impl_replacement_cache_fill(triggering_cpu, set, way, full_addr, ip, victim_addr, type);
+  std::for_each(repl_module_pimpl.begin(), repl_module_pimpl.end(),
+                [&](const auto repl) { repl->replacement_cache_fill(triggering_cpu, set, way, full_addr, ip, victim_addr, type); });
 }
 
-void CACHE::impl_replacement_final_stats() const { repl_module_pimpl->impl_replacement_final_stats(); }
+void CACHE::impl_replacement_final_stats() const
+{
+  std::for_each(repl_module_pimpl.begin(), repl_module_pimpl.end(), [](const auto repl) { repl->replacement_final_stats(); });
+}
 
 void CACHE::initialize()
 {
@@ -891,8 +1147,8 @@ void CACHE::begin_phase()
   for (auto* ul : upper_levels) {
     channel_type::stats_type ul_new_roi_stats;
     channel_type::stats_type ul_new_sim_stats;
-    ul->roi_stats = ul_new_roi_stats;
-    ul->sim_stats = ul_new_sim_stats;
+    ul->get_roi_stats() = ul_new_roi_stats;
+    ul->get_sim_stats() = ul_new_sim_stats;
   }
 }
 
@@ -901,10 +1157,34 @@ void CACHE::end_phase(unsigned finished_cpu)
   finished_cpu = finished_cpu;
   roi_stats.total_miss_latency_cycles = sim_stats.total_miss_latency_cycles;
 
+  roi_stats.coherence_invalidations = sim_stats.coherence_invalidations;
+  roi_stats.coherence_write_hit_other_sharer_events = sim_stats.coherence_write_hit_other_sharer_events;
+  roi_stats.coherence_rfo_hit_other_sharer_events = sim_stats.coherence_rfo_hit_other_sharer_events;
+  roi_stats.coherence_rfo_hit_other_sharers = sim_stats.coherence_rfo_hit_other_sharers;
+  roi_stats.coherence_dir_rfo_presence_events = sim_stats.coherence_dir_rfo_presence_events;
+  roi_stats.coherence_dir_rfo_presence_others = sim_stats.coherence_dir_rfo_presence_others;
+  roi_stats.coherence_dir_rfo_protocol_events = sim_stats.coherence_dir_rfo_protocol_events;
+  roi_stats.coherence_dir_rfo_protocol_others = sim_stats.coherence_dir_rfo_protocol_others;
+  roi_stats.coherence_dir_copies_invalidated = sim_stats.coherence_dir_copies_invalidated;
+  roi_stats.coherence_dir_upgrade_events = sim_stats.coherence_dir_upgrade_events;
+  roi_stats.coherence_dir_upgrade_cores = sim_stats.coherence_dir_upgrade_cores;
+  roi_stats.coherence_dir_upgrade_presence_events = sim_stats.coherence_dir_upgrade_presence_events;
+  roi_stats.coherence_latency_waits = sim_stats.coherence_latency_waits;
+  roi_stats.coherence_dir_rfo_bounded_events = sim_stats.coherence_dir_rfo_bounded_events;
+  roi_stats.coherence_dir_upgrade_bounded_events = sim_stats.coherence_dir_upgrade_bounded_events;
+  roi_stats.coherence_dir_rfo_g5_events = sim_stats.coherence_dir_rfo_g5_events;
+  roi_stats.coherence_dir_rfo_g5_cores = sim_stats.coherence_dir_rfo_g5_cores;
+  roi_stats.coherence_dir_upgrade_g5_events = sim_stats.coherence_dir_upgrade_g5_events;
+  roi_stats.coherence_dir_upgrade_g5_cores = sim_stats.coherence_dir_upgrade_g5_cores;
+  roi_stats.coherence_dir_upgrade_g5_silent = sim_stats.coherence_dir_upgrade_g5_silent;
+  roi_stats.coherence_dir_stale_fills = sim_stats.coherence_dir_stale_fills;
+  dir_selfcheck();
+  std::copy(std::begin(sim_stats.coherence_sharer_hist), std::end(sim_stats.coherence_sharer_hist), std::begin(roi_stats.coherence_sharer_hist));
+
   roi_stats.hits = sim_stats.hits;
   roi_stats.misses = sim_stats.misses;
-  roi_stats.mshr_merge = sim_stats.mshr_merge;
-  roi_stats.mshr_return = sim_stats.mshr_return;
+  roi_stats.miss_merge = sim_stats.miss_merge;
+  roi_stats.fill = sim_stats.fill;
 
   roi_stats.pf_requested = sim_stats.pf_requested;
   roi_stats.pf_issued = sim_stats.pf_issued;
@@ -912,29 +1192,25 @@ void CACHE::end_phase(unsigned finished_cpu)
   roi_stats.pf_useless = sim_stats.pf_useless;
   roi_stats.pf_fill = sim_stats.pf_fill;
 
-  roi_stats.coherence_invalidations = sim_stats.coherence_invalidations;
-  roi_stats.coherence_write_hit_other_sharer_events = sim_stats.coherence_write_hit_other_sharer_events;
-  for (int i = 0; i < 17; i++) {
-    roi_stats.coherence_sharer_hist[i] = sim_stats.coherence_sharer_hist[i];
-  }
-
   for (auto* ul : upper_levels) {
-    ul->roi_stats.RQ_ACCESS = ul->sim_stats.RQ_ACCESS;
-    ul->roi_stats.RQ_MERGED = ul->sim_stats.RQ_MERGED;
-    ul->roi_stats.RQ_FULL = ul->sim_stats.RQ_FULL;
-    ul->roi_stats.RQ_TO_CACHE = ul->sim_stats.RQ_TO_CACHE;
+    ul->get_roi_stats().RQ_ACCESS = ul->get_sim_stats().RQ_ACCESS;
+    ul->get_roi_stats().RQ_FULL = ul->get_sim_stats().RQ_FULL;
+    ul->get_roi_stats().RQ_TO_CACHE = ul->get_sim_stats().RQ_TO_CACHE;
 
-    ul->roi_stats.PQ_ACCESS = ul->sim_stats.PQ_ACCESS;
-    ul->roi_stats.PQ_MERGED = ul->sim_stats.PQ_MERGED;
-    ul->roi_stats.PQ_FULL = ul->sim_stats.PQ_FULL;
-    ul->roi_stats.PQ_TO_CACHE = ul->sim_stats.PQ_TO_CACHE;
+    ul->get_roi_stats().PQ_ACCESS = ul->get_sim_stats().PQ_ACCESS;
+    ul->get_roi_stats().PQ_FULL = ul->get_sim_stats().PQ_FULL;
+    ul->get_roi_stats().PQ_TO_CACHE = ul->get_sim_stats().PQ_TO_CACHE;
 
-    ul->roi_stats.WQ_ACCESS = ul->sim_stats.WQ_ACCESS;
-    ul->roi_stats.WQ_MERGED = ul->sim_stats.WQ_MERGED;
-    ul->roi_stats.WQ_FULL = ul->sim_stats.WQ_FULL;
-    ul->roi_stats.WQ_TO_CACHE = ul->sim_stats.WQ_TO_CACHE;
-    ul->roi_stats.WQ_FORWARD = ul->sim_stats.WQ_FORWARD;
+    ul->get_roi_stats().WQ_ACCESS = ul->get_sim_stats().WQ_ACCESS;
+    ul->get_roi_stats().WQ_FULL = ul->get_sim_stats().WQ_FULL;
+    ul->get_roi_stats().WQ_TO_CACHE = ul->get_sim_stats().WQ_TO_CACHE;
   }
+}
+
+void CACHE::end_simulation()
+{
+  impl_prefetcher_final_stats();
+  impl_replacement_final_stats();
 }
 
 template <typename T>
@@ -968,9 +1244,11 @@ void CACHE::print_deadlock()
   };
 
   for (auto* ul : upper_levels) {
-    champsim::range_print_deadlock(ul->RQ, NAME + "_RQ", q_writer, q_entry_pack);
-    champsim::range_print_deadlock(ul->WQ, NAME + "_WQ", q_writer, q_entry_pack);
-    champsim::range_print_deadlock(ul->PQ, NAME + "_PQ", q_writer, q_entry_pack);
+    champsim::range_print_deadlock(ul->get_rq(), NAME + "_RQ", q_writer, q_entry_pack);
+    champsim::range_print_deadlock(ul->get_wq(), NAME + "_WQ", q_writer, q_entry_pack);
+    champsim::range_print_deadlock(ul->get_pq(), NAME + "_PQ", q_writer, q_entry_pack);
   }
 }
 // LCOV_EXCL_STOP
+
+champsim::modules::cache_module::register_module<CACHE> default_cache_module("DEFAULT_CACHE");

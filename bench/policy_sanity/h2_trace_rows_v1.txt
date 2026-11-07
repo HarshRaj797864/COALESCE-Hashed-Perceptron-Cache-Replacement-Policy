@@ -1,0 +1,37 @@
+# heldout2_score.py tracerows simulator/results/heldout2/traces simulator/results/heldout2/server simulator/results/newbench/server
+SIZED fluidanimate yes
+SET fluidanimate done f39707f3e4e197c409b362706a69e268 cpuid 74d72229d62c92e4ce627b5298375a23 len 215000000 failed - start0 - unbalanced 0
+TRACE fluidanimate t1 records 215281740 sync 281740 instr 215000000 wrec 100000000 wld 22870181 wst 3502858 wrmw 278728
+TRACE fluidanimate t2 records 215333836 sync 333836 instr 215000000 wrec 100000000 wld 22718753 wst 3711349 wrmw 338785
+TRACE fluidanimate t3 records 215310786 sync 310786 instr 215000000 wrec 100000000 wld 22949933 wst 3604725 wrmw 305106
+TRACE fluidanimate t4 records 215361760 sync 361760 instr 215000000 wrec 100000000 wld 22643696 wst 3741499 wrmw 344599
+SIZED bodytrack yes
+SET bodytrack done f39707f3e4e197c409b362706a69e268 cpuid 74d72229d62c92e4ce627b5298375a23 len 215000000 failed - start0 - unbalanced 0
+TRACE bodytrack t1 records 215001381 sync 1381 instr 215000000 wrec 100000000 wld 19650614 wst 4888100 wrmw 2211409
+TRACE bodytrack t2 records 215001484 sync 1484 instr 215000000 wrec 100000000 wld 19651515 wst 5008956 wrmw 2266157
+TRACE bodytrack t3 records 215001388 sync 1388 instr 215000000 wrec 100000000 wld 19601771 wst 4836738 wrmw 2173001
+TRACE bodytrack t4 records 215001396 sync 1396 instr 215000000 wrec 100000000 wld 19643660 wst 4857326 wrmw 2185526
+SIZED facesim yes
+SET facesim done 02ff8f48654b81f6f277cdac8a13d60b cpuid 74d72229d62c92e4ce627b5298375a23 len 215000000 failed - start0 opened unbalanced 0
+TRACE facesim t0 records 215000006 sync 6 instr 215000000 wrec 100000000 wld 26107975 wst 11364419 wrmw 124536
+TRACE facesim t1 records 215000009 sync 9 instr 215000000 wrec 100000000 wld 26098108 wst 11358168 wrmw 126079
+TRACE facesim t2 records 215000009 sync 9 instr 215000000 wrec 100000000 wld 26111745 wst 11389445 wrmw 116449
+TRACE facesim t3 records 215000010 sync 10 instr 215000000 wrec 100000000 wld 26079203 wst 11371857 wrmw 123315
+SIZED vips yes
+SET vips done f39707f3e4e197c409b362706a69e268 cpuid 74d72229d62c92e4ce627b5298375a23 len 215000000 failed - start0 - unbalanced 0
+TRACE vips t3 records 215000831 sync 831 instr 215000000 wrec 100000000 wld 18978325 wst 5439688 wrmw 21325
+TRACE vips t4 records 215000789 sync 789 instr 215000000 wrec 100000000 wld 18977535 wst 5444198 wrmw 21908
+TRACE vips t5 records 215000782 sync 782 instr 215000000 wrec 100000000 wld 18888730 wst 5496960 wrmw 21868
+TRACE vips t6 records 215000754 sync 754 instr 215000000 wrec 100000000 wld 18889876 wst 5497746 wrmw 21843
+SIZED oceannc yes
+SET oceannc done f39707f3e4e197c409b362706a69e268 cpuid 74d72229d62c92e4ce627b5298375a23 len 215000000 failed - start0 - unbalanced 0
+TRACE oceannc t0 records 215002834 sync 2834 instr 215000000 wrec 100000000 wld 32286101 wst 5595737 wrmw 4939
+TRACE oceannc t1 records 215002768 sync 2768 instr 215000000 wrec 100000000 wld 32322307 wst 5641260 wrmw 4686
+TRACE oceannc t2 records 215002803 sync 2803 instr 215000000 wrec 100000000 wld 32287464 wst 5707136 wrmw 4756
+TRACE oceannc t3 records 215002868 sync 2868 instr 215000000 wrec 100000000 wld 32302775 wst 5670574 wrmw 4830
+SIZED streamcluster step4
+SET streamcluster done - cpuid - len 215000000 failed - start0 - unbalanced 0
+TRACE streamcluster t1 MISSING
+TRACE streamcluster t2 MISSING
+TRACE streamcluster t3 MISSING
+TRACE streamcluster t4 MISSING

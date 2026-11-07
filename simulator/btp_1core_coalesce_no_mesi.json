@@ -1,0 +1,3 @@
+{ "executable_name": "champsim_1core_coalesce_no_mesi", "num_cores": 1,
+  "LLC": { "frequency": 4000, "sets": 2048, "ways": 16, "rq_size": 32, "wq_size": 32,
+           "pq_size": 32, "mshr_size": 64, "latency": 20, "prefetcher": "no", "replacement": "coalesce_no_mesi" } }

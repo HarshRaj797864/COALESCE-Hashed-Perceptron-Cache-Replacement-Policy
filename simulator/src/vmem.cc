@@ -25,10 +25,11 @@
 
 using namespace champsim::data::data_literals;
 
-VirtualMemory::VirtualMemory(champsim::data::bytes page_table_page_size, std::size_t page_table_levels, champsim::chrono::clock::duration minor_penalty,
-                             MEMORY_CONTROLLER& dram_, std::optional<uint64_t> randomization_seed_)
-    : randomization_seed(randomization_seed_), dram(dram_), minor_fault_penalty(minor_penalty), pt_levels(page_table_levels),
-      pte_page_size(page_table_page_size),
+VirtualMemory::VirtualMemory(champsim::modules::ModuleBuilder builder)
+    : randomization_seed(builder.get_parameter<std::optional<uint64_t>>("randomization_seed", true)),
+      dram(builder.get_parameter<champsim::modules::memory_controller_module*>("dram")),
+      minor_fault_penalty(builder.get_parameter<champsim::chrono::clock::duration>("minor_fault_penalty")),
+      pt_levels(builder.get_parameter<std::size_t>("page_table_levels")), pte_page_size(builder.get_parameter<champsim::data::bytes>("page_table_page_size")),
       next_pte_page(
           champsim::dynamic_extent{champsim::data::bits{LOG2_PAGE_SIZE}, champsim::data::bits{champsim::lg2(champsim::data::bytes{pte_page_size}.count())}}, 0)
 {
@@ -41,23 +42,21 @@ VirtualMemory::VirtualMemory(champsim::data::bytes page_table_page_size, std::si
   if (required_bits > champsim::address::bits) {
     fmt::print("[VMEM] WARNING: virtual memory configuration would require {} bits of addressing.\n", required_bits); // LCOV_EXCL_LINE
   }
-  if (required_bits > champsim::data::bits{champsim::lg2(dram.size().count())}) {
+  if (required_bits > champsim::data::bits{champsim::lg2(dram->size().count())}) {
     fmt::print("[VMEM] WARNING: physical memory size is smaller than virtual memory size.\n"); // LCOV_EXCL_LINE
   }
+  // COALESCE: register the cores that share an address space. An empty list is
+  // a no-op, so stock behaviour is unchanged.
+  set_shared_cpus(builder.get_parameter<std::vector<uint32_t>>("vmem_shared_cpus"));
+
   populate_pages();
   shuffle_pages();
 }
 
-VirtualMemory::VirtualMemory(champsim::data::bytes page_table_page_size, std::size_t page_table_levels, champsim::chrono::clock::duration minor_penalty,
-                             MEMORY_CONTROLLER& dram_)
-    : VirtualMemory(page_table_page_size, page_table_levels, minor_penalty, dram_, {})
-{
-}
-
 void VirtualMemory::populate_pages()
 {
-  assert(dram.size() > 1_MiB);
-  ppage_free_list.resize(((dram.size() - 1_MiB) / PAGE_SIZE).count());
+  assert(dram->size() > 1_MiB);
+  ppage_free_list.resize(((dram->size() - 1_MiB) / PAGE_SIZE).count());
   assert(ppage_free_list.size() != 0);
   champsim::page_number base_address =
       champsim::page_number{champsim::lowest_address_for_size(std::max<champsim::data::mebibytes>(champsim::data::bytes{PAGE_SIZE}, 1_MiB))};
@@ -106,9 +105,9 @@ std::size_t VirtualMemory::available_ppages() const { return (ppage_free_list.si
 
 std::pair<champsim::page_number, champsim::chrono::clock::duration> VirtualMemory::va_to_pa(uint32_t cpu_num, champsim::page_number vaddr)
 {
-  // COALESCE: resolve cpu_num to its effective ASID. Cores not in cpu_to_shared_asid
-  // keep cpu_num as ASID (existing isolated behavior). Cores in the map (set via
-  // set_shared_cpus) use SHARED_ASID so they alias to the same physical pages.
+  // COALESCE: resolve this core to its effective ASID. Cores absent from
+  // cpu_to_shared_asid keep cpu_num, which is stock isolated behaviour; cores
+  // registered by set_shared_cpus() use SHARED_ASID and therefore alias.
   uint32_t asid = cpu_num;
   if (auto it = cpu_to_shared_asid.find(cpu_num); it != cpu_to_shared_asid.end()) {
     asid = it->second;
@@ -121,12 +120,11 @@ std::pair<champsim::page_number, champsim::chrono::clock::duration> VirtualMemor
     ppage_pop();
   }
 
-  // COALESCE: alias accounting. Only meaningful when this access is shared.
+  // COALESCE: alias accounting, meaningful only for shared accesses.
   if (asid == SHARED_ASID) {
     auto [first_it, first_inserted] = shared_first_allocator.try_emplace(champsim::page_number{vaddr}, cpu_num);
     if (!first_inserted && first_it->second != cpu_num) {
-      // A different core had already mapped this shared vpage — real cross-CPU alias.
-      ++aliased_fills;
+      ++aliased_fills; // a different core had already mapped this shared vpage
     }
   }
 
@@ -141,9 +139,6 @@ std::pair<champsim::page_number, champsim::chrono::clock::duration> VirtualMemor
 
 void VirtualMemory::set_shared_cpus(const std::vector<uint32_t>& shared_cpu_ids)
 {
-  // COALESCE: mark each listed core as sharing the SHARED_ASID address space.
-  // Idempotent and additive — repeating with the same ids is a no-op; calling with
-  // a subset only marks that subset. Cores not listed remain isolated.
   for (auto id : shared_cpu_ids) {
     cpu_to_shared_asid[id] = SHARED_ASID;
   }
@@ -151,18 +146,17 @@ void VirtualMemory::set_shared_cpus(const std::vector<uint32_t>& shared_cpu_ids)
 
 std::pair<champsim::address, champsim::chrono::clock::duration> VirtualMemory::get_pte_pa(uint32_t cpu_num, champsim::page_number vaddr, std::size_t level)
 {
-  if (champsim::page_offset{next_pte_page} == champsim::page_offset{0}) {
-    active_pte_page = ppage_front();
-    ppage_pop();
-  }
-
-  champsim::dynamic_extent pte_table_entry_extent{champsim::address::bits, shamt(level)};
+  champsim::dynamic_extent pte_table_entry_extent{champsim::address::bits, shamt(level + 1)};
   auto [ppage, fault] =
       page_table.try_emplace({cpu_num, level, champsim::address_slice{pte_table_entry_extent, vaddr}}, champsim::splice(active_pte_page, next_pte_page));
 
   // this PTE doesn't yet have a mapping
   if (fault) {
     next_pte_page++;
+    if (champsim::page_offset{next_pte_page} == champsim::page_offset{0}) {
+      active_pte_page = ppage_front();
+      ppage_pop();
+    }
   }
 
   auto offset = get_offset(vaddr, level);
@@ -181,3 +175,7 @@ std::pair<champsim::address, champsim::chrono::clock::duration> VirtualMemory::g
 
   return {paddr, penalty};
 }
+
+std::size_t VirtualMemory::get_pt_levels() const { return pt_levels; }
+
+champsim::modules::vmem_module::register_module<VirtualMemory> default_virtual_memory_module("DEFAULT_VMEM");

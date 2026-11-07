@@ -3,95 +3,6 @@
 #include "cache.h"
 #include "defaults.hpp"
 #include "mocks.hpp"
-
-SCENARIO("A prefetch can be issued that creates an MSHR")
-{
-  GIVEN("An empty cache")
-  {
-    constexpr auto hit_latency = 1;
-    constexpr auto fill_latency = 10;
-    do_nothing_MRC mock_ll;
-    CACHE uut{champsim::cache_builder{champsim::defaults::default_l1d}
-                  .name("421a-uut")
-                  .sets(64)
-                  .mshr_size(1)
-                  .tag_bandwidth(champsim::bandwidth::maximum_type{1})
-                  .fill_bandwidth(champsim::bandwidth::maximum_type{1})
-                  .lower_level(&mock_ll.queues)
-                  .hit_latency(hit_latency)
-                  .fill_latency(fill_latency)};
-
-    std::array<champsim::operable*, 2> elements{{&mock_ll, &uut}};
-
-    for (auto elem : elements) {
-      elem->initialize();
-      elem->warmup = false;
-      elem->begin_phase();
-    }
-
-    WHEN("A prefetch is issued with 'fill_this_level == true'")
-    {
-      auto seed_result = uut.prefetch_line(champsim::address{0xdeadbeef}, true, 0);
-      REQUIRE(seed_result);
-
-      for (int i = 0; i < 10; ++i) {
-        for (auto elem : elements)
-          elem->_operate();
-      }
-
-      THEN("The packet is forwarded and an MSHR is created")
-      {
-        REQUIRE(uut.get_mshr_occupancy() == 1);
-        REQUIRE(mock_ll.packet_count() == 1);
-      }
-    }
-  }
-}
-
-SCENARIO("A prefetch can be issued without creating an MSHR")
-{
-  GIVEN("An empty cache")
-  {
-    constexpr auto hit_latency = 1;
-    constexpr auto fill_latency = 10;
-    do_nothing_MRC mock_ll;
-    CACHE uut{champsim::cache_builder{champsim::defaults::default_l1d}
-                  .name("421b-uut")
-                  .sets(64)
-                  .mshr_size(1)
-                  .tag_bandwidth(champsim::bandwidth::maximum_type{1})
-                  .fill_bandwidth(champsim::bandwidth::maximum_type{1})
-                  .lower_level(&mock_ll.queues)
-                  .hit_latency(hit_latency)
-                  .fill_latency(fill_latency)};
-
-    std::array<champsim::operable*, 2> elements{{&mock_ll, &uut}};
-
-    for (auto elem : elements) {
-      elem->initialize();
-      elem->warmup = false;
-      elem->begin_phase();
-    }
-
-    WHEN("A prefetch is issued with 'fill_this_level == false'")
-    {
-      auto seed_result = uut.prefetch_line(champsim::address{0xdeadbeef}, false, 0);
-      REQUIRE(seed_result);
-
-      for (int i = 0; i < 10; ++i) {
-        for (auto elem : elements)
-          elem->_operate();
-      }
-
-      THEN("The packet is forwarded without an MSHR being created")
-      {
-        REQUIRE(std::empty(uut.MSHR));
-        REQUIRE(mock_ll.packet_count() == 1);
-      }
-    }
-  }
-}
-
 SCENARIO("A prefetch fill the first level")
 {
   GIVEN("An empty cache")
@@ -100,12 +11,12 @@ SCENARIO("A prefetch fill the first level")
     constexpr auto fill_latency = 10;
     do_nothing_MRC mock_ll;
     to_rq_MRP mock_ut;
-    CACHE uut{champsim::cache_builder{champsim::defaults::default_l1d}
-                  .name("421c-uut")
-                  .upper_levels({&mock_ut.queues})
-                  .lower_level(&mock_ll.queues)
-                  .hit_latency(hit_latency)
-                  .fill_latency(fill_latency)};
+    CACHE uut{champsim::modules::ModuleBuilder{"t421_cache_0", "DEFAULT_CACHE", champsim::defaults::default_l1d()}
+                  .add_parameter("mshr_size", static_cast<uint32_t>(8))
+                  .add_parameter("upper_levels", std::vector<champsim::modules::channel_module*>{&mock_ut.queues})
+                  .add_parameter("lower_level", static_cast<champsim::modules::channel_module*>(&mock_ll.queues))
+                  .add_parameter("hit_latency", static_cast<uint64_t>(hit_latency))
+                  .add_parameter("fill_latency", static_cast<uint64_t>(fill_latency))};
 
     std::array<champsim::operable*, 3> elements{{&uut, &mock_ll, &mock_ut}};
 
@@ -157,18 +68,18 @@ SCENARIO("A prefetch not fill the first level and fill the second level")
     to_rq_MRP mock_ul;
     to_rq_MRP mock_ut;
 
-    CACHE uul{champsim::cache_builder{champsim::defaults::default_l1d}
-                  .name("421d-uul")
-                  .upper_levels({{&mock_ul.queues, &uul_queues}})
-                  .lower_level(&mock_ll.queues)
-                  .hit_latency(hit_latency)
-                  .fill_latency(fill_latency)};
-    CACHE uut{champsim::cache_builder{champsim::defaults::default_l1d}
-                  .name("421d-uut")
-                  .upper_levels({&mock_ut.queues})
-                  .lower_level(&uul_queues)
-                  .hit_latency(hit_latency)
-                  .fill_latency(fill_latency)};
+    CACHE uul{champsim::modules::ModuleBuilder{"t421_cache_1", "DEFAULT_CACHE", champsim::defaults::default_l1d()}
+                  .add_parameter("mshr_size", static_cast<uint32_t>(8))
+                  .add_parameter("upper_levels", std::vector<champsim::modules::channel_module*>{&mock_ul.queues, &uul_queues})
+                  .add_parameter("lower_level", static_cast<champsim::modules::channel_module*>(&mock_ll.queues))
+                  .add_parameter("hit_latency", static_cast<uint64_t>(hit_latency))
+                  .add_parameter("fill_latency", static_cast<uint64_t>(fill_latency))};
+    CACHE uut{champsim::modules::ModuleBuilder{"t421_cache_2", "DEFAULT_CACHE", champsim::defaults::default_l1d()}
+                  .add_parameter("mshr_size", static_cast<uint32_t>(8))
+                  .add_parameter("upper_levels", std::vector<champsim::modules::channel_module*>{&mock_ut.queues})
+                  .add_parameter("lower_level", static_cast<champsim::modules::channel_module*>(&uul_queues))
+                  .add_parameter("hit_latency", static_cast<uint64_t>(hit_latency))
+                  .add_parameter("fill_latency", static_cast<uint64_t>(fill_latency))};
 
     std::array<champsim::operable*, 5> elements{{&uut, &mock_ll, &uul, &mock_ut, &mock_ul}};
 

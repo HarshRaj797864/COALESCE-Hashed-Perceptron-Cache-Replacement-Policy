@@ -28,6 +28,7 @@
 #include "address.h"
 #include "champsim.h"
 #include "chrono.h"
+#include "sync_replay.h"
 #include "trace_instruction.h"
 
 // branch types
@@ -128,10 +129,37 @@ struct ooo_model_instr : champsim::program_ordered<ooo_model_instr> {
   // these are indices of instructions in the ROB that depend on me
   std::vector<std::reference_wrapper<ooo_model_instr>> registers_instrs_depend_on_me;
 
+  // Synchronised replay (sync_replay.h): a sync record becomes an instruction
+  // with no memory operands that announces a release when it retires, or is
+  // held at dispatch until the release it waits for has retired. A base record
+  // only sets its thread's base and is never given to a core.
+  uint64_t sync_release = 0;
+  uint64_t sync_wait = 0;
+  bool sync_base = false;
+  bool sync_acquire = false; // an acquire record
+  uint64_t sync_mutex = 0;   // a mutex record's mutex (sync_mutex_design_2026-10-19.md), or 0
+  bool sync_ordered = false; // a mutex acquire that keeps its recorded wait under timing order
+
 private:
   template <typename T>
   ooo_model_instr(T instr, std::array<uint8_t, 2> local_asid) : ip(instr.ip), is_branch(instr.is_branch), branch_taken(instr.branch_taken), asid(local_asid)
   {
+    if (instr.destination_memory[1] == champsim::sync::MAGIC) {
+      // A sync record: no registers, no memory operands, not a branch.
+      is_branch = false;
+      branch_taken = false;
+      if (instr.source_memory[1] == champsim::sync::KIND_BASE) {
+        sync_base = true;
+        sync_release = instr.destination_memory[0]; // the first release this thread's trace holds
+      } else {
+        sync_release = instr.destination_memory[0];
+        sync_wait = instr.source_memory[0];
+        sync_acquire = (instr.source_memory[1] == champsim::sync::KIND_ACQUIRE);
+        sync_mutex = instr.source_memory[2];
+        sync_ordered = (instr.source_memory[3] != 0);
+      }
+      return;
+    }
     std::remove_copy(std::begin(instr.destination_registers), std::end(instr.destination_registers), std::back_inserter(this->destination_registers), 0);
     std::remove_copy(std::begin(instr.source_registers), std::end(instr.source_registers), std::back_inserter(this->source_registers), 0);
 

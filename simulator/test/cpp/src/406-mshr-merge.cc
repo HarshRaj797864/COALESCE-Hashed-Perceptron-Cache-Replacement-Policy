@@ -8,40 +8,60 @@
 
 namespace
 {
-std::map<CACHE*, std::vector<champsim::address>> address_operate_collector;
+std::map<champsim::modules::cache_module*, std::vector<champsim::address>> address_operate_collector;
 }
 
 struct address_collector : champsim::modules::prefetcher {
   using prefetcher::prefetcher;
 
-  uint32_t prefetcher_cache_operate(champsim::address addr, champsim::address, bool, bool, access_type, uint32_t metadata_in)
+  champsim::modules::cache_module* parent_ = nullptr;
+
+  void prefetcher_initialize() override {}
+  uint32_t prefetcher_cache_operate(champsim::address addr, champsim::address, bool, bool, access_type, uint32_t metadata_in) override
   {
-    ::address_operate_collector[intern_].push_back(addr);
+    ::address_operate_collector[parent_].push_back(addr);
     return metadata_in;
   }
 
-  uint32_t prefetcher_cache_fill(champsim::address, long, long, uint8_t, champsim::address, uint32_t metadata_in) { return metadata_in; }
+  uint32_t prefetcher_cache_fill(champsim::address, long, long, bool, champsim::address, uint32_t metadata_in) override
+  {
+    return metadata_in;
+  }
+
+  void prefetcher_cycle_operate() override {}
+  void prefetcher_final_stats() override {}
+  void prefetcher_branch_operate(champsim::address, uint8_t, champsim::address) override {}
+
+  address_collector(champsim::modules::ModuleBuilder builder)
+    : parent_(builder.get_parent<champsim::modules::cache_module>()) {}
 };
+champsim::modules::prefetcher::register_module<address_collector> address_collect_register("address_collector");
 
 SCENARIO("A cache merges two requests in the MSHR")
 {
+  auto [type, str] = GENERATE(table<access_type, std::string_view>({std::pair{access_type::LOAD, "load"sv}, std::pair{access_type::WRITE, "write"sv}}));
+
   GIVEN("An empty cache")
   {
     constexpr auto hit_latency = 4;
     constexpr auto fill_latency = 10;
     constexpr auto miss_latency = 2;
     do_nothing_MRC mock_ll{miss_latency};
-    to_rq_MRP mock_ul_seed;
+    to_rq_MRP mock_ul_seed_rq;
+    to_wq_MRP mock_ul_seed_wq;
+    auto& mock_ul_seed = type == access_type::WRITE ? static_cast<queue_issue_MRP&>(mock_ul_seed_wq) : static_cast<queue_issue_MRP&>(mock_ul_seed_rq);
     to_rq_MRP mock_ul_test;
-    CACHE uut{champsim::cache_builder{champsim::defaults::default_l1d}
-                  .name("406-uut")
-                  .sets(8)
-                  .ways(1)
-                  .upper_levels({{&mock_ul_seed.queues, &mock_ul_test.queues}})
-                  .lower_level(&mock_ll.queues)
-                  .hit_latency(hit_latency)
-                  .fill_latency(fill_latency)
-                  .prefetcher<address_collector>()};
+    CACHE uut{champsim::modules::ModuleBuilder{"t406_cache", "DEFAULT_CACHE", champsim::defaults::default_l1d()}
+      .add_parameter("mshr_size", static_cast<uint32_t>(8))
+      .add_parameter("num_sets", static_cast<uint32_t>(8))
+      .add_parameter("num_ways", static_cast<uint32_t>(1))
+      .add_parameter("upper_levels", std::vector<champsim::modules::channel_module*>{&mock_ul_seed.queues, &mock_ul_test.queues})
+      .add_parameter("lower_level", static_cast<champsim::modules::channel_module*>(&mock_ll.queues))
+      .add_parameter("hit_latency", static_cast<uint64_t>(hit_latency))
+      .add_parameter("fill_latency", static_cast<uint64_t>(fill_latency))
+      .add_parameter("pref_activate_mask", std::vector<access_type>{type})
+      .add_submodule("prefetcher", champsim::modules::ModuleBuilder{"t406_address_collector", "address_collector"})
+    };
 
     std::array<champsim::operable*, 4> elements{{&mock_ll, &uut, &mock_ul_seed, &mock_ul_test}};
 
@@ -56,18 +76,18 @@ SCENARIO("A cache merges two requests in the MSHR")
       for (auto elem : elements)
         elem->_operate();
 
-    WHEN("A packet is sent")
+    WHEN("A " + std::string{str} + " packet is sent")
     {
       ::address_operate_collector.insert_or_assign(&uut, std::vector<champsim::address>{});
 
       uint64_t id = 1;
-      decltype(mock_ul_seed)::request_type test_a;
+      queue_issue_MRP::request_type test_a;
       test_a.address = champsim::address{0xdeadbeef};
       test_a.cpu = 0;
-      test_a.type = access_type::LOAD;
+      test_a.type = type;
       test_a.instr_id = id++;
 
-      auto test_a_result = mock_ul_seed.issue(test_a);
+      auto test_a_result = type == access_type::WRITE ? mock_ul_seed_wq.issue(test_a) : mock_ul_seed_rq.issue(test_a);
 
       for (uint64_t i = 0; i < hit_latency + 2; ++i)
         for (auto elem : elements)

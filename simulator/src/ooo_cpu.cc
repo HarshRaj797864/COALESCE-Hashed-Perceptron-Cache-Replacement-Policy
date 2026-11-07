@@ -27,12 +27,10 @@
 #include "cache.h"
 #include "champsim.h"
 #include "deadlock.h"
+#include "event_listeners.h"
 #include "instruction.h"
+#include "sync_replay.h"
 #include "util/span.h"
-
-std::chrono::seconds elapsed_time();
-
-constexpr long long STAT_PRINTING_PERIOD = 10000000;
 
 long O3_CPU::operate()
 {
@@ -51,22 +49,6 @@ long O3_CPU::operate()
   progress += fetch_instruction(); // fetch
   progress += check_dib();
   initialize_instruction();
-
-  // heartbeat
-  if (show_heartbeat && (num_retired >= (last_heartbeat_instr + STAT_PRINTING_PERIOD))) {
-    using double_duration = std::chrono::duration<double, typename champsim::chrono::picoseconds::period>;
-    auto heartbeat_instr{std::ceil(num_retired - last_heartbeat_instr)};
-    auto heartbeat_cycle{double_duration{current_time - last_heartbeat_time} / clock_period};
-
-    auto phase_instr{std::ceil(num_retired - begin_phase_instr)};
-    auto phase_cycle{double_duration{current_time - begin_phase_time} / clock_period};
-
-    fmt::print("Heartbeat CPU {} instructions: {} cycles: {} heartbeat IPC: {:.4g} cumulative IPC: {:.4g} (Simulation time: {:%H hr %M min %S sec})\n", cpu,
-               num_retired, current_time.time_since_epoch() / clock_period, heartbeat_instr / heartbeat_cycle, phase_instr / phase_cycle, elapsed_time());
-
-    last_heartbeat_instr = num_retired;
-    last_heartbeat_time = current_time;
-  }
 
   return progress;
 }
@@ -187,6 +169,10 @@ bool O3_CPU::do_predict_branch(ooo_model_instr& arch_instr)
 
   return stop_fetch;
 }
+
+void O3_CPU::push_instruction(ooo_model_instr instr) { input_queue.push_back(instr); }
+
+std::size_t O3_CPU::instructions_requested() { return IN_QUEUE_SIZE - static_cast<long>(std::size(input_queue)); }
 
 bool O3_CPU::do_init_instruction(ooo_model_instr& arch_instr)
 {
@@ -408,18 +394,50 @@ long O3_CPU::dispatch_instruction()
 {
   champsim::bandwidth available_dispatch_bandwidth{DISPATCH_WIDTH};
 
+  // Synchronised replay (sync_replay.h): an instruction that waits for a
+  // release no core has retired yet is not dispatched, and nothing behind it.
+  // Under timing mutex order a mutex acquire instead waits for its mutex
+  // (keeping its recorded wait only if flagged ordered); see sync_replay.h.
+  const bool mutex_timing = champsim::sync::mutex_timing();
+  enum class sync_hold { none, recorded, mutex };
+  auto sync_check = [this, mutex_timing](const ooo_model_instr& x) {
+    const bool by_timing = mutex_timing && x.sync_acquire && x.sync_mutex != 0;
+    if (x.sync_wait != 0 && (!by_timing || x.sync_ordered) && !champsim::sync::released(x.sync_wait))
+      return sync_hold::recorded;
+    if (by_timing && !champsim::sync::mutex_ready(static_cast<unsigned>(cpu), x.sync_mutex))
+      return sync_hold::mutex;
+    return sync_hold::none;
+  };
+  auto sync_ready = [&sync_check](const ooo_model_instr& x) { return sync_check(x) == sync_hold::none; };
+
   // dispatch DISPATCH_WIDTH instructions into the ROB
   while (available_dispatch_bandwidth.has_remaining() && !std::empty(DISPATCH_BUFFER) && DISPATCH_BUFFER.front().ready_time <= current_time
+         && sync_ready(DISPATCH_BUFFER.front())
          && std::size(ROB) != ROB_SIZE
          && ((std::size_t)std::count_if(std::begin(LQ), std::end(LQ), [](const auto& lq_entry) { return !lq_entry.has_value(); })
              >= std::size(DISPATCH_BUFFER.front().source_memory))
          && ((std::size(DISPATCH_BUFFER.front().destination_memory) + std::size(SQ)) <= SQ_SIZE)) {
+    if (const auto& x = DISPATCH_BUFFER.front(); x.sync_acquire) {
+      champsim::sync::note_acquire(static_cast<unsigned>(cpu));
+      if (x.sync_mutex != 0) {
+        champsim::sync::note_mutex_record(x.sync_mutex);
+        if (mutex_timing)
+          champsim::sync::mutex_take(static_cast<unsigned>(cpu), x.sync_mutex, x.sync_ordered);
+      }
+    }
     ROB.push_back(std::move(DISPATCH_BUFFER.front()));
     DISPATCH_BUFFER.pop_front();
     do_memory_scheduling(ROB.back());
 
     available_dispatch_bandwidth.consume();
     ROB.back().ready_time = current_time + (warmup ? champsim::chrono::clock::duration{} : SCHEDULING_LATENCY);
+  }
+  if (!std::empty(DISPATCH_BUFFER)) {
+    if (const auto h = sync_check(DISPATCH_BUFFER.front()); h != sync_hold::none) {
+      champsim::sync::note_stall(static_cast<unsigned>(cpu));
+      if (h == sync_hold::mutex)
+        champsim::sync::note_mutex_stall(static_cast<unsigned>(cpu));
+    }
   }
 
   return available_dispatch_bandwidth.amount_consumed();
@@ -430,13 +448,16 @@ long O3_CPU::schedule_instruction()
   champsim::bandwidth search_bw{SCHEDULER_SIZE};
   int progress{0};
   for (auto rob_it = std::begin(ROB); rob_it != std::end(ROB) && search_bw.has_remaining(); ++rob_it) {
-    // if there aren't enough physical registers available for the next instruction, stop scheduling
-    unsigned long sources_to_allocate = std::count_if(rob_it->source_registers.begin(), rob_it->source_registers.end(),
-                                                      [&alloc = std::as_const(reg_allocator)](auto srcreg) { return !alloc.isAllocated(srcreg); });
-    if (reg_allocator.count_free_registers() < (sources_to_allocate + rob_it->destination_registers.size())) {
-      break;
-    }
     if (!rob_it->scheduled && rob_it->ready_time <= current_time) {
+      // The free-register rename gate applies only to instructions being
+      // renamed this cycle. An already-scheduled instruction has claimed its
+      // registers, so evaluating the gate against it (and breaking when free
+      // registers fall below its destination count) wrongly blocks scheduling.
+      unsigned long sources_to_allocate = std::count_if(rob_it->source_registers.begin(), rob_it->source_registers.end(),
+                                                        [&alloc = std::as_const(reg_allocator)](auto srcreg) { return !alloc.isAllocated(srcreg); });
+      if (reg_allocator.count_free_registers() < (sources_to_allocate + rob_it->destination_registers.size())) {
+        break;
+      }
       do_scheduling(*rob_it);
       ++progress;
     }
@@ -514,11 +535,29 @@ void O3_CPU::do_memory_scheduling(ooo_model_instr& instr)
     assert(q_entry != std::end(LQ));
     q_entry->emplace(smem, instr.instr_id, instr.ip, instr.asid); // add it to the load queue
 
+    // A read-modify-write -- the instruction also stores to this address --
+    // must own the line before it writes, so its load is issued as an RFO
+    // (B3 v3 step 1, bench/policy_sanity/b3v3_rmw_design_2026-10-07.md).
+    // canneal reads shared state with lock cmpxchg, which gem5's Ruby issues
+    // as a store request; issued as a LOAD, its write half hit privately and
+    // the shared cache never saw an ownership request
+    // (b3v2_canneal_barnes_2026-10-07.md). The trace has no lock prefix, so
+    // unlocked RMWs are treated the same: they too need ownership before the
+    // write completes.
+    const bool is_rmw = std::find(std::begin(instr.destination_memory), std::end(instr.destination_memory), smem) != std::end(instr.destination_memory);
+    (*q_entry)->rmw = is_rmw;
+
     // Check for forwarding
     auto sq_it = std::max_element(std::begin(SQ), std::end(SQ), [smem](const auto& lhs, const auto& rhs) {
       return lhs.virtual_address != smem || (rhs.virtual_address == smem && LSQ_ENTRY::program_order(lhs, rhs));
     });
     if (sq_it != std::end(SQ) && sq_it->virtual_address == smem) {
+      // Either way below, this load is satisfied by the store and is never
+      // issued to L1D. Counted for RMWs so that issued + forwarded can be
+      // checked against the trace.
+      if (is_rmw) {
+        ++sim_stats.rmw_loads_forwarded;
+      }
       if (sq_it->fetch_issued) { // Store already executed
         (*q_entry)->finish(instr);
         q_entry->reset();
@@ -577,6 +616,9 @@ long O3_CPU::operate_lsq()
       if (success) {
         load_bw.consume();
         lq_entry->fetch_issued = true;
+        if (lq_entry->rmw) {
+          ++sim_stats.rmw_loads_as_rfo;
+        }
       }
     }
   }
@@ -627,7 +669,7 @@ bool O3_CPU::execute_load(const LSQ_ENTRY& lq_entry)
     fmt::print("[LQ] {} instr_id: {} vaddr: {}\n", __func__, data_packet.instr_id, data_packet.v_address);
   }
 
-  return L1D_bus.issue_read(data_packet);
+  return lq_entry.rmw ? L1D_bus.issue_rfo(data_packet) : L1D_bus.issue_read(data_packet);
 }
 
 void O3_CPU::do_complete_execution(ooo_model_instr& instr)
@@ -663,8 +705,8 @@ long O3_CPU::handle_memory_return()
   long progress{0};
 
   for (champsim::bandwidth fetch_bw{FETCH_WIDTH}, l1i_bw{L1I_BANDWIDTH};
-       fetch_bw.has_remaining() && l1i_bw.has_remaining() && !L1I_bus.lower_level->returned.empty(); l1i_bw.consume()) {
-    auto& l1i_entry = L1I_bus.lower_level->returned.front();
+       fetch_bw.has_remaining() && l1i_bw.has_remaining() && !L1I_bus.lower_level->get_returned().empty(); l1i_bw.consume()) {
+    auto& l1i_entry = L1I_bus.lower_level->get_returned().front();
 
     while (fetch_bw.has_remaining() && !l1i_entry.instr_depend_on_me.empty()) {
       auto fetched = std::find_if(std::begin(IFETCH_BUFFER), std::end(IFETCH_BUFFER), ooo_model_instr::matches_id(l1i_entry.instr_depend_on_me.front()));
@@ -683,13 +725,14 @@ long O3_CPU::handle_memory_return()
 
     // remove this entry if we have serviced all of its instructions
     if (l1i_entry.instr_depend_on_me.empty()) {
-      L1I_bus.lower_level->returned.pop_front();
+      L1I_bus.lower_level->get_returned().pop_front();
       ++progress;
     }
   }
 
-  auto l1d_it = std::begin(L1D_bus.lower_level->returned);
-  for (champsim::bandwidth l1d_bw{L1D_BANDWIDTH}; l1d_bw.has_remaining() && l1d_it != std::end(L1D_bus.lower_level->returned); l1d_bw.consume(), ++l1d_it) {
+  auto l1d_it = std::begin(L1D_bus.lower_level->get_returned());
+  for (champsim::bandwidth l1d_bw{L1D_BANDWIDTH}; l1d_bw.has_remaining() && l1d_it != std::end(L1D_bus.lower_level->get_returned());
+       l1d_bw.consume(), ++l1d_it) {
     for (auto& lq_entry : LQ) {
       if (lq_entry.has_value() && lq_entry->fetch_issued && champsim::block_number{lq_entry->virtual_address} == champsim::block_number{l1d_it->v_address}) {
         lq_entry->finish(std::begin(ROB), std::end(ROB));
@@ -699,15 +742,25 @@ long O3_CPU::handle_memory_return()
     }
     ++progress;
   }
-  L1D_bus.lower_level->returned.erase(std::begin(L1D_bus.lower_level->returned), l1d_it);
+  L1D_bus.lower_level->get_returned().erase(std::begin(L1D_bus.lower_level->get_returned()), l1d_it);
 
   return progress;
 }
 
 long O3_CPU::retire_rob()
 {
-  auto [retire_begin, retire_end] =
-      champsim::get_span_p(std::cbegin(ROB), std::cend(ROB), champsim::bandwidth{RETIRE_WIDTH}, [](const auto& x) { return x.completed; });
+  // Synchronised replay: a release is a fence. It retires only when every
+  // older store of this core has left the store queue and been performed in
+  // the L1D (sync_replay.h).
+  auto fence_clear = [this](const ooo_model_instr& x) {
+    if (x.sync_release == 0)
+      return true;
+    if (std::any_of(std::begin(SQ), std::end(SQ), [id = x.instr_id](const auto& sq) { return sq.instr_id < id; }))
+      return false;
+    return !champsim::sync::l1d_pending_writes(static_cast<unsigned>(cpu));
+  };
+  auto [retire_begin, retire_end] = champsim::get_span_p(std::cbegin(ROB), std::cend(ROB), champsim::bandwidth{RETIRE_WIDTH},
+                                                         [&fence_clear](const auto& x) { return x.completed && fence_clear(x); });
   assert(std::distance(retire_begin, retire_end) >= 0); // end succeeds begin
   if constexpr (champsim::debug_print) {
     std::for_each(retire_begin, retire_end, [cycle = current_time.time_since_epoch() / clock_period](const auto& x) {
@@ -723,6 +776,21 @@ long O3_CPU::retire_rob()
     }
   }
 
+  uint64_t cycles = current_time.time_since_epoch() / clock_period;
+  handle_event<Event::RETIRE>(cpu, retire_begin, retire_end, cycles);
+
+  // Synchronised replay: a release is announced when it retires.
+  for (auto rob_it = retire_begin; rob_it != retire_end; ++rob_it) {
+    if (rob_it->sync_release != 0) {
+      champsim::sync::release(static_cast<unsigned>(cpu), rob_it->sync_release);
+      if (rob_it->sync_mutex != 0) {
+        champsim::sync::note_mutex_record(rob_it->sync_mutex);
+        if (champsim::sync::mutex_timing())
+          champsim::sync::mutex_release(static_cast<unsigned>(cpu), rob_it->sync_mutex);
+      }
+    }
+  }
+
   auto retire_count = std::distance(retire_begin, retire_end);
   num_retired += retire_count;
   ROB.erase(retire_begin, retire_end);
@@ -730,34 +798,50 @@ long O3_CPU::retire_rob()
   return retire_count;
 }
 
-void O3_CPU::impl_initialize_branch_predictor() const { branch_module_pimpl->impl_initialize_branch_predictor(); }
+void O3_CPU::impl_initialize_branch_predictor() const
+{
+  std::for_each(branch_module_pimpl.begin(), branch_module_pimpl.end(), [](const auto bp) { bp->initialize_branch_predictor(); });
+}
 
 void O3_CPU::impl_last_branch_result(champsim::address ip, champsim::address target, bool taken, uint8_t branch_type) const
 {
-  branch_module_pimpl->impl_last_branch_result(ip, target, taken, branch_type);
+  std::for_each(branch_module_pimpl.begin(), branch_module_pimpl.end(), [&](const auto bp) { bp->last_branch_result(ip, target, taken, branch_type); });
 }
 
 bool O3_CPU::impl_predict_branch(champsim::address ip, champsim::address predicted_target, bool always_taken, uint8_t branch_type) const
 {
-  return branch_module_pimpl->impl_predict_branch(ip, predicted_target, always_taken, branch_type);
+  bool predicted = false;
+  std::for_each(branch_module_pimpl.begin(), branch_module_pimpl.end(),
+                [&](const auto bp) { predicted |= bp->predict_branch(ip, predicted_target, always_taken, branch_type); });
+  return predicted;
 }
 
-void O3_CPU::impl_initialize_btb() const { btb_module_pimpl->impl_initialize_btb(); }
+void O3_CPU::impl_initialize_btb() const
+{
+  std::for_each(btb_module_pimpl.begin(), btb_module_pimpl.end(), [](const auto btb) { btb->initialize_btb(); });
+}
 
 void O3_CPU::impl_update_btb(champsim::address ip, champsim::address predicted_target, bool taken, uint8_t branch_type) const
 {
-  btb_module_pimpl->impl_update_btb(ip, predicted_target, taken, branch_type);
+  std::for_each(btb_module_pimpl.begin(), btb_module_pimpl.end(), [&](const auto btb) { btb->update_btb(ip, predicted_target, taken, branch_type); });
 }
 
 std::pair<champsim::address, bool> O3_CPU::impl_btb_prediction(champsim::address ip, uint8_t branch_type) const
 {
-  return btb_module_pimpl->impl_btb_prediction(ip, branch_type);
+  std::pair<champsim::address, bool> predict_pair{};
+  std::for_each(btb_module_pimpl.begin(), btb_module_pimpl.end(), [&](const auto btb) { predict_pair = btb->btb_prediction(ip, branch_type); });
+  return predict_pair;
 }
 
 // LCOV_EXCL_START Exclude the following function from LCOV
 void O3_CPU::print_deadlock()
 {
   fmt::print("DEADLOCK! CPU {} cycle {}\n", cpu, current_time.time_since_epoch() / clock_period);
+  if (!std::empty(DISPATCH_BUFFER) && (DISPATCH_BUFFER.front().sync_wait != 0 || DISPATCH_BUFFER.front().sync_mutex != 0)) {
+    const auto& x = DISPATCH_BUFFER.front();
+    fmt::print("SYNC: CPU {} dispatch head waits for release {:#x} ({}); mutex {:#x}{}\n", cpu, x.sync_wait,
+               x.sync_wait == 0 || champsim::sync::released(x.sync_wait) ? "released" : "not released", x.sync_mutex, x.sync_ordered ? " (ordered)" : "");
+  }
 
   auto instr_pack = [period = clock_period, this](const auto& entry) {
     return std::tuple{entry.instr_id,
@@ -837,6 +921,19 @@ bool CacheBus::issue_read(request_type data_packet)
   return lower_level->add_rq(data_packet);
 }
 
+// A read for ownership: a read that also claims the line (B3 v3 step 1).
+// Every cache handles an RFO as a LOAD, except that the directory and the
+// store-time counters treat it as a store.
+bool CacheBus::issue_rfo(request_type data_packet)
+{
+  data_packet.address = data_packet.v_address;
+  data_packet.is_translated = false;
+  data_packet.cpu = cpu;
+  data_packet.type = access_type::RFO;
+
+  return lower_level->add_rq(data_packet);
+}
+
 bool CacheBus::issue_write(request_type data_packet)
 {
   data_packet.address = data_packet.v_address;
@@ -847,3 +944,5 @@ bool CacheBus::issue_write(request_type data_packet)
 
   return lower_level->add_wq(data_packet);
 }
+
+champsim::modules::core_module::register_module<O3_CPU> default_cpu_module("DEFAULT_CORE");

@@ -25,6 +25,7 @@
 #include <fmt/ostream.h>
 
 #include "stats_printer.h"
+#include "sharer_directory.h" // C0: the latency, to print its counter only when set
 
 namespace
 {
@@ -38,7 +39,7 @@ auto print_ratio(N num, D denom)
 }
 } // namespace
 
-std::vector<std::string> champsim::plain_printer::format(O3_CPU::stats_type stats)
+std::vector<std::string> champsim::plain_printer::format(champsim::modules::core_module::stats_type stats)
 {
   constexpr std::array types{branch_type::BRANCH_DIRECT_JUMP, branch_type::BRANCH_INDIRECT,      branch_type::BRANCH_CONDITIONAL,
                              branch_type::BRANCH_DIRECT_CALL, branch_type::BRANCH_INDIRECT_CALL, branch_type::BRANCH_RETURN};
@@ -55,6 +56,8 @@ std::vector<std::string> champsim::plain_printer::format(O3_CPU::stats_type stat
                               ::print_ratio(100 * (total_branch - total_mispredictions), total_branch),
                               ::print_ratio(std::kilo::num * total_mispredictions, stats.instrs()),
                               ::print_ratio(stats.total_rob_occupancy_at_branch_mispredict, total_mispredictions)));
+  lines.push_back(fmt::format("{} RMW LOADS ISSUED AS RFO: {}", stats.name, stats.rmw_loads_as_rfo));
+  lines.push_back(fmt::format("{} RMW LOADS FORWARDED FROM THE STORE QUEUE: {}", stats.name, stats.rmw_loads_forwarded));
 
   lines.emplace_back("Branch type MPKI");
   for (auto idx : types) {
@@ -65,17 +68,17 @@ std::vector<std::string> champsim::plain_printer::format(O3_CPU::stats_type stat
   return lines;
 }
 
-std::vector<std::string> champsim::plain_printer::format(CACHE::stats_type stats)
+std::vector<std::string> champsim::plain_printer::format(champsim::modules::cache_module::stats_type stats)
 {
   using hits_value_type = typename decltype(stats.hits)::value_type;
   using misses_value_type = typename decltype(stats.misses)::value_type;
-  using mshr_merge_value_type = typename decltype(stats.mshr_merge)::value_type;
-  using mshr_return_value_type = typename decltype(stats.mshr_return)::value_type;
+  using miss_merge_value_type = typename decltype(stats.miss_merge)::value_type;
+  using fill_value_type = typename decltype(stats.fill)::value_type;
 
   std::vector<std::size_t> cpus;
 
   // build a vector of all existing cpus
-  auto stat_keys = {stats.hits.get_keys(), stats.misses.get_keys(), stats.mshr_merge.get_keys(), stats.mshr_return.get_keys()};
+  auto stat_keys = {stats.hits.get_keys(), stats.misses.get_keys(), stats.miss_merge.get_keys(), stats.fill.get_keys()};
   for (auto keys : stat_keys) {
     std::transform(std::begin(keys), std::end(keys), std::back_inserter(cpus), [](auto val) { return val.second; });
   }
@@ -87,8 +90,8 @@ std::vector<std::string> champsim::plain_printer::format(CACHE::stats_type stats
     for (auto cpu : cpus) {
       stats.hits.allocate(std::pair{type, cpu});
       stats.misses.allocate(std::pair{type, cpu});
-      stats.mshr_merge.allocate(std::pair{type, cpu});
-      stats.mshr_return.allocate(std::pair{type, cpu});
+      stats.miss_merge.allocate(std::pair{type, cpu});
+      stats.fill.allocate(std::pair{type, cpu});
     }
   }
 
@@ -96,48 +99,75 @@ std::vector<std::string> champsim::plain_printer::format(CACHE::stats_type stats
   for (auto cpu : cpus) {
     hits_value_type total_hits = 0;
     misses_value_type total_misses = 0;
-    mshr_merge_value_type total_mshr_merge = 0;
-    mshr_return_value_type total_mshr_return = 0;
+    miss_merge_value_type total_miss_merge = 0;
+    fill_value_type total_fill = 0;
     for (const auto type : {access_type::LOAD, access_type::RFO, access_type::PREFETCH, access_type::WRITE, access_type::TRANSLATION}) {
       total_hits += stats.hits.value_or(std::pair{type, cpu}, hits_value_type{});
       total_misses += stats.misses.value_or(std::pair{type, cpu}, misses_value_type{});
-      total_mshr_merge += stats.mshr_merge.value_or(std::pair{type, cpu}, mshr_merge_value_type{});
-      total_mshr_return += stats.mshr_return.value_or(std::pair{type, cpu}, mshr_merge_value_type{});
+      total_miss_merge += stats.miss_merge.value_or(std::pair{type, cpu}, miss_merge_value_type{});
+      total_fill += stats.fill.value_or(std::pair{type, cpu}, miss_merge_value_type{});
     }
 
     fmt::format_string<std::string_view, std::string_view, int, int, int> hitmiss_fmtstr{
-        "cpu{}->{} {:<12s} ACCESS: {:10d} HIT: {:10d} MISS: {:10d} MSHR_MERGE: {:10d}"};
-    lines.push_back(fmt::format(hitmiss_fmtstr, cpu, stats.name, "TOTAL", total_hits + total_misses, total_hits, total_misses, total_mshr_merge));
+        "cpu{}->{} {:<12s} ACCESS: {:10d} HIT: {:10d} MISS: {:10d} MISS_MERGE: {:10d}"};
+    lines.push_back(fmt::format(hitmiss_fmtstr, cpu, stats.name, "TOTAL", total_hits + total_misses, total_hits, total_misses, total_miss_merge));
     for (const auto type : {access_type::LOAD, access_type::RFO, access_type::PREFETCH, access_type::WRITE, access_type::TRANSLATION}) {
       lines.push_back(
           fmt::format(hitmiss_fmtstr, cpu, stats.name, access_type_names.at(champsim::to_underlying(type)),
                       stats.hits.value_or(std::pair{type, cpu}, hits_value_type{}) + stats.misses.value_or(std::pair{type, cpu}, misses_value_type{}),
                       stats.hits.value_or(std::pair{type, cpu}, hits_value_type{}), stats.misses.value_or(std::pair{type, cpu}, misses_value_type{}),
-                      stats.mshr_merge.value_or(std::pair{type, cpu}, mshr_merge_value_type{})));
+                      stats.miss_merge.value_or(std::pair{type, cpu}, miss_merge_value_type{})));
     }
 
     lines.push_back(fmt::format("cpu{}->{} PREFETCH REQUESTED: {:10} ISSUED: {:10} USEFUL: {:10} USELESS: {:10}", cpu, stats.name, stats.pf_requested,
                                 stats.pf_issued, stats.pf_useful, stats.pf_useless));
 
-    uint64_t total_downstream_demands = total_mshr_return - stats.mshr_return.value_or(std::pair{access_type::PREFETCH, cpu}, mshr_return_value_type{});
+    uint64_t total_downstream_demands = total_fill - stats.fill.value_or(std::pair{access_type::PREFETCH, cpu}, fill_value_type{});
     lines.push_back(
         fmt::format("cpu{}->{} AVERAGE MISS LATENCY: {} cycles", cpu, stats.name, ::print_ratio(stats.total_miss_latency_cycles, total_downstream_demands)));
   }
 
-  // COALESCE A.2: report synthetic invalidations counted at this cache level.
-  // Printed once per cache (not per CPU) because invalidations are a cache-level event.
+  // COALESCE coherence statistics. Cache-wide rather than per-CPU, so printed
+  // once after the per-CPU loop.
   lines.push_back(fmt::format("{} COHERENCE INVALIDATIONS: {:10}", stats.name, stats.coherence_invalidations));
   lines.push_back(fmt::format("{} COHERENCE WRITE-HIT OTHER-SHARER EVENTS: {:10}", stats.name, stats.coherence_write_hit_other_sharer_events));
+  lines.push_back(fmt::format("{} COHERENCE RFO-HIT OTHER-SHARER EVENTS: {:10}", stats.name, stats.coherence_rfo_hit_other_sharer_events));
+  lines.push_back(fmt::format("{} COHERENCE RFO-HIT OTHER SHARERS: {:10}", stats.name, stats.coherence_rfo_hit_other_sharers));
+  lines.push_back(fmt::format("{} COHERENCE DIR RFO PRESENCE-OTHER EVENTS: {:10}", stats.name, stats.coherence_dir_rfo_presence_events));
+  lines.push_back(fmt::format("{} COHERENCE DIR RFO PRESENCE-OTHER CORES: {:10}", stats.name, stats.coherence_dir_rfo_presence_others));
+  lines.push_back(fmt::format("{} COHERENCE DIR RFO PROTOCOL-OTHER EVENTS: {:10}", stats.name, stats.coherence_dir_rfo_protocol_events));
+  lines.push_back(fmt::format("{} COHERENCE DIR RFO PROTOCOL-OTHER CORES: {:10}", stats.name, stats.coherence_dir_rfo_protocol_others));
+  lines.push_back(fmt::format("{} COHERENCE DIR SELF-CHECK MISMATCHES: {:10}", stats.name, stats.coherence_dir_selfcheck_mismatches));
+  lines.push_back(fmt::format("{} COHERENCE DIR PRIVATE CACHES REGISTERED: {:10}", stats.name, stats.coherence_dir_registered));
+  lines.push_back(fmt::format("{} COHERENCE DIR COPIES INVALIDATED: {:10}", stats.name, stats.coherence_dir_copies_invalidated));
+  lines.push_back(fmt::format("{} COHERENCE DIR UPGRADE EVENTS: {:10}", stats.name, stats.coherence_dir_upgrade_events));
+  lines.push_back(fmt::format("{} COHERENCE DIR UPGRADE OTHER CORES: {:10}", stats.name, stats.coherence_dir_upgrade_cores));
+  lines.push_back(fmt::format("{} COHERENCE DIR UPGRADE PRESENCE EVENTS: {:10}", stats.name, stats.coherence_dir_upgrade_presence_events));
+  lines.push_back(fmt::format("{} COHERENCE DIR STALE FILLS DROPPED: {:10}", stats.name, stats.coherence_dir_stale_fills));
+  lines.push_back(fmt::format("{} COHERENCE DIR STALE-HOLDER VIOLATIONS: {:10}", stats.name, stats.coherence_dir_stale_holders));
+  if (champsim::coherence::coherence_latency() > 0)
+    lines.push_back(fmt::format("{} COHERENCE LATENCY WAITS: {:10}", stats.name, stats.coherence_latency_waits));
+  lines.push_back(fmt::format("{} COHERENCE DIR RFO BOUNDED-PROTOCOL EVENTS: {:10}", stats.name, stats.coherence_dir_rfo_bounded_events));
+  lines.push_back(fmt::format("{} COHERENCE DIR UPGRADE BOUNDED-PROTOCOL EVENTS: {:10}", stats.name, stats.coherence_dir_upgrade_bounded_events));
+  lines.push_back(fmt::format("{} COHERENCE DIR RFO GEM5-RULE EVENTS: {:10}", stats.name, stats.coherence_dir_rfo_g5_events));
+  lines.push_back(fmt::format("{} COHERENCE DIR RFO GEM5-RULE CORES: {:10}", stats.name, stats.coherence_dir_rfo_g5_cores));
+  lines.push_back(fmt::format("{} COHERENCE DIR UPGRADE GEM5-RULE EVENTS: {:10}", stats.name, stats.coherence_dir_upgrade_g5_events));
+  lines.push_back(fmt::format("{} COHERENCE DIR UPGRADE GEM5-RULE CORES: {:10}", stats.name, stats.coherence_dir_upgrade_g5_cores));
+  lines.push_back(fmt::format("{} COHERENCE DIR VIEW-ORDER VIOLATIONS: {:10}", stats.name, stats.coherence_dir_view_order_violations));
+  lines.push_back(fmt::format("{} COHERENCE DIR GEM5-RULE SILENT RE-LISTINGS: {:10}", stats.name, stats.coherence_dir_upgrade_g5_silent));
+  lines.push_back(fmt::format("{} COHERENCE DIR VIEW-ORDER LINES BY SILENT RE-LISTING: {:10}", stats.name, stats.coherence_dir_view_order_by_silent));
+  lines.push_back(fmt::format("{} COHERENCE DIR VIEW-ORDER VIOLATIONS UNEXPLAINED: {:10}", stats.name, stats.coherence_dir_view_order_unexplained));
 
-  // COALESCE 2026-05-29 sharer-count histogram (settles cross-core sharing question).
   uint64_t hist_total = 0;
-  for (int i = 0; i < 17; i++) hist_total += stats.coherence_sharer_hist[i];
+  for (auto v : stats.coherence_sharer_hist) {
+    hist_total += v;
+  }
   if (hist_total > 0) {
     lines.push_back(fmt::format("{} SHARER HIST TOTAL: {:14}", stats.name, hist_total));
-    for (int i = 0; i < 17; i++) {
+    for (std::size_t i = 0; i < std::size(stats.coherence_sharer_hist); i++) {
       if (stats.coherence_sharer_hist[i] > 0) {
-        double pct = 100.0 * stats.coherence_sharer_hist[i] / hist_total;
-        lines.push_back(fmt::format("{} SHARER HIST[{:2}]: {:14}  ({:6.3f}%)", stats.name, i, stats.coherence_sharer_hist[i], pct));
+        lines.push_back(fmt::format("{} SHARER HIST[{:2}]: {:14}  ({:6.3f}%)", stats.name, i, stats.coherence_sharer_hist[i],
+                                    100.0 * static_cast<double>(stats.coherence_sharer_hist[i]) / static_cast<double>(hist_total)));
       }
     }
   }
@@ -145,7 +175,7 @@ std::vector<std::string> champsim::plain_printer::format(CACHE::stats_type stats
   return lines;
 }
 
-std::vector<std::string> champsim::plain_printer::format(DRAM_CHANNEL::stats_type stats)
+std::vector<std::string> champsim::plain_printer::format(champsim::modules::memory_controller_module::stats_type stats)
 {
   std::vector<std::string> lines{};
   lines.push_back(fmt::format("{} RQ ROW_BUFFER_HIT: {:10}", stats.name, stats.RQ_ROW_BUFFER_HIT));

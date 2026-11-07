@@ -31,7 +31,7 @@ struct CNS_GhostEntry {
     uint32_t get_pc_sig() const;
     uint32_t get_tag_partial() const;
     MESI_State get_state() const;
-    bool matches(uint64_t tag, uint64_t pc) const;
+    bool matches(uint64_t tag) const;   // address only; the PC is stored, not matched
 };
 
 class CNS_BloomFilter {
@@ -41,7 +41,7 @@ class CNS_BloomFilter {
 public:
     CNS_BloomFilter();
     void insert(uint64_t tag, uint64_t pc, MESI_State state);
-    bool lookup(uint64_t tag, uint64_t pc, MESI_State& out_state);
+    bool lookup(uint64_t tag, uint64_t& out_alloc_pc, MESI_State& out_state);
 };
 
 class CNS_Brain {
@@ -58,17 +58,49 @@ public:
 class coalesce_no_sharer : public champsim::modules::replacement {
     CNS_Brain brain;
     std::vector<CNS_BloomFilter> ghosts;
+    // log2(number of sets). Ghost tags are per set, so the tag stored in them
+    // must exclude the set-index bits, which are identical for every line a
+    // given structure holds. See ghost_mix() in the .cc.
+    int set_bits = 0;
     std::vector<bool> is_sampled;
 
 public:
-    explicit coalesce_no_sharer(CACHE* cache);
+    // The parent cache, kept so update_replacement_state can read the hit
+    // line's coherence metadata via get_block(). find_victim already receives
+    // the whole set, but the hit path does not.
+    champsim::modules::cache_module* cache_ = nullptr;
+    long NUM_WAY = 0;
+
+    // Sharer histogram lives in the policy: develop's get_sim_stats() returns
+    // by value, so a policy cannot write through it.
+    uint64_t sharer_hist[17] = {0};
+
+    // Training-path instrumentation. Without it there is no way to tell whether
+    // the ghost-tag rescue fires at all -- and it was dead for nine months
+    // (keyed on the incoming line instead of the evicted one) while compiling,
+    // running and producing plausible numbers. Hawkeye and Mockingjay both
+    // count their training events; this policy counted nothing.
+    uint64_t stat_ghost_inserts = 0;
+    uint64_t stat_ghost_hits = 0;   // rescue actually fired
+    uint64_t stat_detrains = 0;
+    uint64_t stat_hit_trains = 0;
+
+    explicit coalesce_no_sharer(champsim::modules::ModuleBuilder builder);
+
+    void initialize_replacement() override {}
 
     long find_victim(uint32_t triggering_cpu, uint64_t instr_id, long set,
                      const champsim::cache_block* current_set,
-                     champsim::address ip, champsim::address full_addr, access_type type);
+                     champsim::address ip, champsim::address full_addr, access_type type) override;
+    // Insertion hook. Without it ChampSim never reports fills to this policy
+    // (inc/cache.h:475), so the ghost-tag rescue was dead code.
+    void replacement_cache_fill(uint32_t triggering_cpu, long set, long way, champsim::address full_addr, champsim::address ip, champsim::address victim_addr, access_type type) override;
+
     void update_replacement_state(uint32_t triggering_cpu, long set, long way,
                                   champsim::address full_addr, champsim::address ip,
-                                  champsim::address victim_addr, access_type type, uint8_t hit);
+                                  champsim::address victim_addr, access_type type, bool hit) override;
+
+    void replacement_final_stats() override;
 };
 
 #endif

@@ -1,0 +1,10 @@
+phaseA_b3_ocean4 lru ocean 4 private complete 401122123 0 0 0 0 - - - - - -
+phaseA_b3_ocean4 lru ocean 4 shared complete 401826567 1266 1277 9128 9334 - - - - - -
+phaseA_b3_ocean4_scaled lru ocean 4 private complete 413173819 0 0 0 0 - - - - - -
+phaseA_b3_ocean4_scaled lru ocean 4 shared complete 413486703 12658 12784 23327 23667 - - - - - -
+phaseA_b3_v2_barnes4 lru barnes 4 private complete 404384192 0 0 0 0 0 0 0 0 12 0
+phaseA_b3_v2_barnes4 lru barnes 4 shared complete 403832750 36 41 4954 6648 9 9 37 51 12 0
+phaseA_b3_v2_ocean4 lru ocean 4 private complete 401122123 0 0 0 0 0 0 0 0 12 0
+phaseA_b3_v2_ocean4 lru ocean 4 shared complete 401826567 1266 1277 9128 9334 2135 2152 35335 35686 12 0
+phaseA_b3_v2_ocean4_scaled lru ocean 4 private complete 413173819 0 0 0 0 0 0 0 0 12 0
+phaseA_b3_v2_ocean4_scaled lru ocean 4 shared complete 413486703 12658 12784 23327 23667 5595 5618 37130 37474 12 0

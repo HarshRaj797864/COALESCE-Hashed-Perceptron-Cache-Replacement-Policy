@@ -1,0 +1,124 @@
+# heldout2_score.py countrows simulator/results/heldout2/count
+LOG 2026-11-05 07:29:25 QE-h2 holds: 354 lines equal, the 14 other pairs the dump asked are the 14 gem5 aborts on; CPUID replaced 401 unlisted 0
+LOG 2026-11-05 07:41:42 COUNT DONE: 24 of 24 exited 0 with the options, bases and thread files Note 7 names
+MARKERS done yes counter_md5 22776143da830acac58082ebc8f2eede
+RUN bodytrack gem5 1 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary a01e66caa828c07aed21e344d42212e6 from 50000000 to 150000000 cut0 0 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 0 base0 - bcast0 1 unlisted 0 threads 1,2,3,4 skip 0 start 0
+WIN bodytrack gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 19714985 st 4750722 rmw 2068961 ginst 99999922 gld 20271639 gst 5167495 rep 79
+WIN bodytrack gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 19611816 st 5113357 rmw 2329899 ginst 99999922 gld 20193986 gst 5539125 rep 79
+WIN bodytrack gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 19606055 st 5107338 rmw 2328338 ginst 99999922 gld 20188025 gst 5532946 rep 79
+WIN bodytrack gem5 1 t4 lo 50000000 hi 150000000 rec 100000000 ld 19804635 st 4586117 rmw 2131784 ginst 99999922 gld 20332309 gst 4970822 rep 79
+RUN bodytrack gem5 2 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary a01e66caa828c07aed21e344d42212e6 from 50000000 to 150000000 cut0 0 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 0 base0 - bcast0 1 unlisted 0 threads 1,2,3,4 skip 0 start 0
+WIN bodytrack gem5 2 t1 lo 50000000 hi 150000000 rec 100000000 ld 19702490 st 4882969 rmw 2144614 ginst 99999922 gld 20259631 gst 5295477 rep 79
+WIN bodytrack gem5 2 t2 lo 50000000 hi 150000000 rec 100000000 ld 19657705 st 4913580 rmw 2245295 ginst 99999922 gld 20217172 gst 5322391 rep 79
+WIN bodytrack gem5 2 t3 lo 50000000 hi 150000000 rec 100000000 ld 19596738 st 5132848 rmw 2312879 ginst 99999922 gld 20176359 gst 5557729 rep 79
+WIN bodytrack gem5 2 t4 lo 50000000 hi 150000000 rec 100000000 ld 19705381 st 4731376 rmw 2074846 ginst 99999922 gld 20224627 gst 5111251 rep 79
+RUN bodytrack gem5 3 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary a01e66caa828c07aed21e344d42212e6 from 50000000 to 150000000 cut0 0 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 0 base0 - bcast0 1 unlisted 0 threads 1,2,3,4 skip 0 start 0
+WIN bodytrack gem5 3 t1 lo 50000000 hi 150000000 rec 100000000 ld 19663975 st 4977571 rmw 2204662 ginst 99999922 gld 20235656 gst 5400708 rep 79
+WIN bodytrack gem5 3 t2 lo 50000000 hi 150000000 rec 100000000 ld 19612322 st 5116555 rmw 2318898 ginst 99999922 gld 20192913 gst 5541310 rep 79
+WIN bodytrack gem5 3 t3 lo 50000000 hi 150000000 rec 100000000 ld 19606507 st 5135618 rmw 2327604 ginst 99999922 gld 20188793 gst 5562277 rep 79
+WIN bodytrack gem5 3 t4 lo 50000000 hi 150000000 rec 100000000 ld 19683852 st 4364892 rmw 1975918 ginst 99999922 gld 20172551 gst 4721267 rep 79
+RUN bodytrack host 1 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid host attempt 1 binary a01e66caa828c07aed21e344d42212e6 from 50000000 to 150000000 cut0 0 knobs_cpuid host knobs_base0 0 base0 - bcast0 1 unlisted - threads 1,2,3,4 skip 0 start 0
+WIN bodytrack host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 19791960 st 4776879 rmw 2247138 ginst 99999922 gld 20408696 gst 5243905 rep 79
+WIN bodytrack host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 19596848 st 4623877 rmw 2048565 ginst 99999922 gld 20108635 gst 5000248 rep 79
+WIN bodytrack host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 19654228 st 5199886 rmw 2400284 ginst 99999922 gld 20255342 gst 5641099 rep 79
+WIN bodytrack host 1 t4 lo 50000000 hi 150000000 rec 100000000 ld 19714272 st 4960638 rmw 2241626 ginst 99999922 gld 20275286 gst 5372563 rep 79
+RUN facesim gem5 1 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary 1e4c783261e823c876db026d55a84f19 from 50000000 to 150000000 cut0 1 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 1 base0 8055451185 bcast0 1 unlisted 0 threads 0,1,2,3 skip 0 start start0:broadcast
+WIN facesim gem5 1 t0 lo 8105500000 hi 8205500000 rec 100000000 ld 26108013 st 11364410 rmw 124531 ginst 100000000 gld 28803105 gst 14058829 rep 0
+WIN facesim gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 26098100 st 11358177 rmw 126082 ginst 100000000 gld 28826599 gst 14085941 rep 0
+WIN facesim gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 26111759 st 11389447 rmw 116449 ginst 100000000 gld 28630944 gst 13908074 rep 0
+WIN facesim gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 26079216 st 11371850 rmw 123315 ginst 100000000 gld 28745648 gst 14037584 rep 0
+RUN facesim gem5 2 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary 1e4c783261e823c876db026d55a84f19 from 50000000 to 150000000 cut0 1 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 1 base0 8055451159 bcast0 1 unlisted 0 threads 0,1,2,3 skip 0 start start0:broadcast
+WIN facesim gem5 2 t0 lo 8105500000 hi 8205500000 rec 100000000 ld 26108013 st 11364410 rmw 124531 ginst 100000000 gld 28803100 gst 14058829 rep 0
+WIN facesim gem5 2 t1 lo 50000000 hi 150000000 rec 100000000 ld 26098103 st 11358176 rmw 126082 ginst 100000000 gld 28826602 gst 14085939 rep 0
+WIN facesim gem5 2 t2 lo 50000000 hi 150000000 rec 100000000 ld 26111759 st 11389447 rmw 116449 ginst 100000000 gld 28630944 gst 13908074 rep 0
+WIN facesim gem5 2 t3 lo 50000000 hi 150000000 rec 100000000 ld 26079216 st 11371850 rmw 123315 ginst 100000000 gld 28745648 gst 14037584 rep 0
+RUN facesim gem5 3 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary 1e4c783261e823c876db026d55a84f19 from 50000000 to 150000000 cut0 1 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 1 base0 8055451185 bcast0 1 unlisted 0 threads 0,1,2,3 skip 0 start start0:broadcast
+WIN facesim gem5 3 t0 lo 8105500000 hi 8205500000 rec 100000000 ld 26108013 st 11364410 rmw 124531 ginst 100000000 gld 28803105 gst 14058829 rep 0
+WIN facesim gem5 3 t1 lo 50000000 hi 150000000 rec 100000000 ld 26098100 st 11358177 rmw 126082 ginst 100000000 gld 28826599 gst 14085941 rep 0
+WIN facesim gem5 3 t2 lo 50000000 hi 150000000 rec 100000000 ld 26111753 st 11389446 rmw 116449 ginst 100000000 gld 28630938 gst 13908073 rep 0
+WIN facesim gem5 3 t3 lo 50000000 hi 150000000 rec 100000000 ld 26079217 st 11371852 rmw 123315 ginst 100000000 gld 28745649 gst 14037586 rep 0
+RUN facesim host 1 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid host attempt 1 binary 1e4c783261e823c876db026d55a84f19 from 50000000 to 150000000 cut0 1 knobs_cpuid host knobs_base0 1 base0 8185319666 bcast0 1 unlisted - threads 0,1,2,3 skip 0 start start0:broadcast
+WIN facesim host 1 t0 lo 8235300000 hi 8335300000 rec 100000000 ld 26439532 st 11509322 rmw 126016 ginst 100000000 gld 29166714 gst 14235831 rep 0
+WIN facesim host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 26432616 st 11504175 rmw 127694 ginst 100000000 gld 29196009 gst 14266841 rep 0
+WIN facesim host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 26426432 st 11527173 rmw 117845 ginst 100000000 gld 28975837 gst 14076045 rep 0
+WIN facesim host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 26408471 st 11515393 rmw 124795 ginst 100000000 gld 29106891 gst 14213123 rep 0
+RUN fluidanimate gem5 1 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary 99251eacee0fea4b2f152828b8826ce0 from 50000000 to 150000000 cut0 0 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 0 base0 - bcast0 0 unlisted 0 threads 1,2,3,4 skip 0 start 0
+WIN fluidanimate gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 22910778 st 3508168 rmw 279332 ginst 100000000 gld 22910778 gst 3508168 rep 0
+WIN fluidanimate gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 22769728 st 3718023 rmw 339591 ginst 100000000 gld 22770982 gst 3718023 rep 0
+WIN fluidanimate gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 22994207 st 3609161 rmw 305513 ginst 100000000 gld 22995459 gst 3609161 rep 0
+WIN fluidanimate gem5 1 t4 lo 50000000 hi 150000000 rec 100000000 ld 22706396 st 3762504 rmw 349481 ginst 100000000 gld 22708896 gst 3762504 rep 0
+RUN fluidanimate gem5 2 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary 99251eacee0fea4b2f152828b8826ce0 from 50000000 to 150000000 cut0 0 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 0 base0 - bcast0 0 unlisted 0 threads 1,2,3,4 skip 0 start 0
+WIN fluidanimate gem5 2 t1 lo 50000000 hi 150000000 rec 100000000 ld 22910635 st 3507871 rmw 279252 ginst 100000000 gld 22910635 gst 3507871 rep 0
+WIN fluidanimate gem5 2 t2 lo 50000000 hi 150000000 rec 100000000 ld 22769729 st 3718021 rmw 339589 ginst 100000000 gld 22770983 gst 3718021 rep 0
+WIN fluidanimate gem5 2 t3 lo 50000000 hi 150000000 rec 100000000 ld 22994430 st 3609496 rmw 305601 ginst 100000000 gld 22995682 gst 3609496 rep 0
+WIN fluidanimate gem5 2 t4 lo 50000000 hi 150000000 rec 100000000 ld 22706393 st 3762507 rmw 349482 ginst 100000000 gld 22708893 gst 3762507 rep 0
+RUN fluidanimate gem5 3 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary 99251eacee0fea4b2f152828b8826ce0 from 50000000 to 150000000 cut0 0 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 0 base0 - bcast0 0 unlisted 0 threads 1,2,3,4 skip 0 start 0
+WIN fluidanimate gem5 3 t1 lo 50000000 hi 150000000 rec 100000000 ld 22910636 st 3507868 rmw 279249 ginst 100000000 gld 22910636 gst 3507868 rep 0
+WIN fluidanimate gem5 3 t2 lo 50000000 hi 150000000 rec 100000000 ld 22769728 st 3718026 rmw 339590 ginst 100000000 gld 22770982 gst 3718026 rep 0
+WIN fluidanimate gem5 3 t3 lo 50000000 hi 150000000 rec 100000000 ld 22994428 st 3609501 rmw 305604 ginst 100000000 gld 22995680 gst 3609501 rep 0
+WIN fluidanimate gem5 3 t4 lo 50000000 hi 150000000 rec 100000000 ld 22706393 st 3762508 rmw 349483 ginst 100000000 gld 22708893 gst 3762508 rep 0
+RUN fluidanimate host 1 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid host attempt 1 binary 99251eacee0fea4b2f152828b8826ce0 from 50000000 to 150000000 cut0 0 knobs_cpuid host knobs_base0 0 base0 - bcast0 0 unlisted - threads 1,2,3,4 skip 0 start 0
+WIN fluidanimate host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 22910788 st 3508158 rmw 279328 ginst 100000000 gld 22910788 gst 3508158 rep 0
+WIN fluidanimate host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 22769726 st 3718033 rmw 339601 ginst 100000000 gld 22770980 gst 3718033 rep 0
+WIN fluidanimate host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 22994213 st 3609152 rmw 305504 ginst 100000000 gld 22995465 gst 3609152 rep 0
+WIN fluidanimate host 1 t4 lo 50000000 hi 150000000 rec 100000000 ld 22706394 st 3762507 rmw 349481 ginst 100000000 gld 22708894 gst 3762507 rep 0
+RUN oceannc gem5 1 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary f7a8da02a04f4d0eccfc713d24a460ba from 50000000 to 150000000 cut0 0 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 0 base0 - bcast0 1 unlisted 0 threads 0,1,2,3 skip 0 start 0
+WIN oceannc gem5 1 t0 lo 50000000 hi 150000000 rec 100000000 ld 32279616 st 5595147 rmw 4733 ginst 100000000 gld 32279988 gst 5730843 rep 0
+WIN oceannc gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 32288295 st 5707011 rmw 4729 ginst 100000000 gld 32288667 gst 5844159 rep 0
+WIN oceannc gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 32306952 st 5679175 rmw 4493 ginst 100000000 gld 32307980 gst 5816323 rep 0
+WIN oceannc gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 32322092 st 5643443 rmw 4447 ginst 100000000 gld 32323120 gst 5779139 rep 0
+RUN oceannc gem5 2 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary f7a8da02a04f4d0eccfc713d24a460ba from 50000000 to 150000000 cut0 0 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 0 base0 - bcast0 1 unlisted 0 threads 0,1,2,3 skip 0 start 0
+WIN oceannc gem5 2 t0 lo 50000000 hi 150000000 rec 100000000 ld 32281340 st 5595810 rmw 4819 ginst 100000000 gld 32281712 gst 5731506 rep 0
+WIN oceannc gem5 2 t1 lo 50000000 hi 150000000 rec 100000000 ld 32287183 st 5709482 rmw 4474 ginst 100000000 gld 32287555 gst 5846630 rep 0
+WIN oceannc gem5 2 t2 lo 50000000 hi 150000000 rec 100000000 ld 32304830 st 5684348 rmw 4357 ginst 100000000 gld 32305858 gst 5821496 rep 0
+WIN oceannc gem5 2 t3 lo 50000000 hi 150000000 rec 100000000 ld 32322856 st 5642416 rmw 4731 ginst 100000000 gld 32323884 gst 5778112 rep 0
+RUN oceannc gem5 3 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary f7a8da02a04f4d0eccfc713d24a460ba from 50000000 to 150000000 cut0 0 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 0 base0 - bcast0 1 unlisted 0 threads 0,1,2,3 skip 0 start 0
+WIN oceannc gem5 3 t0 lo 50000000 hi 150000000 rec 100000000 ld 32280711 st 5595721 rmw 4832 ginst 100000000 gld 32281083 gst 5731417 rep 0
+WIN oceannc gem5 3 t1 lo 50000000 hi 150000000 rec 100000000 ld 32286849 st 5709800 rmw 4468 ginst 100000000 gld 32287221 gst 5846948 rep 0
+WIN oceannc gem5 3 t2 lo 50000000 hi 150000000 rec 100000000 ld 32306077 st 5681224 rmw 4467 ginst 100000000 gld 32307105 gst 5818372 rep 0
+WIN oceannc gem5 3 t3 lo 50000000 hi 150000000 rec 100000000 ld 32322955 st 5641701 rmw 4779 ginst 100000000 gld 32323983 gst 5777397 rep 0
+RUN oceannc host 1 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid host attempt 1 binary f7a8da02a04f4d0eccfc713d24a460ba from 50000000 to 150000000 cut0 0 knobs_cpuid host knobs_base0 0 base0 - bcast0 1 unlisted - threads 0,1,2,3 skip 0 start 0
+WIN oceannc host 1 t0 lo 50000000 hi 150000000 rec 100000000 ld 32317191 st 5536960 rmw 4811 ginst 100000000 gld 32318347 gst 5748916 rep 0
+WIN oceannc host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 32307913 st 5690962 rmw 4744 ginst 100000000 gld 32308285 gst 5902918 rep 0
+WIN oceannc host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 32318703 st 5661842 rmw 4106 ginst 100000000 gld 32319075 gst 5871554 rep 0
+WIN oceannc host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 32341279 st 5627694 rmw 4800 ginst 100000000 gld 32342435 gst 5837406 rep 0
+RUN streamcluster gem5 1 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary 3662e65f6877789f84f05b84f2005813 from 50000000 to 150000000 cut0 0 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 0 base0 - bcast0 0 unlisted 0 threads 1,2,3,4 skip 0 start 0
+WIN streamcluster gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 28509920 st 759679 rmw 508 ginst 100000000 gld 28542699 gst 796110 rep 0
+WIN streamcluster gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 28394116 st 104564 rmw 485 ginst 100000000 gld 28394131 gst 108713 rep 0
+WIN streamcluster gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 28394429 st 104551 rmw 562 ginst 100000000 gld 28394444 gst 108700 rep 0
+WIN streamcluster gem5 1 t4 lo 50000000 hi 150000000 rec 100000000 ld 28394524 st 104633 rmw 484 ginst 100000000 gld 28394539 gst 108782 rep 0
+RUN streamcluster gem5 2 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary 3662e65f6877789f84f05b84f2005813 from 50000000 to 150000000 cut0 0 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 0 base0 - bcast0 0 unlisted 0 threads 1,2,3,4 skip 0 start 0
+WIN streamcluster gem5 2 t1 lo 50000000 hi 150000000 rec 100000000 ld 28509918 st 759684 rmw 513 ginst 100000000 gld 28542697 gst 796115 rep 0
+WIN streamcluster gem5 2 t2 lo 50000000 hi 150000000 rec 100000000 ld 28394133 st 104556 rmw 485 ginst 100000000 gld 28394148 gst 108705 rep 0
+WIN streamcluster gem5 2 t3 lo 50000000 hi 150000000 rec 100000000 ld 28394445 st 104534 rmw 547 ginst 100000000 gld 28394460 gst 108683 rep 0
+WIN streamcluster gem5 2 t4 lo 50000000 hi 150000000 rec 100000000 ld 28394538 st 104611 rmw 478 ginst 100000000 gld 28394553 gst 108760 rep 0
+RUN streamcluster gem5 3 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary 3662e65f6877789f84f05b84f2005813 from 50000000 to 150000000 cut0 0 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 0 base0 - bcast0 0 unlisted 0 threads 1,2,3,4 skip 0 start 0
+WIN streamcluster gem5 3 t1 lo 50000000 hi 150000000 rec 100000000 ld 28509923 st 759678 rmw 507 ginst 100000000 gld 28542702 gst 796109 rep 0
+WIN streamcluster gem5 3 t2 lo 50000000 hi 150000000 rec 100000000 ld 28394142 st 104540 rmw 479 ginst 100000000 gld 28394157 gst 108689 rep 0
+WIN streamcluster gem5 3 t3 lo 50000000 hi 150000000 rec 100000000 ld 28394450 st 104527 rmw 551 ginst 100000000 gld 28394465 gst 108676 rep 0
+WIN streamcluster gem5 3 t4 lo 50000000 hi 150000000 rec 100000000 ld 28394550 st 104616 rmw 477 ginst 100000000 gld 28394565 gst 108765 rep 0
+RUN streamcluster host 1 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid host attempt 1 binary 3662e65f6877789f84f05b84f2005813 from 50000000 to 150000000 cut0 0 knobs_cpuid host knobs_base0 0 base0 - bcast0 0 unlisted - threads 1,2,3,4 skip 0 start 0
+WIN streamcluster host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 28495398 st 813371 rmw 503 ginst 99942670 gld 28528177 gst 846330 rep 57344
+WIN streamcluster host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 28377535 st 165917 rmw 485 ginst 99934480 gld 28377550 gst 166034 rep 65536
+WIN streamcluster host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 28377853 st 165897 rmw 541 ginst 99934480 gld 28377868 gst 166014 rep 65536
+WIN streamcluster host 1 t4 lo 50000000 hi 150000000 rec 100000000 ld 28377930 st 165988 rmw 481 ginst 99934480 gld 28377945 gst 166105 rep 65536
+RUN vips gem5 1 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary 1cd422bd6951033c42fdade08b3fc2f8 from 50000000 to 150000000 cut0 0 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 0 base0 - bcast0 1 unlisted 0 threads 3,4,5,6 skip 0 start 0
+WIN vips gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 18921966 st 5466237 rmw 21601 ginst 100000000 gld 18928918 gst 5475879 rep 0
+WIN vips gem5 1 t4 lo 50000000 hi 150000000 rec 100000000 ld 18934255 st 5480008 rmw 21902 ginst 100000000 gld 18945848 gst 5494310 rep 0
+WIN vips gem5 1 t5 lo 50000000 hi 150000000 rec 100000000 ld 18941272 st 5471992 rmw 21543 ginst 100000000 gld 18943662 gst 5477108 rep 0
+WIN vips gem5 1 t6 lo 50000000 hi 150000000 rec 100000000 ld 18930473 st 5466139 rmw 21872 ginst 100000000 gld 18937520 gst 5476007 rep 0
+RUN vips gem5 2 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary 1cd422bd6951033c42fdade08b3fc2f8 from 50000000 to 150000000 cut0 0 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 0 base0 - bcast0 1 unlisted 0 threads 3,4,5,6 skip 0 start 0
+WIN vips gem5 2 t3 lo 50000000 hi 150000000 rec 100000000 ld 18922073 st 5465788 rmw 21573 ginst 100000000 gld 18929010 gst 5475407 rep 0
+WIN vips gem5 2 t4 lo 50000000 hi 150000000 rec 100000000 ld 18981072 st 5460409 rmw 21833 ginst 100000000 gld 18992662 gst 5474713 rep 0
+WIN vips gem5 2 t5 lo 50000000 hi 150000000 rec 100000000 ld 18939941 st 5501423 rmw 21902 ginst 100000000 gld 18942426 gst 5507908 rep 0
+WIN vips gem5 2 t6 lo 50000000 hi 150000000 rec 100000000 ld 18934908 st 5475607 rmw 21886 ginst 100000000 gld 18946502 gst 5489909 rep 0
+RUN vips gem5 3 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid 74d72229d62c92e4ce627b5298375a23 attempt 1 binary 1cd422bd6951033c42fdade08b3fc2f8 from 50000000 to 150000000 cut0 0 knobs_cpuid /home/harshraj/sync_h2/gem5.cpuid knobs_base0 0 base0 - bcast0 1 unlisted 0 threads 3,4,5,6 skip 0 start 0
+WIN vips gem5 3 t3 lo 50000000 hi 150000000 rec 100000000 ld 18921955 st 5466230 rmw 21592 ginst 100000000 gld 18928908 gst 5475873 rep 0
+WIN vips gem5 3 t4 lo 50000000 hi 150000000 rec 100000000 ld 18941298 st 5471972 rmw 21542 ginst 100000000 gld 18943688 gst 5477088 rep 0
+WIN vips gem5 3 t5 lo 50000000 hi 150000000 rec 100000000 ld 18930967 st 5466101 rmw 21872 ginst 100000000 gld 18938013 gst 5475967 rep 0
+WIN vips gem5 3 t6 lo 50000000 hi 150000000 rec 100000000 ld 18933820 st 5480067 rmw 21902 ginst 100000000 gld 18945413 gst 5494370 rep 0
+RUN vips host 1 exit 0 summary_exit 0 counter 22776143da830acac58082ebc8f2eede cpuid host attempt 1 binary 1cd422bd6951033c42fdade08b3fc2f8 from 50000000 to 150000000 cut0 0 knobs_cpuid host knobs_base0 0 base0 - bcast0 1 unlisted - threads 3,4,5,6 skip 0 start 0
+WIN vips host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 18998275 st 5437846 rmw 21353 ginst 100000000 gld 19000640 gst 5442951 rep 0
+WIN vips host 1 t4 lo 50000000 hi 150000000 rec 100000000 ld 18980562 st 5447161 rmw 21984 ginst 100000000 gld 19004355 gst 5473914 rep 0
+WIN vips host 1 t5 lo 50000000 hi 150000000 rec 100000000 ld 18926715 st 5485530 rmw 21911 ginst 100000000 gld 18929235 gst 5492639 rep 0
+WIN vips host 1 t6 lo 50000000 hi 150000000 rec 100000000 ld 18985793 st 5444282 rmw 21898 ginst 100000000 gld 19009586 gst 5470996 rep 0

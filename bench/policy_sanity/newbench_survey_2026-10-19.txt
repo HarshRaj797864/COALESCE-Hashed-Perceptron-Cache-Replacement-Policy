@@ -1,0 +1,82 @@
+== 1. SPLASH-3 at /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/splash-3/codes
+   Makefile.config: CC := $(TOOLCHAIN_PREFIX)gcc
+   Makefile.config: CFLAGS := -O2 -pthread -D_XOPEN_SOURCE=500 -D_POSIX_C_SOURCE=200112 -std=c11 -g -fno-strict-aliasing
+   Makefile.config: LDFLAGS := -lm
+-- kernels/fft
+   TARGET = FFT
+   files: fft.c.in Makefile README.fft 
+-- kernels/lu/contiguous_blocks
+   TARGET = LU
+   files: lu.c.in Makefile 
+-- kernels/lu/non_contiguous_blocks
+   TARGET = LU
+   files: lu.c.in Makefile 
+-- kernels/cholesky
+   TARGET = CHOLESKY
+   inputs: d750.O lshp.O tk14.O tk15.O tk16.O tk17.O tk18.O tk23.O tk25.O tk29.O wr10.O 
+   files: amal.c.in assign.c.in bfac.c.in bksolve.c.in block2.c.in fo.c.in inputs Makefile malloc.c.in matrix.h.in mf.c.in numLL.c.in parts.c.in README.cholesky seg.c.in solve.c.in tree.c.in util.c.in 
+-- kernels/radix
+   TARGET = RADIX
+   files: Makefile radix.c.in README.radix 
+-- apps/water-spatial
+   TARGET = WATER-SPATIAL
+   inputs: example n512-p1 n512-p1024 n512-p16 n512-p2 n512-p256 n512-p32 n512-p4 n512-p64 n512-p8 parsec_native parsec_simdev parsec_simlarge parsec_simmedium parsec_simsmall parsec_test 
+   files: bndry.c.in cnst.h.in cnstnt.c.in cshift.c.in fileio.h.in frcnst.h.in global.h.in initia.c.in input inputs interf.c.in intraf.c.in kineti.c.in Makefile mddata.h.in mdmain.c.in mdvar.h.in parameters.h.in poteng.c.in predcor.c.in 
+-- apps/water-nsquared
+   TARGET = WATER-NSQUARED
+   inputs: example n512-p1 n512-p1024 n512-p16 n512-p2 n512-p256 n512-p32 n512-p4 n512-p64 n512-p8 parsec_native parsec_simdev parsec_simlarge parsec_simmedium parsec_simsmall parsec_test 
+   files: bndry.c.in cnst.h.in cnstnt.c.in cshift.c.in fileio.h.in frcnst.h.in global.h.in initia.c.in input inputs interf.c.in intraf.c.in kineti.c.in Makefile mddata.h.in mdmain.c.in mdvar.h.in parameters.h.in poteng.c.in predcor.c.in 
+-- apps/raytrace
+   TARGET = RAYTRACE
+   inputs: balls4.env balls4.geo car.env car.geo teapot.env teapot.geo 
+   files: bbox.c.in cr.c.in env.c.in fbuf.c.in geo.c.in huprn.c.in husetup.c.in hutv.c.in inputs isect.c.in main.c.in Makefile matrix.c.in memory.c.in poly.c.in raystack.c.in README.raytrace rltotiff rt.h.in shade.c.in 
+-- apps/volrend
+   TARGET = VOLREND
+   inputs: head.den head-scaleddown2.den head-scaleddown4.den 
+   files: adaptive.c.in address.h.in anl.h.in const.h.in file.c.in global.h.in incl.h.in inputs libtiff libtiff.patch libtiff.tar.Z macros.h.in main.c.in Makefile map.c.in my_types.h.in normal.c.in octree.c.in opacity.c.in option.c.in 
+-- apps/radiosity
+   TARGET = RADIOSITY
+   files: display.c.in elemman.c.in glibdumb glibps Makefile model.h.in modelman.c.in parallel.h.in patch.h.in patchman.c.in radiosity.h.in rad_main.c.in rad_tools.c.in README.radiosity room_model.c.in smallobj.c.in structs.h.in task.h.in taskman.c.in visible.c.in 
+-- apps/barnes
+   TARGET = BARNES
+   inputs: example n16384-p1 n16384-p1024 n16384-p1024~ n16384-p16 n16384-p2 n16384-p256 n16384-p256~ n16384-p32 n16384-p4 n16384-p64 n16384-p8 n262144-p4 n65536-p4 n8k-p1 n8k-p16 n8k-p2 n8k-p4 n8k-p8 parsec_native parsec_simdev parsec_simlarge parsec_simmedium parsec_simsmall parsec_test 
+   files: BARNES BARNES.native-backup BARNES.orig code.c.in code.h.in code_io.c.in code_io.h.in defs.h.in getparam.c.in getparam.h.in grav.c.in grav.h.in input inputs load.c.in load.h.in Makefile pintool.log README.barnes stdinc.h.in 
+-- apps/fmm
+   TARGET = FMM
+   inputs: input.1024.16384 input.1.16384 input.1.2048 input.1.256 input.16.16384 input.16.2048 input.16384 input.2048 input.2.16384 input.256 input.256.16384 input.32.16384 input.4.16384 input.4.256 input.64.16384 input.8.16384 parsec_native parsec_simdev parsec_simlarge parsec_simmedium parsec_simsmall parsec_test 
+   files: box.c.in box.h.in construct_grid.c.in construct_grid.h.in correct.out cost_zones.c.in cost_zones.h.in defs.c.in defs.h.in fmm.c.in inputs interactions.c.in interactions.h.in Makefile memory.c.in memory.h.in particle.c.in particle.h.in partition_grid.c.in partition_grid.h.in 
+-- apps/ocean/contiguous_partitions
+   TARGET = OCEAN
+   files: correct.out decs.h.in jacobcalc2.c.in jacobcalc.c.in laplacalc.c.in linkup.c.in main.c.in Makefile multi.c.in OCEAN OCEAN.native-backup slave1.c.in slave2.c.in subblock.c.in 
+   |      case 'h': printf("Usage: OCEAN <options>\n\n");
+   |                printf("options:\n");
+   |                printf("  -nN : Simulate NxN ocean.  N must be (power of 2)+2.\n");
+   |                printf("  -pP : P = number of processors.  P must be power of 2.\n");
+   |                printf("  -eE : E = error tolerance for iterative relaxation.\n");
+   |                printf("  -rR : R = distance between grid points in meters.\n");
+   |                printf("  -tT : T = timestep in seconds.\n");
+   |                printf("  -s  : Print timing statistics.\n");
+   |                printf("  -o  : Print out relaxation residual values.\n");
+
+== 2. PARSEC (streamcluster) and how canneal was built
+   dir: /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/parsec-full/pkgs/kernels/streamcluster
+   dir: /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/parsec-full/pkgs/kernels/streamcluster
+   file: /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/parsec-full/pkgs/kernels/streamcluster/src/streamcluster.cpp (C++ source, ASCII text)
+   file: /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/parsec-full/pkgs/netapps/netstreamcluster/src/server/streamcluster.cpp (C++ source, ASCII text)
+   canneal binary: -rwxrwxr-x 1 harshraj harshraj 720144 Apr 28 11:05 /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/canneal
+   ELF 64-bit LSB pie executable, x86-64, version 1 (GNU/Linux), dynamically linked, interpre
+   parsec tree: /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/parsec-3.0
+   parsec tree: /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/parsec-3.0-core.tar.gz
+   parsec tree: /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/parsec-full
+   static binaries for gem5: /home/harshraj/splash-heldout: FMM RADIX WATER-NSQUARED  /home/harshraj/splash-static: BARNES BARNES.prev_20261005_163155 CANNEAL OCEAN 
+
+== 3. tools to size an input
+   perf: in /etc/sysctl.conf (e.g. kernel.perf_event_paranoid = <setting>)
+   Pin counter source: inscount_tls.cpp (per thread)
+
+== 4. the new alignment against the old anchors (m2 traces; tolerance 50,000 instructions)
+   barnesstd: last pthread_create at 10570202 instructions; old anchor 10570006; difference 196 -- within the tolerance
+   waternsq: last pthread_create at 12952976 instructions; old anchor 12952793; difference 183 -- within the tolerance
+   fmm: last pthread_create at 12775033 instructions; old anchor 12773531; difference 1502 -- within the tolerance
+
+== 5. disk: 244G free

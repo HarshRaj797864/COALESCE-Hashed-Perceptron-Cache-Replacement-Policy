@@ -1,0 +1,59 @@
+# Pre-migration policy baseline
+#
+# Captured 2026-09-16 on the fixed pre-develop tree, immediately before the
+# A6 migration to upstream ChampSim develop. This is the reference for A6
+# step 6: every policy is re-run on the migrated tree and compared here.
+#
+# Trace:  429.mcf-22B, 1M warmup + 2M simulation
+# LLC:    2048 sets x 16 ways, no prefetcher, single core
+#
+# Numbers WILL move after migration -- develop rewrote src/cache.cc
+# (172+/195-) and we adopt upstream's own drrip/ship/srrip/lru/random.
+# The point is that every movement is explained, not that none occurs.
+#
+lru                    IPC=0.3742   cycles=5344819    llc_hits=23913    load_hits=139
+srrip                  IPC=0.3743   cycles=5343792    llc_hits=9221     load_hits=90
+drrip                  IPC=0.3744   cycles=5342224    llc_hits=23643    load_hits=142
+ship                   IPC=0.3742   cycles=5344779    llc_hits=23893    load_hits=140
+random                 IPC=0.3743   cycles=5343797    llc_hits=19565    load_hits=129
+hawkeye                IPC=0.3746   cycles=5339299    llc_hits=14847    load_hits=108
+mockingjay             IPC=0.3742   cycles=5344537    llc_hits=23706    load_hits=141
+srrip_bias             IPC=0.3771   cycles=5303259    llc_hits=9311     load_hits=150
+coalesce               IPC=0.3767   cycles=5309024    llc_hits=14186    load_hits=140
+coalesce_no_mesi       IPC=0.3754   cycles=5328342    llc_hits=18901    load_hits=126
+coalesce_no_sharer     IPC=0.3763   cycles=5315299    llc_hits=13715    load_hits=140
+BASELINE COMPLETE
+
+# ==========================================================================
+# POST-MIGRATION (ChampSim develop @ f9ed890e), same trace and configuration.
+# A6 step 6 verification.
+#
+# policy                  IPC pre  IPC post  hits pre  hits post   hits delta
+# lru                      0.3742    0.2828     23913      23722    -0.8%
+# srrip                    0.3743    0.2832      9221      11174    21.2%
+# drrip                    0.3744    0.2833     23643      22123    -6.4%
+# ship                     0.3742    0.2845     23893      21658    -9.4%
+# random                   0.3743    0.2828     19565      19705     0.7%
+# hawkeye                  0.3746    0.2836     14847      16785    13.1%
+# mockingjay               0.3742    0.2829     23706      23728     0.1%
+# srrip_bias               0.3771    0.2847      9311      11248    20.8%
+# coalesce                 0.3767    0.2847     14186      16659    17.4%
+# coalesce_no_mesi         0.3754    0.2837     18901      18732    -0.9%
+# coalesce_no_sharer       0.3763    0.2846     13715      17298    26.1%
+#
+# Reading:
+#  * IPC fell ~24% for EVERY policy, uniformly. That is develop's core rewrite
+#    (src/cache.cc 172+/195-), not a porting error -- a porting error would hit
+#    one policy, not all eleven equally.
+#  * All 11 policies still produce DISTINCT LLC hit counts. Policies collapsing
+#    into one another is exactly what the pre-audit bugs caused, so this is the
+#    check that matters most.
+#  * The policies we ADOPTED from upstream moved most (srrip +21%, drrip -6%,
+#    ship -9%): different implementations, expected.
+#  * The policies we PORTED barely moved (lru -0.8%, random +0.7%,
+#    mockingjay +0.1%, coalesce_no_mesi -0.9%), which is strong evidence the
+#    ports are faithful.
+#  * srrip_bias (11248) tracks srrip (11174) closely -- by design, since it is
+#    SRRIP plus a coherence bias that is inert on single-core mcf.
+#  * hawkeye (16785) remains clearly distinct from srrip (11174), so the
+#    Hawkeye rewrite survives the migration.

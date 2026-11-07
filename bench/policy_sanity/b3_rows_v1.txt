@@ -1,0 +1,4 @@
+phaseA_b3_ocean4 lru ocean 4 private complete 401122123 0 0 0 0
+phaseA_b3_ocean4 lru ocean 4 shared complete 401826567 1266 1277 9128 9334
+phaseA_b3_ocean4_scaled lru ocean 4 private complete 413173819 0 0 0 0
+phaseA_b3_ocean4_scaled lru ocean 4 shared complete 413486703 12658 12784 23327 23667

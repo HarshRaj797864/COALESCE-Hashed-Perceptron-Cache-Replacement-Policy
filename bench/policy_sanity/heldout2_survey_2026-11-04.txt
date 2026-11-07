@@ -1,0 +1,175 @@
+== 1. PARSEC trees
+-- /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/parsec-full
+   pkgs/apps: blackscholes bodytrack facesim ferret fluidanimate freqmine raytrace swaptions vips x264 
+   pkgs/kernels: canneal dedup streamcluster 
+   pkgs/libs: glib gsl hooks libjpeg libxml2 mesa parmacs ssl tbblib uptcpip zlib 
+   pkgs/tools: cmake libtool yasm 
+   lib glib: src yes, built (inst/) 
+   lib libxml2: src yes, built (inst/) 
+   lib zlib: src yes, built (inst/) 
+   lib gsl: src yes, built (inst/) 
+   lib libjpeg: src yes, built (inst/) 
+-- /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/parsec-3.0
+   pkgs/kernels: canneal 
+-- input tarballs (PARSEC's input sets)
+
+== 2. the candidates, in the design's order
+-- fluidanimate
+   tree: /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/parsec-full
+   src: 17 files; top: cellpool.cpp cellpool.hpp COPYRIGHT fluidcmp.cpp fluid.hpp fluidview.cpp fluidview.hpp Makefile Makefile.pthreads Makefile.serial Makefile.tbb parsec_barrier.cpp parsec_barrier.hpp pthreads.cpp README 
+   simsmall.runconf: run_args="${NTHREADS} 5 in_35K.fluid out.fluid"
+   simmedium.runconf: run_args="${NTHREADS} 5 in_100K.fluid out.fluid"
+   simlarge.runconf: run_args="${NTHREADS} 5 in_300K.fluid out.fluid"
+   native.runconf: run_args="${NTHREADS} 500 in_500K.fluid out.fluid"
+   inputs/: input_simdev.tar (552960) input_test.tar (184320) 
+   pthreads bldconf: build_deps=""
+   pthreads bldconf: build_env="version=pthreads"
+   pthreads bldconf: build_conf=""
+   E2 pthread_create: 5 lines; parsec_barrier.cpp pthreads.cpp 
+   E2 pthread_join: 5 lines; parsec_barrier.cpp pthreads.cpp 
+   E2 pthread_mutex_lock: 6 lines; parsec_barrier.cpp pthreads.cpp 
+   E2 pthread_cond_wait: 4 lines; parsec_barrier.cpp 
+   E2 pthread_cond_broadcast: 2 lines; parsec_barrier.cpp 
+   E2 pthread_barrier_wait: 17 lines; parsec_barrier.hpp pthreads.cpp 
+   E2 parsec_barrier: 37 lines; parsec_barrier.hpp parsec_barrier.cpp pthreads.cpp 
+   E2 ENABLE_AUTOMATIC_DROPIN: 4 lines; parsec_barrier.hpp parsec_barrier.cpp 
+   E2 sched_yield: 1 lines; parsec_barrier.cpp 
+-- bodytrack
+   tree: /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/parsec-full
+   src: 113 files; top: aclocal.m4 AUTHORS autom4te.cache ChangeLog config.guess config.h.in config.sub configure configure.ac COPYING depcomp FlexImageLib INSTALL install-sh ltmain.sh 
+   simsmall.runconf: run_args="sequenceB_1 4 1 1000 5 0 ${NTHREADS}"
+   simmedium.runconf: run_args="sequenceB_2 4 2 2000 5 0 ${NTHREADS}"
+   simlarge.runconf: run_args="sequenceB_4 4 4 4000 5 0 ${NTHREADS}"
+   native.runconf: run_args="sequenceB_261 4 261 4000 5 0 ${NTHREADS}"
+   inputs/: input_simdev.tar (2498560) input_test.tar (2498560) 
+   pthreads bldconf: build_deps=""
+   pthreads bldconf: build_env="CXXFLAGS=\"${CXXFLAGS} -fexceptions\""
+   pthreads bldconf: build_conf="--enable-threads --disable-openmp --disable-tbb"
+   E2 pthread_create: 1 lines; TrackingBenchmark/threads/Thread.cpp 
+   E2 pthread_join: 1 lines; TrackingBenchmark/threads/Thread.cpp 
+   E2 pthread_mutex_lock: 1 lines; TrackingBenchmark/threads/Mutex.cpp 
+   E2 pthread_cond_wait: 1 lines; TrackingBenchmark/threads/Condition.cpp 
+   E2 pthread_cond_broadcast: 1 lines; TrackingBenchmark/threads/Condition.cpp 
+   E2 pthread_barrier_wait: 1 lines; TrackingBenchmark/threads/Barrier.cpp 
+   E2 #pragma omp: 5 lines; TrackingBenchmark/TrackingModelOMP.cpp TrackingBenchmark/ParticleFilterOMP.h 
+   E2 cmpxchg: 21 lines; TrackingBenchmark/threads/atomic/amd64/atomic.h TrackingBenchmark/threads/atomic/ia64/atomic.h TrackingBenchmark/threads/atomic/i386/atomic.h 
+   E2 xchg: 25 lines; TrackingBenchmark/threads/atomic/amd64/atomic.h TrackingBenchmark/threads/atomic/ia64/atomic.h TrackingBenchmark/threads/atomic/i386/atomic.h 
+   bodytrack: files that include the atomic headers: (none listed = never included)
+-- facesim
+   tree: /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/parsec-full
+   src: 264 files; top: Benchmarks COPYRIGHT LICENSE Makefile Public_Library README TaskQ 
+   simsmall.runconf: run_args="-timing -threads ${NTHREADS}"
+   simmedium.runconf: run_args="-timing -threads ${NTHREADS}"
+   simlarge.runconf: run_args="-timing -threads ${NTHREADS}"
+   native.runconf: run_args="-timing -threads ${NTHREADS} -lastframe 100"
+   inputs/: ABSENT
+   pthreads bldconf: build_deps=""
+   pthreads bldconf: build_env="version=pthreads PHYSBAM=${PARSECDIR}/pkgs/apps/facesim/obj/${PARSECPLAT} CXXFLAGS=\"${CXXFLAGS} -fexceptions\""
+   pthreads bldconf: build_conf=""
+   E2 pthread_create: 2 lines; TaskQ/lib/taskQDistCommon.c Public_Library/Thread_Utilities/THREAD_POOL.cpp 
+   E2 pthread_join: 1 lines; Public_Library/Thread_Utilities/THREAD_POOL.cpp 
+   E2 pthread_mutex_lock: 11 lines; TaskQ/lib/taskQDistCommon.c TaskQ/lib/taskQDistFixed.c Public_Library/Thread_Utilities/THREAD_LOCK.h 
+   E2 pthread_cond_wait: 3 lines; TaskQ/lib/taskQDistCommon.c Public_Library/Thread_Utilities/THREAD_CONDITION.h 
+   E2 pthread_cond_broadcast: 4 lines; TaskQ/lib/taskQDistCommon.c Public_Library/Thread_Utilities/THREAD_CONDITION.h 
+-- vips
+   tree: /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/parsec-full
+   src: 1251 files; top: acinclude.m4 aclocal.m4 AUTHORS benchmark bootstrap.sh ChangeLog config.guess config.h.in config.sub configure configure.in COPYING depcomp doc gtk-doc.make 
+   simsmall.runconf: run_args="im_benchmark pomegranate_1600x1200.v output.v"
+   simmedium.runconf: run_args="im_benchmark vulture_2336x2336.v output.v"
+   simlarge.runconf: run_args="im_benchmark bigben_2662x5500.v output.v"
+   native.runconf: run_args="im_benchmark orion_18000x18000.v output.v"
+   inputs/: input_simdev.tar (307200) input_test.tar (307200) 
+   pthreads bldconf: build_deps="glib libxml2 zlib"
+   pthreads bldconf: build_env="CXXFLAGS=\"-I${PARSECDIR}/pkgs/libs/glib/inst/${PARSECPLAT}/include -I${PARSECDIR}/pkgs/libs/zlib/inst/${PARSECPLAT}/include ${CXXFLAGS} -fexceptions\" LDFLAGS=\"-L${PARSECDIR}/pkgs/libs/gl
+   pthreads bldconf: build_conf="${vips_basic_conf} --enable-threads"
+   E2 pthread_create: 1 lines; libvips/cimg/CImg.h 
+   E2 pthread_join: 1 lines; libvips/cimg/CImg.h 
+   E2 pthread_mutex_lock: 15 lines; libvips/cimg/CImg.h 
+   vips: the bundled GLib: # glib_micro_version += 1; m4_define([glib_major_version], [2]) m4_define([glib_minor_version], [24]) 
+   /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/parsec-full/pkgs/libs/glib/src/gthread/gthread-posix.c: pthread_mutex_lock 2, futex 0, pthread_cond_wait 3
+-- x264
+   tree: /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/parsec-full
+   src: 114 files; top: AUTHORS build common config.guess config.sub configure conftest.asm COPYING doc Doxyfile encoder extras Makefile matroska.c matroska.h 
+   simsmall.runconf: run_args="--quiet --qp 20 --partitions b8x8,i4x4 --ref 5 --direct auto --b-pyramid --weightb --mixed-refs --no-fast-pskip --me umh --subme 7 --analyse b8x8,i4x4 --threads ${NTHREADS} -o eledream.264 e
+   simmedium.runconf: run_args="--quiet --qp 20 --partitions b8x8,i4x4 --ref 5 --direct auto --b-pyramid --weightb --mixed-refs --no-fast-pskip --me umh --subme 7 --analyse b8x8,i4x4 --threads ${NTHREADS} -o eledream.264 e
+   simlarge.runconf: run_args="--quiet --qp 20 --partitions b8x8,i4x4 --ref 5 --direct auto --b-pyramid --weightb --mixed-refs --no-fast-pskip --me umh --subme 7 --analyse b8x8,i4x4 --threads ${NTHREADS} -o eledream.264 e
+   native.runconf: run_args="--quiet --qp 20 --partitions b8x8,i4x4 --ref 5 --direct auto --b-pyramid --weightb --mixed-refs --no-fast-pskip --me umh --subme 7 --analyse b8x8,i4x4 --threads ${NTHREADS} -o eledream.264 e
+   inputs/: input_simdev.tar (12288) input_test.tar (10240) 
+   pthreads bldconf: build_env="PATH=\"${PARSECDIR}/pkgs/tools/yasm/inst/${PARSECPLAT}/bin:${PATH}\""
+   pthreads bldconf: build_conf="--enable-pthread --extra-asflags=\"${ASFLAGS}\" --extra-cflags=\"${CFLAGS}\" --extra-ldflags=\"${LDFLAGS} ${LIBS}\""
+   E2 pthread_create: 5 lines; common/osdep.h muxers.c encoder/encoder.c 
+   E2 pthread_join: 7 lines; common/osdep.h muxers.c encoder/encoder.c 
+   E2 pthread_mutex_lock: 6 lines; common/frame.c common/osdep.h encoder/ratecontrol.c 
+   E2 pthread_cond_wait: 3 lines; common/frame.c common/osdep.h 
+   E2 pthread_cond_broadcast: 3 lines; common/frame.c common/osdep.h 
+   x264: where threads are created (encoder.c):
+      1585-    if( h->param.i_threads > 1 )
+      1586-    {
+      1587:        x264_pthread_create( &h->thread_handle, NULL, (void*)x264_slices_write, h );
+      1588-        h->b_thread_active = 1;
+      1589-    }
+-- ferret
+   tree: /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/parsec-full
+   src: 125 files; top: benchmark COPYRIGHT doc image include INSTALL LICENSE Makefile src tools 
+   simsmall.runconf: run_args="corel lsh queries 10 20 ${NTHREADS} output.txt"
+   simmedium.runconf: run_args="corel lsh queries 10 20 ${NTHREADS} output.txt"
+   simlarge.runconf: run_args="corel lsh queries 10 20 ${NTHREADS} output.txt"
+   native.runconf: run_args="corel lsh queries 50 20 ${NTHREADS} output.txt"
+   inputs/: input_simdev.tar (143360) input_test.tar (20480) 
+   pthreads bldconf: build_deps="gsl libjpeg"
+   pthreads bldconf: build_env="version=\"pthreads\" ${ferret_flags}"
+   pthreads bldconf: build_conf=""
+   E2 pthread_create: 2 lines; include/tpool.h src/tpool.c 
+   E2 pthread_join: 1 lines; src/tpool.c 
+   E2 pthread_mutex_lock: 3 lines; src/queue.c 
+   E2 pthread_cond_wait: 2 lines; src/queue.c 
+   E2 pthread_cond_broadcast: 2 lines; src/queue.c 
+   E2 #pragma omp: 7 lines; src/lsh/LSH.c src/lsh/LSH_query_batch.c 
+   ferret: thread pools created:
+      benchmark/ferret-pthreads.c:550:	p_load = tpool_create(t_load_desc, NTHREAD_LOAD);
+      benchmark/ferret-pthreads.c:551:	p_seg = tpool_create(t_seg_desc, NTHREAD_SEG);
+      benchmark/ferret-pthreads.c:552:	p_extract = tpool_create(t_extract_desc, NTHREAD_EXTRACT);
+      benchmark/ferret-pthreads.c:553:	p_vec = tpool_create(t_vec_desc, NTHREAD_VEC);
+      benchmark/ferret-pthreads.c:554:	p_rank = tpool_create(t_rank_desc, NTHREAD_RANK);
+      benchmark/ferret-pthreads.c:555:	p_out = tpool_create(t_out_desc, NTHREAD_OUT);
+
+== 3. SPLASH-3 ocean non-contiguous
+   TARGET = OCEAN
+   files: correct.out decs.h.in jacobcalc.c.in laplacalc.c.in main.c.in Makefile multi.c.in slave1.c.in slave2.c.in 
+   E2 pthread_create: 0 lines
+   E2 pthread_mutex_lock: 0 lines
+   E2 pthread_cond_wait: 0 lines
+   E2 pthread_barrier_wait: 0 lines
+   E2 BARRIER: 19 lines
+   E2 LOCK: 29 lines
+   Makefile.config: CC := $(TOOLCHAIN_PREFIX)gcc
+   Makefile.config: CFLAGS := -O2 -pthread -D_XOPEN_SOURCE=500 -D_POSIX_C_SOURCE=200112 -std=c11 -g -fno-strict-aliasing
+   Makefile.config: LDFLAGS := -lm
+
+== 4. the toolchain
+   gcc: gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0; g++: g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+   static libstdc++.a: /usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.a
+   static libc.a: /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libc.a
+   static libm.a: /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libm.a
+   static libpthread.a: /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libpthread.a
+   static libgcc_eh.a: /usr/lib/gcc/x86_64-linux-gnu/13/libgcc_eh.a
+   autoconf: autoconf (GNU Autoconf) 2.71
+   automake: automake (GNU automake) 1.16.5
+   libtool: not installed
+   yasm: not installed
+   nasm: not installed
+   pkg-config: 1.8.1
+   make: GNU Make 4.3
+   python3: Python 3.12.3
+   glibc: ldd (Ubuntu GLIBC 2.39-0ubuntu8.9) 2.39
+
+== 5. what the runs would use
+   gem5: /home/harshraj/gem5/build/X86/gem5.opt Sep 24 10:13
+   gem5 CPUID file: 74d72229d62c ~/sync_nc/gem5.cpuid; QS passed; QK passed; void note present
+   tracer (gem5's CPUID): f39707f3e4e1 /home/harshraj/sync_nc_build/simulator/tracer/pin/obj-intel64/champsim_tracer.so
+   counter: cb5902c72375 /home/harshraj/streamfix/build/obj-intel64/stream_count.so; COUNTER_MD5 cb5902c72375
+   ChampSim binary: /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/bin/champsim_g6_1e3060c1; Q0 passed; Q0m passed
+
+== 6. the machine
+   disk: 153G free; load: 23.67 29.91 28.16; cores: 48
+   our processes: champsim 0, pin 0, gem5 0

@@ -1,0 +1,139 @@
+== policy internal counters, from completed logs ==
+   (a zero in any column means that mechanism never ran)
+
+   phaseA/regime_shared/barnes_4core/coalesce_no_mesi         coalesce_no_mesi     NO STATS LINE
+   phaseA/regime_shared/barnes_4core/coalesce_no_sharer       coalesce_no_sharer   NO STATS LINE
+   phaseA/regime_shared/barnes_4core/coalesce                 coalesce             NO STATS LINE
+   phaseA/regime_shared/barnes_4core/hawkeye                  fills      133364  hits      482312  detr          971  optgen       6975
+   phaseA/regime_shared/barnes_4core/mockingjay               victims    104903  fills     138297  rdp           197
+   phaseA/regime_shared/canneal_8core/coalesce_no_mesi        coalesce_no_mesi     NO STATS LINE
+   phaseA/regime_shared/canneal_8core/coalesce_no_sharer      coalesce_no_sharer   NO STATS LINE
+   phaseA/regime_shared/canneal_8core/coalesce                coalesce             NO STATS LINE
+   phaseA/regime_shared/canneal_8core/hawkeye                 fills     6704288  hits     3133412  detr         3749  optgen     108501
+   phaseA/regime_shared/canneal_8core/mockingjay              victims   4870607  fills    6801161  rdp           166
+   phaseA/regime_shared/ocean_8core/hawkeye                   fills    12021109  hits     3272441  detr        24091  optgen     142999
+   phaseA/regime_shared/water_8core/coalesce_no_mesi          coalesce_no_mesi     NO STATS LINE
+   phaseA/regime_shared/water_8core/coalesce_no_sharer        coalesce_no_sharer   NO STATS LINE
+   phaseA/regime_shared/water_8core/coalesce                  coalesce             NO STATS LINE
+   phaseA/regime_shared/water_8core/hawkeye                   fills     1672497  hits     2117128  detr        11388  optgen      50523
+   phaseA/regime_shared/water_8core/mockingjay                victims   1019913  fills    1419861  rdp           259
+   phaseA_scaled/regime_shared/barnes_4core/coalesce_no_mesi  ins            0  resc          0  detr            0  hitt        23412   <-- DEAD: ghost_inserts=0 ghost_rescues=0 detrains=0
+   phaseA_scaled/regime_shared/barnes_4core/coalesce_no_sharer ins            0  resc          0  detr            0  hitt        23412   <-- DEAD: ghost_inserts=0 ghost_rescues=0 detrains=0
+   phaseA_scaled/regime_shared/barnes_4core/coalesce          ins            0  resc          0  detr            0  hitt        23412   <-- DEAD: ghost_inserts=0 ghost_rescues=0 detrains=0
+   phaseA_scaled/regime_shared/barnes_4core/hawkeye           fills       51556  hits      553687  detr            0  optgen       7323   <-- DEAD: detrains=0
+   phaseA_scaled/regime_shared/barnes_4core/mockingjay        victims         0  fills      51556  rdp           155
+   phaseA_scaled/regime_shared/canneal_16core/coalesce_no_mesi ins        14266  resc      13244  detr        14266  hitt       593506
+   phaseA_scaled/regime_shared/canneal_16core/coalesce_no_sharer ins         8690  resc       7692  detr         8690  hitt       598841
+   phaseA_scaled/regime_shared/canneal_16core/coalesce        ins         9462  resc       8526  detr         9462  hitt       598881
+   phaseA_scaled/regime_shared/canneal_16core/hawkeye         fills      679214  hits    19205496  detr         3313  optgen     217152
+   phaseA_scaled/regime_shared/canneal_16core/mockingjay      victims    203177  fills     679979  rdp           289
+   phaseA_scaled/regime_shared/canneal_4core/coalesce_no_mesi ins        37288  resc      19356  detr        37288  hitt       109494
+   phaseA_scaled/regime_shared/canneal_4core/coalesce_no_sharer ins        46210  resc      26013  detr        46210  hitt       100459
+   phaseA_scaled/regime_shared/canneal_4core/coalesce         ins        32154  resc      17290  detr        32154  hitt       114800
+   phaseA_scaled/regime_shared/canneal_4core/hawkeye          fills      956475  hits     3893814  detr         8141  optgen      52966
+   phaseA_scaled/regime_shared/canneal_4core/mockingjay       victims    531674  fills     980071  rdp            71
+   phaseA_scaled/regime_shared/canneal_8core/coalesce_no_mesi ins        33673  resc      31668  detr        33673  hitt       263518
+   phaseA_scaled/regime_shared/canneal_8core/coalesce_no_sharer ins        31438  resc      28480  detr        31438  hitt       265963
+   phaseA_scaled/regime_shared/canneal_8core/coalesce         ins        26833  resc      24753  detr        26833  hitt       270888
+   phaseA_scaled/regime_shared/canneal_8core/hawkeye          fills      959689  hits     8861463  detr         5767  optgen     107402
+   phaseA_scaled/regime_shared/canneal_8core/mockingjay       victims    472815  fills     947190  rdp           121
+   phaseA_scaled/regime_shared/ocean_8core/coalesce_no_mesi   ins       378736  resc     198253  detr       378736  hitt       634660
+   phaseA_scaled/regime_shared/ocean_8core/coalesce_no_sharer ins       522952  resc     324218  detr       522952  hitt       478083
+   phaseA_scaled/regime_shared/ocean_8core/coalesce           ins       556364  resc     352859  detr       556364  hitt       451404
+   phaseA_scaled/regime_shared/ocean_8core/hawkeye            fills    10613244  hits    22020655  detr        20310  optgen     349931
+   phaseA_scaled/regime_shared/ocean_8core/mockingjay         victims   7723505  fills    8805467  rdp          2013
+   phaseA_scaled/regime_shared/water_8core/coalesce_no_mesi   ins         4877  resc        962  detr         4877  hitt       162956
+   phaseA_scaled/regime_shared/water_8core/coalesce_no_sharer ins         5789  resc       1635  detr         5789  hitt       158765
+   phaseA_scaled/regime_shared/water_8core/coalesce           ins         5219  resc       1130  detr         5219  hitt       162834
+   phaseA_scaled/regime_shared/water_8core/hawkeye            fills      439934  hits     5280940  detr         1092  optgen      81845
+   phaseA_scaled/regime_shared/water_8core/mockingjay         victims    162133  fills     455047  rdp           263
+   a4/410.bwaves-1963B/coalesce_no_mesi                       ins        57292  resc       6241  detr        57292  hitt          614
+   a4/410.bwaves-1963B/coalesce_no_sharer                     ins        57491  resc       6382  detr        57491  hitt          415
+   a4/410.bwaves-1963B/coalesce                               ins        57382  resc       6405  detr        57382  hitt          524
+   a4/410.bwaves-1963B/hawkeye                                fills     1797556  hits       88446  detr         1235  optgen      28731
+   a4/410.bwaves-1963B/mockingjay                             victims    120685  fills    1800715  rdp            18
+   a4/429.mcf-22B/coalesce_no_mesi                            ins       114457  resc      14512  detr       114457  hitt        30004
+   a4/429.mcf-22B/coalesce_no_sharer                          ins       120841  resc      14764  detr       120841  hitt        23629
+   a4/429.mcf-22B/coalesce                                    ins       124201  resc      15332  detr       124201  hitt        20263
+   a4/429.mcf-22B/hawkeye                                     fills     3432575  hits      533247  detr         5514  optgen      42971
+   a4/429.mcf-22B/mockingjay                                  victims   1644842  fills    3363868  rdp            28
+   a4/433.milc-127B/coalesce_no_mesi                          ins       193016  resc      22758  detr       193016  hitt         6387
+   a4/433.milc-127B/coalesce_no_sharer                        ins       194232  resc      22878  detr       194232  hitt         5171
+   a4/433.milc-127B/coalesce                                  ins       193694  resc      22795  detr       193694  hitt         5709
+   a4/433.milc-127B/hawkeye                                   fills     2425751  hits       68864  detr         1660  optgen      28683
+   a4/433.milc-127B/mockingjay                                victims    741777  fills    2402844  rdp            40
+   a4/437.leslie3d-232B/coalesce_no_mesi                      ins        19470  resc       1867  detr        19470  hitt         9150
+   a4/437.leslie3d-232B/coalesce_no_sharer                    ins        19861  resc       1895  detr        19861  hitt         8759
+   a4/437.leslie3d-232B/coalesce                              ins        20177  resc       1899  detr        20177  hitt         8444
+   a4/437.leslie3d-232B/hawkeye                               fills      609389  hits      342851  detr         2020  optgen      11835
+   a4/437.leslie3d-232B/mockingjay                            victims    279392  fills     584421  rdp            83
+   a4/450.soplex-247B/coalesce_no_mesi                        ins       104383  resc       9718  detr       104383  hitt        70196
+   a4/450.soplex-247B/coalesce_no_sharer                      ins       114418  resc      11703  detr       114418  hitt        60317
+   a4/450.soplex-247B/coalesce                                ins       108529  resc      11897  detr       108529  hitt        66272
+   a4/450.soplex-247B/hawkeye                                 fills     2896995  hits     2716348  detr         8618  optgen      63014
+   a4/450.soplex-247B/mockingjay                              victims   1576978  fills    2859456  rdp           403
+   a4/459.GemsFDTD-1169B/coalesce_no_mesi                     ins        19548  resc       1615  detr        19548  hitt         2994
+   a4/459.GemsFDTD-1169B/coalesce_no_sharer                   ins        19517  resc       1661  detr        19517  hitt         3044
+   a4/459.GemsFDTD-1169B/coalesce                             ins        19653  resc       1683  detr        19653  hitt         2919
+   a4/459.GemsFDTD-1169B/hawkeye                              fills      653762  hits      110033  detr         3320  optgen      10994
+   a4/459.GemsFDTD-1169B/mockingjay                           victims    318233  fills     652577  rdp           172
+   a4/462.libquantum-1343B/coalesce_no_mesi                   ins        97636  resc      11521  detr        97636  hitt        11039
+   a4/462.libquantum-1343B/coalesce_no_sharer                 ins        97958  resc      11432  detr        97958  hitt        10717
+   a4/462.libquantum-1343B/coalesce                           ins        97920  resc      11681  detr        97920  hitt        10755
+   a4/462.libquantum-1343B/hawkeye                            fills     3331284  hits      176977  detr          992  optgen      39588
+   a4/462.libquantum-1343B/mockingjay                         victims   1008905  fills    3327582  rdp             7
+   a4/470.lbm-1274B/coalesce_no_mesi                          ins       130560  resc      12130  detr       130560  hitt        23879
+   a4/470.lbm-1274B/coalesce_no_sharer                        ins       124389  resc      11397  detr       124389  hitt        30050
+   a4/470.lbm-1274B/coalesce                                  ins       124020  resc      11294  detr       124020  hitt        30419
+   a4/470.lbm-1274B/hawkeye                                   fills     3476292  hits     1497679  detr         3359  optgen      44473
+   a4/470.lbm-1274B/mockingjay                                victims   2079354  fills    3150913  rdp            59
+   a4/471.omnetpp-188B/coalesce_no_mesi                       ins        72403  resc       7373  detr        72403  hitt        24399
+   a4/471.omnetpp-188B/coalesce_no_sharer                     ins        72464  resc       7219  detr        72464  hitt        24360
+   a4/471.omnetpp-188B/coalesce                               ins        73264  resc       7400  detr        73264  hitt        23533
+   a4/471.omnetpp-188B/hawkeye                                fills     2067525  hits     1042920  detr         7734  optgen      35731
+   a4/471.omnetpp-188B/mockingjay                             victims   1022140  fills    2078671  rdp           373
+   a4/473.astar-153B/coalesce_no_mesi                         ins          846  resc         89  detr          846  hitt         7065
+   a4/473.astar-153B/coalesce_no_sharer                       ins         1029  resc        130  detr         1029  hitt         6881
+   a4/473.astar-153B/coalesce                                 ins         1047  resc        111  detr         1047  hitt         6822
+   a4/473.astar-153B/hawkeye                                  fills       61953  hits      282555  detr          407  optgen       2947
+   a4/473.astar-153B/mockingjay                               victims     25669  fills      57741  rdp            17
+   a4/482.sphinx3-1100B/coalesce_no_mesi                      ins        29075  resc       8727  detr        29075  hitt        11867
+   a4/482.sphinx3-1100B/coalesce_no_sharer                    ins        28079  resc       8288  detr        28079  hitt        12879
+   a4/482.sphinx3-1100B/coalesce                              ins        28355  resc       8299  detr        28355  hitt        12594
+   a4/482.sphinx3-1100B/hawkeye                               fills      793170  hits      542383  detr          956  optgen      19314
+   a4/482.sphinx3-1100B/mockingjay                            victims    415977  fills     749545  rdp           194
+   a4/483.xalancbmk-716B/coalesce_no_mesi                     ins         7035  resc        833  detr         7035  hitt         4962
+   a4/483.xalancbmk-716B/coalesce_no_sharer                   ins         7214  resc        924  detr         7214  hitt         4789
+   a4/483.xalancbmk-716B/coalesce                             ins         7094  resc        809  detr         7094  hitt         4893
+   a4/483.xalancbmk-716B/hawkeye                              fills      249220  hits      169558  detr         1097  optgen       3811
+   a4/483.xalancbmk-716B/mockingjay                           victims    163642  fills     222585  rdp           194
+
+== ablations must differ from the full policy ==
+   coalesce_no_mesi and coalesce_no_sharer each remove a feature. If a
+   variant's counters match coalesce exactly on the same trace, the
+   ablation is not ablating -- the same class of defect as Hawkeye
+   being byte-identical to SRRIP.
+   IDENTICAL: phaseA_scaled/regime_shared/barnes_4core coalesce_no_mesi matches coalesce -- ghost_inserts 0 ghost_rescues 0
+   IDENTICAL: phaseA_scaled/regime_shared/barnes_4core coalesce_no_sharer matches coalesce -- ghost_inserts 0 ghost_rescues 0
+   ok  phaseA_scaled/regime_shared/canneal_16core coalesce_no_mesi differs
+   ok  phaseA_scaled/regime_shared/canneal_16core coalesce_no_sharer differs
+   ok  phaseA_scaled/regime_shared/canneal_4core coalesce_no_mesi differs
+   ok  phaseA_scaled/regime_shared/canneal_4core coalesce_no_sharer differs
+   ok  phaseA_scaled/regime_shared/canneal_8core coalesce_no_mesi differs
+   ok  phaseA_scaled/regime_shared/canneal_8core coalesce_no_sharer differs
+   ok  phaseA_scaled/regime_shared/ocean_8core coalesce_no_mesi differs
+   ok  phaseA_scaled/regime_shared/ocean_8core coalesce_no_sharer differs
+   ok  phaseA_scaled/regime_shared/water_8core coalesce_no_mesi differs
+   ok  phaseA_scaled/regime_shared/water_8core coalesce_no_sharer differs
+
+== instrumentation gaps ==
+   drrip and ship print NO internal counters, and they are precisely the
+   two policies whose defect was that insertion never happened (their
+   PSEL duel / SHCT insertion lived in a branch the dispatch never
+   called). Nothing in a log can currently prove those paths now run.
+   Adding counters needs a rebuild, so it must wait for the sweep to
+   drain -- swapping bin/champsim mid-sweep would mix binaries.
+
+== summary ==
+   logs checked: 97   dead mechanisms: 6   missing stats: 9
+   FAIL -- a counter at zero means that code never ran

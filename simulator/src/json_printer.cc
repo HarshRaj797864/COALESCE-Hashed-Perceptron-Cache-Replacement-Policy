@@ -20,7 +20,7 @@
 
 #include "stats_printer.h"
 
-void to_json(nlohmann::json& j, const O3_CPU::stats_type& stats)
+void to_json(nlohmann::json& j, const champsim::modules::core_module::stats_type& stats)
 {
   constexpr std::array types{branch_type::BRANCH_DIRECT_JUMP, branch_type::BRANCH_INDIRECT,      branch_type::BRANCH_CONDITIONAL,
                              branch_type::BRANCH_DIRECT_CALL, branch_type::BRANCH_INDIRECT_CALL, branch_type::BRANCH_RETURN};
@@ -36,15 +36,17 @@ void to_json(nlohmann::json& j, const O3_CPU::stats_type& stats)
   j = nlohmann::json{{"instructions", stats.instrs()},
                      {"cycles", stats.cycles()},
                      {"Avg ROB occupancy at mispredict", std::ceil(stats.total_rob_occupancy_at_branch_mispredict) / std::ceil(total_mispredictions)},
+                     {"RMW loads issued as RFO", stats.rmw_loads_as_rfo},
+                     {"RMW loads forwarded from the store queue", stats.rmw_loads_forwarded},
                      {"mispredict", mpki}};
 }
 
-void to_json(nlohmann::json& j, const CACHE::stats_type& stats)
+void to_json(nlohmann::json& j, const champsim::modules::cache_module::stats_type& stats)
 {
   using hits_value_type = typename decltype(stats.hits)::value_type;
   using misses_value_type = typename decltype(stats.misses)::value_type;
-  using mshr_merge_value_type = typename decltype(stats.mshr_merge)::value_type;
-  using mshr_return_value_type = typename decltype(stats.mshr_return)::value_type;
+  using miss_merge_value_type = typename decltype(stats.miss_merge)::value_type;
+  using fill_value_type = typename decltype(stats.fill)::value_type;
 
   std::map<std::string, nlohmann::json> statsmap;
   statsmap.emplace("prefetch requested", stats.pf_requested);
@@ -52,29 +54,29 @@ void to_json(nlohmann::json& j, const CACHE::stats_type& stats)
   statsmap.emplace("useful prefetch", stats.pf_useful);
   statsmap.emplace("useless prefetch", stats.pf_useless);
 
-  uint64_t total_downstream_demands = stats.mshr_return.total();
+  uint64_t total_downstream_demands = stats.fill.total();
   for (std::size_t cpu = 0; cpu < NUM_CPUS; ++cpu)
-    total_downstream_demands -= stats.mshr_return.value_or(std::pair{access_type::PREFETCH, cpu}, mshr_return_value_type{});
+    total_downstream_demands -= stats.fill.value_or(std::pair{access_type::PREFETCH, cpu}, fill_value_type{});
 
   statsmap.emplace("miss latency", std::ceil(stats.total_miss_latency_cycles) / std::ceil(total_downstream_demands));
   for (const auto type : {access_type::LOAD, access_type::RFO, access_type::PREFETCH, access_type::WRITE, access_type::TRANSLATION}) {
     std::vector<hits_value_type> hits;
     std::vector<misses_value_type> misses;
-    std::vector<mshr_merge_value_type> mshr_merges;
+    std::vector<miss_merge_value_type> miss_merges;
 
     for (std::size_t cpu = 0; cpu < NUM_CPUS; ++cpu) {
       hits.push_back(stats.hits.value_or(std::pair{type, cpu}, hits_value_type{}));
       misses.push_back(stats.misses.value_or(std::pair{type, cpu}, misses_value_type{}));
-      mshr_merges.push_back(stats.mshr_merge.value_or(std::pair{type, cpu}, mshr_merge_value_type{}));
+      miss_merges.push_back(stats.miss_merge.value_or(std::pair{type, cpu}, miss_merge_value_type{}));
     }
 
-    statsmap.emplace(access_type_names.at(champsim::to_underlying(type)), nlohmann::json{{"hit", hits}, {"miss", misses}, {"mshr_merge", mshr_merges}});
+    statsmap.emplace(access_type_names.at(champsim::to_underlying(type)), nlohmann::json{{"hit", hits}, {"miss", misses}, {"miss_merge", miss_merges}});
   }
 
   j = statsmap;
 }
 
-void to_json(nlohmann::json& j, const DRAM_CHANNEL::stats_type stats)
+void to_json(nlohmann::json& j, const champsim::modules::memory_controller_module::stats_type stats)
 {
   j = nlohmann::json{{"RQ ROW_BUFFER_HIT", stats.RQ_ROW_BUFFER_HIT},
                      {"RQ ROW_BUFFER_MISS", stats.RQ_ROW_BUFFER_MISS},

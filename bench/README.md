@@ -1,5 +1,22 @@
 # bench/ — synthetic validation harness
 
+> **Status, 2026-09-23 — pre-migration, and not part of the current evidence.**
+> - Written before the move to ChampSim `develop`. The config instructions at
+>   the bottom are superseded: configs now come from
+>   `simulator/scripts/make_config.py`, where `--regime shared` fills
+>   `vmem_shared_cpus` with every core and `--regime private` leaves it empty.
+> - `docs/OPEN_DECISIONS.md` is now `docs/draft/OPEN_DECISIONS.md` (historical);
+>   the linked plan file no longer exists.
+> - No outcome of the V1–V6 runs below is recorded anywhere in this repo —
+>   `docs/draft/SESSION_CONTEXT.md` lists running them as a next step and stops
+>   there. The overlay's current validation uses real workloads
+>   (`bench/policy_sanity/overlay_validation_2026-09-18.md`), and its mechanism
+>   has unit tests in `simulator/test/cpp/src/801-vmem-duplicated.cc`.
+> - The active harness is `bench/policy_sanity/` (guards, probes, evidence).
+>
+> Kept because a synthetic producer/consumer case with known answers is still a
+> good negative/positive control — worth reviving for the gem5 comparison.
+
 Purpose: prove the VMEM shared-overlay mechanism delivers cross-CPU sharing end-to-end, before re-running canneal with overlay enabled. Without this validation, a non-zero canneal result under shared VMEM could be either (a) the mechanism working or (b) a bug in the overlay or instrumentation. The synthetic bench has known-shared addresses and known-expected outcomes per mode, so it pins down (a) vs (b).
 
 See `docs/OPEN_DECISIONS.md` item #17 and `/home/rajharsh/.claude/plans/ok-analyzew-the-entire-crystalline-reef.md` for the design rationale.

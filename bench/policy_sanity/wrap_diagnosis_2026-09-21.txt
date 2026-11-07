@@ -1,0 +1,136 @@
+== trace files, per file, not sampled ==
+   set              files            min            max         spread
+   canneal_16t         17      200000000      200000000             0%
+   canneal_4t           5      200000000      200000000             0%
+   canneal_8t           9      200000000      200000000             0%
+   ocean_8t             8      171823397      172756320             0%
+   water_8t             8      200000000      200000000             0%
+
+   check_trace_length demands 150000000 per file.
+
+== runs that wrapped, and what they actually consumed ==
+   run                                            cpus   min consumed   max consumed vs 150M
+   phaseA/regime_private/ocean_8core/lru             8      151391426      164947330    109%
+   phaseA/regime_shared/ocean_8core/drrip            8      155511344      163328358    108%
+   phaseA/regime_shared/ocean_8core/hawkeye          8      157518660      169824982    113%
+   phaseA/regime_shared/ocean_8core/lru              8      150000002      167998603    111%
+   phaseA/regime_shared/ocean_8core/mockingjay       8       50000002       62811437     41%
+   phaseA/regime_shared/ocean_8core/random           8       50000002       62814745     41%
+   phaseA/regime_shared/ocean_8core/ship             8      153169668      167720905    111%
+   phaseA/regime_shared/ocean_8core/srrip_bias       8       50000002       62815263     41%
+   phaseA/regime_shared/ocean_8core/srrip            8      150234146      168387552    112%
+   phaseA_scaled/regime_private/water_8core/lru      8      150133183      202174281    134%
+   phaseA_scaled/regime_shared/ocean_8core/srrip     8      155776431      172632044    115%
+   phaseA_scaled/regime_shared/water_8core/coalesce_no_mesi    8      152201759      204358394    136%
+   phaseA_scaled/regime_shared/water_8core/coalesce_no_sharer    8      152199568      202205116    134%
+   phaseA_scaled/regime_shared/water_8core/coalesce    8      152201162      204362047    136%
+   phaseA_scaled/regime_shared/water_8core/drrip     8      152201893      205348052    136%
+   phaseA_scaled/regime_shared/water_8core/hawkeye    8      152201212      202073751    134%
+   phaseA_scaled/regime_shared/water_8core/lru       8      152201560      205523509    137%
+   phaseA_scaled/regime_shared/water_8core/mockingjay    8      152200510      203940722    135%
+   phaseA_scaled/regime_shared/water_8core/random    8      152202227      203949197    135%
+   phaseA_scaled/regime_shared/water_8core/ship      8      152203077      205262963    136%
+   phaseA_scaled/regime_shared/water_8core/srrip_bias    8      152204348      204290529    136%
+   phaseA_scaled/regime_shared/water_8core/srrip     8      152203599      204226455    136%
+
+   22 of 127 logs wrapped.
+   Worst core consumed 205523509 records against the 150000000 demanded --
+   a margin of 137%, i.e. check_trace_length needs
+   roughly 210000000 to be safe for this workload mix.
+
+== core divergence on runs that did NOT wrap ==
+   run                                            cpus   min consumed   max consumed  max/min
+   phaseA/regime_private/barnes_4core/lru            4      151546100      162521301       1.07x
+   phaseA/regime_private/canneal_16core/lru         16      151010313      161606617       1.07x
+   phaseA/regime_private/canneal_4core/lru           4      150781296      161703736       1.07x
+   phaseA/regime_private/canneal_8core/lru           8      150929097      161647153       1.07x
+   phaseA/regime_private/water_8core/lru             8      150364617      181337592       1.20x
+   phaseA/regime_shared/barnes_4core/coalesce_no_mesi    4      150480271      162755545       1.08x
+   phaseA/regime_shared/barnes_4core/coalesce_no_sharer    4      150812187      163006094       1.08x
+   phaseA/regime_shared/barnes_4core/coalesce        4      150000003      162777889       1.08x
+   phaseA/regime_shared/barnes_4core/drrip           4      151364139      162755636       1.07x
+   phaseA/regime_shared/barnes_4core/hawkeye         4      151301199      162755618       1.07x
+   phaseA/regime_shared/barnes_4core/lru             4      151293451      162755618       1.07x
+   phaseA/regime_shared/barnes_4core/mockingjay      4      151344356      162755662       1.07x
+   phaseA/regime_shared/barnes_4core/random          4      151033494      162755497       1.07x
+   phaseA/regime_shared/barnes_4core/ship            4      151335327      162755618       1.07x
+   phaseA/regime_shared/barnes_4core/srrip_bias      4      150000003      163173646       1.08x
+   phaseA/regime_shared/barnes_4core/srrip           4      150000003      163161318       1.08x
+   phaseA/regime_shared/canneal_16core/lru          16      151114325      162459527       1.07x
+   phaseA/regime_shared/canneal_4core/lru            4      151080579      161694397       1.07x
+   phaseA/regime_shared/canneal_8core/coalesce_no_mesi    8      151523322      162149096       1.07x
+   phaseA/regime_shared/canneal_8core/coalesce_no_sharer    8      151341814      161937017       1.07x
+   phaseA/regime_shared/canneal_8core/coalesce       8      151486724      162113799       1.07x
+   phaseA/regime_shared/canneal_8core/drrip          8      151512977      162088330       1.06x
+   phaseA/regime_shared/canneal_8core/hawkeye        8      151515204      162148461       1.07x
+   phaseA/regime_shared/canneal_8core/lru            8      151406593      162035692       1.07x
+   phaseA/regime_shared/canneal_8core/mockingjay     8      150000001      162702132       1.08x
+   phaseA/regime_shared/canneal_8core/random         8      151298014      161928609       1.07x
+   phaseA/regime_shared/canneal_8core/ship           8      151373092      162057316       1.07x
+   phaseA/regime_shared/canneal_8core/srrip_bias     8      151552156      162094450       1.06x
+   phaseA/regime_shared/canneal_8core/srrip          8      151410574      162010892       1.07x
+   phaseA/regime_shared/water_8core/coalesce_no_mesi    8      152185564      193110838       1.26x
+   phaseA/regime_shared/water_8core/coalesce_no_sharer    8      152078560      178979495       1.17x
+   phaseA/regime_shared/water_8core/coalesce         8      152144110      192269156       1.26x
+   phaseA/regime_shared/water_8core/drrip            8      152120515      185222555       1.21x
+   phaseA/regime_shared/water_8core/hawkeye          8      152175193      171868084       1.12x
+   phaseA/regime_shared/water_8core/lru              8      151617902      166180005       1.09x
+   phaseA/regime_shared/water_8core/mockingjay       8      152172523      193231598       1.26x
+   phaseA/regime_shared/water_8core/random           8      152108759      169386173       1.11x
+   phaseA/regime_shared/water_8core/ship             8      152138877      178961006       1.17x
+   phaseA/regime_shared/water_8core/srrip_bias       8      152147977      188949523       1.24x
+   phaseA/regime_shared/water_8core/srrip            8      152127533      190339620       1.25x
+   phaseA_quick/regime_private/canneal_16core/lru   16       15119906       15783083       1.04x
+   phaseA_quick/regime_private/canneal_4core/lru     4       15074996       15766773       1.04x
+   phaseA_quick/regime_private/canneal_8core/lru     8       15103852       15715533       1.04x
+   phaseA_quick/regime_shared/canneal_16core/lru    16       15124622       16137458       1.06x
+   phaseA_quick/regime_shared/canneal_4core/lru      4       15117839       15862784       1.04x
+   phaseA_quick/regime_shared/canneal_8core/lru      8       15137060       15963127       1.05x
+   phaseA_quick_llc/regime_private/canneal_16core/lru   16       15000005       15778780       1.05x
+   phaseA_quick_llc/regime_private/canneal_4core/lru    4       15013505       15750708       1.04x
+   phaseA_quick_llc/regime_private/canneal_8core/lru    8       15031772       15716792       1.04x
+   phaseA_quick_llc/regime_shared/canneal_16core/lru   16       15174425       16129513       1.06x
+   phaseA_quick_llc/regime_shared/canneal_4core/lru    4       15111376       15873293       1.05x
+   phaseA_quick_llc/regime_shared/canneal_8core/lru    8       15165140       16038939       1.05x
+   phaseA_scaled/regime_private/barnes_4core/lru     4      151612487      162665614       1.07x
+   phaseA_scaled/regime_private/canneal_16core/lru   16      150612625      161683518       1.07x
+   phaseA_scaled/regime_private/canneal_4core/lru    4      150782604      161758846       1.07x
+   phaseA_scaled/regime_private/canneal_8core/lru    8      150970617      161773423       1.07x
+   phaseA_scaled/regime_private/ocean_8core/lru      8      161195889      167291837       1.03x
+   phaseA_scaled/regime_shared/barnes_4core/coalesce_no_mesi    4      151430892      162754250       1.07x
+   phaseA_scaled/regime_shared/barnes_4core/coalesce_no_sharer    4      151430892      162754250       1.07x
+   phaseA_scaled/regime_shared/barnes_4core/coalesce    4      151430892      162754250       1.07x
+   phaseA_scaled/regime_shared/barnes_4core/drrip    4      151430892      162754250       1.07x
+   phaseA_scaled/regime_shared/barnes_4core/hawkeye    4      151430892      162754250       1.07x
+   phaseA_scaled/regime_shared/barnes_4core/lru      4      151430892      162754250       1.07x
+   phaseA_scaled/regime_shared/barnes_4core/mockingjay    4      151430892      162754250       1.07x
+   phaseA_scaled/regime_shared/barnes_4core/random    4      151430892      162754250       1.07x
+   phaseA_scaled/regime_shared/barnes_4core/ship     4      151430892      162754250       1.07x
+   phaseA_scaled/regime_shared/barnes_4core/srrip_bias    4      151430892      162754250       1.07x
+   phaseA_scaled/regime_shared/barnes_4core/srrip    4      151430892      162754250       1.07x
+   phaseA_scaled/regime_shared/canneal_16core/lru   16      151594640      162611864       1.07x
+   phaseA_scaled/regime_shared/canneal_4core/drrip    4      151389785      161947929       1.06x
+   phaseA_scaled/regime_shared/canneal_4core/lru     4      151331925      161896602       1.06x
+   phaseA_scaled/regime_shared/canneal_4core/ship    4      151385093      161905674       1.06x
+   phaseA_scaled/regime_shared/canneal_4core/srrip    4      151368489      161931745       1.06x
+   phaseA_scaled/regime_shared/canneal_8core/coalesce_no_mesi    8      151833636      162516537       1.07x
+   phaseA_scaled/regime_shared/canneal_8core/coalesce_no_sharer    8      151912034      162676579       1.07x
+   phaseA_scaled/regime_shared/canneal_8core/coalesce    8      152309646      162903970       1.06x
+   phaseA_scaled/regime_shared/canneal_8core/drrip    8      151717496      162430784       1.07x
+   phaseA_scaled/regime_shared/canneal_8core/hawkeye    8      151723502      162368346       1.07x
+   phaseA_scaled/regime_shared/canneal_8core/lru     8      151757965      162390407       1.07x
+   phaseA_scaled/regime_shared/canneal_8core/mockingjay    8      151734572      162414447       1.07x
+   phaseA_scaled/regime_shared/canneal_8core/random    8      151804493      162457165       1.07x
+   phaseA_scaled/regime_shared/canneal_8core/ship    8      151650483      162385591       1.07x
+   phaseA_scaled/regime_shared/canneal_8core/srrip_bias    8      151691324      162497329       1.07x
+   phaseA_scaled/regime_shared/canneal_8core/srrip    8      151695084      162449869       1.07x
+   phaseA_scaled/regime_shared/ocean_8core/drrip     8      160897175      164235958       1.02x
+   phaseA_scaled/regime_shared/ocean_8core/hawkeye    8      160640497      164729638       1.02x
+   phaseA_scaled/regime_shared/ocean_8core/lru       8      160276371      165684546       1.03x
+   phaseA_scaled/regime_shared/ocean_8core/mockingjay    8      156059401      172198597       1.10x
+   phaseA_scaled/regime_shared/ocean_8core/ship      8      161618312      166244783       1.02x
+   phaseA_scaled/regime_shared/ocean_8core/srrip_bias    8      155662238      171551424       1.10x
+
+   max/min is how far the fastest core outruns the slowest. The trace
+   each core needs is WARMUP+SIM times that ratio, so this column is the
+   multiplier check_trace_length is currently missing.

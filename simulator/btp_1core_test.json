@@ -1,0 +1,17 @@
+{
+  "executable_name": "champsim_1core_srrip_bias",
+  "num_cores": 1,
+  "LLC": {
+    "frequency": 4000,
+    "sets": 2048,
+    "ways": 16,
+    "rq_size": 32,
+    "wq_size": 32,
+    "pq_size": 32,
+    "mshr_size": 64,
+    "latency": 20,
+    "max_read": 32,
+    "max_write": 32,
+    "replacement": "srrip_bias"
+  }
+}

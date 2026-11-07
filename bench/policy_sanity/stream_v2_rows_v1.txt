@@ -1,0 +1,184 @@
+# stream_check2.py rows simulator/results/streamfix
+LOG 2026-11-04 10:53:38 == exact: the counter's hand counts, and the tracer against the counter
+LOG 2026-11-04 10:53:41 exact: 8 of 8 hand counts
+LOG 2026-11-04 10:53:50 exact: the counter equals the tracer on thread 1 (/home/harshraj/sync_g5_build/simulator/tracer/pin/obj-intel64/champsim_tracer.so, md5 7e3269fd6f10eb12d13b230c70a1c16d)
+LOG 2026-11-04 10:55:44 QE holds: the dump under emulation 354 lines equal, the 14 other pairs the dump asked are the 14 gem5 aborts on; CPUID replaced 401 unlisted 0
+RUN barnes256 gem5 1 exit 0 seconds 82 skip 0 cut0 0 creates0 3 first0 12337994 last0 12340188 last0_g 12339765 setup 12337994 setup_libm 6405319 unlisted 0 avx_evex_fma_records 0 - ; CPUID replaced 31 unlisted 0
+WIN barnes256 gem5 1 t0 lo 50000000 hi 150000000 rec 100000000 ld 31930211 st 16851648 rmw 2657581 ginst 100000000 gld 33134973 gst 17456725 rep 0 wtable_libc_rep_gst 0
+WIN barnes256 gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 31911291 st 16837981 rmw 2666815 ginst 100000000 gld 33114228 gst 17442375 rep 0 wtable_libc_rep_gst 0
+WIN barnes256 gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 31973101 st 16696522 rmw 2748967 ginst 100000000 gld 33165030 gst 17293785 rep 0 wtable_libc_rep_gst 0
+WIN barnes256 gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 31917437 st 16872775 rmw 2653398 ginst 100000000 gld 33126308 gst 17479265 rep 0 wtable_libc_rep_gst 0
+RUN barnes256 host 1 exit 0 seconds 77 skip 0 cut0 0 creates0 3 first0 10564901 last0 10567069 last0_g 10566646 setup 10564901 setup_libm 4626069 unlisted -1 avx_evex_fma_records 3775666 __ieee754_pow_fma,__memchr_avx2,__memcpy_avx_unaligned_erms,__memcpy_chk_avx_unaligned_erms,__mempcpy_avx_unaligned_erms,__memset_avx2_unaligned_erms,__strchrnul_avx2,__strcpy_avx2,__strlen_avx2,__strrchr_avx2 ; cpuid host
+WIN barnes256 host 1 t0 lo 50000000 hi 150000000 rec 100000000 ld 31939879 st 16849993 rmw 2659293 ginst 100000000 gld 33145373 gst 17455414 rep 0 wtable_libc_rep_gst 0
+WIN barnes256 host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 31932191 st 16839364 rmw 2666833 ginst 100000000 gld 33136776 gst 17444579 rep 0 wtable_libc_rep_gst 0
+WIN barnes256 host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 31995722 st 16698667 rmw 2746620 ginst 100000000 gld 33189440 gst 17296821 rep 0 wtable_libc_rep_gst 0
+WIN barnes256 host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 31908707 st 16872442 rmw 2652065 ginst 100000000 gld 33116910 gst 17478598 rep 0 wtable_libc_rep_gst 0
+RUN barnesstd gem5 1 exit 0 seconds 21 skip 0 cut0 10570006 creates0 3 first0 12340465 last0 12342659 last0_g 12342236 setup 12340465 setup_libm 6405319 unlisted 0 avx_evex_fma_records 0 - ; CPUID replaced 31 unlisted 0
+WIN bstd-start gem5 1 t0 lo 0 hi 50200000 rec 50200000 ld 14405114 st 8007076 rmw 519287 ginst 50199577 gld 14965168 gst 8338210 rep 426 wtable_libc_rep_gst 0
+WIN bstd-start gem5 1 t1 lo 0 hi 37900000 rec 37900000 ld 11476506 st 6992213 rmw 534446 ginst 37900000 gld 11950482 gst 7252828 rep 0 wtable_libc_rep_gst 0
+WIN bstd-start gem5 1 t2 lo 0 hi 37900000 rec 37900000 ld 11451450 st 7067299 rmw 500418 ginst 37900000 gld 11936721 gst 7330983 rep 0 wtable_libc_rep_gst 0
+WIN bstd-start gem5 1 t3 lo 0 hi 37900000 rec 37900000 ld 11449801 st 7063113 rmw 503285 ginst 37900000 gld 11934083 gst 7326834 rep 0 wtable_libc_rep_gst 0
+WIN bstd-force gem5 1 t0 lo 50200000 hi 100200000 rec 50000000 ld 15400429 st 9995070 rmw 486006 ginst 50000000 gld 16159958 gst 10379913 rep 0 wtable_libc_rep_gst 0
+WIN bstd-force gem5 1 t1 lo 37900000 hi 87900000 rec 50000000 ld 15393944 st 9984277 rmw 485398 ginst 50000000 gld 16151312 gst 10368043 rep 0 wtable_libc_rep_gst 0
+WIN bstd-force gem5 1 t2 lo 37900000 hi 87900000 rec 50000000 ld 15399090 st 9970304 rmw 492635 ginst 50000000 gld 16154857 gst 10353308 rep 0 wtable_libc_rep_gst 0
+WIN bstd-force gem5 1 t3 lo 37900000 hi 87900000 rec 50000000 ld 15416810 st 9899710 rmw 523101 ginst 50000000 gld 16162950 gst 10278989 rep 0 wtable_libc_rep_gst 0
+WIN bstd-window gem5 1 t0 lo 50200000 hi 150200000 rec 100000000 ld 30787737 st 20016791 rmw 956781 ginst 100000000 gld 32309896 gst 20787541 rep 0 wtable_libc_rep_gst 0
+WIN bstd-window gem5 1 t1 lo 37900000 hi 137900000 rec 100000000 ld 30791996 st 19992440 rmw 966281 ginst 100000000 gld 32310724 gst 20761709 rep 0 wtable_libc_rep_gst 0
+WIN bstd-window gem5 1 t2 lo 37900000 hi 137900000 rec 100000000 ld 30637741 st 19351455 rmw 1160684 ginst 100000000 gld 32070681 gst 20100026 rep 0 wtable_libc_rep_gst 0
+WIN bstd-window gem5 1 t3 lo 37900000 hi 137900000 rec 100000000 ld 30641342 st 19289007 rmw 1178310 ginst 100000000 gld 32061188 gst 20035280 rep 0 wtable_libc_rep_gst 0
+RUN barnesstd host 1 exit 0 seconds 18 skip 0 cut0 10570006 creates0 3 first0 10567459 last0 10569627 last0_g 10569204 setup 10567459 setup_libm 4626069 unlisted -1 avx_evex_fma_records 3775615 __ieee754_pow_fma,__memchr_avx2,__memcpy_avx_unaligned_erms,__memcpy_chk_avx_unaligned_erms,__mempcpy_avx_unaligned_erms,__memset_avx2_unaligned_erms,__strchrnul_avx2,__strcpy_avx2,__strlen_avx2,__strrchr_avx2 ; cpuid host
+WIN bstd-start host 1 t0 lo 0 hi 48500000 rec 48500000 ld 14472635 st 8047352 rmw 523027 ginst 48499577 gld 15035820 gst 8379645 rep 426 wtable_libc_rep_gst 0
+WIN bstd-start host 1 t1 lo 0 hi 37900000 rec 37900000 ld 11522332 st 7009927 rmw 539368 ginst 37900000 gld 11997129 gst 7270872 rep 0 wtable_libc_rep_gst 0
+WIN bstd-start host 1 t2 lo 0 hi 37900000 rec 37900000 ld 11501492 st 7110488 rmw 497820 ginst 37900000 gld 11990691 gst 7376547 rep 0 wtable_libc_rep_gst 0
+WIN bstd-start host 1 t3 lo 0 hi 37900000 rec 37900000 ld 11503568 st 7099030 rmw 501970 ginst 37900000 gld 11991346 gst 7364615 rep 0 wtable_libc_rep_gst 0
+WIN bstd-force host 1 t0 lo 48500000 hi 98500000 rec 50000000 ld 15400274 st 9995432 rmw 485814 ginst 50000000 gld 16159848 gst 10380301 rep 0 wtable_libc_rep_gst 0
+WIN bstd-force host 1 t1 lo 37900000 hi 87900000 rec 50000000 ld 15393988 st 9984171 rmw 485453 ginst 50000000 gld 16151336 gst 10367927 rep 0 wtable_libc_rep_gst 0
+WIN bstd-force host 1 t2 lo 37900000 hi 87900000 rec 50000000 ld 15399184 st 9969899 rmw 492806 ginst 50000000 gld 16154887 gst 10352871 rep 0 wtable_libc_rep_gst 0
+WIN bstd-force host 1 t3 lo 37900000 hi 87900000 rec 50000000 ld 15416813 st 9899654 rmw 523106 ginst 50000000 gld 16162945 gst 10278936 rep 0 wtable_libc_rep_gst 0
+WIN bstd-window host 1 t0 lo 48500000 hi 148500000 rec 100000000 ld 30787810 st 20016456 rmw 956929 ginst 100000000 gld 32309932 gst 20787191 rep 0 wtable_libc_rep_gst 0
+WIN bstd-window host 1 t1 lo 37900000 hi 137900000 rec 100000000 ld 30791979 st 19992450 rmw 966276 ginst 100000000 gld 32310696 gst 20761710 rep 0 wtable_libc_rep_gst 0
+WIN bstd-window host 1 t2 lo 37900000 hi 137900000 rec 100000000 ld 30670216 st 19365968 rmw 1168473 ginst 100000000 gld 32100834 gst 20116603 rep 0 wtable_libc_rep_gst 0
+WIN bstd-window host 1 t3 lo 37900000 hi 137900000 rec 100000000 ld 30679897 st 19316733 rmw 1180415 ginst 100000000 gld 32101514 gst 20063900 rep 0 wtable_libc_rep_gst 0
+RUN canneal4 gem5 1 exit 0 seconds 169 skip 0 cut0 0 creates0 4 first0 3707729660 last0 3707733637 last0_g 3707733032 setup 3707729660 setup_libm 19 unlisted 0 avx_evex_fma_records 0 - ; CPUID replaced 40 unlisted 0
+WIN canneal gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 37684542 st 21518523 rmw 1164511 ginst 100000000 gld 37684542 gst 21518523 rep 0 wtable_libc_rep_gst 0
+WIN canneal gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 37669851 st 21520149 rmw 1162219 ginst 100000000 gld 37669851 gst 21520149 rep 0 wtable_libc_rep_gst 0
+WIN canneal gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 37676612 st 21522404 rmw 1163675 ginst 100000000 gld 37676612 gst 21522404 rep 0 wtable_libc_rep_gst 0
+WIN canneal gem5 1 t4 lo 50000000 hi 150000000 rec 100000000 ld 37682190 st 21508606 rmw 1163425 ginst 100000000 gld 37682190 gst 21508606 rep 0 wtable_libc_rep_gst 0
+RUN canneal4 host 1 exit 0 seconds 156 skip 0 cut0 0 creates0 4 first0 3708809590 last0 3708813528 last0_g 3708812923 setup 3708809590 setup_libm 19 unlisted -1 avx_evex_fma_records 356093483 __ieee754_exp_fma,__memchr_avx2,__memcmp_avx2_movbe,__memcpy_avx_unaligned_erms,__mempcpy_avx_unaligned_erms,__memset_avx2_unaligned_erms,__strchr_avx2,__strchrnul_avx2,__strlen_avx2,__strrchr_avx2 ; cpuid host
+WIN canneal host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 37779623 st 21571015 rmw 1167673 ginst 100000000 gld 37779623 gst 21571015 rep 0 wtable_libc_rep_gst 0
+WIN canneal host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 37766578 st 21572029 rmw 1165294 ginst 100000000 gld 37766578 gst 21572029 rep 0 wtable_libc_rep_gst 0
+WIN canneal host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 37772759 st 21575258 rmw 1166872 ginst 100000000 gld 37772759 gst 21575258 rep 0 wtable_libc_rep_gst 0
+WIN canneal host 1 t4 lo 50000000 hi 150000000 rec 100000000 ld 37778651 st 21562937 rmw 1166782 ginst 100000000 gld 37778651 gst 21562937 rep 0 wtable_libc_rep_gst 0
+RUN canneal8 gem5 1 exit 0 seconds 157 skip 0 cut0 0 creates0 8 first0 3707729885 last0 3707738481 last0_g 3707737876 setup 3707729885 setup_libm 19 unlisted 0 avx_evex_fma_records 0 - ; CPUID replaced 40 unlisted 0
+WIN canneal8 gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 37583679 st 21497359 rmw 1158161 ginst 100000000 gld 37583679 gst 21497359 rep 0 wtable_libc_rep_gst 0
+WIN canneal8 gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 37571486 st 21498751 rmw 1155737 ginst 100000000 gld 37571486 gst 21498751 rep 0 wtable_libc_rep_gst 0
+WIN canneal8 gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 37575525 st 21497170 rmw 1156774 ginst 100000000 gld 37575525 gst 21497170 rep 0 wtable_libc_rep_gst 0
+WIN canneal8 gem5 1 t4 lo 50000000 hi 150000000 rec 100000000 ld 37575255 st 21493557 rmw 1156408 ginst 100000000 gld 37575255 gst 21493557 rep 0 wtable_libc_rep_gst 0
+WIN canneal8 gem5 1 t5 lo 50000000 hi 150000000 rec 100000000 ld 37569164 st 21495507 rmw 1156698 ginst 100000000 gld 37569164 gst 21495507 rep 0 wtable_libc_rep_gst 0
+WIN canneal8 gem5 1 t6 lo 50000000 hi 150000000 rec 100000000 ld 37570316 st 21496267 rmw 1156786 ginst 100000000 gld 37570316 gst 21496267 rep 0 wtable_libc_rep_gst 0
+WIN canneal8 gem5 1 t7 lo 50000000 hi 150000000 rec 100000000 ld 37580256 st 21490417 rmw 1156124 ginst 100000000 gld 37580256 gst 21490417 rep 0 wtable_libc_rep_gst 0
+WIN canneal8 gem5 1 t8 lo 50000000 hi 150000000 rec 100000000 ld 37580053 st 21490223 rmw 1156447 ginst 100000000 gld 37580053 gst 21490223 rep 0 wtable_libc_rep_gst 0
+RUN canneal8 host 1 exit 0 seconds 141 skip 0 cut0 0 creates0 8 first0 3713277665 last0 3713286170 last0_g 3713285565 setup 3713277665 setup_libm 19 unlisted -1 avx_evex_fma_records 360551252 __ieee754_exp_fma,__memchr_avx2,__memcmp_avx2_movbe,__memcpy_avx_unaligned_erms,__mempcpy_avx_unaligned_erms,__memset_avx2_unaligned_erms,__strchr_avx2,__strchrnul_avx2,__strlen_avx2,__strrchr_avx2 ; cpuid host
+WIN canneal8 host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 37634567 st 21527226 rmw 1158685 ginst 100000000 gld 37634567 gst 21527226 rep 0 wtable_libc_rep_gst 0
+WIN canneal8 host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 37626331 st 21527942 rmw 1157423 ginst 100000000 gld 37626331 gst 21527942 rep 0 wtable_libc_rep_gst 0
+WIN canneal8 host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 37632026 st 21526515 rmw 1158560 ginst 100000000 gld 37632026 gst 21526515 rep 0 wtable_libc_rep_gst 0
+WIN canneal8 host 1 t4 lo 50000000 hi 150000000 rec 100000000 ld 37633398 st 21529044 rmw 1158728 ginst 100000000 gld 37633398 gst 21529044 rep 0 wtable_libc_rep_gst 0
+WIN canneal8 host 1 t5 lo 50000000 hi 150000000 rec 100000000 ld 37627601 st 21529531 rmw 1158985 ginst 100000000 gld 37627601 gst 21529531 rep 0 wtable_libc_rep_gst 0
+WIN canneal8 host 1 t6 lo 50000000 hi 150000000 rec 100000000 ld 37625752 st 21528395 rmw 1158816 ginst 100000000 gld 37625752 gst 21528395 rep 0 wtable_libc_rep_gst 0
+WIN canneal8 host 1 t7 lo 50000000 hi 150000000 rec 100000000 ld 37639944 st 21518603 rmw 1158876 ginst 100000000 gld 37639944 gst 21518603 rep 0 wtable_libc_rep_gst 0
+WIN canneal8 host 1 t8 lo 50000000 hi 150000000 rec 100000000 ld 37634247 st 21520773 rmw 1157874 ginst 100000000 gld 37634247 gst 21520773 rep 0 wtable_libc_rep_gst 0
+RUN fft gem5 1 exit 0 seconds 64 skip 0 cut0 auto creates0 3 first0 1356438026 last0 1356440220 last0_g 1356439797 setup 1356438026 setup_libm 638945856 unlisted 0 avx_evex_fma_records 0 - ; CPUID replaced 31 unlisted 0
+WIN fft gem5 1 t0 lo 1406400000 hi 1506400000 rec 100000000 ld 10771951 st 5573749 rmw 0 ginst 100000000 gld 20759238 gst 10367711 rep 0 wtable_libc_rep_gst 0
+WIN fft gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 10776197 st 5575413 rmw 0 ginst 100000000 gld 20768640 gst 10371953 rep 0 wtable_libc_rep_gst 0
+WIN fft gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 10776277 st 5575449 rmw 0 ginst 100000000 gld 20768809 gst 10372033 rep 0 wtable_libc_rep_gst 0
+WIN fft gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 10776313 st 5575463 rmw 0 ginst 100000000 gld 20768888 gst 10372069 rep 0 wtable_libc_rep_gst 0
+RUN fft host 1 exit 0 seconds 53 skip 0 cut0 auto creates0 3 first0 1240508660 last0 1240510828 last0_g 1240510405 setup 1240508660 setup_libm 523010151 unlisted -1 avx_evex_fma_records 523145210 __memcpy_avx_unaligned_erms,__mempcpy_avx_unaligned_erms,__memset_avx2_unaligned_erms,__sincos_fma,__strchr_avx2,__strchrnul_avx2,__strlen_avx2,__strrchr_avx2 ; cpuid host
+WIN fft host 1 t0 lo 1290500000 hi 1390500000 rec 100000000 ld 10772227 st 5573841 rmw 0 ginst 100000000 gld 20759882 gst 10367987 rep 0 wtable_libc_rep_gst 0
+WIN fft host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 10773231 st 5574216 rmw 0 ginst 100000000 gld 20762143 gst 10368992 rep 0 wtable_libc_rep_gst 0
+WIN fft host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 10773211 st 5574206 rmw 0 ginst 100000000 gld 20762099 gst 10368968 rep 0 wtable_libc_rep_gst 0
+WIN fft host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 10773262 st 5574226 rmw 0 ginst 100000000 gld 20762213 gst 10369020 rep 0 wtable_libc_rep_gst 0
+RUN fmm gem5 1 exit 0 seconds 22 skip 0 cut0 12773531 creates0 3 first0 14545610 last0 14547804 last0_g 14547381 setup 14545610 setup_libm 6406852 unlisted 0 avx_evex_fma_records 0 - ; CPUID replaced 31 unlisted 0
+WIN fmm gem5 1 t0 lo 64500000 hi 164500000 rec 100000000 ld 13807780 st 1794606 rmw 80751 ginst 99999802 gld 14537741 gst 2302323 rep 200 wtable_libc_rep_gst 0
+WIN fmm gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 13817398 st 1798147 rmw 79361 ginst 99999802 gld 14537473 gst 2299255 rep 200 wtable_libc_rep_gst 0
+WIN fmm gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 13848785 st 1809505 rmw 85444 ginst 99999802 gld 14587701 gst 2323103 rep 200 wtable_libc_rep_gst 0
+WIN fmm gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 13759668 st 1977677 rmw 82678 ginst 99953594 gld 14475196 gst 2495505 rep 47624 wtable_libc_rep_gst 0
+RUN fmm host 1 exit 0 seconds 23 skip 0 cut0 12773531 creates0 3 first0 12772290 last0 12774458 last0_g 12774035 setup 12772290 setup_libm 4627166 unlisted -1 avx_evex_fma_records 9459632 __ieee754_log_fma,__ieee754_pow_fma,__memchr_avx2,__memcpy_avx_unaligned_erms,__memcpy_chk_avx_unaligned_erms,__mempcpy_avx_unaligned_erms,__memset_avx2_unaligned_erms,__strchr_avx2,__strchrnul_avx2,__strcmp_avx2,__strlen_avx2,__strrchr_avx2 ; cpuid host
+WIN fmm host 1 t0 lo 62800000 hi 162800000 rec 100000000 ld 13868680 st 1817254 rmw 86614 ginst 99999802 gld 14607567 gst 2330906 rep 200 wtable_libc_rep_gst 0
+WIN fmm host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 13809103 st 1800743 rmw 80847 ginst 99999802 gld 14539202 gst 2308621 rep 200 wtable_libc_rep_gst 0
+WIN fmm host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 13805742 st 1797109 rmw 78476 ginst 99999802 gld 14526391 gst 2298505 rep 200 wtable_libc_rep_gst 0
+WIN fmm host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 13763976 st 1977663 rmw 82520 ginst 99953594 gld 14480062 gst 2495755 rep 47624 wtable_libc_rep_gst 0
+RUN lu gem5 1 exit 0 seconds 33 skip 0 cut0 auto creates0 3 first0 156611953 last0 156614147 last0_g 156613724 setup 156611953 setup_libm 27 unlisted 0 avx_evex_fma_records 0 - ; CPUID replaced 31 unlisted 0
+WIN lu gem5 1 t0 lo 206600000 hi 306600000 rec 100000000 ld 23417715 st 11357476 rmw 88 ginst 100000000 gld 23417715 gst 11357476 rep 0 wtable_libc_rep_gst 0
+WIN lu gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 23417106 st 11357094 rmw 87 ginst 100000000 gld 23417106 gst 11357094 rep 0 wtable_libc_rep_gst 0
+WIN lu gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 23416760 st 11356784 rmw 93 ginst 100000000 gld 23416766 gst 11356796 rep 0 wtable_libc_rep_gst 0
+WIN lu gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 23418408 st 11357990 rmw 84 ginst 100000000 gld 23418408 gst 11357990 rep 0 wtable_libc_rep_gst 0
+RUN lu host 1 exit 0 seconds 32 skip 0 cut0 auto creates0 3 first0 156618423 last0 156620591 last0_g 156620168 setup 156618423 setup_libm 27 unlisted -1 avx_evex_fma_records 1929 __memcpy_avx_unaligned_erms,__mempcpy_avx_unaligned_erms,__memset_avx2_unaligned_erms,__strchr_avx2,__strchrnul_avx2,__strlen_avx2,__strrchr_avx2 ; cpuid host
+WIN lu host 1 t0 lo 206600000 hi 306600000 rec 100000000 ld 23417102 st 11357096 rmw 92 ginst 100000000 gld 23417102 gst 11357096 rep 0 wtable_libc_rep_gst 0
+WIN lu host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 23416743 st 11356779 rmw 102 ginst 100000000 gld 23416749 gst 11356791 rep 0 wtable_libc_rep_gst 0
+WIN lu host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 23417716 st 11357446 rmw 80 ginst 100000000 gld 23417716 gst 11357446 rep 0 wtable_libc_rep_gst 0
+WIN lu host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 23418405 st 11358024 rmw 94 ginst 100000000 gld 23418405 gst 11358024 rep 0 wtable_libc_rep_gst 0
+RUN lunc gem5 1 exit 0 seconds 32 skip 0 cut0 auto creates0 3 first0 92463143 last0 92465337 last0_g 92464914 setup 92463143 setup_libm 27 unlisted 0 avx_evex_fma_records 0 - ; CPUID replaced 31 unlisted 0
+WIN lunc gem5 1 t0 lo 142500000 hi 242500000 rec 100000000 ld 23507841 st 11391939 rmw 85 ginst 100000000 gld 23507841 gst 11391939 rep 0 wtable_libc_rep_gst 0
+WIN lunc gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 23506076 st 11390606 rmw 94 ginst 100000000 gld 23506082 gst 11390618 rep 0 wtable_libc_rep_gst 0
+WIN lunc gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 23480443 st 11374412 rmw 97 ginst 100000000 gld 23480443 gst 11374412 rep 0 wtable_libc_rep_gst 0
+WIN lunc gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 23507605 st 11391682 rmw 88 ginst 100000000 gld 23507605 gst 11391682 rep 0 wtable_libc_rep_gst 0
+RUN lunc host 1 exit 0 seconds 31 skip 0 cut0 auto creates0 3 first0 92469621 last0 92471789 last0_g 92471366 setup 92469621 setup_libm 27 unlisted -1 avx_evex_fma_records 1957 __memcpy_avx_unaligned_erms,__mempcpy_avx_unaligned_erms,__memset_avx2_unaligned_erms,__strchr_avx2,__strchrnul_avx2,__strlen_avx2,__strrchr_avx2 ; cpuid host
+WIN lunc host 1 t0 lo 142500000 hi 242500000 rec 100000000 ld 23480429 st 11374407 rmw 100 ginst 100000000 gld 23480429 gst 11374407 rep 0 wtable_libc_rep_gst 0
+WIN lunc host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 23506077 st 11390590 rmw 91 ginst 100000000 gld 23506083 gst 11390602 rep 0 wtable_libc_rep_gst 0
+WIN lunc host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 23507840 st 11391957 rmw 89 ginst 100000000 gld 23507840 gst 11391957 rep 0 wtable_libc_rep_gst 0
+WIN lunc host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 23507603 st 11391681 rmw 89 ginst 100000000 gld 23507603 gst 11391681 rep 0 wtable_libc_rep_gst 0
+RUN ocean4 gem5 1 exit 0 seconds 16 skip 0 cut0 0 creates0 3 first0 383253 last0 385447 last0_g 385024 setup 383253 setup_libm 27 unlisted 0 avx_evex_fma_records 0 - ; CPUID replaced 31 unlisted 0
+WIN ocean gem5 1 t0 lo 50000000 hi 150000000 rec 100000000 ld 31160104 st 6880229 rmw 4791 ginst 100000000 gld 31291692 gst 7220405 rep 0 wtable_libc_rep_gst 0
+WIN ocean gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 31283193 st 6781936 rmw 5011 ginst 100000000 gld 31330740 gst 7122112 rep 0 wtable_libc_rep_gst 0
+WIN ocean gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 31301735 st 6784581 rmw 4840 ginst 100000000 gld 31349282 gst 7124757 rep 0 wtable_libc_rep_gst 0
+WIN ocean gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 31169067 st 6869323 rmw 4877 ginst 100000000 gld 31300655 gst 7209499 rep 0 wtable_libc_rep_gst 0
+RUN ocean4 host 1 exit 0 seconds 15 skip 0 cut0 0 creates0 3 first0 389582 last0 391750 last0_g 391327 setup 389582 setup_libm 27 unlisted -1 avx_evex_fma_records 27176328 __ieee754_pow_fma,__memcpy_avx_unaligned_erms,__memcpy_chk_avx_unaligned_erms,__memset_avx2_unaligned_erms,__sin_fma,__strchr_avx2,__strchrnul_avx2,__strlen_avx2,__strrchr_avx2 ; cpuid host
+WIN ocean host 1 t0 lo 50000000 hi 150000000 rec 100000000 ld 31714260 st 6591101 rmw 4943 ginst 100000000 gld 31761807 gst 7120781 rep 0 wtable_libc_rep_gst 0
+WIN ocean host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 31661232 st 6621045 rmw 4902 ginst 100000000 gld 31708779 gst 7150929 rep 0 wtable_libc_rep_gst 0
+WIN ocean host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 31612303 st 6655337 rmw 4719 ginst 100000000 gld 31760339 gst 7185017 rep 0 wtable_libc_rep_gst 0
+WIN ocean host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 31631063 st 6661678 rmw 4858 ginst 100000000 gld 31779099 gst 7191358 rep 0 wtable_libc_rep_gst 0
+RUN radix gem5 1 exit 0 seconds 32 skip 780000000 cut0 0 creates0 3 first0 135014 last0 137208 last0_g 136785 setup 135014 setup_libm 0 unlisted 0 avx_evex_fma_records 0 - ; CPUID replaced 31 unlisted 0
+WIN radix gem5 1 t0 lo 830000000 hi 930000000 rec 100000000 ld 27655963 st 17039196 rmw 10614616 ginst 100000000 gld 27655963 gst 17039196 rep 0 wtable_libc_rep_gst 0
+WIN radix gem5 1 t1 lo 830000000 hi 930000000 rec 100000000 ld 27654575 st 17039286 rmw 10614149 ginst 100000000 gld 27654575 gst 17039286 rep 0 wtable_libc_rep_gst 0
+WIN radix gem5 1 t2 lo 830000000 hi 930000000 rec 100000000 ld 27657255 st 17039379 rmw 10613668 ginst 100000000 gld 27657255 gst 17039379 rep 0 wtable_libc_rep_gst 0
+WIN radix gem5 1 t3 lo 830000000 hi 930000000 rec 100000000 ld 27658473 st 17038798 rmw 10614438 ginst 100000000 gld 27658473 gst 17038798 rep 0 wtable_libc_rep_gst 0
+RUN radix host 1 exit 0 seconds 27 skip 780000000 cut0 0 creates0 3 first0 141525 last0 143693 last0_g 143270 setup 141525 setup_libm 0 unlisted -1 avx_evex_fma_records 1695 __memcpy_avx_unaligned_erms,__mempcpy_avx_unaligned_erms,__memset_avx2_unaligned_erms,__strchr_avx2,__strchrnul_avx2,__strlen_avx2,__strrchr_avx2 ; cpuid host
+WIN radix host 1 t0 lo 830000000 hi 930000000 rec 100000000 ld 27655975 st 17039195 rmw 10614631 ginst 100000000 gld 27655975 gst 17039195 rep 0 wtable_libc_rep_gst 0
+WIN radix host 1 t1 lo 830000000 hi 930000000 rec 100000000 ld 27654575 st 17039285 rmw 10614149 ginst 100000000 gld 27654575 gst 17039285 rep 0 wtable_libc_rep_gst 0
+WIN radix host 1 t2 lo 830000000 hi 930000000 rec 100000000 ld 27657272 st 17039377 rmw 10613691 ginst 100000000 gld 27657272 gst 17039377 rep 0 wtable_libc_rep_gst 0
+WIN radix host 1 t3 lo 830000000 hi 930000000 rec 100000000 ld 27658459 st 17038808 rmw 10614413 ginst 100000000 gld 27658459 gst 17038808 rep 0 wtable_libc_rep_gst 0
+RUN raytrace gem5 1 exit 0 seconds 36 skip 0 cut0 auto creates0 3 first0 185004349 last0 185006545 last0_g 185006057 setup 185004349 setup_libm 104 unlisted 0 avx_evex_fma_records 0 - ; CPUID replaced 31 unlisted 0
+WIN raytrace gem5 1 t0 lo 235000000 hi 335000000 rec 100000000 ld 37470520 st 2710699 rmw 14963 ginst 100000000 gld 37515792 gst 2737377 rep 0 wtable_libc_rep_gst 0
+WIN raytrace gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 37327248 st 2691521 rmw 15435 ginst 100000000 gld 37372453 gst 2718797 rep 0 wtable_libc_rep_gst 0
+WIN raytrace gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 36811063 st 2583410 rmw 12057 ginst 100000000 gld 36849347 gst 2605340 rep 0 wtable_libc_rep_gst 0
+WIN raytrace gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 36725813 st 2521267 rmw 10040 ginst 100000000 gld 36760025 gst 2539475 rep 0 wtable_libc_rep_gst 0
+RUN raytrace host 1 exit 0 seconds 35 skip 0 cut0 auto creates0 3 first0 184712740 last0 184714910 last0_g 184714422 setup 184712740 setup_libm 93 unlisted -1 avx_evex_fma_records 6342817 __ieee754_pow_fma,__memcpy_avx_unaligned_erms,__memcpy_chk_avx_unaligned_erms,__mempcpy_avx_unaligned_erms,__memset_avx2_unaligned_erms,__strchr_avx2,__strchrnul_avx2,__strcmp_avx2,__strcpy_avx2,__strlen_avx2,__strrchr_avx2,__tan_fma ; cpuid host
+WIN raytrace host 1 t0 lo 234700000 hi 334700000 rec 100000000 ld 36818255 st 2584720 rmw 12077 ginst 100000000 gld 36856566 gst 2606662 rep 0 wtable_libc_rep_gst 0
+WIN raytrace host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 37355468 st 2696318 rmw 15466 ginst 100000000 gld 37400745 gst 2723651 rep 0 wtable_libc_rep_gst 0
+WIN raytrace host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 37481388 st 2711382 rmw 14971 ginst 100000000 gld 37526661 gst 2738060 rep 0 wtable_libc_rep_gst 0
+WIN raytrace host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 36723043 st 2520796 rmw 10050 ginst 100000000 gld 36757259 gst 2539007 rep 0 wtable_libc_rep_gst 0
+RUN streamcluster gem5 1 exit 0 seconds 187 skip 0 cut0 0 creates0 8 first0 149029351 last0 174796687 last0_g 174796082 setup 149029351 setup_libm 19 unlisted 0 avx_evex_fma_records 0 - ; CPUID replaced 40 unlisted 0
+WIN streamcluster gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 28509910 st 759696 rmw 525 ginst 100000000 gld 28542689 gst 796127 rep 0 wtable_libc_rep_gst 0
+WIN streamcluster gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 28394098 st 104604 rmw 532 ginst 100000000 gld 28394113 gst 108753 rep 0 wtable_libc_rep_gst 0
+WIN streamcluster gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 28394455 st 104476 rmw 491 ginst 100000000 gld 28394470 gst 108625 rep 0 wtable_libc_rep_gst 0
+WIN streamcluster gem5 1 t4 lo 50000000 hi 150000000 rec 100000000 ld 28394506 st 104647 rmw 496 ginst 100000000 gld 28394521 gst 108796 rep 0 wtable_libc_rep_gst 0
+RUN streamcluster host 1 exit 0 seconds 150 skip 0 cut0 0 creates0 8 first0 149045364 last0 174826414 last0_g 174799187 setup 149045364 setup_libm 19 unlisted -1 avx_evex_fma_records 29754645 __ieee754_log_fma,__memcmp_avx2_movbe,__memcpy_avx_unaligned_erms,__mempcpy_avx_unaligned_erms,__memset_avx2_unaligned_erms,__strchr_avx2,__strchrnul_avx2,__strcpy_avx2,__strlen_avx2,__strrchr_avx2 ; cpuid host
+WIN streamcluster host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 28495386 st 813380 rmw 512 ginst 99942670 gld 28528165 gst 846339 rep 57344 wtable_libc_rep_gst 57344
+WIN streamcluster host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 28377512 st 165949 rmw 512 ginst 99934480 gld 28377527 gst 166066 rep 65536 wtable_libc_rep_gst 65536
+WIN streamcluster host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 28377834 st 165875 rmw 498 ginst 99934480 gld 28377849 gst 165992 rep 65536 wtable_libc_rep_gst 65536
+WIN streamcluster host 1 t4 lo 50000000 hi 150000000 rec 100000000 ld 28377881 st 166052 rmw 519 ginst 99934480 gld 28377896 gst 166169 rep 65536 wtable_libc_rep_gst 65536
+RUN volrend gem5 1 exit 0 seconds 79 skip 0 cut0 auto creates0 3 first0 2076434141 last0 2076436335 last0_g 2076435866 setup 2076434141 setup_libm 67549 unlisted 0 avx_evex_fma_records 0 - ; CPUID replaced 31 unlisted 0
+WIN volrend gem5 1 t0 lo 2126400000 hi 2226400000 rec 100000000 ld 19381897 st 4461408 rmw 329699 ginst 100000000 gld 19382207 gst 4461958 rep 0 wtable_libc_rep_gst 0
+WIN volrend gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 19507203 st 3408108 rmw 9242 ginst 100000000 gld 19507212 gst 3408111 rep 0 wtable_libc_rep_gst 0
+WIN volrend gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 19265493 st 3739739 rmw 13811 ginst 100000000 gld 19265520 gst 3739748 rep 0 wtable_libc_rep_gst 0
+WIN volrend gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 19450556 st 4312601 rmw 30194 ginst 100000000 gld 19450583 gst 4312610 rep 0 wtable_libc_rep_gst 0
+RUN volrend gem5 2 exit 0 seconds 87 skip 0 cut0 auto creates0 3 first0 2076434231 last0 2076436425 last0_g 2076435956 setup 2076434231 setup_libm 67549 unlisted 0 avx_evex_fma_records 0 - ; CPUID replaced 31 unlisted 0
+WIN volrend gem5 2 t0 lo 2126400000 hi 2226400000 rec 100000000 ld 19336423 st 3628806 rmw 12240 ginst 100000000 gld 19336441 gst 3628812 rep 0 wtable_libc_rep_gst 0
+WIN volrend gem5 2 t1 lo 50000000 hi 150000000 rec 100000000 ld 19354920 st 4511975 rmw 330316 ginst 99999922 gld 19355231 gst 4512654 rep 79 wtable_libc_rep_gst 79
+WIN volrend gem5 2 t2 lo 50000000 hi 150000000 rec 100000000 ld 19476095 st 4171699 rmw 26492 ginst 100000000 gld 19476122 gst 4171708 rep 0 wtable_libc_rep_gst 0
+WIN volrend gem5 2 t3 lo 50000000 hi 150000000 rec 100000000 ld 19448526 st 3432209 rmw 9443 ginst 100000000 gld 19448544 gst 3432215 rep 0 wtable_libc_rep_gst 0
+RUN volrend gem5 3 exit 0 seconds 80 skip 0 cut0 auto creates0 3 first0 2076434141 last0 2076436335 last0_g 2076435866 setup 2076434141 setup_libm 67549 unlisted 0 avx_evex_fma_records 0 - ; CPUID replaced 31 unlisted 0
+WIN volrend gem5 3 t0 lo 2126400000 hi 2226400000 rec 100000000 ld 19282946 st 3773621 rmw 14111 ginst 100000000 gld 19282973 gst 3773630 rep 0 wtable_libc_rep_gst 0
+WIN volrend gem5 3 t1 lo 50000000 hi 150000000 rec 100000000 ld 19379787 st 4445317 rmw 328978 ginst 99999922 gld 19380098 gst 4445996 rep 79 wtable_libc_rep_gst 79
+WIN volrend gem5 3 t2 lo 50000000 hi 150000000 rec 100000000 ld 19466883 st 3451103 rmw 9272 ginst 100000000 gld 19466910 gst 3451112 rep 0 wtable_libc_rep_gst 0
+WIN volrend gem5 3 t3 lo 50000000 hi 150000000 rec 100000000 ld 19417533 st 4069570 rmw 25964 ginst 100000000 gld 19417542 gst 4069573 rep 0 wtable_libc_rep_gst 0
+RUN volrend host 1 exit 0 seconds 79 skip 0 cut0 auto creates0 3 first0 2076420931 last0 2076423099 last0_g 2076422630 setup 2076420931 setup_libm 48807 unlisted -1 avx_evex_fma_records 4984644 __ieee754_pow_fma,__memcpy_avx_unaligned_erms,__mempcpy_avx_unaligned_erms,__memset_avx2_unaligned_erms,__sincos_fma,__strchrnul_avx2,__strcpy_avx2,__strlen_avx2,__strrchr_avx2 ; cpuid host
+WIN volrend host 1 t0 lo 2126400000 hi 2226400000 rec 100000000 ld 19341172 st 3632145 rmw 12338 ginst 100000000 gld 19341222 gst 3632151 rep 0 wtable_libc_rep_gst 0
+WIN volrend host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 19378922 st 4475374 rmw 329859 ginst 99999922 gld 19379387 gst 4476283 rep 79 wtable_libc_rep_gst 79
+WIN volrend host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 19489820 st 3495573 rmw 9837 ginst 100000000 gld 19489895 gst 3495582 rep 0 wtable_libc_rep_gst 0
+WIN volrend host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 19487102 st 4172592 rmw 26616 ginst 100000000 gld 19487177 gst 4172601 rep 0 wtable_libc_rep_gst 0
+RUN volrend host 2 exit 0 seconds 74 skip 0 cut0 auto creates0 3 first0 2076420929 last0 2076423097 last0_g 2076422628 setup 2076420929 setup_libm 48807 unlisted -1 avx_evex_fma_records 4984644 __ieee754_pow_fma,__memcpy_avx_unaligned_erms,__mempcpy_avx_unaligned_erms,__memset_avx2_unaligned_erms,__sincos_fma,__strchrnul_avx2,__strcpy_avx2,__strlen_avx2,__strrchr_avx2 ; cpuid host
+WIN volrend host 2 t0 lo 2126400000 hi 2226400000 rec 100000000 ld 19519029 st 3386125 rmw 8827 ginst 100000000 gld 19519079 gst 3386131 rep 0 wtable_libc_rep_gst 0
+WIN volrend host 2 t1 lo 50000000 hi 150000000 rec 100000000 ld 19413302 st 4287148 rmw 214234 ginst 100000000 gld 19413569 gst 4287650 rep 0 wtable_libc_rep_gst 0
+WIN volrend host 2 t2 lo 50000000 hi 150000000 rec 100000000 ld 19386519 st 3655801 rmw 12559 ginst 100000000 gld 19386569 gst 3655807 rep 0 wtable_libc_rep_gst 0
+WIN volrend host 2 t3 lo 50000000 hi 150000000 rec 100000000 ld 19427454 st 4100122 rmw 25759 ginst 100000000 gld 19427504 gst 4100128 rep 0 wtable_libc_rep_gst 0
+RUN waternsq gem5 1 exit 0 seconds 15 skip 0 cut0 12952793 creates0 3 first0 12939809 last0 12942005 last0_g 12941582 setup 12939809 setup_libm 534 unlisted 0 avx_evex_fma_records 0 - ; CPUID replaced 31 unlisted 0
+WIN waternsq gem5 1 t0 lo 62900000 hi 162900000 rec 100000000 ld 21410285 st 8955196 rmw 5350 ginst 99920986 gld 21950415 gst 9083986 rep 85092 wtable_libc_rep_gst 0
+WIN waternsq gem5 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 22947437 st 8579283 rmw 5382 ginst 99913069 gld 23533196 gst 8720862 rep 93618 wtable_libc_rep_gst 0
+WIN waternsq gem5 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 22695927 st 8663793 rmw 5380 ginst 99913940 gld 23274734 gst 8803944 rep 92680 wtable_libc_rep_gst 0
+WIN waternsq gem5 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 22958244 st 8577737 rmw 5395 ginst 99912991 gld 23544345 gst 8719487 rep 93702 wtable_libc_rep_gst 0
+RUN waternsq host 1 exit 0 seconds 14 skip 0 cut0 12952793 creates0 3 first0 12950231 last0 12952401 last0_g 12951978 setup 12950231 setup_libm 405 unlisted -1 avx_evex_fma_records 24312979 __ieee754_acos_fma,__ieee754_exp_fma,__ieee754_pow_fma,__memcpy_avx_unaligned_erms,__memcpy_chk_avx_unaligned_erms,__mempcpy_avx_unaligned_erms,__memset_avx2_unaligned_erms,__sincos_fma,__strchr_avx2,__strchrnul_avx2,__strlen_avx2,__strrchr_avx2 ; cpuid host
+WIN waternsq host 1 t0 lo 63000000 hi 163000000 rec 100000000 ld 22820985 st 8712414 rmw 5380 ginst 99913407 gld 23403189 gst 8853447 rep 93254 wtable_libc_rep_gst 0
+WIN waternsq host 1 t1 lo 50000000 hi 150000000 rec 100000000 ld 23069334 st 8628804 rmw 5375 ginst 99912497 gld 23658481 gst 8771307 rep 94234 wtable_libc_rep_gst 0
+WIN waternsq host 1 t2 lo 50000000 hi 150000000 rec 100000000 ld 21525727 st 9000805 rmw 5345 ginst 99920375 gld 22069186 gst 9130582 rep 85750 wtable_libc_rep_gst 0
+WIN waternsq host 1 t3 lo 50000000 hi 150000000 rec 100000000 ld 23078871 st 8627369 rmw 5398 ginst 99912445 gld 23668314 gst 8770001 rep 94290 wtable_libc_rep_gst 0

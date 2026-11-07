@@ -1,120 +1,193 @@
-// Hawkeye cache replacement policy
-// Faithful re-implementation of:
+// Hawkeye cache replacement policy.
+//
+// Faithful port of the CRC2 artifact for:
 //   Akanksha Jain and Calvin Lin, "Back to the Future: Leveraging Belady's
-//   Algorithm for Improved Cache Replacement," ISCA 2016.
-// Reference: the CRC2 (Cache Replacement Championship 2017) reference implementation
-//   distributed by the authors. Constants and algorithm match the published paper.
+//   Algorithm for Improved Cache Replacement", ISCA 2016, and
+//   "Hawkeye: Leveraging Belady's Algorithm for Improved Cache Replacement",
+//   Cache Replacement Championship 2 (CRC2), 2017.
 //
-// Mechanism:
-//   * OPTgen: a sliding-window approximation of Belady's MIN policy. Per
-//     "sampled set", it tracks a recent occupancy vector and decides retroactively
-//     whether a re-referenced line could have been cached under MIN.
-//   * PC predictor: per-CPU 8 K-entry table of 3-bit saturating counters indexed
-//     by hashed allocator PC. Trained by OPTgen's retroactive labels.
-//   * Per-line RRPV: 3-bit. Cache-friendly inserted at 0; cache-averse at 7
-//     (the maxRRPV). On eviction, the maxRRPV line is the victim. If no line
-//     is at maxRRPV the policy ages cache-friendly lines toward 6 (so that
-//     they remain higher-priority than fresh cache-averse but lower than the
-//     freshest cache-friendly).
+// Ported from hawkeye_algorithm.cc + optgen.h + hawkeye_predictor.h +
+// helper_function.h, cross-checked constant-by-constant against Table 1 of the
+// CRC2 paper ("Hawkeye hardware budget, 16-way 2MB LLC"):
 //
-// This is a stand-alone ChampSim module. Storage is per-CACHE-instance.
+//   Sampler              2800 entries, 4-byte entry            11.2 KB
+//   Hawkeye Predictor    2 predictors, 2K entries, 5-bit        2.56 KB
+//   Occupancy Vector     64 vectors, 128 entries each           4 KB
+//   Replacement state    3-bit RRIP per line                   12 KB
+//   Sampled-line state   1-bit prefetch + 11-bit signature      1.5 KB
+//
+// This file is a REWRITE (2026-09-15). The previous implementation was a
+// from-scratch reimplementation that diverged from the published policy in
+// thirteen respects and produced results byte-identical to SRRIP on 429.mcf --
+// same IPC, same cycle count -- because it was running the same degenerate
+// algorithm. The defects that mattered:
+//
+//   H1  No replacement_cache_fill hook, so ChampSim never reported fills
+//       (inc/cache.h:475 gates update_replacement_state on
+//       `hit || has_cache_fill`) and the insertion RRPV was never set.
+//   H2  No detraining on eviction, and no per-line PC signature to detrain
+//       with. CRC2 paper section 2.3 specifies it: "...evicts the line with
+//       the highest RRIP value (oldest cache-friendly line) and detrains its
+//       corresponding load instruction if the evicted line is present in the
+//       sampler."
+//   H3  Ageing ran unconditionally on every access. It must run only on a
+//       MISS, only for a cache-friendly insertion, and only while no line has
+//       already reached MAXRRIP-1.
+//   H4  Ageing also ran on hits, where the reference does not age at all.
+//   H7  OPTgen capacity was NUM_WAY; the artifact uses NUM_WAY - 2.
+//   H8  Predictor was 8192 entries of 3 bits initialised to 0 (maximally
+//       cache-friendly); the reference is 2048 entries of 5 bits initialised
+//       to 16 (neutral).
+//   H9  One predictor instead of the reference's separate demand and prefetch
+//       predictors.
+//   H11 Sampler held 512 entries indexed by cache set; the reference holds
+//       2800 entries over 350 sets indexed by address, with an explicit LRU
+//       field.
+//   H13 Per-CPU predictors. CRC2 paper section 4.1 is explicit that the
+//       multi-core configuration uses "a single occupancy vector and a single
+//       predictor to reconstruct and learn OPT's solution for the interleaved
+//       access stream from the past".
+//
+// Deliberate adaptations to this simulator, none of them silent:
+//
+//   * Hook split. The artifact has one hook called on every hit and every
+//     fill; modern ChampSim splits that in two. We implement BOTH
+//     replacement_cache_fill and update_replacement_state and funnel them into
+//     handle_access(). Because the fill hook now exists, update_replacement_state
+//     is also invoked from try_hit on MISSES, where `way` is past-the-end --
+//     hence the `if (!hit) return;` guard, the same one upstream's lru uses.
+//   * access_type::WRITE is ChampSim's writeback and maps to the artifact's
+//     WRITEBACK: early return, RRPV untouched.
+//   * The predictor's lazily-initialised std::map is a flat vector initialised
+//     to (MAX_PCMAP+1)/2. Exactly equivalent: the artifact's "not found" path
+//     returns cache-friendly, and 16 >= 16 is cache-friendly.
+//   * The prefetch-aware machinery is ported even though both btp_config.json
+//     and btp_8core_config.json set "prefetcher": "no" at the LLC, so no
+//     PREFETCH access ever reaches this module. Ported so the policy stays
+//     correct if a prefetcher is ever enabled.
+//
+// Disclosed constant: the artifact initialises OPTgen with a capacity of
+// LLC_WAYS - 2 rather than LLC_WAYS. The paper states only that OPTgen checks
+// whether "there is enough space in the cache" (section 2.1), so this comes
+// from the artifact, not the text. Followed as-is.
 
 #ifndef REPLACEMENT_HAWKEYE_H
 #define REPLACEMENT_HAWKEYE_H
 
-#include <array>
 #include <cstdint>
+#include <map>
 #include <vector>
 
 #include "cache.h"
 #include "modules.h"
-#include "msl/fwcounter.h"
 
 struct hawkeye : public champsim::modules::replacement {
-  // -- Policy constants (CRC2 defaults) --------------------------------------
-  static constexpr unsigned MAX_RRPV = 7;             // 3-bit RRPV (0..7)
-  static constexpr unsigned PREDICTOR_BITS = 3;       // 3-bit saturating counter
-  static constexpr unsigned PREDICTOR_MAX = (1u << PREDICTOR_BITS) - 1; // 7
-  static constexpr unsigned PREDICTOR_THRESHOLD = (PREDICTOR_MAX + 1) / 2; // 4 -> averse
-  static constexpr std::size_t PREDICTOR_ENTRIES = 8192;
+  // -- Reference constants ---------------------------------------------------
+  static constexpr unsigned MAXRRIP = 7;            // 3-bit RRIP
+  static constexpr std::size_t OPTGEN_SIZE = 128;   // 8x associativity
+  static constexpr int MAX_PCMAP = 31;              // 5-bit predictor counter
+  static constexpr std::size_t PCMAP_SIZE = 2048;   // 11-bit hashed PC index
+  static constexpr std::size_t SAMPLER_ENTRIES = 2800;
+  static constexpr std::size_t SAMPLER_HIST = 8;
+  static constexpr std::size_t SAMPLER_SETS = SAMPLER_ENTRIES / SAMPLER_HIST; // 350
+  static constexpr uint64_t TIMER_SIZE = 1024;
 
-  // OPTgen / sampler geometry
-  static constexpr std::size_t SAMPLED_SETS = 64;     // sampled sets per cache (LLC)
-  static constexpr std::size_t SAMPLER_WAYS = 8;      // entries in the per-sampled-set history table
-  static constexpr std::size_t OPTGEN_VECTOR_FACTOR = 8; // ring-buffer size = 8 * NUM_WAY
-
-  // -- Geometry (filled in ctor from CACHE*) ---------------------------------
+  // -- Geometry --------------------------------------------------------------
   long NUM_SET = 0;
   long NUM_WAY = 0;
+  int LOG2_LLC_SET = 0;
 
-  // -- Per-line RRPV ---------------------------------------------------------
-  std::vector<unsigned> rrpv;   // size = NUM_SET * NUM_WAY
+  // -- Hawkeye predictor -----------------------------------------------------
+  // The artifact's map<uint64_t,int> with lazy initialisation to
+  // (MAX_PCMAP+1)/2, flattened to a vector. get_prediction returns true for
+  // cache-friendly; high counter == friendly.
+  struct Predictor {
+    std::vector<int> counters;
+    void init() { counters.assign(PCMAP_SIZE, (MAX_PCMAP + 1) / 2); }
+    bool get_prediction(uint64_t pc) const;
+    void increase(uint64_t pc);
+    void decrease(uint64_t pc);
+  };
+  Predictor predictor_demand;
+  Predictor predictor_prefetch;
 
-  // -- Per-CPU predictor: 8K entries x 3-bit saturating counters -------------
-  std::vector<std::array<champsim::msl::fwcounter<PREDICTOR_BITS>, PREDICTOR_ENTRIES>> predictor;
-
-  // -- OPTgen state per sampled set ------------------------------------------
-  // occupancy_vec[s][t] = number of "live" sampler lines at timestamp t in
-  // sampled set s. Implemented as a ring buffer of length (SAMPLER_WAYS *
-  // OPTGEN_VECTOR_FACTOR). Indexed by (timestamp mod size).
+  // -- OPTgen ----------------------------------------------------------------
   struct OPTgen {
-    std::vector<unsigned> occupancy;   // ring buffer
-    uint64_t current_quanta = 0;       // monotonic timestamp
-    unsigned cache_capacity = 0;       // = SAMPLER_WAYS
+    std::vector<unsigned> liveness_intervals;
+    uint64_t num_cache = 0;
+    uint64_t access = 0;
+    uint64_t cache_size = 0;
 
-    void init(unsigned ways);
-    // Returns true iff a line whose previous access was at `prev_quanta`
-    // would have been kept in the cache by Belady's MIN over the interval
-    // [prev_quanta, current_quanta).
-    bool would_cache(uint64_t prev_quanta) const;
-    // Mark the interval [prev_quanta, current_quanta) as carrying one more
-    // live line. Must be called after `would_cache` returns true.
-    void add_access(uint64_t prev_quanta);
-    // Advance the timestamp by one quanta (called on every sampled access).
-    void advance();
+    void init(uint64_t size)
+    {
+      num_cache = 0;
+      access = 0;
+      cache_size = size;
+      liveness_intervals.assign(OPTGEN_SIZE, 0u);
+    }
+    void set_access(uint64_t val)
+    {
+      access++;
+      liveness_intervals[val] = 0;
+    }
+    void set_prefetch(uint64_t val) { liveness_intervals[val] = 0; }
+    // Would OPT have kept a line whose usage interval runs from endVal to val?
+    // If so, reserve a way across that interval and count the hit.
+    bool is_cache(uint64_t val, uint64_t endVal);
   };
+  std::vector<OPTgen> optgen_occup_vector; // NUM_SET
 
-  std::vector<OPTgen> optgens;          // size = SAMPLED_SETS
-  std::vector<bool> is_sampled;         // size = NUM_SET; true iff set is sampled
-  std::vector<std::size_t> set_to_optgen_idx; // size = NUM_SET; sampled set -> [0..SAMPLED_SETS)
+  // -- Sampler ---------------------------------------------------------------
+  struct HISTORY {
+    uint64_t PCval = 0;
+    uint32_t previousVal = 0;
+    uint32_t lru = 0;
+    bool prefetching = false;
 
-  // -- Per-sampled-set sampler -----------------------------------------------
-  // Recent accesses per sampled set: address (block tag), allocator PC and
-  // the OPTgen timestamp at the time of access. Used to feed OPTgen + predictor
-  // training when a line is re-referenced.
-  struct SamplerEntry {
-    bool valid = false;
-    uint64_t addr_tag = 0;     // upper bits of the block address
-    uint64_t pc_sig = 0;       // hashed allocator PC of last touch
-    uint64_t last_quanta = 0;  // OPTgen timestamp of last touch
-    uint64_t last_used = 0;    // LRU recency within the sampler set
-    uint32_t cpu = 0;          // owning CPU (predictor is per-CPU)
+    void update(uint32_t currentVal, uint64_t PC)
+    {
+      previousVal = currentVal;
+      PCval = PC;
+    }
+    void set_prefetch() { prefetching = true; }
   };
-  std::vector<std::vector<SamplerEntry>> sampler; // size SAMPLED_SETS x SAMPLER_WAYS
+  std::vector<std::map<uint64_t, HISTORY>> cache_history_sampler; // SAMPLER_SETS
 
-  // -- Misc state ------------------------------------------------------------
-  uint64_t access_counter = 0;          // global LRU recency for sampler
+  // -- Per-line state --------------------------------------------------------
+  std::vector<unsigned> rrip;              // NUM_SET * NUM_WAY
+  std::vector<uint64_t> sample_signature;  // NUM_SET * NUM_WAY, raw PC
+  std::vector<uint8_t> prefetching_line;   // NUM_SET * NUM_WAY
+  std::vector<uint64_t> set_timer;         // NUM_SET, wraps at TIMER_SIZE
 
-  // -- Constructor / interface ----------------------------------------------
-  explicit hawkeye(CACHE* cache);
+  // -- Sanity counters (printed by replacement_final_stats) ------------------
+  // stat_fills is load-bearing: zero means the insertion hook is not wired up
+  // and the policy is learning nothing. See bench/policy_sanity/.
+  uint64_t stat_fills = 0;
+  uint64_t stat_hits = 0;
+  uint64_t stat_detrains = 0;
 
-  long find_victim(uint32_t triggering_cpu, uint64_t instr_id, long set,
-                   const champsim::cache_block* current_set, champsim::address ip,
-                   champsim::address full_addr, access_type type);
+  explicit hawkeye(champsim::modules::ModuleBuilder builder);
 
-  void update_replacement_state(uint32_t triggering_cpu, long set, long way,
-                                champsim::address full_addr, champsim::address ip,
-                                champsim::address victim_addr, access_type type,
-                                uint8_t hit);
+  void initialize_replacement() override {}
+
+  long find_victim(uint32_t triggering_cpu, uint64_t instr_id, long set, const champsim::cache_block* current_set, champsim::address ip,
+                   champsim::address full_addr, access_type type) override;
+
+  // Insertion hook. MUST exist -- see H1 above.
+  void replacement_cache_fill(uint32_t triggering_cpu, long set, long way, champsim::address full_addr, champsim::address ip, champsim::address victim_addr,
+                              access_type type) override;
+
+  void update_replacement_state(uint32_t triggering_cpu, long set, long way, champsim::address full_addr, champsim::address ip, champsim::address victim_addr,
+                                access_type type, bool hit) override;
+
+  void replacement_final_stats() override;
 
 private:
-  // hash the PC down to a predictor index. CRC2 reference uses a simple
-  // (PC >> 2) ^ (PC >> 13) style mix; we use the upper 32 bits XOR-folded.
-  static std::size_t hash_pc(champsim::address ip);
+  // The artifact's UpdateReplacementState body, shared by both hooks above.
+  void handle_access(uint32_t triggering_cpu, long set, long way, champsim::address full_addr, champsim::address ip, access_type type, bool hit);
 
-  // age every line in the set: increment RRPV up to MAX_RRPV - 1 (so a
-  // cache-averse line at MAX_RRPV is still the preferred victim).
-  void age_set(long set);
+  bool is_sampled_set(long set) const;
+  void update_cache_history(std::size_t sample_set, uint32_t currentVal);
 };
 
 #endif
