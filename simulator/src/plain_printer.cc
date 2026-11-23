@@ -157,6 +157,8 @@ std::vector<std::string> champsim::plain_printer::format(champsim::modules::cach
   lines.push_back(fmt::format("{} COHERENCE DIR GEM5-RULE SILENT RE-LISTINGS: {:10}", stats.name, stats.coherence_dir_upgrade_g5_silent));
   lines.push_back(fmt::format("{} COHERENCE DIR VIEW-ORDER LINES BY SILENT RE-LISTING: {:10}", stats.name, stats.coherence_dir_view_order_by_silent));
   lines.push_back(fmt::format("{} COHERENCE DIR VIEW-ORDER VIOLATIONS UNEXPLAINED: {:10}", stats.name, stats.coherence_dir_view_order_unexplained));
+  lines.push_back(fmt::format("{} COHERENCE DIR LOAD GEM5-RULE OWNER EVENTS: {:10}", stats.name, stats.coherence_dir_load_g5_owner_events));
+  lines.push_back(fmt::format("{} COHERENCE DIR OTHER-READ GEM5-RULE OWNER EVENTS: {:10}", stats.name, stats.coherence_dir_otherread_g5_owner_events));
 
   uint64_t hist_total = 0;
   for (auto v : stats.coherence_sharer_hist) {

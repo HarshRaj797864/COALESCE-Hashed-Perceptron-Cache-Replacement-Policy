@@ -1,0 +1,101 @@
+== F-C (lock_fix_design_2026-11-12.md): R_g5 = (C / I_c) / (G / I_g) on the sync_lock_word request reruns
+== the parser, on the scored logs
+   parser check: 14 of 14 scored logs reproduce the committed rows
+
+== fluidanimate: reported, decides nothing; qualifies (Q3 unexplained 0)
+   C 18744 in I_c 412469348 (scored run: 18681 in 412469354); R_g5 0.400 (was 0.398)
+   traffic 0.769 (was 0.769); U_g5 0.890 (was 0.890)
+   lock-word requests: measured 68, warm-up 32; contended waited acquires in this run: measured 68, warm-up 32; in the lock-wait rerun: measured 70
+   max cycles 93125206 against the lock-wait rerun's 93125170 (+0.00%)
+
+== vips: reported, decides nothing; qualifies (Q3 unexplained 0)
+   C 1031 in I_c 411142861 (scored run: 1032 in 411131895); R_g5 0.308 (was 0.309)
+   traffic 0.947 (was 0.947); U_g5 not scored (gem5 upgrades below 10,000)
+   lock-word requests: measured 6, warm-up 57; contended waited acquires in this run: measured 6, warm-up 57; in the lock-wait rerun: measured 9
+   max cycles 91108228 against the lock-wait rerun's 91130553 (-0.02%)
+
+== barnes std window: failing (P-F1); qualifies (Q3 unexplained 0)
+   C 46344 in I_c 435369770 (scored run: 12082 in 435383460); R_g5 0.954 (was 0.249)
+   traffic 1.070 (was 0.970); U_g5 1.565 (was 1.566)
+   lock-word requests: measured 60836, warm-up 50955; contended waited acquires in this run: measured 60836, warm-up 50993; in the lock-wait rerun: measured 60443
+   max cycles 114390555 against the lock-wait rerun's 114370160 (+0.02%)
+
+== barnes-256: failing (P-F1); qualifies (Q3 unexplained 0)
+   C 237383 in I_c 412513139 (scored run: 81202 in 411617099); R_g5 0.780 (was 0.267)
+   traffic 0.583 (was 0.463); U_g5 0.847 (was 0.838)
+   lock-word requests: measured 271993, warm-up 187827; contended waited acquires in this run: measured 271993, warm-up 187827; in the lock-wait rerun: measured 271397
+   max cycles 101361051 against the lock-wait rerun's 100890941 (+0.47%)
+
+== barnes std start: failing (P-F1); qualifies (Q3 unexplained 0)
+   C 51773 in I_c 153219914 (scored run: 26838 in 153244676); R_g5 0.449 (was 0.233)
+   traffic 0.504 (was 0.464); U_g5 0.762 (was 0.759)
+   lock-word requests: measured 44246, warm-up 0; contended waited acquires in this run: measured 44246, warm-up 0; in the lock-wait rerun: measured 43875
+   max cycles 40816378 against the lock-wait rerun's 40756388 (+0.15%)
+
+== bodytrack: reported, decides nothing; qualifies (Q3 unexplained 0)
+   C 9377 in I_c 416084051 (scored run: 9307 in 416086207); R_g5 0.352 (was 0.350)
+   traffic 0.569 (was 0.566); U_g5 0.787 (was 0.789)
+   lock-word requests: measured 30, warm-up 168; contended waited acquires in this run: measured 30, warm-up 168; in the lock-wait rerun: measured 30
+   max cycles 64875784 against the lock-wait rerun's 64884568 (-0.01%)
+
+== barnes std force: agreeing (P-F2); qualifies (Q3 unexplained 0)
+   C 454 in I_c 202088075 (scored run: 453 in 201991713); R_g5 0.635 (was 0.634)
+   traffic 0.815 (was 0.812); U_g5 not scored (gem5 upgrades below 10,000)
+   lock-word requests: measured 15, warm-up 50955; contended waited acquires in this run: measured 15, warm-up 50993; in the lock-wait rerun: measured 36
+   max cycles 43704396 against the lock-wait rerun's 43683390 (+0.05%)
+
+== ocean 2 MB: agreeing (P-F2); qualifies (Q3 unexplained 0)
+   C 19951 in I_c 402652042 (scored run: 19109 in 402687798); R_g5 0.712 (was 0.682)
+   traffic 0.916 (was 0.920); U_g5 1.028 (was 1.025)
+   lock-word requests: measured 879, warm-up 843; contended waited acquires in this run: measured 879, warm-up 847; in the lock-wait rerun: measured 870
+   max cycles 365947477 against the lock-wait rerun's 366694882 (-0.20%)
+
+== canneal 4c 2 MB: agreeing (P-F2); qualifies (Q3 unexplained 0)
+   C 91376 in I_c 401531433 (scored run: 91207 in 401547440); R_g5 1.018 (was 1.016)
+   traffic 1.043 (was 1.043); U_g5 not scored (gem5 upgrades below 10,000)
+   lock-word requests: measured 0, warm-up 3; contended waited acquires in this run: measured 0, warm-up 3; in the lock-wait rerun: measured 0
+   max cycles 209299855 against the lock-wait rerun's 209209194 (+0.04%)
+
+== canneal 8c: agreeing (P-F2); qualifies (Q3 unexplained 0)
+   C 402836 in I_c 803584023 (scored run: 403703 in 803586534); R_g5 1.534 (was 1.537)
+   traffic 1.006 (was 1.006); U_g5 not scored (gem5 upgrades below 10,000)
+   lock-word requests: measured 0, warm-up 7; contended waited acquires in this run: measured 0, warm-up 7; in the lock-wait rerun: measured 0
+   max cycles 229612068 against the lock-wait rerun's 229788386 (-0.08%)
+
+== radix: agreeing (P-F2); qualifies (Q3 unexplained 0)
+   C 36724 in I_c 403497861 (scored run: 36813 in 403466207); R_g5 0.988 (was 0.990)
+   traffic 0.994 (was 0.996); U_g5 not scored (gem5 upgrades below 10,000)
+   lock-word requests: measured 15, warm-up 15; contended waited acquires in this run: measured 15, warm-up 15; in the lock-wait rerun: measured 15
+   max cycles 390854570 against the lock-wait rerun's 390804015 (+0.01%)
+
+== lunc: agreeing (P-F2); qualifies (Q3 unexplained 0)
+   C 72329 in I_c 415176073 (scored run: 72366 in 415176209); R_g5 1.830 (was 1.831)
+   traffic 1.110 (was 1.109); U_g5 2.363 (was 2.361)
+   lock-word requests: measured 18, warm-up 21; contended waited acquires in this run: measured 18, warm-up 21; in the lock-wait rerun: measured 18
+   max cycles 128599884 against the lock-wait rerun's 128612179 (-0.01%)
+
+== ocean non-contiguous: agreeing (P-F2); qualifies (Q3 unexplained 0)
+   C 21532 in I_c 400259965 (scored run: 20364 in 400256323); R_g5 0.701 (was 0.663)
+   traffic 0.984 (was 0.983); U_g5 0.967 (was 0.973)
+   lock-word requests: measured 875, warm-up 526; contended waited acquires in this run: measured 875, warm-up 535; in the lock-wait rerun: measured 879
+   max cycles 328376108 against the lock-wait rerun's 328737164 (-0.11%)
+
+== fmm: reported, decides nothing; qualifies (Q3 unexplained 0)
+   C 7534 in I_c 423406842 (scored run: 6954 in 423401180); R_g5 0.725 (was 0.670)
+   traffic 0.773 (was 0.771); U_g5 0.707 (was 0.701)
+   lock-word requests: measured 448, warm-up 33; contended waited acquires in this run: measured 448, warm-up 33; in the lock-wait rerun: measured 449
+   max cycles 49171538 against the lock-wait rerun's 49171083 (+0.00%)
+
+== The rules (the note, "Predictions")
+   P-F1 barnes std window: R_g5 0.954 in the band
+   P-F1 barnes std start: R_g5 0.449 NOT in the band
+   P-F1 barnes-256: R_g5 0.780 in the band
+   P-F2 barnes std force: R_g5 0.635 stays in the band
+   P-F2 ocean 2 MB: R_g5 0.712 stays in the band
+   P-F2 canneal 4c 2 MB: R_g5 1.018 stays in the band
+   P-F2 canneal 8c: R_g5 1.534 stays in the band
+   P-F2 radix: R_g5 0.988 stays in the band
+   P-F2 lunc: R_g5 1.830 stays in the band
+   P-F2 ocean non-contiguous: R_g5 0.701 stays in the band
+   P-F1 holds on 2 of 3; P-F2 on 7 of 7; P-F3 on 12 of 12 spans whose traffic was in the band
+   VERDICT: F-C ADOPTED (K0-K4 held locally): every Part B ChampSim run is rerun on the F-C binary under an amendment written first

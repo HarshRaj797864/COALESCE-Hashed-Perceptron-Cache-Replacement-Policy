@@ -220,9 +220,14 @@ int main(int argc, char** argv) // NOLINT(bugprone-exception-escape)
   fmt::print("PRIVATE-CACHE COHERENCE LEVEL: {}\n", champsim::coherence::private_coherence());
   // Synchronised replay: printed only when the traces carried sync records.
   champsim::sync::print_stats();
+  // Matched B3 windows: printed only when COHERENCE_POSITION_BINS is set.
+  champsim::coherence::print_position_bins();
   // C0: printed only when set, so a run at 0 prints exactly what it did before.
   if (champsim::coherence::coherence_latency() > 0)
     fmt::print("COHERENCE INVALIDATION LATENCY (CYCLES): {}\n", champsim::coherence::coherence_latency());
+  // Part A: printed only when off, so a default run prints exactly what it did before.
+  if (!champsim::coherence::rmw_as_rfo())
+    fmt::print("RMW LOADS AS RFO: off\n");
 
   for (champsim::operable& op : gen_environment->typed_view<champsim::operable>("operable")) {
     op.end_simulation();

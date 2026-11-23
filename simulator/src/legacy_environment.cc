@@ -665,6 +665,15 @@ champsim::legacy_environment::legacy_environment(champsim::modules::ModuleBuilde
   // default) or the traced run's order (sync_mutex_design_2026-10-19.md). It
   // matters only for traces whose mutex records carry addresses.
   champsim::sync::set_mutex_order(config.value("sync_mutex_order", std::string{"timing"}));
+  // F-C (lock_fix_design_2026-11-12.md): a contended waiter's lock-word request. Absent or
+  // "none" is the simulator as it was.
+  champsim::sync::set_lock_word(config.value("sync_lock_word", std::string{"none"}));
+  // K2 step 3 (k2_sharing_gap_design_2026-11-17.md, amendment 2): a diagnostic lead limit.
+  // Absent or 0 is the simulator as it was.
+  champsim::sync::set_lead_limit(config.value("sync_lead_limit", uint64_t{0}));
+  // Part A: a read-modify-write's load as an RFO (B3 v3 step 1). Absent or true
+  // is the simulator as it was; false issues it as a load, as upstream does.
+  champsim::coherence::set_rmw_as_rfo(config.value("rmw_as_rfo", true));
 
   // ====== Build vmem ======
   json vmem_json = config.value("virtual_memory", json::object());

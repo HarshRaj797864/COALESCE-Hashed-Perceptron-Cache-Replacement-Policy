@@ -42,12 +42,36 @@
 # confound found on 2026-09-19, where a fixed 2 MB LLC suppressed coherence
 # traffic from 19% of accesses to 2.9%.
 set -uo pipefail
+SELF_PATH="$(readlink -f "$0")"
+# Part B's time limit (run_one, pb): run the command under `timeout` and
+# record its exit status. Before anything else, so the mode needs no setting.
+if [ "${1:-}" = __limit ]; then
+  lim="$2"; rcf="$3"; shift 3
+  timeout "$lim" "$@"; rc=$?
+  echo "$rc" > "$rcf"
+  exit "$rc"
+fi
 
 GEM5_DIR="${GEM5_DIR:-$HOME/gem5}"
 BUILD="${GEM5_BUILD:-X86}"
 [ -f "$GEM5_DIR/.gem5_build_dir" ] && BUILD="$(cat "$GEM5_DIR/.gem5_build_dir")"
-GEM5="$GEM5_DIR/build/$BUILD/gem5.opt"
-SE="$GEM5_DIR/configs/deprecated/example/se.py"
+# H1b (fifo_overtake_design_2026-11-14.md): GEM5_BIN runs another gem5 binary
+# (the overtake counter's build) with this tree's configs and working
+# directory. Default: the tree's own binary -- every other launch is unchanged.
+GEM5="${GEM5_BIN:-$GEM5_DIR/build/$BUILD/gem5.opt}"
+# H1 (fifo_check_design_2026-11-14.md): GEM5_CONFIGS points se.py at another
+# copy of gem5's configs/ tree, and FIFO_STRICT=1 requires that copy's
+# MESI_Three_Level.py to be gem5's stock file (ordered L0<->L1 buffers)
+# instead of the patched one. Defaults: the live tree, the patch required --
+# every other launch is unchanged.
+GEM5_CONFIGS="${GEM5_CONFIGS:-$GEM5_DIR/configs}"
+FIFO_STRICT="${FIFO_STRICT:-0}"
+# H2 (calibration_design_2026-11-14.md): GEM5_PARAMS holds extra se.py
+# --param statements, one a line (e.g. "system.mem_ctrls[0].static_backend_latency
+# = '8ns'"), applied before instantiation like WORKER_MAXINSTS's. Default none:
+# every other launch is unchanged.
+GEM5_PARAMS="${GEM5_PARAMS:-}"
+SE="$GEM5_CONFIGS/deprecated/example/se.py"
 BINS="${BINS:-$HOME/splash-static}"
 # The protocol the build holds, recorded by `setup_gem5.sh rebuild`. Results go
 # to a protocol-specific directory so Two_Level and Three_Level runs never mix.
@@ -120,6 +144,14 @@ HELDOUT2="${HELDOUT2:-$HOME/heldout2}"
 H2_TIMEOUT="${H2_TIMEOUT:-96h}"
 h2_name() { case "$1" in fluidanimate|bodytrack|facesim|vips) echo "$1" ;; oceannc) echo OCEAN-NC ;; *) return 1 ;; esac; }
 
+# Part B (breadth_bc_design_2026-11-10.md, amendment 2): partB_server.sh sizes
+# each key (<program>_<threads>) and writes ~/partB/<key>/GEM5, one line:
+#   key | static binary | arguments | stdin file | files the run needs in its
+#   directory (absolute paths) | CPUs | worker-stop CPU slice lo:hi | time
+#   limit | low stop | high stop
+# PB_GEM5 names that file; `go-pb` runs it. Everything else is run_one's.
+PB_GEM5="${PB_GEM5:-}"
+
 die() { echo "ERROR: $*" >&2; exit 1; }
 
 # barnes's input, SPLASH-3 inputs/n16384-p4 with nbody and NPROC substituted
@@ -156,13 +188,24 @@ preflight() {   # [static binaries this launch needs; default OCEAN BARNES]
     # Three_Level build on 2026-09-25; a small fake binary could not show it.
     n=$(strings -a "$GEM5" 2>/dev/null | grep -c "MESI_Three_Level_L0Cache_Controller")
     [ "${n:-0}" -gt 0 ] || die "gem5 has no MESI_Three_Level L0 controller -- the build is not Three_Level"
-    # The L0<->L1 strict-FIFO check is a known false alarm that killed ocean_4c
-    # after days (2026-09-27); setup_gem5.sh patch-fifo explains why turning it
-    # off changes no result. Refuse to spend days on a run that can die of it.
-    n=$(grep -c 'ordered=False)  # COALESCE: setup_gem5.sh patch-fifo' "$GEM5_DIR/configs/ruby/MESI_Three_Level.py" 2>/dev/null)
-    [ "${n:-0}" = 2 ] || die "MESI_Three_Level.py is not patched ($n of 2 lines) -- run: bash ~/setup_gem5.sh patch-fifo"
+    # The L0<->L1 strict-FIFO check panics on a reordering that gem5's lead
+    # calls most likely a MESI_Three_Level bug (gem5 #2816, open; not a false
+    # alarm -- corrected 2026-11-14). It killed ocean_4c after days
+    # (2026-09-27); setup_gem5.sh patch-fifo says what turning it off changes
+    # (only runs that would have panicked). Refuse to spend days on a run that
+    # can die of it.
+    n=$(grep -c 'ordered=False)  # COALESCE: setup_gem5.sh patch-fifo' "$GEM5_CONFIGS/ruby/MESI_Three_Level.py" 2>/dev/null)
+    if [ "$FIFO_STRICT" = 1 ]; then
+      local s
+      s=$(grep -cE '^[[:space:]]*l0_cntrl\.buffer(ToL1|FromL1) = MessageBuffer\(ordered=True\)$' "$GEM5_CONFIGS/ruby/MESI_Three_Level.py" 2>/dev/null)
+      [ "${n:-0}" = 0 ] && [ "${s:-0}" = 2 ] \
+        || die "FIFO_STRICT=1: $GEM5_CONFIGS/ruby/MESI_Three_Level.py is not the stock file ($n patched, ${s:-0} of 2 ordered lines)"
+    else
+      [ "${n:-0}" = 2 ] || die "MESI_Three_Level.py is not patched ($n of 2 lines) -- run: bash ~/setup_gem5.sh patch-fifo"
+    fi
   fi
   for b in $need; do
+    [ "$b" != - ] || continue   # the caller checks its own binary (go-pb)
     [ -x "$BINS/$b" ] || die "no $BINS/$b -- run build_splash_static.sh"
     file -b "$BINS/$b" | grep -q "statically linked" \
       || die "$BINS/$b is not statically linked; gem5 SE mode needs static"
@@ -221,6 +264,19 @@ run_one() {
       lo=$(tr ' ' '\n' <<< "$h2t" | awk '$1 > 0' | sort -n | head -1); hi=$(tr ' ' '\n' <<< "$h2t" | sort -n | tail -1)
       [ -n "$lo" ] && [ "$(tr ' ' '\n' <<< "$h2t" | awk '$1 > 0' | wc -l)" = $((hi - lo + 1)) ] || die "$wl's traced CPUs past 0 ($h2t) are not one range"
       wsl="$lo:$((hi + 1))" ;;
+    pb)
+      local pb_key pb_ncpu pb_tmo pb_rest
+      [ -f "$PB_GEM5" ] || die "no PB_GEM5 file ($PB_GEM5)"
+      IFS='|' read -r pb_key prog args nb_sin nb_files pb_ncpu wsl pb_tmo pb_rest < "$PB_GEM5"
+      [ -x "$prog" ] && file -b "$prog" | grep -q "statically linked" || die "$prog ($pb_key) is not a static binary"
+      [ "$pb_ncpu" = "$nc" ] || die "$pb_key: $PB_GEM5 has $pb_ncpu CPUs, the launch $nc"
+      [[ "$wsl" =~ ^[0-9]+:[0-9]+$ ]] && [ -n "$pb_tmo" ] || die "$pb_key: no worker slice or time limit in $PB_GEM5"
+      # the time limit through __limit below, which records timeout's exit
+      # status in <outdir>/limit.rc: 124 = stopped by the limit (never
+      # started again), anything else = gem5's own exit. A run killed with
+      # the machine leaves no such file, so it can be told from one stopped
+      # by its limit however much later it is looked at.
+      tmo=(bash "$SELF_PATH" __limit "$pb_tmo" "$odir/limit.rc") ;;
     *) die "unknown workload $wl" ;;
   esac
   # The held-out programs run from their output directory, with their input
@@ -248,6 +304,11 @@ run_one() {
     fluidanimate|bodytrack|facesim|vips|oceannc)
       for f in $nb_files; do cp -rp "$HELDOUT2/$wl/inputs/$h2_set/$f" "$odir/" || die "could not copy $HELDOUT2/$wl/inputs/$h2_set/$f"; done
       if [ -n "$nb_sin" ]; then cp "$HELDOUT2/$wl/inputs/$h2_set/$nb_sin" "$odir/$nb_sin" || die "no $HELDOUT2/$wl/inputs/$h2_set/$nb_sin"; fi
+      workdir="$odir" ;;
+    # Part B: the key's files (absolute paths) and its stdin, copied
+    pb)
+      for f in $nb_files; do cp -rp "$f" "$odir/" || die "could not copy $f"; done
+      if [ -n "$nb_sin" ]; then cp "$nb_sin" "$odir/$(basename "$nb_sin")" || die "no $nb_sin"; nb_sin="$(basename "$nb_sin")"; fi
       workdir="$odir" ;;
   esac
 
@@ -284,7 +345,14 @@ run_one() {
       caches="$caches --l1d_size=$L2C_SIZE --l1d_assoc=$L2C_ASSOC"
       caches="$caches --l2_size=$LLC_SIZE --l2_assoc=$LLC_ASSOC --num-l2caches=1 --num-clusters=1" ;;
     *)
-      caches="--l1d_size=$L1D_SIZE --l1i_size=$L1I_SIZE --l2_size=$LLC_SIZE --l2_assoc=$LLC_ASSOC --num-l2caches=1" ;;
+      if [ "$PROTOCOL" = MESI_Two_Level ] && [ "${TWO_LEVEL_L1:-}" = l2c ]; then
+        # E (second_protocol_design_2026-11-18.md): the one private level takes ChampSim's L2C
+        # capacity and ways (data) and its L1I (instructions), so the private capacity that
+        # decides when a holder is forgotten matches the MESI_Three_Level runs'. Default: as before.
+        caches="--l1d_size=$L2C_SIZE --l1d_assoc=$L2C_ASSOC --l1i_size=$L1I_SIZE --l1i_assoc=$L1I_ASSOC --l2_size=$LLC_SIZE --l2_assoc=$LLC_ASSOC --num-l2caches=1"
+      else
+        caches="--l1d_size=$L1D_SIZE --l1i_size=$L1I_SIZE --l2_size=$LLC_SIZE --l2_assoc=$LLC_ASSOC --num-l2caches=1"
+      fi ;;
   esac
   # Run the workload natively for 20 s before giving it to gem5. A binary that
   # dies on its input dies the same way under gem5, just hours later to notice;
@@ -310,6 +378,11 @@ run_one() {
   # is deterministic. Tested: through a pipe, the old form held the pipe for
   # the child's whole life (8 s for an 8 s child), the new form 3 ms. $! is
   # now gem5's own pid, in its own session.
+  local xparam=() xl
+  if [ -n "$GEM5_PARAMS" ]; then
+    while IFS= read -r xl; do [ -z "$xl" ] || xparam+=(--param "$xl"); done <<< "$GEM5_PARAMS"
+    echo "   $tag: extra --param: $(printf '%s; ' "${xparam[@]}" | sed 's/--param; //g')"
+  fi
   # shellcheck disable=SC2086 -- $caches is a list of options
   ( cd "$workdir" || exit 1
     setsid nice -n 19 ${tmo[@]+"${tmo[@]}"} "$GEM5" --outdir="$odir" "$SE" \
@@ -320,6 +393,7 @@ run_one() {
       $caches \
       ${MAXINSTS:+--maxinsts=$MAXINSTS} \
       ${WORKER_MAXINSTS:+--param "system.cpu[${wsl:-1:$nc}].max_insts_any_thread = $WORKER_MAXINSTS"} \
+      ${xparam[@]+"${xparam[@]}"} \
       -c "$prog" ${args:+--options="$args"} "${stdin_arg[@]}" \
       < /dev/null > "$odir/run.log" 2>&1 &
     echo "      pid $!" )
@@ -444,6 +518,13 @@ case "${1:-}" in
     wl=${1#go-}; wl=${wl%-4c}
     [ -f "$HELDOUT2/$wl/NCPU" ] || die "no $HELDOUT2/$wl/NCPU -- heldout2_server.sh has not sized $wl"
     preflight "$(h2_name "$wl")"; mkdir -p "$OUT"; run_one "$wl" "$(cat "$HELDOUT2/$wl/NCPU")" "${wl}_4c" ;;
+  # Part B: one key's run, everything from its GEM5 line (PB_GEM5); the stop
+  # is WORKER_MAXINSTS on the line's worker slice
+  go-pb)
+    [ -f "$PB_GEM5" ] || die "go-pb needs PB_GEM5=<a key's GEM5 file>"
+    IFS='|' read -r pbk _ _ _ _ pbn _ < "$PB_GEM5"
+    [ -n "$WORKER_MAXINSTS" ] || die "go-pb needs WORKER_MAXINSTS (the worker stop)"
+    preflight -; mkdir -p "$OUT"; run_one pb "$pbn" "${pbk}c" ;;
   barnes-input) [ -n "${2:-}" ] || die "usage: $0 barnes-input FILE [threads]"; write_barnes_in "$2" "${3:-4}"; echo "wrote $2" ;;
   stats) phase_stats ;;
   *) sed -n '2,9p' "$0" | sed 's/^# \{0,1\}//'; exit 1 ;;

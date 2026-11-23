@@ -176,7 +176,9 @@ else
 fi
 
 mkdir -p "$LROOT/simulator/results/gem5_b3"
-rsync -a --copy-links --include='*/' --include='stats.txt' --include='run.log' --include='config.ini' \
+# limit.rc: Part B's runs record timeout's status there (124 = stopped by the
+# time limit; partB_score.py reports such a run, never waits for it)
+rsync -a --copy-links --include='*/' --include='stats.txt' --include='run.log' --include='config.ini' --include='limit.rc' \
       --exclude='*' -e "$RSH" \
       "$SRV:/home/harshraj/gem5_b3/" "$LROOT/simulator/results/gem5_b3/" \
   && echo "   gem5_b3/: $(find "$LROOT/simulator/results/gem5_b3" -name stats.txt | wc -l) run(s) with stats" \

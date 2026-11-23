@@ -160,3 +160,72 @@ exactly that.
 5. Give the owner the one command.
 6. Score with `scripts/lock_wait_score.py`. It is written before the runs end,
    and checked on a hand case.
+
+## 6. Local results (2026-11-07): K1, K2 and K3 hold
+
+Order steps 2 and 3 done. Step 4 (the server script, rehearsed) is written
+but **not yet rehearsed**; nothing has gone to the server.
+
+- **K1, exact: 54 of 54 cases pass** (`check_coherence_exact.sh`, levels 0, 1
+  and 2, on the new binary):
+  - `mx_excl` contended 199, own 0 (499,638 held cycles);
+  - `mx_handover` contended 0, own 198 (16,631 cycles);
+  - `mx_handover_rec` and `mx_cond_rec` 0 / 0;
+  - `mx_cond` (printed, not asserted) 100 / 0, 600 cycles;
+  - no line on any case without mutex records; every older count unchanged.
+  - **Disclosed:** the first run failed on an assertion I added beyond the
+    note, "one waited-acquire line a core" (`mx_handover` runs 2 cores). It
+    was changed to the note's own rule, one line per `MUTEX ACQUIRES` line.
+    The pre-registered counts held in that first run too.
+- **K2, the split:** `mx_excl` with 80,000 warm-up instructions a core reads
+  measured 120 (30 a core) + warm-up 79 (20 / 19 / 20 / 20) = 199, own 0,
+  at levels 0, 1 and 2 alike.
+- **K3, Q0 against the source of `1b56891`** (the g6 source; main's
+  simulator sources are unchanged since), the new lines aside:
+  - the whole exact suite: 54 of 54 logs identical (the trace paths masked:
+    each run kept its logs in its own folder), the 68 generated traces byte
+    for byte equal, 0 waited lines in the reference's logs, 48 in the new
+    ones (= its 48 `MUTEX ACQUIRES` lines);
+  - Q2b (`bench/mutex_micro.c`, real Pin and glibc): control, `mx_lock`,
+    `mx_condbar` at levels 0 and 2, 6 of 6 logs and their test-line counts
+    identical; `mx_lock` reads 7 contended waits on CPU 0;
+  - the laptop's `canneal_4t` and `barnes_4t`, 1 M + 2 M, shared level 0,
+    shared level 2, private level 2: 6 of 6 pairs identical, no SYNC or
+    MUTEX line.
+
+**Next:** rehearse `scripts/lockwait_all.sh` against the stand-in server, then
+give the owner the one command.
+
+## 7. Rehearsal against a stand-in server (2026-11-10): passes, after two fixes to the scripts
+
+The stand-in: a stand-in `ssh` / `scp` that run commands locally under a fake
+server home, a reference binary built from the g6 source (main at `a53391d`,
+simulator sources equal to `1b56891`), the laptop's `canneal_4t`, and four
+stand-in spans (`mx_excl` at warm-up 0 and 80,000, `mx_handover`, canneal 4c
+200 K + 500 K) made with that binary. `SPANS`, `Q0M_SPANS`, `REF`, `REF_MD5`
+and `PAR` overridden by environment; everything else is the real
+`lockwait_all.sh` (from a clone of main) and `lockwait_server.sh`.
+
+- **First pass, end to end:** local checks, upload (sources match), build,
+  the three guards, frozen `champsim_lc_7fcf31e0`, **Q0 8 of 8 pairs
+  identical, Q0m 2 of 2** (the new line once per core), the chain (4 reruns),
+  **Q0-full 4 identical**. `pull` brings the 4 logs and the state files;
+  `lock_wait_score.py selftest` passes.
+- **Bug 1, the launcher (fixed):** its follow loop gives up after 120 polls
+  (60 min at 30 s on the server) and then printed "Started: 14 reruns" even
+  though Q0 was still running and nothing had launched. It now prints
+  "Started" only after it has seen the chain's `started:` line, and
+  otherwise "NOT STARTED YET" with what happens next. Checked on a second
+  pass.
+- **Bug 2, the server's `chain` (fixed):** with every rerun already
+  complete, the chain ends within the 3 s before its liveness check, and
+  `chain` reported "ERROR: the chain stopped" (exit 1). It now accepts a chain
+  that has logged its end. Checked both ways: all complete (exit 0, "the chain
+  has already ended"), and one rerun to do (it starts it; the rerun completes;
+  Q0-full 4 identical).
+- The same follow-loop pattern is in five older launchers (diag, c0, sync,
+  heldout2, syncnc); none is in use. Each is fixed before it is run again.
+
+Nothing in the counter, the binary or the scoring changed. **Ready: the owner
+runs `scripts/lockwait_all.sh`** (on his word); `scripts/lockwait_all.sh pull`
+when the chain has ended; then `python3 scripts/lock_wait_score.py`.

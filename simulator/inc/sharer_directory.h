@@ -53,6 +53,8 @@ struct dir_lookup {
   uint32_t bounded_others = 0;  // other cores the bounded protocol view lists (diagnosis, below)
   uint32_t g5_others = 0;       // other cores the gem5-rule view lists (below)
   bool g5_relisted = false;     // an ownership hit re-listed the requester in the gem5-rule view only (below)
+  bool g5_excl_others = false;  // C (load_side_design_2026-11-18.md): before the request, the gem5-rule view listed
+                                // one other core, holding the line exclusive (E or M); records only
 };
 
 // Diagnosis, records only (b3_bounded_design_2026-10-17.md): a second protocol
@@ -103,6 +105,13 @@ unsigned private_coherence();
 void set_coherence_latency(unsigned cycles);
 unsigned coherence_latency();
 
+// Part A (bench/policy_sanity/upstream_equiv_design_2026-11-10.md): whether a
+// read-modify-write issues its load as an RFO (B3 v3 step 1). On, the default,
+// is the simulator as it has been since f23e03f; off issues it as a load, as
+// upstream ChampSim does, so the extension can be switched off entirely.
+void set_rmw_as_rfo(bool on);
+bool rmw_as_rfo();
+
 // The other holders of `line` as a request from `cpu` would find them now.
 // Changes nothing (C0 decides from it whether a request waits).
 dir_lookup dir_peek(uint64_t line, unsigned cpu);
@@ -128,6 +137,18 @@ bool dir_is_stale(uint64_t line, unsigned cpu);
 // (scripts/coherence_events.py reads them). Null otherwise. Nothing is
 // simulated differently either way.
 std::FILE* dir_event_log();
+
+// Matched B3 windows (bench/policy_sanity/matched_b3_design_2026-11-17.md).
+// Diagnosis only. If the environment variable COHERENCE_POSITION_BINS names a
+// bin size, each gem5-rule RFO event (the R_g5 numerator) is also counted by
+// the requesting core's position: its retired instructions since its trace's
+// start, as the core last reported them. 0 (unset) otherwise, and then nothing
+// is recorded or printed. Nothing is simulated differently either way.
+uint64_t position_bins();
+void note_position(unsigned cpu, uint64_t retired);                          // the core, each cycle, when on
+void note_phase_position(unsigned cpu, bool warmup, bool begin, uint64_t retired); // the core, at its phase edges, when on
+void count_g5_rfo_at_position(unsigned cpu);                                 // where the R_g5 counter increments, when on
+void print_position_bins();                                                  // prints only when on
 
 // For the end-of-run self-check.
 bool dir_present(uint64_t line, unsigned cpu, unsigned level);

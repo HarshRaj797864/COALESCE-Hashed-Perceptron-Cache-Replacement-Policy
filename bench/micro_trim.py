@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Find coherence_micro's markers in its Pin traces and cut the traces there.
 
-    micro_trim.py RUN_STDOUT TRACE_PREFIX OUTDIR
+    micro_trim.py RUN_STDOUT TRACE_PREFIX OUTDIR [NT]
 
 RUN_STDOUT    the program's own output under Pin (it prints the marker addresses)
-TRACE_PREFIX  the tracer's -o prefix: TRACE_PREFIX{0..3}.champsimtrace
-OUTDIR        gets t{0..3}.champsimtrace, each starting at its thread's store
+TRACE_PREFIX  the tracer's -o prefix: TRACE_PREFIX{0..NT-1}.champsimtrace
+NT            the program's threads (default 4; Q16: 16)
+OUTDIR        gets t{0..NT-1}.champsimtrace, each starting at its thread's store
               to start_mark (so the four begin together, as the threads leave
               the start barrier together), and prints the instructions to
               simulate: the latest end_mark position, plus a little.
@@ -43,18 +44,19 @@ def first_store_in(path, lo, hi):
 
 def main():
     out_txt, prefix, outdir = sys.argv[1:4]
+    nt = int(sys.argv[4]) if len(sys.argv) > 4 else 4
     m = re.search(r'start_mark (0x[0-9a-f]+) end_mark (0x[0-9a-f]+)', open(out_txt).read())
     if not m:
         sys.exit('no marker addresses in ' + out_txt)
     sm, em = int(m.group(1), 16), int(m.group(2), 16)
     starts, ends, lens = {}, {}, {}
-    for k in range(4):
+    for k in range(nt):
         path = f'{prefix}{k}.champsimtrace'
-        (si, st), n = first_store_in(path, sm, sm + 4 * 64)
+        (si, st), n = first_store_in(path, sm, sm + nt * 64)
         if si is None:
             sys.exit(f'{path}: no store to start_mark')
         a = np.memmap(path, dtype=DT, mode='r')
-        (ei, et), _ = first_store_in(path, em, em + 4 * 64)
+        (ei, et), _ = first_store_in(path, em, em + nt * 64)
         if ei is None or et != st:
             sys.exit(f'{path}: end_mark missing or of another thread ({et} vs {st})')
         starts[st], ends[st], lens[st] = si, ei, n
@@ -76,7 +78,7 @@ def main():
             np.asarray(a[si:]).tofile(f)
         print(f'thread {st}: trace {path}, start_mark at record {si:,}, end_mark at {ei:,} '
               f'({ei - si:,} after the start), {n - si:,} records kept')
-    if sorted(starts) != [0, 1, 2, 3]:
+    if sorted(starts) != list(range(nt)):
         sys.exit(f'threads found: {sorted(starts)}')
     span = max(ends[t] - starts[t] for t in starts)
     tail = min(lens[t] - starts[t] for t in starts) - span

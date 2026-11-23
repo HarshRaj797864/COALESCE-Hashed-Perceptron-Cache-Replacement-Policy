@@ -57,6 +57,28 @@
 # amendment 3): writes streamcluster's lines (step 4's) so the next chain
 # traces and runs it as a sixth program; refused while the chain runs.
 #
+# VARIANT=pb (bench/policy_sanity/breadth_bc_design_2026-11-10.md, amendment 4
+# = Note 2): Part B, the 14 programs at 8 and 16 threads. Uploaded as
+# ~/sync_server_pb.sh. Builds nothing: h2's tracer (~/sync_h2_build, the build
+# that passed QS, QK and QZ) under gem5's CPUID frozen in ~/sync_nc, for every
+# program; the binary that passed Q0 and Q0m in the g6 variant. Programs and
+# runs are the lines sizing wrote (~/partB/<key>/PROGS, JOBS; a key is
+# <program>_<8|16>), and B1's three 4-thread keys (fft_4, volrend_4, fmm_4:
+# step 4's and the held-out set's lines, thread 0 cut at its anchor). Trace
+# length: fft and volrend the whole run (newbench amendment 2); a program whose
+# thread 0 is cut, its last pthread_create in sizing's probe + 215 M, rounded
+# up to 5 M (at least 215 M); otherwise 215 M; then the length rule once.
+# Every thread the run creates gets a FIFO (~/partB/<key>/NTHR, and a margin).
+# chain: the 4- and 8-thread keys traced (TPAR at a time), their runs started,
+# the 16-thread keys traced (TPAR16 at a time), their runs; then Q3. Traces
+# traces/sync_pb/<key>/, runs phaseA_b3_b1_<p>4, phaseA_b3_b2_<p>8 and
+# phaseA_b3_b16_<p>16, state ~/sync_pb. count: QE, then four counter runs a key
+# (gem5's CPUID x3, host x1) into ~/sync_pb/count/runs/, detached.
+#
+# trace1 <program> (H2, calibration_design_2026-11-14.md; VARIANT=mx, nb or h2):
+#   that program traced once more by trace_one, with no length rule, into TDIR,
+#   which must lie under traces/cal/ (uploaded as ~/cal/sync_server_cal.sh).
+#
 # build: compiles ChampSim and the Pin tracer from the sources scripts/sync_all.sh
 #   uploaded to ~/sync_build; the three policy guards; the binary is copied to
 #   the main tree as bin/champsim_sync_<md5>, named in ~/sync/BIN. Q0: on traces
@@ -134,7 +156,68 @@ $(cat "$HOME/heldout2/streamcluster.JOBS")"; fi
       SF_BUILD="${SF_BUILD:-$HOME/streamfix/build}"                 # cpuid_dump and cpuid_qe.py (QE)
       COUNT_PAR="${COUNT_PAR:-4}"
       COUNT_TIMEOUT="${COUNT_TIMEOUT:-12h}" ;;
-  *) echo "VARIANT must be empty, mx, g5, g6, nb, nc, h2 or pol"; exit 1 ;;
+  pb) CB_D="$HOME/sync_h2_build"; W_D="$HOME/sync_pb"; TDIR_D="$S/traces/sync_pb"; TAG=b2; BINPFX=champsim_g6;   NEED='VIEW-ORDER VIOLATIONS UNEXPLAINED'
+      NB_BIN="${NB_BIN:-$(cat "$HOME/sync_g6/BIN" 2>/dev/null)}"         # as for nb
+      H2_W="${H2_W:-$HOME/sync_h2}"                                       # where h2's tracer and counter passed their checks
+      H2_CPUID_SRC="${H2_CPUID_SRC:-$HOME/sync_nc/gem5.cpuid}"
+      H2_CPUID_MD5="${H2_CPUID_MD5:-74d72229d62c92e4ce627b5298375a23}"
+      H2_TRACER_MD5="${H2_TRACER_MD5:-02ff8f48654b81f6f277cdac8a13d60b}"
+      PB_W="${PB_W:-$HOME/partB}"                                         # the sizing's records (partB_server.sh)
+      PB_FIFO_MARGIN="${PB_FIFO_MARGIN:-4}"                               # FIFOs beyond the threads sizing counted
+      TPAR16="${TPAR16:-1}"                                               # 16-thread programs traced at once
+      COUNT_PAR="${COUNT_PAR:-3}"; COUNT_PAR16="${COUNT_PAR16:-2}"
+      COUNT_TIMEOUT="${COUNT_TIMEOUT:-12h}"
+      SF_BUILD="${SF_BUILD:-$HOME/streamfix/build}"                       # cpuid_dump and cpuid_qe.py (QE)
+      MIN_FREE_GB="${MIN_FREE_GB:-20}"
+      # the keys: every one sizing wrote a trace line for (canneal_16 has
+      # none: its traces exist), 8 threads first, the whole-run programs first
+      # within a count; PB_KEYS narrows it
+      NB_PROGS_FILE="${NB_PROGS_FILE:-$HOME/newbench/PROGS}"              # B1: fft's and volrend's 4-thread lines (step 4)
+      FMM4_BIN="${FMM4_BIN:-$HOME/b3_heldout_build/fmm/codes/apps/fmm/FMM.dyn}"   # B1: fmm as the held-out set ran it
+      FMM4_IN="${FMM4_IN:-$HOME/b3_heldout/inputs/fmm.in}"
+      JOBS="${JOBS:-10}"                                                  # ChampSim runs at once, a thread-count group
+      pb_order() { local n p; echo fft_4; echo volrend_4; echo fmm_4
+        for n in 8 16; do for p in fft volrend raytrace radix lunc barnes fmm ocean oceannc waternsq streamcluster fluidanimate bodytrack vips; do echo "${p}_$n"; done; done; }
+      # Note 2's first trace length: fft and volrend the whole run (newbench
+      # amendment 2); a key whose thread 0 is cut at its anchor, the anchor sizing
+      # saw (thread 0's last pthread_create) + 215 M, rounded up to 5 M, at least
+      # 215 M; otherwise 215 M (empty: MAX_INSTR). The length rule applies once after.
+      pb_len() {
+        case "${1%_*}" in fft|volrend) echo 0; return ;; esac
+        local f="$PB_W/$1/probe_chosen.txt" c
+        [ -s "$f" ] && [ "$(cut -d'|' -f8 "$PB_W/$1/PROGS" 2>/dev/null)" = auto ] || { echo ""; return; }
+        c=$(awk '$1 == "CALL" && $2 == "create" && $3 == "t0" { c = $5 } END { print c + 0 }' "$f")
+        awk -v c="$c" -v m="$MAX_INSTR_PB" -v a="$LEN_ADD" 'BEGIN { l = int((c + a + 4999999) / 5000000) * 5000000; if (l < m) l = m; printf "%d\n", l }'
+      }
+      MAX_INSTR_PB="${MAX_INSTR:-215000000}"; LEN_ADD="${LEN_ADD:-215000000}"
+      pb_b1_line() {   # B1: the 4-thread line, thread 0 cut at its anchor
+        case "$1" in
+          fft_4|volrend_4) awk -F'|' -v n="${1%_4}" -v k="$1" 'BEGIN { OFS = "|" } $1 == n { $1 = k; $8 = "auto"; print }' "$NB_PROGS_FILE" 2>/dev/null | head -1 ;;
+          fmm_4) echo "fmm_4|$FMM4_BIN||$FMM4_IN||0 1 2 3|0|auto" ;;
+        esac
+      }
+      if [ -z "${PROGS:-}" ]; then
+        for x in ${PB_KEYS:-$(pb_order)}; do
+          case "$x" in
+            *_4) y=$(pb_b1_line "$x"); [ -n "$y" ] || continue ;;
+            *) [ -f "$PB_W/$x/SIZED" ] && [ -s "$PB_W/$x/PROGS" ] || continue
+               y=$(head -1 "$PB_W/$x/PROGS"); l=$(pb_len "$x"); [ -z "$l" ] || y="$y|$l" ;;
+          esac
+          PROGS="${PROGS:+$PROGS
+}$y"
+        done
+      fi
+      if [ -z "${JOBS_SPEC:-}" ]; then
+        for x in ${PB_KEYS:-$(pb_order)}; do
+          case "$x" in
+            *_4) echo "$PROGS" | grep -q "^$x|" || continue; y="${x%_4}4|${x%_4}|4|0|${PB_B1_RUN:-50000000|100000000}|$x" ;;
+            *) [ -f "$PB_W/$x/SIZED" ] && [ -s "$PB_W/$x/JOBS" ] || continue; y=$(head -1 "$PB_W/$x/JOBS") ;;
+          esac
+          JOBS_SPEC="${JOBS_SPEC:+$JOBS_SPEC
+}$y"
+        done
+      fi ;;
+  *) echo "VARIANT must be empty, mx, g5, g6, nb, nc, h2, pb or pol"; exit 1 ;;
 esac
 CB="${CB:-$CB_D}"
 W="${W:-$W_D}"
@@ -160,13 +243,14 @@ PIN_ROOT="${PIN_ROOT:-$S/tracer/pin/pin-external-3.31-98869-gfa6f126a8-gcc-linux
 TRACER="$CB/simulator/tracer/pin/obj-intel64/champsim_tracer.so"
 TDIR="${TDIR:-$TDIR_D}"
 MAX_INSTR="${MAX_INSTR:-215000000}"   # 200 M as before, plus the thread-0 cuts
+LEN_ADD="${LEN_ADD:-215000000}"       # the length rule: the anchor + this, rounded up to 5 M (newbench amendment 2)
 MIN_FREE_GB="${MIN_FREE_GB:-6}"
 MIN_TRACE="${MIN_TRACE:-172500000}"   # QT: instructions a traced thread holds after its cut (50 M + 100 M and the 15% margin)
 DONE_MARKER="ChampSim completed all CPUs"
 LOG="$W/driver.log"
 PIDF="$W/.driver.pid"
 MC="$CB/simulator/scripts/make_config.py"
-case "$VARIANT" in nc|h2) MC="${NC_MC:-$HOME/sync_g6_build/simulator/scripts/make_config.py}" ;; esac   # their trees hold only the tracer
+case "$VARIANT" in nc|h2|pb) MC="${NC_MC:-$HOME/sync_g6_build/simulator/scripts/make_config.py}" ;; esac   # their trees hold only the tracer
 SPLASH_APPS="$S/tracer/splash-3/codes/apps"
 
 # name | binary | arguments | stdin | files the program opens in its directory | threads traced | skip | cut thread 0
@@ -223,7 +307,11 @@ traces_for() {   # program
   done
   echo "${out# }"
 }
-tree_of() { echo "phaseA_b3_${TAG}_$1"; }
+tree_of() {   # suffix; pb: phaseA_b3_b1_<p>4, phaseA_b3_b2_<p>8 and phaseA_b3_b16_<p>16 (the design's names)
+  if [ "$VARIANT" = pb ]; then
+    case "${1##*[!0-9]}" in 4) echo "phaseA_b3_b1_$1" ;; 16) echo "phaseA_b3_b16_$1" ;; *) echo "phaseA_b3_${TAG}_$1" ;; esac
+  else echo "phaseA_b3_${TAG}_$1"; fi
+}
 run_log() { echo "$S/results/$(tree_of "$1")/regime_${4:-shared}/$2_$3core/${5:-lru}/run.log"; }   # suffix wl cores [regime policy]
 cfg_of() { echo "$W/cfg/$1.json"; }
 is_done() { grep -q "$DONE_MARKER" "$(run_log "$1" "$2" "$3" "${4:-}" "${5:-}")" 2>/dev/null; }   # suffix wl cores [regime policy]
@@ -422,8 +510,9 @@ trace_one() {   # program name
   [ "$(free_gb)" -ge "$MIN_FREE_GB" ] || { echo "$(date '+%F %T') $p: FAILED -- under $MIN_FREE_GB GB free"; return 1; }
   rm -rf "$d"; mkdir -p "$d" "$HOME/.build_tmp"
   echo "$len" > "$d/LEN"
-  local cpu=() tr="$TRACER" s0=()
-  case "$VARIANT" in nc|h2) cpu=(-cpuid "$W/gem5.cpuid") ;; esac
+  local cpu=() tr="$TRACER" s0=() xzn=()
+  case "$VARIANT" in nc|h2|pb) cpu=(-cpuid "$W/gem5.cpuid") ;; esac
+  [ "$VARIANT" != pb ] || xzn=(nice -n 10)      # as Pin: the compressors of 16 threads are not left at full priority
   # VARIANT=h2 (Note 6): facesim with h2's tracer from its first broadcast;
   # the other four with nc's tracer
   if [ "$VARIANT" = h2 ]; then
@@ -435,10 +524,18 @@ trace_one() {   # program name
   # is ever written to disk.
   local maxt=15
   for t in $tids; do [ "$t" -le "$maxt" ] || maxt=$t; done
+  if [ "$VARIANT" = pb ] && [ "${p%_4}" = "$p" ]; then
+    # Note 2: every thread the run creates (sizing's count), and a margin: a
+    # thread without a FIFO would write a raw trace of 64 bytes a record. B1's
+    # 4-thread keys create 4 threads (0-15 have FIFOs).
+    local nthr; nthr=$(cat "$PB_W/$p/NTHR" 2>/dev/null)
+    [ -n "$nthr" ] || { echo "$(date '+%F %T') $p: FAILED -- no $PB_W/$p/NTHR (sizing's thread count)"; return 1; }
+    [ $((nthr - 1 + PB_FIFO_MARGIN)) -le "$maxt" ] || maxt=$((nthr - 1 + PB_FIFO_MARGIN))
+  fi
   for t in $(seq 0 "$maxt"); do
     fifo="$d/raw$t.champsimtrace"
     mkfifo "$fifo"
-    ( xz -1 -T1 < "$fifo" > "$fifo.xz" ) &
+    ( ${xzn[@]+"${xzn[@]}"} xz -1 -T1 < "$fifo" > "$fifo.xz" ) &
     pids+=($!)
   done
   echo "$(date '+%F %T') $p: tracing (skip $skip, $([ "$len" = 0 ] && echo 'the whole run' || echo "$len per thread"), -sync 1${cpu[*]:+, under the gem5 CPUID}${s0[*]:+, thread 0 from its first broadcast}; tracer $(md5sum < "$tr" | cut -c1-8))"
@@ -456,6 +553,12 @@ trace_one() {   # program name
     rm -f "$d/raw$t.champsimtrace"
     [ "$(xz -dc "$d/raw$t.champsimtrace.xz" 2>/dev/null | head -c 64 | wc -c)" = 64 ] || rm -f "$d/raw$t.champsimtrace.xz"
   done
+  # a thread numbered past the FIFOs wrote a raw file: removed, and the trace is not used
+  local stray; stray=$(ls "$d" | grep -E '^raw[0-9]+\.champsimtrace$' | tr '\n' ' ')
+  if [ -n "$stray" ]; then
+    for f in $stray; do rm -f "$d/$f"; done
+    echo "$(date '+%F %T') $p: FAILED -- threads beyond the $((maxt + 1)) FIFOs wrote raw traces ($stray): removed"; return 1
+  fi
   [ "$rc" = 0 ] || { echo "$(date '+%F %T') $p: FAILED -- Pin exited $rc ($d/pin.err)"; return 1; }
   if grep -q 'UNBALANCED' "$d/pin.err"; then echo "$(date '+%F %T') $p: FAILED -- a thread's sync calls did not all return"; grep UNBALANCED "$d/pin.err"; return 1; fi
   if [ ${#s0[@]} -gt 0 ]; then
@@ -493,7 +596,7 @@ trace_one() {   # program name
   done
   [ -z "$short" ] || { echo qt > "$d/FAILED"; echo "$(date '+%F %T') $p: FAILED -- traces shorter than $MIN_TRACE instructions:$short"; return 1; }
   grep -E 'sync: thread' "$d/pin.err" | sed "s/^/   $p: /"
-  if [ "$VARIANT" = nc ] || [ "$VARIANT" = h2 ]; then
+  if [ "$VARIANT" = nc ] || [ "$VARIANT" = h2 ] || [ "$VARIANT" = pb ]; then
     grep -E 'cpuid' "$d/pin.err" | sed "s/^/   $p: /"
     md5sum < "$W/gem5.cpuid" | cut -c1-32 > "$d/CPUID"   # the CPUID these traces were recorded under
   fi
@@ -514,10 +617,11 @@ trace_nc() {
   [ -n "$first" ] && [ "$first" != 0 ] || return 1    # the whole run already
   case "$why" in
     qt) if [ "$VARIANT" = h2 ]; then why=noanchor; len=0   # Note 6: no anchor in h2, so the whole run
+        elif [ "$VARIANT" = pb ] && [ ! -s "$d/anchor.txt" ]; then why=noanchor; len=0   # Note 2: a program whose thread 0 is not cut, as h2
         else
         cut=$(awk '$1 == "CUT" { print $2 }' "$d/anchor.txt" 2>/dev/null)
         [ -n "$cut" ] || return 1
-        len=$(( (cut + 215000000 + 4999999) / 5000000 * 5000000 ))
+        len=$(( (cut + LEN_ADD + 4999999) / 5000000 * 5000000 ))
         [ "$len" -gt "$first" ] || return 1
         fi ;;
     noanchor) len=0 ;;
@@ -730,7 +834,8 @@ qk() {
 # default to lru, shared and 16, so every earlier line runs as it did.
 # ---- Note 7 (heldout2_design_2026-11-04.md): the counter runs, VARIANT=h2 ----
 CW="$W/count"            # its runs (CW/runs/<program>__<gem5|host>__<k>, as stream_check2.py rows reads), log, pid
-count_progs() {          # the five programs' PROGS lines, then streamcluster's from step 4
+count_progs() {          # the five programs' PROGS lines, then streamcluster's from step 4 (pb: its keys' lines)
+  if [ "$VARIANT" = pb ]; then echo "$PROGS"; return; fi
   echo "$PROGS" | grep -v '^streamcluster|'
   grep '^streamcluster|' "$NB_PROGS_FILE"
 }
@@ -766,6 +871,7 @@ qeh2() {                 # QE on the counter that counts: cpuid_dump under -cpui
   fi
 }
 count_list() {           # program mode k, the longest first
+  if [ "$VARIANT" = pb ]; then pb_count_list; return; fi
   local p
   for p in facesim vips bodytrack fluidanimate oceannc streamcluster; do
     echo "$p gem5 1"; echo "$p gem5 2"; echo "$p gem5 3"; echo "$p host 1"
@@ -777,7 +883,7 @@ count_job() {            # program mode k: Note 7's run, once more if it does no
   IFS='|' read -r _ bin args sin files tids skip cut0 rest <<< "$line"
   d="$CW/runs/${p}__${mode}__$k"
   if [ -f "$d/STATUS" ] && grep -q '^exit 0 ' "$d/STATUS"; then cl "$p $mode $k: done already"; return 0; fi
-  case "${cut0:-0}" in start0:broadcast) opt=(-base0 broadcast) ;; 0) opt=(-cut0 0) ;; *) cl "$p $mode $k: FAILED -- thread 0's start '$cut0' is not one Note 7 knows"; return 1 ;; esac
+  case "${cut0:-0}" in start0:broadcast) opt=(-base0 broadcast) ;; 0) opt=(-cut0 0) ;; auto) [ "$VARIANT" = pb ] || { cl "$p $mode $k: FAILED -- 'auto' is Note 2's (pb)"; return 1; }; opt=(-cut0 1) ;; *) cl "$p $mode $k: FAILED -- thread 0's start '$cut0' is not one Note 7 knows"; return 1 ;; esac
   [ "$mode" = gem5 ] && opt+=(-cpuid "$W/gem5.cpuid")
   for a in 1 2; do
     if [ -d "$d" ]; then mkdir -p "$CW/failed"; mv "$d" "$CW/failed/${p}__${mode}__${k}_$(date +%Y%m%d_%H%M%S)"; fi
@@ -808,6 +914,8 @@ count_check() {          # structure only, no rate: exit 0, the options, facesim
       grep -q '^KNOBS base0 broadcast' "$d/c.summary" || { cl "   $p $mode $k: no 'KNOBS base0 broadcast'"; bad=$((bad + 1)); }
       nb=$(grep -c '^BROADCAST 0 ' "$d/c.summary"); nb0=$(grep -c '^BASE0 broadcast' "$d/c.summary")
       [ "$nb" = 1 ] && [ "$nb0" = 1 ] || { cl "   $p $mode $k: BROADCAST 0 lines $nb, BASE0 lines $nb0 (1 each expected)"; bad=$((bad + 1)); }
+    elif [ "$(echo "$line" | cut -d'|' -f8)" = auto ]; then
+      grep -q '^KNOBS step .* cut0 1 cpuid ' "$d/c.summary" || { cl "   $p $mode $k: KNOBS do not show -cut0 1"; bad=$((bad + 1)); }
     else
       grep -q '^KNOBS step .* cut0 0 cpuid ' "$d/c.summary" || { cl "   $p $mode $k: KNOBS do not show -cut0 0"; bad=$((bad + 1)); }
     fi
@@ -836,12 +944,81 @@ count_drive() {
   rm -f "$CW/.pid"
 }
 
+# VARIANT=pb (Note 2): the guards before the chain or the counter runs start.
+# h2's tracer and counter as they passed their checks, gem5's CPUID, the
+# helpers, and every key's binary the file sizing (or step 4, B1) ran.
+pb_guards() {
+  [ -f "$H2_W/QZ_PASSED" ] && [ -x "$TRACER" ] || die "h2's tracer has not passed QS, QK and QZ ($H2_W/QZ_PASSED, $TRACER)"
+  [ "$(md5sum < "$TRACER" | cut -c1-32)" = "$H2_TRACER_MD5" ] || die "the tracer in $CB is not the build that passed QZ ($H2_TRACER_MD5)"
+  [ -s "$H2_CPUID_SRC" ] && [ "$(md5sum < "$H2_CPUID_SRC" | cut -c1-32)" = "$H2_CPUID_MD5" ] || die "no gem5 CPUID with md5 $H2_CPUID_MD5 at $H2_CPUID_SRC"
+  mkdir -p "$W"
+  if [ -f "$W/gem5.cpuid" ]; then cmp -s "$W/gem5.cpuid" "$H2_CPUID_SRC" || die "$W/gem5.cpuid differs from $H2_CPUID_SRC -- traces may exist under the first"
+  else cp -p "$H2_CPUID_SRC" "$W/gem5.cpuid"; fi
+  local f k b want sz n4=0 n8=0 n16=0
+  for f in sync_anchor.py sync_cut.py trace_mix.c; do [ -s "$HOME/$f" ] || die "no ~/$f"; done
+  [ -x "$PIN_ROOT/pin" ] || die "no Pin at $PIN_ROOT"
+  [ -f "$MC" ] || die "no make_config.py at $MC"
+  ! alive "$PB_W/.size.pid" || die "Part B's sizing is still running ($PB_W/.size.pid)"
+  [ -n "$PROGS" ] || die "no keys: Part B is not sized ($PB_W) and B1's lines are missing"
+  for k in $(echo "$PROGS" | cut -d'|' -f1); do
+    [ "$(echo "$PROGS" | awk -F'|' -v n="$k" '$1 == n' | wc -l)" = 1 ] || die "$k: not exactly one trace line"
+    [ "$(echo "$JOBS_SPEC" | awk -F'|' -v n="$k" '$7 == n' | wc -l)" = 1 ] || die "$k: not exactly one run line"
+    b=$(prog_field "$k" 2); [ -x "$b" ] || die "$k: no binary $b"
+    # the binary sizing read (B1: the same file as the program's 8-thread key)
+    sz="$PB_W/$k"; case "$k" in *_4) sz="$PB_W/${k%_4}_8" ;; esac
+    want=$(awk '$1 == "dynamic" { print $2, $3 }' "$sz/MD5" 2>/dev/null)
+    [ -n "$want" ] || die "$k: no dynamic binary in $sz/MD5"
+    [ "${want#* }" = "$b" ] || die "$k: the binary $b is not the one sizing read (${want#* })"
+    [ "$(md5sum < "$b" | cut -c1-32)" = "${want%% *}" ] || die "$k: $b changed since sizing (${want%% *})"
+    for f in $(prog_field "$k" 5) $(prog_field "$k" 4); do [ -e "$f" ] || die "$k: no input $f"; done
+    case "$k" in *_4) n4=$((n4 + 1)) ;; *_8) n8=$((n8 + 1)); [ -s "$PB_W/$k/NTHR" ] || die "$k: no NTHR" ;; *_16) n16=$((n16 + 1)); [ -s "$PB_W/$k/NTHR" ] || die "$k: no NTHR" ;; *) die "$k: not a Part B key" ;; esac
+  done
+  if [ -z "${PB_KEYS:-}" ]; then
+    [ "$n4" = 3 ] && [ "$n8" = 14 ] && [ "$n16" = 14 ] || die "keys: $n4 at 4 threads (3 expected), $n8 at 8 (14), $n16 at 16 (14) -- PB_KEYS narrows on purpose"
+  fi
+  [ "${1:-}" = nodisk ] || [ "$(free_gb)" -ge "${PB_MIN_START_GB:-60}" ] || die "under ${PB_MIN_START_GB:-60} GB free ($(free_gb))"
+  echo "   pb guards: tracer $(md5sum < "$TRACER" | cut -c1-8) (passed QZ), gem5 CPUID $(md5sum < "$W/gem5.cpuid" | cut -c1-8), $n4 + $n8 + $n16 keys, each binary as sized, $(free_gb) GB free"
+}
+pb_count_guards() {
+  [ -f "$H2_W/QR_PASSED" ] && [ -x "$COUNTER" ] || die "the h2 counter has not passed QR ($H2_W/QR_PASSED, $COUNTER)"
+  [ "$(md5sum < "$COUNTER" | cut -c1-32)" = "$(cat "$H2_W/COUNTER_MD5" 2>/dev/null)" ] || die "the counter is not the build that passed QR ($(cat "$H2_W/COUNTER_MD5" 2>/dev/null))"
+  [ -x "$SF_BUILD/cpuid_dump" ] && [ -f "$SF_BUILD/cpuid_qe.py" ] || die "no cpuid_dump / cpuid_qe.py in $SF_BUILD (QE)"
+  if [ -d "$CW/runs" ] && [ -n "$(ls -A "$CW/runs" 2>/dev/null)" ] && [ "$(cat "$CW/COUNTER_MD5" 2>/dev/null)" != "$(md5sum < "$COUNTER" | cut -c1-32)" ]; then
+    die "counter runs exist from another counter ($(cat "$CW/COUNTER_MD5" 2>/dev/null || echo unrecorded))"
+  fi
+}
+pb_count_list() {        # key mode k: the 4- and 8-thread keys first, each key's four runs together
+  local k
+  for k in $(echo "$PROGS" | cut -d'|' -f1); do
+    echo "$k gem5 1"; echo "$k gem5 2"; echo "$k gem5 3"; echo "$k host 1"
+  done
+}
+pb_count_drive() {
+  echo $$ > "$CW/.pid"
+  md5sum < "$COUNTER" | cut -c1-32 > "$CW/COUNTER_MD5"
+  local total; total=$(pb_count_list | wc -l)
+  cl "== Note 2: $total counter runs ($NPROGS keys: gem5's CPUID x3, host x1); 4 and 8 threads $COUNT_PAR at a time, 16 threads $COUNT_PAR16; $COUNT_TIMEOUT a run; counter $(md5sum < "$COUNTER" | cut -c1-8)"
+  if ! qeh2; then rm -f "$CW/.pid"; exit 1; fi
+  local running=0 p mode k par
+  while read -r p mode k; do
+    par="$COUNT_PAR"; [ "${p%_16}" = "$p" ] || par="$COUNT_PAR16"
+    while [ "$running" -ge "$par" ]; do wait -n; running=$((running - 1)); done
+    count_job "$p" "$mode" "$k" &
+    running=$((running + 1))
+  done < <(pb_count_list)
+  wait
+  cl "== the runs' structure (no rate is read)"
+  if count_check; then cl "COUNT DONE: $total of $total exited 0 with the options and thread files Note 2 names"; date '+%F %T' > "$CW/DONE"
+  else cl "COUNT ENDED WITH FAILURES (above): their keys have no native range"; fi
+  rm -f "$CW/.pid"
+}
+
 job() {   # suffix wl cores scaled warmup sim program [policy regime llc_mshr]
   local suf="$1" wl="$2" n="$3" sc="$4" wu="$5" si="$6" k="$7" pol="${8:-lru}" rg="${9:-shared}" mshr="${10:-}" log t B c
   B=$(bin_sync); log=$(run_log "$suf" "$wl" "$n" "$rg" "$pol"); c="$W/cfg/${suf}_${rg}_${pol}.json"   # one per job: jobs run at once
   if is_done "$suf" "$wl" "$n" "$rg" "$pol"; then echo "$(date '+%F %T') SKIP  $suf (complete)"; return 0; fi
   # VARIANT=nb (newbench amendment 2): only from traces that passed QT
-  if { [ "$VARIANT" = nb ] || [ "$VARIANT" = nc ] || [ "$VARIANT" = h2 ]; } && [ ! -f "$TDIR/$k/DONE" ]; then echo "$(date '+%F %T') FAIL  $suf -- $k is not traced, or its traces failed QT (no $TDIR/$k/DONE)"; return 0; fi
+  if { [ "$VARIANT" = nb ] || [ "$VARIANT" = nc ] || [ "$VARIANT" = h2 ] || [ "$VARIANT" = pb ]; } && [ ! -f "$TDIR/$k/DONE" ]; then echo "$(date '+%F %T') FAIL  $suf -- $k is not traced, or its traces failed QT (no $TDIR/$k/DONE)"; return 0; fi
   t=$(traces_for "$k") || { echo "$(date '+%F %T') FAIL  $suf -- ${t#MISSING:}"; return 0; }
   mkdir -p "$(dirname "$log")" "$(dirname "$c")"
   # shellcheck disable=SC2046
@@ -913,7 +1090,7 @@ q3() {
   while IFS='|' read -r suf wl c sc wu si k; do
     f="$(run_log "$suf" "$wl" "$c")"
     grep -q "$DONE_MARKER" "$f" 2>/dev/null || continue
-    g="$S/results/phaseA_b3_g2_$suf/regime_shared/${wl}_${c}core/lru/run.log"
+    g="$S/results/phaseA_b3_g2_$suf/regime_shared/${wl}_${c}core/lru/run.log"; [ "$VARIANT" != pb ] || g=/dev/null
     roi() { awk '/^Region of Interest Statistics/ { r = 1 } r' "$1"; }
     raw=$(roi "$f" | awk '/^LLC COHERENCE DIR VIEW-ORDER VIOLATIONS:/ { print $NF }')
     bys=$(roi "$f" | awk '/^LLC COHERENCE DIR VIEW-ORDER LINES BY SILENT RE-LISTING:/ { print $NF }')
@@ -921,7 +1098,7 @@ q3() {
     sre=$(roi "$f" | awk '/^cpu[0-9]+_(L1I|L1D|L2C) COHERENCE DIR GEM5-RULE SILENT RE-LISTINGS:/ { s += $NF } END { print s + 0 }')
     graw=$(roi "$g" 2>/dev/null | awk '/^LLC COHERENCE DIR VIEW-ORDER VIOLATIONS:/ { print $NF }')
     n=$((n + 1))
-    echo "   Q3 $suf: raw $raw (g2 ${graw:-?}), by silent re-listing $bys, unexplained $un; silent re-listings $sre"
+    echo "   Q3 $suf: raw $raw$([ "$VARIANT" = pb ] || echo " (g2 ${graw:-?})"), by silent re-listing $bys, unexplained $un; silent re-listings $sre"
     [ "$un" = 0 ] && [ "$bys" = "$raw" ] || bad=$((bad + 1))
   done <<< "$JOBS_SPEC"
   if [ "$bad" = 0 ]; then echo "   Q3 holds in $n of $NJOBS runs: no unexplained violation"; else echo "   Q3 FAILS in $bad of $n runs"; fi
@@ -939,6 +1116,24 @@ chain() {
     done
     echo "$(date '+%F %T') the m2 traces are done"
     if ! q0m; then echo "$(date '+%F %T') CHAIN STOPPED: Q0m failed ($W/q0m)"; rm -f "$PIDF"; return 1; fi
+  elif [ "$VARIANT" = pb ]; then
+    # Note 2: the 8-thread keys traced, their runs started beside the tracing
+    # of the 16-thread keys, then those keys' runs. A key whose traces failed
+    # holds back no other; job() refuses it.
+    echo "$(date '+%F %T') CHAIN START: trace $NPROGS keys (4 and 8 threads: $TPAR at a time; 16: $TPAR16), $NJOBS runs ($JOBS at a time a group), $(basename "$(bin_sync)")"
+    echo "$PROGS" | cut -d'|' -f1 | grep -E '_(4|8)$' | xargs -r -P "$TPAR" -I{} bash "$SELF" __trace {}
+    echo "$(date '+%F %T') 4 and 8 threads: $(for x in $(echo "$PROGS" | cut -d'|' -f1 | grep -E '_(4|8)$'); do [ -f "$TDIR/$x/DONE" ] && echo x; done | wc -l) of $(echo "$PROGS" | cut -d'|' -f1 | grep -cE '_(4|8)$') keys traced; their runs start"
+    ( echo "$JOBS_SPEC" | awk -F'|' '$3 == 4 || $3 == 8' | tr '|' ' ' | xargs -r -P "$JOBS" -L 1 bash "$SELF" __job ) &
+    echo "$PROGS" | cut -d'|' -f1 | grep '_16$' | xargs -r -P "$TPAR16" -I{} bash "$SELF" __trace {}
+    echo "$(date '+%F %T') 16 threads: $(for x in $(echo "$PROGS" | cut -d'|' -f1 | grep '_16$'); do [ -f "$TDIR/$x/DONE" ] && echo x; done | wc -l) of $(echo "$PROGS" | cut -d'|' -f1 | grep -c '_16$') keys traced; their runs start"
+    # Note 2: the counter runs start once no key is being traced, so the Pin runs do not pile up
+    [ "${PB_NO_COUNT:-0}" = 1 ] || echo "$(date '+%F %T') counter runs: $(bash "$SELF" count 2>&1 | tail -1)"
+    echo "$JOBS_SPEC" | awk -F'|' '$3 == 16' | tr '|' ' ' | xargs -r -P "$JOBS" -L 1 bash "$SELF" __job
+    wait
+    echo "$(date '+%F %T') CHAIN END: $(count_traced) of $NPROGS keys traced; $(count_done) of $NJOBS runs complete"
+    q3
+    rm -f "$PIDF"
+    return 0
   else
     echo "$(date '+%F %T') CHAIN START: trace $NPROGS programs ($TPAR at a time), then $NJOBS runs ($JOBS at a time), $(basename "$(bin_sync)")"
     echo "$PROGS" | cut -d'|' -f1 | xargs -P "$TPAR" -I{} bash "$SELF" __trace {}
@@ -966,9 +1161,27 @@ case "${1:-}" in
   # keeps writing the file when the pipe to ssh breaks.
   build) mkdir -p "$W"; case "$VARIANT" in nc|h2) buildtracer ;; *) build ;; esac 2>&1 | tee -p "$W/build_run.log"; exit "${PIPESTATUS[0]}" ;;
   qk)    qk ;;
+  progline) echo "$PROGS" | awk -F'|' -v n="${2:-}" '$1 == n' ;;   # read-only: a program's PROGS line (H2's guards)
+  trace1)  # H2 (calibration_design_2026-11-14.md): one program traced again by trace_one
+           # (no length rule), into a calibration directory only, never over a scored set
+    p1="${2:-}"; [ -n "$p1" ] || die "usage: trace1 <program>"
+    case "$VARIANT" in mx|nb|h2) ;; *) die "trace1 is for VARIANT=mx, nb or h2" ;; esac
+    case "$TDIR" in "$S/traces/cal/"*) ;; *) die "trace1 writes only under $S/traces/cal/ (TDIR=$TDIR)" ;; esac
+    [ "$TDIR" != "$TDIR_D" ] || die "trace1: TDIR is the variant's own directory"
+    [ -n "$(prog_field "$p1" 2)" ] || die "no PROGS line for $p1"
+    mkdir -p "$TDIR"; trace_one "$p1" ;;
   counter) [ "$VARIANT" = h2 ] || die "'counter' is VARIANT=h2's"; mkdir -p "$W"; buildcounter 2>&1 | tee -p "$W/counter_run.log"; exit "${PIPESTATUS[0]}" ;;
   qr)    [ "$VARIANT" = h2 ] || die "QR is VARIANT=h2's check"; qr ;;
-  count)   # Note 7: guards here (the caller sees a refusal), then QE-h2 and the 24 runs, detached
+  count)   # Note 7: guards here (the caller sees a refusal), then QE-h2 and the 24 runs, detached (pb: Note 2's)
+    if [ "$VARIANT" = pb ]; then
+      pb_guards nodisk > /dev/null; pb_count_guards; mkdir -p "$CW"
+      if alive "$CW/.pid"; then echo "the counter runs are running already (pid $(cat "$CW/.pid"))"; exit 0; fi
+      if [ -f "$CW/DONE" ]; then echo "the counter runs are done ($(cat "$CW/DONE")) -- nothing to do"; exit 0; fi
+      setsid bash "$SELF" __count >> "$CW/driver.log" 2>&1 < /dev/null &
+      disown 2>/dev/null; sleep 3
+      alive "$CW/.pid" || [ -f "$CW/DONE" ] || { tail -5 "$CW/driver.log"; die "the counter runs stopped (above; $CW/driver.log)"; }
+      echo "started: QE, then $(pb_count_list | wc -l) counter runs; log $CW/driver.log"; exit 0
+    fi
     count_guards
     mkdir -p "$CW"
     if alive "$CW/.pid"; then echo "the counter runs are running already (pid $(cat "$CW/.pid"))"; exit 0; fi
@@ -977,7 +1190,7 @@ case "${1:-}" in
     disown 2>/dev/null; sleep 3
     alive "$CW/.pid" || [ -f "$CW/DONE" ] || { tail -5 "$CW/driver.log"; die "the counter runs stopped (above; $CW/driver.log)"; }
     echo "started: QE-h2, then 24 counter runs, $COUNT_PAR at a time; log $CW/driver.log" ;;
-  __count) count_drive ;;
+  __count) if [ "$VARIANT" = pb ]; then pb_count_drive; else count_drive; fi ;;
   sc)      # newbench amendment 3: streamcluster's lines (step 4's, unchanged) for the chain's sixth program
     [ "$VARIANT" = h2 ] || die "'sc' is VARIANT=h2's"
     alive "$PIDF" && die "the h2 chain is running -- 'sc' waits until its runs have ended"
@@ -996,7 +1209,7 @@ case "${1:-}" in
     if alive "$PIDF"; then
       sid=$(cat "$PIDF")
       [ "$(ps -o sid= -p "$sid" | tr -d ' ')" = "$sid" ] || die "pid $sid is not a session leader -- stopping nothing"
-      ps -o args= -p "$sid" | grep -q 'sync_server.sh __chain' || die "pid $sid is not a sync_server.sh chain -- stopping nothing"
+      ps -o args= -p "$sid" | grep -Eq 'sync_server(_[a-z0-9]+)?\.sh __chain' || die "pid $sid is not a sync_server.sh chain -- stopping nothing"
       pkill -TERM -s "$sid"; sleep 2
       pgrep -s "$sid" > /dev/null && pkill -KILL -s "$sid"
       rm -f "$PIDF"
@@ -1004,6 +1217,14 @@ case "${1:-}" in
     else
       echo "no ${VARIANT:-s2} chain is running"
     fi ;;
+  countstop)
+    if alive "$CW/.pid"; then
+      sid=$(cat "$CW/.pid")
+      [ "$(ps -o sid= -p "$sid" | tr -d ' ')" = "$sid" ] || die "pid $sid is not a session leader -- stopping nothing"
+      ps -o args= -p "$sid" | grep -Eq 'sync_server(_[a-z0-9]+)?\.sh __count' || die "pid $sid is not a counter driver -- stopping nothing"
+      pkill -TERM -s "$sid"; sleep 2; pgrep -s "$sid" > /dev/null && pkill -KILL -s "$sid"
+      rm -f "$CW/.pid"; echo "stopped the counter runs (session $sid); $(date '+%F %T')" | tee -a "$CW/driver.log"
+    else echo "no counter runs are running"; fi ;;
   qs)    qs ;;
   refresh) refresh ;;
   q0b)   q0b ;;
@@ -1037,7 +1258,8 @@ case "${1:-}" in
       [ -f "$W/QS_PASSED" ] && [ -f "$W/QK_PASSED" ] || die "QS and QK have not passed -- 'build' first"
       [ -s "$W/gem5.cpuid" ] || die "no frozen gem5.cpuid -- 'build' first"
     fi
-    if [ "$VARIANT" = nb ] || [ "$VARIANT" = nc ] || [ "$VARIANT" = h2 ] || [ "$VARIANT" = pol ]; then
+    [ "$VARIANT" != pb ] || pb_guards
+    if [ "$VARIANT" = nb ] || [ "$VARIANT" = nc ] || [ "$VARIANT" = h2 ] || [ "$VARIANT" = pb ] || [ "$VARIANT" = pol ]; then
       # no build: the binary that passed Q0 and Q0m in the g6 variant, and the g5 tree's tracer (nc: its own)
       [ -n "$PROGS" ] && [ -n "$JOBS_SPEC" ] || die "no programs or jobs (nb: newbench_server.sh size first; pol: ~/sync_pol/JOBS, from scripts/policy_all.sh)"
       [ -x "$NB_BIN" ] || die "no $NB_BIN -- the g6 build first (scripts/syncg6_all.sh)"
@@ -1062,8 +1284,9 @@ case "${1:-}" in
     fi
     if [ "$VARIANT" = g5 ] || [ "$VARIANT" = g6 ]; then echo "started: waits for the m2 traces ($(count_traced) of $NPROGS done), Q0m, then $NJOBS runs; log $LOG"
     else echo "started: $NPROGS programs to trace, then $NJOBS runs; log $LOG"; fi ;;
+  guards) [ "$VARIANT" = pb ] || die "'guards' is VARIANT=pb's"; mkdir -p "$W" "$TDIR"; pb_guards; echo "== guards pass: $NPROGS keys to trace, $NJOBS runs" ;;
   __chain) chain ;;
-  __trace) shift; if [ "$VARIANT" = nc ] || [ "$VARIANT" = nb ] || [ "$VARIANT" = h2 ]; then trace_nc "$1"; else trace_one "$1"; fi ;;
+  __trace) shift; if [ "$VARIANT" = nc ] || [ "$VARIANT" = nb ] || [ "$VARIANT" = h2 ] || [ "$VARIANT" = pb ]; then trace_nc "$1"; else trace_one "$1"; fi ;;
   __job)   shift; job "$@" ;;
   status)
     if [ "$VARIANT" = h2 ]; then
@@ -1078,7 +1301,11 @@ case "${1:-}" in
         echo "   tracing and runs (Note 6): not started -- heldout2_all.sh trace"; echo "   disk: $(free_gb) GB free"; exit 0
       fi
     fi
-    case "$VARIANT" in "") what="synchronised replay" ;; mx) what="synchronised replay, mutex order by timing" ;; g5) what="step 3, the gem5-rule view, on the m2 traces" ;; g6) what="the gem5-rule view, amendment 2 (view-order split), on the m2 traces" ;; nb) what="the new benchmarks on the final tool" ;; nc) what="the new benchmarks traced with gem5's CPUID (F2)" ;; h2) what="held-out set 2 (Note 6)" ;; pol) what="step 5, the policy runs on the final tool" ;; esac
+    case "$VARIANT" in "") what="synchronised replay" ;; mx) what="synchronised replay, mutex order by timing" ;; g5) what="step 3, the gem5-rule view, on the m2 traces" ;; g6) what="the gem5-rule view, amendment 2 (view-order split), on the m2 traces" ;; nb) what="the new benchmarks on the final tool" ;; nc) what="the new benchmarks traced with gem5's CPUID (F2)" ;; h2) what="held-out set 2 (Note 6)" ;; pb) what="Part B: the 14 programs at 8 and 16 threads (Note 2)" ;; pol) what="step 5, the policy runs on the final tool" ;; esac
+    if [ "$VARIANT" = pb ] && [ -d "$CW" ]; then
+      echo "== counter runs (Note 2): $(grep -l '^exit 0 ' "$CW"/runs/*/STATUS 2>/dev/null | wc -l) of $(pb_count_list | wc -l) exited 0; driver $(alive "$CW/.pid" && echo alive || echo 'not running')$([ -f "$CW/DONE" ] && echo "; DONE $(cat "$CW/DONE")")"
+      grep -E 'QE-h2|FAILED|exit [1-9]|COUNT|did not|no c\.t|KNOBS' "$CW/driver.log" 2>/dev/null | tail -6 | sed 's/^/   /'
+    fi
     echo "== sync${VARIANT:+ $VARIANT} ($what): traced $(count_traced) of $NPROGS programs; runs $(count_done) of $NJOBS complete; binary $(basename "$(bin_sync)" 2>/dev/null); Q0 $([ -f "$W/Q0_PASSED" ] && echo passed || echo 'not passed')$([ "$VARIANT" = mx ] && echo "; Q0b $([ -f "$W/Q0B_PASSED" ] && echo passed || echo 'not passed')")$( { [ "$VARIANT" = g5 ] || [ "$VARIANT" = g6 ]; } && echo "; Q0m $([ -f "$W/Q0M_PASSED" ] && echo passed || echo 'not yet')"); chain $(alive "$PIDF" && echo alive || echo 'not running')"
     [ -f "$LOG" ] && grep -E "FAILED|STOPPED|traced \(|CHAIN|Q0m|Q0-full|Q3|m2 traces|length rule" "$LOG" | tail -12 | sed 's/^/   /'
     echo "   disk: $(free_gb) GB free" ;;

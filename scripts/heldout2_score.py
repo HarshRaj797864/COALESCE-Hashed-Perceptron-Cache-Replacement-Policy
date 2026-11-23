@@ -79,9 +79,28 @@ SRV = '/home/harshraj'
 FIELDS = ('rec', 'ld', 'st', 'rmw', 'ginst', 'gld', 'gst', 'rep')
 
 
-def _p(tids, ncpu, run, exe, tracer, role):
-    return dict(tids=tids, ncpu=ncpu, run=run, exe=exe, tracer=tracer, role=role,
-                stops=tuple(t for t in tids if t != 0))
+def _p(tids, ncpu, run, exe, tracer, role, **more):
+    """a program's fixed facts. The optional ones (partB_score.py; the defaults
+    are set 2's): tree, wl, cores (the ChampSim run), tdir (its traces' set),
+    cut ('0': no cut; 'auto': thread 0 cut at its last pthread_create, its trace
+    raw0_aligned, the counter with -cut0 1), skip (the counter's and the
+    tracer's), stopsM (gem5's two stops, in M), stops (the CPUs carrying them),
+    cpuid_file (the counter's -cpuid, a suffix), qb (the SIZED values that mean
+    QB held)"""
+    d = dict(tids=tids, ncpu=ncpu, run=run, exe=exe, tracer=tracer, role=role,
+             stops=tuple(t for t in tids if t != 0))
+    d.update(more)
+    return d
+
+
+def tree_of(p, s):
+    return s.get('tree', f'phaseA_b3_h2_{p}4')
+
+
+def trace_name(p, s, t):
+    """the trace a CPU runs, as runrows prints it"""
+    raw = 'raw0_aligned' if t == 0 and s.get('cut', '0') == 'auto' else f'raw{t}'
+    return f'{s.get("tdir", "sync_h2")}/{p}/{raw}.champsimtrace.xz'
 
 
 def _h2run(p):
@@ -119,39 +138,43 @@ def tracerows(top, sizing, nb_sizing):
         else:
             sized = 'yes' if os.path.exists(os.path.join(sizing, p, 'SIZED')) else 'no'
         print(f'SIZED {p} {sized}')
-        d = os.path.join(top, p)
-        if not os.path.isdir(d):
-            print(f'SET {p} ABSENT')
+        trace_set(p, s, os.path.join(top, p))
+
+
+def trace_set(p, s, d):
+    """SET and TRACE rows of one trace set (directory d)"""
+    if not os.path.isdir(d):
+        print(f'SET {p} ABSENT')
+        return
+    err = open(os.path.join(d, 'pin.err')).read() if os.path.exists(os.path.join(d, 'pin.err')) else ''
+    start0 = ('never' if 'window NEVER opened' in err else
+              'opened' if "start0: thread 0's window opens after" in err else '-')
+    print(f'SET {p} done {first_word(os.path.join(d, "DONE"))} cpuid {first_word(os.path.join(d, "CPUID"))} '
+          f'len {first_word(os.path.join(d, "LEN"))} failed {first_word(os.path.join(d, "FAILED"))} '
+          f'start0 {start0} unbalanced {err.count("UNBALANCED")}')
+    for t in s['tids']:
+        f = os.path.join(d, os.path.basename(trace_name(p, s, t)).replace('.champsimtrace.xz', '.mix'))
+        if not os.path.exists(f):
+            print(f'TRACE {p} t{t} MISSING')
             continue
-        err = open(os.path.join(d, 'pin.err')).read() if os.path.exists(os.path.join(d, 'pin.err')) else ''
-        start0 = ('never' if 'window NEVER opened' in err else
-                  'opened' if "start0: thread 0's window opens after" in err else '-')
-        print(f'SET {p} done {first_word(os.path.join(d, "DONE"))} cpuid {first_word(os.path.join(d, "CPUID"))} '
-              f'len {first_word(os.path.join(d, "LEN"))} failed {first_word(os.path.join(d, "FAILED"))} '
-              f'start0 {start0} unbalanced {err.count("UNBALANCED")}')
-        for t in s['tids']:
-            f = os.path.join(d, f'raw{t}.mix')
-            if not os.path.exists(f):
-                print(f'TRACE {p} t{t} MISSING')
-                continue
-            at, T = {}, None
-            for ln in open(f):
-                q = ln.split()
-                if q and q[0] == 'C':
-                    at[int(q[1])] = tuple(int(x) for x in q[2:5])
-                elif q and q[0] == 'T':
-                    T = q
-            if T is None:
-                print(f'TRACE {p} t{t} NO-T-LINE')
-                continue
-            rec = int(T[1])
-            sync = int(T[-1]) if T[-2] == 'sync' else 0
-            a, b = WIN
-            if a in at and b in at:   # as b3_stream_check.py window: records [50 M, 150 M), sync records count as records
-                ld, st, rmw = (at[b][i] - at[a][i] for i in range(3))
-                print(f'TRACE {p} t{t} records {rec} sync {sync} instr {rec - sync} wrec {b - a} wld {ld} wst {st} wrmw {rmw}')
-            else:
-                print(f'TRACE {p} t{t} records {rec} sync {sync} instr {rec - sync} SHORT')
+        at, T = {}, None
+        for ln in open(f):
+            q = ln.split()
+            if q and q[0] == 'C':
+                at[int(q[1])] = tuple(int(x) for x in q[2:5])
+            elif q and q[0] == 'T':
+                T = q
+        if T is None:
+            print(f'TRACE {p} t{t} NO-T-LINE')
+            continue
+        rec = int(T[1])
+        sync = int(T[-1]) if T[-2] == 'sync' else 0
+        a, b = WIN
+        if a in at and b in at:   # as b3_stream_check.py window: records [50 M, 150 M), sync records count as records
+            ld, st, rmw = (at[b][i] - at[a][i] for i in range(3))
+            print(f'TRACE {p} t{t} records {rec} sync {sync} instr {rec - sync} wrec {b - a} wld {ld} wst {st} wrmw {rmw}')
+        else:
+            print(f'TRACE {p} t{t} records {rec} sync {sync} instr {rec - sync} SHORT')
 
 
 def read_cnt(path):
@@ -200,10 +223,12 @@ def countrows(top):
         bc0 = [ln for ln in summ if re.match(r'BROADCAST 0 ', ln)]
         ex = next((ln.split()[1] for ln in summ if ln.startswith('EXIT ')), '-')
         un = next((m2.group(1) for m2 in (re.match(r'CPUID replaced \d+ unlisted (\d+)', ln) for ln in summ) if m2), '-')
+        # thread 0 cut at its last pthread_create (Part B, Note 2; -cut0 1): its window's base
+        c0 = [int(ln.split()[2]) for ln in summ if re.match(r'CREATE 0 \d+ \d+$', ln)]
         print(f'RUN {p} {mode} {k} exit {st.get("exit", "?")} summary_exit {ex} counter {run.get("counter", "-")} cpuid {run.get("cpuid", "-")} '
               f'attempt {run.get("attempt", "-")} binary {run.get("binary", "-")} from {kf} to {kt} cut0 {kc} knobs_cpuid {kcpu} '
               f'knobs_base0 {int(kbase0)} base0 {",".join(b0) or "-"} bcast0 {len(bc0)} unlisted {un} threads {",".join(map(str, tids)) or "-"} '
-              f'skip {skip} start {start}')
+              f'skip {skip} start {start}' + (f' creates0 {len(c0)} last0 {c0[-1] if c0 else "-"}' if start == 'auto' else ''))
         for t in tids:
             path = os.path.join(d, f'c.t{t}.cnt')
             if not os.path.exists(path):
@@ -214,8 +239,13 @@ def countrows(top):
                     print(f'WIN {p} {mode} {k} t{t} NOBASE')
                     continue
                 base = int(b0[0])       # thread 0 based at its first broadcast (Note 5)
-            elif start == '0' or start.startswith('start0:'):
+            elif start == '0' or start.startswith('start0:') or (start == 'auto' and t != 0):
                 base = skip             # each thread from its start (a worker: its creation); facesim's workers too (Note 8, amendment 1)
+            elif start == 'auto':
+                if not c0:
+                    print(f'WIN {p} {mode} {k} t{t} NOBASE')
+                    continue
+                base = c0[-1]           # thread 0 from its last pthread_create, as the trace's cut (stream_check2.py rows)
             else:
                 print(f'WIN {p} {mode} {k} t{t} UNSUPPORTED start {start}')
                 continue
@@ -239,15 +269,20 @@ def roi(lines):
     return out
 
 
-def runrows(top, driver_log):
-    print('# heldout2_score.py runrows', top, driver_log)
+def run_log(top, p, s):
+    return os.path.join(top, tree_of(p, s), 'regime_shared', f'{s.get("wl", p)}_{s.get("cores", 4)}core', 'lru', 'run.log')
+
+
+def runrows(top, driver_log, programs=None, tag='heldout2_score.py'):
+    programs = PROGRAMS if programs is None else programs
+    print(f'# {tag} runrows', top, driver_log)
     if os.path.exists(driver_log):
         for ln in open(driver_log):
             if 'CHAIN START' in ln:
                 b = re.findall(r'champsim_\S+', ln)
                 print(f'CHAIN start binary {b[-1] if b else "-"} | {ln.strip()}')
-    for p, s in PROGRAMS.items():
-        f = os.path.join(top, f'phaseA_b3_h2_{p}4', 'regime_shared', f'{p}_4core', 'lru', 'run.log')
+    for p, s in programs.items():
+        f = run_log(top, p, s)
         if not os.path.exists(f):
             print(f'RUNLOG {p} ABSENT')
             continue
@@ -273,15 +308,17 @@ def runrows(top, driver_log):
               f'not_held {mm.group(2) if mm else "-"} replay {rep.replace(" ", "_")} traces {traces or "-"}')
 
 
-def gem5cfg(root):
-    print('# heldout2_score.py gem5cfg', root)
-    for p, s in PROGRAMS.items():
-        for stop in (50, 150):
+def gem5cfg(root, programs=None, tag='heldout2_score.py', limit=False):
+    """limit: also each run's limit.rc (Part B: timeout's 124 = stopped by its time limit)"""
+    programs = PROGRAMS if programs is None else programs
+    print(f'# {tag} gem5cfg', root)
+    for p, s in programs.items():
+        for stop in s.get('stopsM', (50, 150)):
             run = s['run'].format(stop)
             d = os.path.join(root, run)
             c = os.path.join(d, 'config.ini')
             if not os.path.exists(c):
-                print(f'G5CFG {p} {stop} ABSENT {run}')
+                print(f'G5CFG {p} {stop} ABSENT {run}' + (f' limit {first_word(os.path.join(d, "limit.rc"))}' if limit else ''))
                 continue
             sec, stops, ncpu, rnd, l2, cmd = '', {}, 0, '-', '-', None
             for ln in open(c):
@@ -304,7 +341,8 @@ def gem5cfg(root):
             m = re.search(r'Exiting @ tick \d+ because (.*)', log)
             ended = 'max_insts' if m and 'max instruction count' in m.group(1) else ('program_end' if m else 'NOT_ENDED')
             print(f'G5CFG {p} {stop} run {run} ncpu {ncpu} exe {cmd[0] if cmd else "-"} nargs {len(cmd) - 1 if cmd else -1} '
-                  f'l2 {l2} randomization {rnd} stops {",".join(f"{n}:{stops[n]}" for n in sorted(stops))} ended {ended}')
+                  f'l2 {l2} randomization {rnd} stops {",".join(f"{n}:{stops[n]}" for n in sorted(stops))} ended {ended}' +
+                  (f' limit {first_word(os.path.join(d, "limit.rc"))}' if limit else ''))
 
 
 # ------------------------------------------------------------------ check
@@ -385,8 +423,10 @@ def fmt_range(lo, hi):
     return f'[{lo:.3f}, {hi:.3f}]'
 
 
-def check_program(p, s, T, C, R, G, percpu, gmix, g5rows, P, B, out):
-    """returns (failed checks, notes); prints the program's block into out"""
+def check_program(p, s, T, C, R, G, percpu, gmix, g5rows, P, B, out, v2loc=None):
+    """returns (failed checks, notes); prints the program's block into out.
+    v2loc (Part B, breadth_bc_design amendment 12): {key: {run: {ginst, gld, gst, rmw}} or a reason};
+    given, v2 is judged on the located windows; None (set 2, and Part B before it) changes nothing"""
     fails, notes = [], []
     say = out.append
     tids = s['tids']
@@ -394,11 +434,19 @@ def check_program(p, s, T, C, R, G, percpu, gmix, g5rows, P, B, out):
     # not yet made (not a failure): no trace set, no ChampSim run log, or no counter run at all
     pending = [why for cond, why in ((T['set'].get(p) is None, 'not traced yet'), (R['run'].get(p) is None, 'no ChampSim run log yet'),
                                      (not any(key[0] == p for key in C['runs']), 'no counter run yet')) if cond]
+    stopsM = s.get('stopsM', (50, 150))
+    if s.get('gem5_pending'):   # Part B: a gem5 run not yet started, or still running (not stopped by its time limit)
+        g5p = [f'{st} M' for st in stopsM if (p, st) in G and (G[(p, st)] is None or G[(p, st)]['ended'] == 'NOT_ENDED') and
+               (G[(p, st)] or {}).get('limit', '-') != '124']
+        if g5p:
+            pending.append(f'gem5 run{"s" if len(g5p) > 1 else ""} at {" and ".join(g5p)} not ended yet')
 
     # QB
     sz = T['sized'].get(p, 'no')
-    ok = sz in ('yes', 'step4')
-    say(f'   QB    {"holds" if ok else "FAILS"}: {"SIZED (written only after QB held)" if sz == "yes" else "step 4 sizing (CHOSEN; QB held then)" if sz == "step4" else "not sized"}')
+    ok = sz in ('yes', 'step4', 'b1')
+    qbw = {'yes': 'SIZED (written only after QB held)', 'step4': 'step 4 sizing (CHOSEN; QB held then)',
+           'b1': "the 8-thread key's binaries, SIZED there (QB held at sizing); QG checks gem5 ran that key's static binary"}
+    say(f'   QB    {"holds" if ok else "FAILS"}: {qbw.get(sz, "not sized")}')
     if not ok:
         fails.append('QB')
 
@@ -438,7 +486,7 @@ def check_program(p, s, T, C, R, G, percpu, gmix, g5rows, P, B, out):
     # Q3
     rr = R['run'].get(p)
     why = []
-    tree = f'phaseA_b3_h2_{p}4'
+    tree = tree_of(p, s)
     pr, br = P.get((tree, 'shared')), B.get((tree, 'shared'))
     if not R['chain'] or any(b != G6_BIN for b in R['chain']):
         why.append(f'chain binary {",".join(R["chain"]) or "unknown"}')
@@ -452,14 +500,14 @@ def check_program(p, s, T, C, R, G, percpu, gmix, g5rows, P, B, out):
                           (rr['replay'].startswith('on'), f'sync replay {rr["replay"]}')):
             if not cond:
                 why.append(msg)
-        want = ','.join(f'{c}:sync_h2/{p}/raw{t}.champsimtrace.xz' for c, t in enumerate(tids))
+        want = ','.join(f'{c}:{trace_name(p, s, t)}' for c, t in enumerate(tids))
         if rr['traces'] != want:
             why.append(f'traces {rr["traces"]} (want {want})')
     if not pr or not br:
         why.append('no rows')
     else:
         for cond, msg in ((pr['st'] == 'complete' and br['st'] == 'complete', 'rows incomplete'), (pr['ins'] == br['ins'], 'the rows files disagree'),
-                          (br.get('selfcheck') == '0' and br.get('registered') == '12', f'self-check {br.get("selfcheck")} / registered {br.get("registered")}'),
+                          (br.get('selfcheck') == '0' and br.get('registered') == str(3 * len(tids)), f'self-check {br.get("selfcheck")} / registered {br.get("registered")}'),
                           (br.get('stale_holders') == '0', f'stale-holders {br.get("stale_holders")}'), (br.get('level') == '2', f'level {br.get("level")}'),
                           (pr['vm'] == 'ok' and pr['tw'] == 'ok', f'vm {pr["vm"]} tw {pr["tw"]}')):
             if not cond:
@@ -473,13 +521,14 @@ def check_program(p, s, T, C, R, G, percpu, gmix, g5rows, P, B, out):
     # QG
     why = []
     rows = {}
-    for stop in (50, 150):
+    for stop in stopsM:
         g = G.get((p, stop))
         if not g:
             why.append(f'{stop} M: no configuration')
             continue
         want_stops = ','.join(f'{n}:{stop * M if n in s["stops"] else 0}' for n in range(s['ncpu']))
-        for cond, msg in ((g['ended'] == 'max_insts', f'{stop} M ended {g["ended"]}'), (g['ncpu'] == str(s['ncpu']), f'{stop} M: {g["ncpu"]} CPUs, want {s["ncpu"]}'),
+        ended_msg = f'{stop} M stopped by its time limit (limit.rc 124)' if g.get('limit') == '124' else f'{stop} M ended {g["ended"]}'
+        for cond, msg in ((g['ended'] == 'max_insts', ended_msg), (g['ncpu'] == str(s['ncpu']), f'{stop} M: {g["ncpu"]} CPUs, want {s["ncpu"]}'),
                           (g['exe'] == s['exe'], f'{stop} M: binary {g["exe"]}'), (g['l2'] == str(L2_BYTES), f'{stop} M: L2 {g["l2"]}'),
                           (g['randomization'] == 'false', f'{stop} M: randomization {g["randomization"]}'),
                           (g['stops'] == want_stops, f'{stop} M: stops {g["stops"]} (want {want_stops})')):
@@ -491,8 +540,8 @@ def check_program(p, s, T, C, R, G, percpu, gmix, g5rows, P, B, out):
         elif rows[stop]['ended'] != 'max_insts':
             why.append(f'{stop} M: gem5 row ended {rows[stop]["ended"]}')
     ev = None
-    if rows.get(50) and rows.get(150):
-        d = {k: int(rows[150][k]) - int(rows[50][k]) for k in ('insts', 'ss_getx', 'mt_getx', 'ss_upgrade', 'getx_all', 'demand_acc', 'demand_hits')}
+    if rows.get(stopsM[0]) and rows.get(stopsM[1]):
+        d = {k: int(rows[stopsM[1]][k]) - int(rows[stopsM[0]][k]) for k in ('insts', 'ss_getx', 'mt_getx', 'ss_upgrade', 'getx_all', 'demand_acc', 'demand_hits')}
         if min(d.values()) < 0:
             why.append('a gem5 counter went backwards between the stops')
         else:
@@ -503,7 +552,7 @@ def check_program(p, s, T, C, R, G, percpu, gmix, g5rows, P, B, out):
         fails.append('QG')
 
     # QW
-    a, b = s['run'].format(50), s['run'].format(150)
+    a, b = s['run'].format(stopsM[0]), s['run'].format(stopsM[1])
     win = None
     if a in percpu and b in percpu and set(percpu[a]) == set(percpu[b]):
         win = {c: percpu[b][c][0] - percpu[a][c][0] for c in percpu[b]}
@@ -530,7 +579,7 @@ def check_program(p, s, T, C, R, G, percpu, gmix, g5rows, P, B, out):
             why.append(f'exit {r["exit"]}/{r["summary_exit"]}')
         if r['counter'] != COUNTER_MD5:
             why.append(f'counter {r["counter"][:8]}')
-        if mode == 'gem5' and (r['cpuid'] != CPUID_MD5 or not r['knobs_cpuid'].endswith('/sync_h2/gem5.cpuid')):
+        if mode == 'gem5' and (r['cpuid'] != CPUID_MD5 or not r['knobs_cpuid'].endswith(s.get('cpuid_file', '/sync_h2/gem5.cpuid'))):
             why.append(f'cpuid {r["cpuid"][:8]} {r["knobs_cpuid"]}')
         if mode == 'host' and (r['cpuid'] != 'host' or r['knobs_cpuid'] != 'host'):
             why.append(f'cpuid {r["cpuid"]} {r["knobs_cpuid"]}')
@@ -541,8 +590,10 @@ def check_program(p, s, T, C, R, G, percpu, gmix, g5rows, P, B, out):
         if p == 'facesim':
             if not (r['knobs_base0'] == '1' and r['base0'].isdigit() and r['bcast0'] == '1' and r['start'] == 'start0:broadcast'):
                 why.append(f'base0 {r["knobs_base0"]}/{r["base0"]}/{r["bcast0"]}/{r["start"]}')
-        elif not (r['cut0'] == '0' and r['knobs_base0'] == '0' and r['start'] == '0' and r['skip'] == '0'):
+        elif (r['cut0'], r['knobs_base0'], r['start'], r['skip']) != (('1', '0', 'auto') if s.get('cut', '0') == 'auto' else ('0', '0', '0')) + (str(s.get('skip', 0)),):
             why.append(f'cut0 {r["cut0"]} base0 {r["knobs_base0"]} start {r["start"]} skip {r["skip"]}')
+        elif s.get('cut', '0') == 'auto' and r.get('creates0', '0') == '0':
+            why.append("thread 0 made no pthread_create: no base for its window")
         for t in tids:
             w = C['win'].get((p, mode, k, t))
             if not isinstance(w, dict):
@@ -590,8 +641,16 @@ def check_program(p, s, T, C, R, G, percpu, gmix, g5rows, P, B, out):
     gw = None
     if a in gmix and b in gmix:
         gw = {key: gmix[b][key] - gmix[a][key] for key in gmix[b]}
+    loc_why = None
+    if v2loc is not None:
+        L = v2loc.get(p)
+        if not isinstance(L, dict) or any(k not in L for k in gk):
+            loc_why = L if isinstance(L, str) else 'no located rows for the three counter runs'
     if not nat_ok or win is None or gw is None or any(t not in percpu[b] for t in tids):
         say('   v2    FAILS: not checked (counter runs, gem5 per-CPU rows or gem5_mix rows missing)')
+        fails.append('v2')
+    elif loc_why is not None:
+        say(f'   v2    FAILS: not checked (the located windows, amendment 12: {loc_why})')
         fails.append('v2')
     else:
         gpc = {t: tuple(y - x for x, y in zip(percpu[a][t], percpu[b][t])) for t in tids}
@@ -600,6 +659,11 @@ def check_program(p, s, T, C, R, G, percpu, gmix, g5rows, P, B, out):
              1000 * (gw['RMW_Read'] + gw['Locked_RMW_Read']) / gw['insts'])
         sums = [summed('gem5', k) for k in gk]
         cr = [(1000 * q['gld'] / q['ginst'], 1000 * q['gst'] / q['ginst'], 1000 * q['rmw'] / q['ginst']) for q in sums]
+        counter_cells = ''
+        if v2loc is not None:   # amendment 12: the range of the located rates; the counter windows' reported
+            counter_cells = '; counter windows (reported): ' + ', '.join(
+                f'{n} {fmt_range(min(c[i] for c in cr), max(c[i] for c in cr))}' for i, n in enumerate(('loads', 'stores', 'RMWs')))
+            cr = [(1000 * L[k]['gld'] / L[k]['ginst'], 1000 * L[k]['gst'] / L[k]['ginst'], 1000 * L[k]['rmw'] / L[k]['ginst']) for k in gk]
         cells, vbad, soft = [], [], []
         for i, name in enumerate(('loads', 'stores', 'RMWs')):
             rs = [c[i] for c in cr]
@@ -616,7 +680,7 @@ def check_program(p, s, T, C, R, G, percpu, gmix, g5rows, P, B, out):
                 vbad.append(name)
             cells.append(f'{name} {g[i]:.3f} in {fmt_range(lo, hi)}{"" if ok else " <-- 5-8% outside: scored, the miss stated" if sf else " <-- outside"}')
         say(f'   v2    {"FAILS: " + ", ".join(vbad) if vbad else "holds by the held-out rule (" + "; ".join(soft) + ")" if soft else "holds"}: per 1,000 instructions '
-            f'(gem5 units), gem5 in the three counter runs\' range (widened 5%; RMWs or 0.05): ' + '; '.join(cells))
+            f'(gem5 units), gem5 in the three counter runs\' {"located range (amendment 12)" if v2loc is not None else "range"} (widened 5%; RMWs or 0.05): ' + '; '.join(cells) + counter_cells)
         w1 = {t: C['win'][(p, 'gem5', '1', t)] for t in tids}
         for t in tids:
             x, gg = w1[t], gpc[t]

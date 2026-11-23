@@ -1,0 +1,14 @@
+fluidanimate|phaseA_b3_fc_h2_fluidanimate4|fluidanimate_4core|/home/harshraj/sync_fc/cfg/fluidanimate.json|phaseA_b3_ld_h2_fluidanimate4
+vips|phaseA_b3_fc_h2_vips4|vips_4core|/home/harshraj/sync_fc/cfg/vips.json|phaseA_b3_ld_h2_vips4
+oceannc|phaseA_b3_fc_h2_oceannc4|oceannc_4core|/home/harshraj/sync_fc/cfg/oceannc.json|phaseA_b3_ld_h2_oceannc4
+bodytrack|phaseA_b3_fc_h2_bodytrack4|bodytrack_4core|/home/harshraj/sync_fc/cfg/bodytrack.json|phaseA_b3_ld_h2_bodytrack4
+barnesstd_window|phaseA_b3_fc_g3_barnesstd4|barnes_4core|/home/harshraj/sync_fc/cfg/barnesstd_window.json|phaseA_b3_ld_g3_barnesstd4
+barnesstd_start|phaseA_b3_fc_g3_barnesstd4_start|barnes_4core|/home/harshraj/sync_fc/cfg/barnesstd_start.json|phaseA_b3_ld_g3_barnesstd4_start
+barnesstd_force|phaseA_b3_fc_g3_barnesstd4_force|barnes_4core|/home/harshraj/sync_fc/cfg/barnesstd_force.json|phaseA_b3_ld_g3_barnesstd4_force
+barnes256|phaseA_b3_fc_g3_barnes4|barnes_4core|/home/harshraj/sync_fc/cfg/barnes256.json|phaseA_b3_ld_g3_barnes4
+ocean4|phaseA_b3_fc_g3_ocean4|ocean_4core|/home/harshraj/sync_fc/cfg/ocean4.json|phaseA_b3_ld_g3_ocean4
+canneal4|phaseA_b3_fc_g3_canneal4|canneal_4core|/home/harshraj/sync_fc/cfg/canneal4.json|phaseA_b3_ld_g3_canneal4
+canneal8|phaseA_b3_fc_g3_canneal8|canneal_8core|/home/harshraj/sync_fc/cfg/canneal8.json|phaseA_b3_ld_g3_canneal8
+radix|phaseA_b3_fc_g3_radix4|radix_4core|/home/harshraj/sync_fc/cfg/radix.json|phaseA_b3_ld_g3_radix4
+fmm|phaseA_b3_fc_g3_fmm4|fmm_4core|/home/harshraj/sync_fc/cfg/fmm.json|phaseA_b3_ld_g3_fmm4
+lunc|phaseA_b3_fc_n2_lunc4|lunc_4core|/home/harshraj/sync_fc/cfg/lunc.json|phaseA_b3_ld_n2_lunc4

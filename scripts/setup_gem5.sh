@@ -11,7 +11,8 @@
 #   # switch the EXISTING build to another protocol, incrementally (detached)
 #   ssh -n -p 2222 user@your-server 'PROTOCOL=MESI_Three_Level bash ~/setup_gem5.sh rebuild'
 #
-#   # MESI_Three_Level only: stop a false-alarm FIFO panic (config file, no rebuild)
+#   # MESI_Three_Level only: turn off the strict-FIFO check that panics (config file, no rebuild;
+#   # upstream suspects a protocol bug, not a false alarm -- see phase_patch_fifo)
 #   ssh -n -p 2222 user@your-server 'bash ~/setup_gem5.sh patch-fifo'
 #
 # WHY. The overlay fakes sharing by aliasing pages, and whether that resembles
@@ -379,18 +380,28 @@ do_rebuild() {
 # MESI_Three_Level's two L0<->L1 buffers are strict-FIFO, and gem5 panics
 # "FIFO ordering violated" when two paths enqueue into one in the same cycle
 # with different delays: the L1 at l1_{request,response}_latency (2 cycles),
-# a re-enqueue at 1. A known false alarm -- gem5-users, "Ruby strict fifo
-# message buffer panic: FIFO ordering violated" (same buffer, same protocol)
-# and "[Ruby memory model] FIFO ordering violation"; the reporter's workaround
-# is to turn the strict-FIFO flag off. ocean_4c died of it on
+# a re-enqueue at 1. Reported upstream and UNRESOLVED: gem5-users, "Ruby strict
+# fifo message buffer panic: FIFO ordering violated" (same buffer, same
+# protocol) and "[Ruby memory model] FIFO ordering violation"; GitHub gem5
+# #1597 (2024-09-23) and #2816 (2025-12-07), both open. On #2816 gem5's lead
+# wrote (2025-12-18): "most likely indicative of a bug in MESI_Three_Level.
+# Whether that bug is going to cause a fault in the program or make significant
+# impact on the timing of your experiment, it's impossible to know."
+# NOT a known false alarm (that wording was wrong; corrected 2026-11-14,
+# read from the GitHub API). The reporter's workaround is to turn the
+# strict-FIFO flag off. ocean_4c died of it on
 # system.ruby.l0_cntrl0.bufferFromL1 on 2026-09-27, 76 ms simulated in.
 #
-# Why this changes no result: in MessageBuffer::enqueue (v25.1.0.1), with Ruby
+# What this changes: in MessageBuffer::enqueue (v25.1.0.1), with Ruby
 # randomization off, arrival_time = current_time + delta whether or not the
 # buffer is ordered, and the heap dequeues by arrival time either way. `ordered`
-# then only decides whether the check runs. So this refuses unless the last
-# run's config.ini shows randomization off. It is a config file, read at
-# start-up: no rebuild. Disclose it in the methodology.
+# then only decides whether the check runs. So a run that would finish with the
+# check on is identical with it off; a run that would have panicked continues,
+# with the 1-cycle message ahead of the 2-cycle one -- the reordering upstream
+# suspects is a protocol bug. How often that happens in a run is not counted
+# (PLAN § 10 item 9). This refuses unless the last run's config.ini shows
+# randomization off. It is a config file, read at start-up: no rebuild.
+# Disclose it in the methodology, as a suspected reference bug.
 phase_patch_fifo() {
   local f="$GEM5_DIR/configs/ruby/MESI_Three_Level.py" b n ini r
   [ -f "$f" ] || die "no $f"

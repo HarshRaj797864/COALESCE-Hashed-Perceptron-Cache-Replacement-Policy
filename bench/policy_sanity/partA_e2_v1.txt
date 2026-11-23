@@ -1,0 +1,23 @@
+# Part A E2 (upstream_equiv.py e2 simulator/results/partA/logs), same pull: 16a_lru / 16b_lru oursdefault not complete, not decided
+E2 prediction FAILS: 16a_lru (0 per-type LOAD/RFO lines differ, 0 other lines differ)
+   upstream: "ChampSim completed all CPUs" printed 0 times
+   ours: "ChampSim completed all CPUs" printed 0 times
+E2 prediction FAILS: 16b_lru (0 per-type LOAD/RFO lines differ, 0 other lines differ)
+   upstream: "ChampSim completed all CPUs" printed 0 times
+   ours: "ChampSim completed all CPUs" printed 0 times
+E2 prediction holds: 1c_410.bwaves_lru (4 per-type LOAD/RFO lines differ, 0 other lines differ)
+E2 prediction holds: 1c_429.mcf_lru (0 per-type LOAD/RFO lines differ, 0 other lines differ)
+E2 prediction holds: 1c_433.milc_lru (0 per-type LOAD/RFO lines differ, 0 other lines differ)
+E2 prediction holds: 1c_437.leslie3d_lru (6 per-type LOAD/RFO lines differ, 0 other lines differ)
+E2 prediction holds: 1c_450.soplex_lru (6 per-type LOAD/RFO lines differ, 0 other lines differ)
+E2 prediction holds: 1c_459.GemsFDTD_lru (2 per-type LOAD/RFO lines differ, 0 other lines differ)
+E2 prediction holds: 1c_462.libquantum_lru (6 per-type LOAD/RFO lines differ, 0 other lines differ)
+E2 prediction holds: 1c_470.lbm_lru (0 per-type LOAD/RFO lines differ, 0 other lines differ)
+E2 prediction holds: 1c_471.omnetpp_lru (6 per-type LOAD/RFO lines differ, 0 other lines differ)
+E2 prediction holds: 1c_473.astar_lru (6 per-type LOAD/RFO lines differ, 0 other lines differ)
+E2 prediction holds: 1c_482.sphinx3_lru (6 per-type LOAD/RFO lines differ, 0 other lines differ)
+E2 prediction holds: 1c_483.xalancbmk_lru (6 per-type LOAD/RFO lines differ, 0 other lines differ)
+E2 prediction holds: 4a_lru (36 per-type LOAD/RFO lines differ, 0 other lines differ)
+E2 prediction holds: 4b_lru (28 per-type LOAD/RFO lines differ, 0 other lines differ)
+E2 prediction holds: 4c_lru (48 per-type LOAD/RFO lines differ, 0 other lines differ)
+== E2: the prediction holds on 15 of 17 ==

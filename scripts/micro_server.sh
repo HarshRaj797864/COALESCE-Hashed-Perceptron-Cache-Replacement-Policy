@@ -10,8 +10,15 @@
 # 8 KB x 8, shared L2 256 KB x 16, one bank). The binary resets the stats at
 # thread 0's start mark and dumps them at its end mark (m5ops), so stats.txt's
 # FIRST block is the measured window.
+#
+# Q16 (breadth_bc_design_2026-11-10.md, amendment 5):
+#   NT=16 ACT0=12 W=~/micro16 CASES="... s16" bash ~/micro_server.sh go
+# builds the program at sixteen threads and runs gem5 with 16 CPUs (one
+# cluster, one shared bank). The defaults are the 4-thread test as it was.
 set -uo pipefail
 W="${W:-$HOME/micro}"
+NT="${NT:-4}"; ACT0="${ACT0:-0}"
+NTF=(); [ "$NT" = 4 ] && [ "$ACT0" = 0 ] || NTF=(-DNT="$NT" -DACT0="$ACT0")
 GEM5_DIR="${GEM5_DIR:-$HOME/gem5}"
 BUILD="X86"; [ -f "$GEM5_DIR/.gem5_build_dir" ] && BUILD="$(cat "$GEM5_DIR/.gem5_build_dir")"
 GEM5="$GEM5_DIR/build/$BUILD/gem5.opt"
@@ -26,10 +33,10 @@ go() {
   [ -x "$GEM5" ] || die "no gem5 at $GEM5"
   [ "$(cat "$GEM5_DIR/.gem5_protocol" 2>/dev/null)" = MESI_Three_Level ] || die "gem5 is not the MESI_Three_Level build"
   [ -f "$W/coherence_micro.c" ] || die "no $W/coherence_micro.c -- upload it"
-  gcc -O2 -static -pthread -DM5OPS -o "$W/micro_m5" "$W/coherence_micro.c" || die "the static build failed"
-  gcc -O2 -pthread -o "$W/micro_native" "$W/coherence_micro.c" || die "the native build failed"
+  gcc -O2 -static -pthread -DM5OPS "${NTF[@]}" -o "$W/micro_m5" "$W/coherence_micro.c" || die "the static build failed"
+  gcc -O2 -pthread "${NTF[@]}" -o "$W/micro_native" "$W/coherence_micro.c" || die "the native build failed"
   for c in $CASES; do timeout 60 "$W/micro_native" "$c" "$ROUNDS" > /dev/null || die "$c fails natively"; done
-  echo "built: $W/micro_m5 (md5 $(md5sum < "$W/micro_m5" | cut -c1-32)); every case runs natively"
+  echo "built: $W/micro_m5 (md5 $(md5sum < "$W/micro_m5" | cut -c1-32); $NT threads, actors from $ACT0); every case runs natively"
   # How gem5's sequencer hands an x86 read-modify-write's load to the protocol
   # (micro_design_2026-10-17.md, M3): read the source, do not recall it.
   local seq="$GEM5_DIR/src/mem/ruby/system/Sequencer.cc"
@@ -44,7 +51,7 @@ go() {
     if [ -f "$odir/stats.txt" ] && grep -q "Exiting @ tick" "$odir/run.log" 2>/dev/null; then echo "   $c: done already"; continue; fi
     if pgrep -u "$(id -u)" -f "[g]em5.opt --outdir=$odir " > /dev/null; then echo "   $c: running"; continue; fi
     rm -rf "$odir"; mkdir -p "$odir"
-    ( cd "$odir" || exit 1; setsid nice -n 19 "$GEM5" --outdir="$odir" "$SE" --ruby --num-cpus=4 --cpu-type=TimingSimpleCPU --mem-size=4GB \
+    ( cd "$odir" || exit 1; setsid nice -n 19 "$GEM5" --outdir="$odir" "$SE" --ruby --num-cpus="$NT" --cpu-type=TimingSimpleCPU --mem-size=4GB \
         --l0i_size=32kB --l0i_assoc=8 --l0d_size=2kB --l0d_assoc=8 --l1d_size=8kB --l1d_assoc=8 \
         --l2_size=256kB --l2_assoc=16 --num-l2caches=1 --num-clusters=1 \
         -c "$W/micro_m5" --options="$cc $r" < /dev/null > "$odir/run.log" 2>&1 & )

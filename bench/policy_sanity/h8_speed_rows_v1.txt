@@ -1,0 +1,332 @@
+# h8_speed.py rows (h8_speed_design_2026-11-14.md, amendment 1), 2026-11-14: step 5 (policy/logs), Part B g6 (partB/stage2/logs), F-C (lockfix/logs, partB/stage2fc/logs); gem5 (gem5_b3 view without cal/fifo/hset)
+CS phaseA_b3_p2_barnesstd4/regime_private/barnes_4core/coalesce 4 50000000 100000000 11158 53.8
+CS phaseA_b3_p2_barnesstd4/regime_private/barnes_4core/drrip 4 50000000 100000000 11613 51.7
+CS phaseA_b3_p2_barnesstd4/regime_private/barnes_4core/hawkeye 4 50000000 100000000 11214 53.5
+CS phaseA_b3_p2_barnesstd4/regime_private/barnes_4core/lru 4 50000000 100000000 11315 53.0
+CS phaseA_b3_p2_barnesstd4/regime_private/barnes_4core/mockingjay 4 50000000 100000000 11447 52.4
+CS phaseA_b3_p2_barnesstd4/regime_private/barnes_4core/random 4 50000000 100000000 11555 51.9
+CS phaseA_b3_p2_barnesstd4/regime_private/barnes_4core/ship 4 50000000 100000000 11444 52.4
+CS phaseA_b3_p2_barnesstd4/regime_private/barnes_4core/srrip 4 50000000 100000000 11227 53.4
+CS phaseA_b3_p2_barnesstd4/regime_private/barnes_4core/srrip_bias 4 50000000 100000000 11610 51.7
+CS phaseA_b3_p2_barnesstd4/regime_shared/barnes_4core/coalesce 4 50000000 100000000 11073 54.2
+CS phaseA_b3_p2_barnesstd4/regime_shared/barnes_4core/drrip 4 50000000 100000000 11389 52.7
+CS phaseA_b3_p2_barnesstd4/regime_shared/barnes_4core/hawkeye 4 50000000 100000000 11152 53.8
+CS phaseA_b3_p2_barnesstd4/regime_shared/barnes_4core/lru 4 50000000 100000000 11541 52.0
+CS phaseA_b3_p2_barnesstd4/regime_shared/barnes_4core/mockingjay 4 50000000 100000000 11275 53.2
+CS phaseA_b3_p2_barnesstd4/regime_shared/barnes_4core/random 4 50000000 100000000 11596 51.7
+CS phaseA_b3_p2_barnesstd4/regime_shared/barnes_4core/ship 4 50000000 100000000 10966 54.7
+CS phaseA_b3_p2_barnesstd4/regime_shared/barnes_4core/srrip 4 50000000 100000000 11331 53.0
+CS phaseA_b3_p2_barnesstd4/regime_shared/barnes_4core/srrip_bias 4 50000000 100000000 11034 54.4
+CS phaseA_b3_p2_barnesstd4_scaled/regime_private/barnes_4core/coalesce 4 50000000 100000000 11152 53.8
+CS phaseA_b3_p2_barnesstd4_scaled/regime_private/barnes_4core/drrip 4 50000000 100000000 10973 54.7
+CS phaseA_b3_p2_barnesstd4_scaled/regime_private/barnes_4core/hawkeye 4 50000000 100000000 11152 53.8
+CS phaseA_b3_p2_barnesstd4_scaled/regime_private/barnes_4core/lru 4 50000000 100000000 11092 54.1
+CS phaseA_b3_p2_barnesstd4_scaled/regime_private/barnes_4core/mockingjay 4 50000000 100000000 10959 54.7
+CS phaseA_b3_p2_barnesstd4_scaled/regime_private/barnes_4core/random 4 50000000 100000000 11174 53.7
+CS phaseA_b3_p2_barnesstd4_scaled/regime_private/barnes_4core/ship 4 50000000 100000000 10778 55.7
+CS phaseA_b3_p2_barnesstd4_scaled/regime_private/barnes_4core/srrip 4 50000000 100000000 11199 53.6
+CS phaseA_b3_p2_barnesstd4_scaled/regime_private/barnes_4core/srrip_bias 4 50000000 100000000 10828 55.4
+CS phaseA_b3_p2_barnesstd4_scaled/regime_shared/barnes_4core/coalesce 4 50000000 100000000 10774 55.7
+CS phaseA_b3_p2_barnesstd4_scaled/regime_shared/barnes_4core/drrip 4 50000000 100000000 10634 56.4
+CS phaseA_b3_p2_barnesstd4_scaled/regime_shared/barnes_4core/hawkeye 4 50000000 100000000 10988 54.6
+CS phaseA_b3_p2_barnesstd4_scaled/regime_shared/barnes_4core/lru 4 50000000 100000000 10946 54.8
+CS phaseA_b3_p2_barnesstd4_scaled/regime_shared/barnes_4core/mockingjay 4 50000000 100000000 10664 56.3
+CS phaseA_b3_p2_barnesstd4_scaled/regime_shared/barnes_4core/random 4 50000000 100000000 10889 55.1
+CS phaseA_b3_p2_barnesstd4_scaled/regime_shared/barnes_4core/ship 4 50000000 100000000 11008 54.5
+CS phaseA_b3_p2_barnesstd4_scaled/regime_shared/barnes_4core/srrip 4 50000000 100000000 11097 54.1
+CS phaseA_b3_p2_barnesstd4_scaled/regime_shared/barnes_4core/srrip_bias 4 50000000 100000000 11226 53.4
+CS phaseA_b3_p2_canneal16/regime_shared/canneal_16core/coalesce 16 50000000 100000000 88792 27.0
+CS phaseA_b3_p2_canneal16/regime_shared/canneal_16core/drrip 16 50000000 100000000 93226 25.7
+CS phaseA_b3_p2_canneal16/regime_shared/canneal_16core/hawkeye 16 50000000 100000000 90489 26.5
+CS phaseA_b3_p2_canneal16/regime_shared/canneal_16core/lru 16 50000000 100000000 96956 24.8
+CS phaseA_b3_p2_canneal16/regime_shared/canneal_16core/mockingjay 16 50000000 100000000 90691 26.5
+CS phaseA_b3_p2_canneal16/regime_shared/canneal_16core/random 16 50000000 100000000 98394 24.4
+CS phaseA_b3_p2_canneal16/regime_shared/canneal_16core/ship 16 50000000 100000000 94556 25.4
+CS phaseA_b3_p2_canneal16/regime_shared/canneal_16core/srrip 16 50000000 100000000 90331 26.6
+CS phaseA_b3_p2_canneal16/regime_shared/canneal_16core/srrip_bias 16 50000000 100000000 89170 26.9
+CS phaseA_b3_p2_canneal16_scaled/regime_shared/canneal_16core/coalesce 16 50000000 100000000 59704 40.2
+CS phaseA_b3_p2_canneal16_scaled/regime_shared/canneal_16core/drrip 16 50000000 100000000 59820 40.1
+CS phaseA_b3_p2_canneal16_scaled/regime_shared/canneal_16core/hawkeye 16 50000000 100000000 59405 40.4
+CS phaseA_b3_p2_canneal16_scaled/regime_shared/canneal_16core/lru 16 50000000 100000000 59237 40.5
+CS phaseA_b3_p2_canneal16_scaled/regime_shared/canneal_16core/mockingjay 16 50000000 100000000 59168 40.6
+CS phaseA_b3_p2_canneal16_scaled/regime_shared/canneal_16core/random 16 50000000 100000000 59471 40.4
+CS phaseA_b3_p2_canneal16_scaled/regime_shared/canneal_16core/ship 16 50000000 100000000 59309 40.5
+CS phaseA_b3_p2_canneal16_scaled/regime_shared/canneal_16core/srrip 16 50000000 100000000 58829 40.8
+CS phaseA_b3_p2_canneal16_scaled/regime_shared/canneal_16core/srrip_bias 16 50000000 100000000 60030 40.0
+CS phaseA_b3_p2_canneal4/regime_private/canneal_4core/coalesce 4 50000000 100000000 20815 28.8
+CS phaseA_b3_p2_canneal4/regime_private/canneal_4core/drrip 4 50000000 100000000 20751 28.9
+CS phaseA_b3_p2_canneal4/regime_private/canneal_4core/hawkeye 4 50000000 100000000 19824 30.3
+CS phaseA_b3_p2_canneal4/regime_private/canneal_4core/lru 4 50000000 100000000 21005 28.6
+CS phaseA_b3_p2_canneal4/regime_private/canneal_4core/mockingjay 4 50000000 100000000 19531 30.7
+CS phaseA_b3_p2_canneal4/regime_private/canneal_4core/random 4 50000000 100000000 21278 28.2
+CS phaseA_b3_p2_canneal4/regime_private/canneal_4core/ship 4 50000000 100000000 21245 28.2
+CS phaseA_b3_p2_canneal4/regime_private/canneal_4core/srrip 4 50000000 100000000 20086 29.9
+CS phaseA_b3_p2_canneal4/regime_private/canneal_4core/srrip_bias 4 50000000 100000000 20959 28.6
+CS phaseA_b3_p2_canneal4/regime_shared/canneal_4core/coalesce 4 50000000 100000000 16922 35.5
+CS phaseA_b3_p2_canneal4/regime_shared/canneal_4core/drrip 4 50000000 100000000 16347 36.7
+CS phaseA_b3_p2_canneal4/regime_shared/canneal_4core/hawkeye 4 50000000 100000000 17627 34.0
+CS phaseA_b3_p2_canneal4/regime_shared/canneal_4core/lru 4 50000000 100000000 19320 31.1
+CS phaseA_b3_p2_canneal4/regime_shared/canneal_4core/mockingjay 4 50000000 100000000 16989 35.3
+CS phaseA_b3_p2_canneal4/regime_shared/canneal_4core/random 4 50000000 100000000 18603 32.3
+CS phaseA_b3_p2_canneal4/regime_shared/canneal_4core/ship 4 50000000 100000000 19621 30.6
+CS phaseA_b3_p2_canneal4/regime_shared/canneal_4core/srrip 4 50000000 100000000 17625 34.0
+CS phaseA_b3_p2_canneal4/regime_shared/canneal_4core/srrip_bias 4 50000000 100000000 17863 33.6
+CS phaseA_b3_p2_canneal4_mshr64/regime_shared/canneal_4core/coalesce 4 50000000 100000000 15568 38.5
+CS phaseA_b3_p2_canneal4_mshr64/regime_shared/canneal_4core/drrip 4 50000000 100000000 16061 37.4
+CS phaseA_b3_p2_canneal4_mshr64/regime_shared/canneal_4core/hawkeye 4 50000000 100000000 15073 39.8
+CS phaseA_b3_p2_canneal4_mshr64/regime_shared/canneal_4core/lru 4 50000000 100000000 17165 35.0
+CS phaseA_b3_p2_canneal4_mshr64/regime_shared/canneal_4core/mockingjay 4 50000000 100000000 15105 39.7
+CS phaseA_b3_p2_canneal4_mshr64/regime_shared/canneal_4core/random 4 50000000 100000000 17034 35.2
+CS phaseA_b3_p2_canneal4_mshr64/regime_shared/canneal_4core/ship 4 50000000 100000000 16075 37.3
+CS phaseA_b3_p2_canneal4_mshr64/regime_shared/canneal_4core/srrip 4 50000000 100000000 15687 38.2
+CS phaseA_b3_p2_canneal4_mshr64/regime_shared/canneal_4core/srrip_bias 4 50000000 100000000 15851 37.9
+CS phaseA_b3_p2_canneal4_scaled/regime_private/canneal_4core/coalesce 4 50000000 100000000 19473 30.8
+CS phaseA_b3_p2_canneal4_scaled/regime_private/canneal_4core/drrip 4 50000000 100000000 18253 32.9
+CS phaseA_b3_p2_canneal4_scaled/regime_private/canneal_4core/hawkeye 4 50000000 100000000 16590 36.2
+CS phaseA_b3_p2_canneal4_scaled/regime_private/canneal_4core/lru 4 50000000 100000000 18890 31.8
+CS phaseA_b3_p2_canneal4_scaled/regime_private/canneal_4core/mockingjay 4 50000000 100000000 16882 35.5
+CS phaseA_b3_p2_canneal4_scaled/regime_private/canneal_4core/random 4 50000000 100000000 18149 33.1
+CS phaseA_b3_p2_canneal4_scaled/regime_private/canneal_4core/ship 4 50000000 100000000 18802 31.9
+CS phaseA_b3_p2_canneal4_scaled/regime_private/canneal_4core/srrip 4 50000000 100000000 18523 32.4
+CS phaseA_b3_p2_canneal4_scaled/regime_private/canneal_4core/srrip_bias 4 50000000 100000000 19539 30.7
+CS phaseA_b3_p2_canneal4_scaled/regime_shared/canneal_4core/coalesce 4 50000000 100000000 14696 40.8
+CS phaseA_b3_p2_canneal4_scaled/regime_shared/canneal_4core/drrip 4 50000000 100000000 14536 41.3
+CS phaseA_b3_p2_canneal4_scaled/regime_shared/canneal_4core/hawkeye 4 50000000 100000000 14638 41.0
+CS phaseA_b3_p2_canneal4_scaled/regime_shared/canneal_4core/lru 4 50000000 100000000 14590 41.1
+CS phaseA_b3_p2_canneal4_scaled/regime_shared/canneal_4core/mockingjay 4 50000000 100000000 14477 41.4
+CS phaseA_b3_p2_canneal4_scaled/regime_shared/canneal_4core/random 4 50000000 100000000 15539 38.6
+CS phaseA_b3_p2_canneal4_scaled/regime_shared/canneal_4core/ship 4 50000000 100000000 14704 40.8
+CS phaseA_b3_p2_canneal4_scaled/regime_shared/canneal_4core/srrip 4 50000000 100000000 14550 41.2
+CS phaseA_b3_p2_canneal4_scaled/regime_shared/canneal_4core/srrip_bias 4 50000000 100000000 14514 41.3
+CS phaseA_b3_p2_canneal8/regime_private/canneal_8core/coalesce 8 50000000 100000000 47014 25.5
+CS phaseA_b3_p2_canneal8/regime_private/canneal_8core/drrip 8 50000000 100000000 47066 25.5
+CS phaseA_b3_p2_canneal8/regime_private/canneal_8core/hawkeye 8 50000000 100000000 46304 25.9
+CS phaseA_b3_p2_canneal8/regime_private/canneal_8core/lru 8 50000000 100000000 47479 25.3
+CS phaseA_b3_p2_canneal8/regime_private/canneal_8core/mockingjay 8 50000000 100000000 45997 26.1
+CS phaseA_b3_p2_canneal8/regime_private/canneal_8core/random 8 50000000 100000000 46813 25.6
+CS phaseA_b3_p2_canneal8/regime_private/canneal_8core/ship 8 50000000 100000000 46416 25.9
+CS phaseA_b3_p2_canneal8/regime_private/canneal_8core/srrip 8 50000000 100000000 46638 25.7
+CS phaseA_b3_p2_canneal8/regime_private/canneal_8core/srrip_bias 8 50000000 100000000 47853 25.1
+CS phaseA_b3_p2_canneal8/regime_shared/canneal_8core/coalesce 8 50000000 100000000 37641 31.9
+CS phaseA_b3_p2_canneal8/regime_shared/canneal_8core/drrip 8 50000000 100000000 39933 30.1
+CS phaseA_b3_p2_canneal8/regime_shared/canneal_8core/hawkeye 8 50000000 100000000 37506 32.0
+CS phaseA_b3_p2_canneal8/regime_shared/canneal_8core/lru 8 50000000 100000000 41179 29.1
+CS phaseA_b3_p2_canneal8/regime_shared/canneal_8core/mockingjay 8 50000000 100000000 38205 31.4
+CS phaseA_b3_p2_canneal8/regime_shared/canneal_8core/random 8 50000000 100000000 40767 29.4
+CS phaseA_b3_p2_canneal8/regime_shared/canneal_8core/ship 8 50000000 100000000 40213 29.8
+CS phaseA_b3_p2_canneal8/regime_shared/canneal_8core/srrip 8 50000000 100000000 40197 29.9
+CS phaseA_b3_p2_canneal8/regime_shared/canneal_8core/srrip_bias 8 50000000 100000000 37406 32.1
+CS phaseA_b3_p2_canneal8_scaled/regime_private/canneal_8core/coalesce 8 50000000 100000000 43455 27.6
+CS phaseA_b3_p2_canneal8_scaled/regime_private/canneal_8core/drrip 8 50000000 100000000 41655 28.8
+CS phaseA_b3_p2_canneal8_scaled/regime_private/canneal_8core/hawkeye 8 50000000 100000000 39494 30.4
+CS phaseA_b3_p2_canneal8_scaled/regime_private/canneal_8core/lru 8 50000000 100000000 42388 28.3
+CS phaseA_b3_p2_canneal8_scaled/regime_private/canneal_8core/mockingjay 8 50000000 100000000 38607 31.1
+CS phaseA_b3_p2_canneal8_scaled/regime_private/canneal_8core/random 8 50000000 100000000 42793 28.0
+CS phaseA_b3_p2_canneal8_scaled/regime_private/canneal_8core/ship 8 50000000 100000000 43972 27.3
+CS phaseA_b3_p2_canneal8_scaled/regime_private/canneal_8core/srrip 8 50000000 100000000 43011 27.9
+CS phaseA_b3_p2_canneal8_scaled/regime_private/canneal_8core/srrip_bias 8 50000000 100000000 43803 27.4
+CS phaseA_b3_p2_canneal8_scaled/regime_shared/canneal_8core/coalesce 8 50000000 100000000 28910 41.5
+CS phaseA_b3_p2_canneal8_scaled/regime_shared/canneal_8core/drrip 8 50000000 100000000 28558 42.0
+CS phaseA_b3_p2_canneal8_scaled/regime_shared/canneal_8core/hawkeye 8 50000000 100000000 27724 43.3
+CS phaseA_b3_p2_canneal8_scaled/regime_shared/canneal_8core/lru 8 50000000 100000000 28844 41.6
+CS phaseA_b3_p2_canneal8_scaled/regime_shared/canneal_8core/mockingjay 8 50000000 100000000 28759 41.7
+CS phaseA_b3_p2_canneal8_scaled/regime_shared/canneal_8core/random 8 50000000 100000000 29831 40.2
+CS phaseA_b3_p2_canneal8_scaled/regime_shared/canneal_8core/ship 8 50000000 100000000 28951 41.4
+CS phaseA_b3_p2_canneal8_scaled/regime_shared/canneal_8core/srrip 8 50000000 100000000 27684 43.3
+CS phaseA_b3_p2_canneal8_scaled/regime_shared/canneal_8core/srrip_bias 8 50000000 100000000 27989 42.9
+CS phaseA_b3_p2_ocean4/regime_private/ocean_4core/coalesce 4 50000000 100000000 22610 26.5
+CS phaseA_b3_p2_ocean4/regime_private/ocean_4core/drrip 4 50000000 100000000 21934 27.4
+CS phaseA_b3_p2_ocean4/regime_private/ocean_4core/hawkeye 4 50000000 100000000 22725 26.4
+CS phaseA_b3_p2_ocean4/regime_private/ocean_4core/lru 4 50000000 100000000 26304 22.8
+CS phaseA_b3_p2_ocean4/regime_private/ocean_4core/mockingjay 4 50000000 100000000 21627 27.7
+CS phaseA_b3_p2_ocean4/regime_private/ocean_4core/random 4 50000000 100000000 24970 24.0
+CS phaseA_b3_p2_ocean4/regime_private/ocean_4core/ship 4 50000000 100000000 24152 24.8
+CS phaseA_b3_p2_ocean4/regime_private/ocean_4core/srrip 4 50000000 100000000 26311 22.8
+CS phaseA_b3_p2_ocean4/regime_private/ocean_4core/srrip_bias 4 50000000 100000000 25964 23.1
+CS phaseA_b3_p2_ocean4/regime_shared/ocean_4core/coalesce 4 50000000 100000000 24838 24.2
+CS phaseA_b3_p2_ocean4/regime_shared/ocean_4core/drrip 4 50000000 100000000 21319 28.1
+CS phaseA_b3_p2_ocean4/regime_shared/ocean_4core/hawkeye 4 50000000 100000000 22704 26.4
+CS phaseA_b3_p2_ocean4/regime_shared/ocean_4core/lru 4 50000000 100000000 25209 23.8
+CS phaseA_b3_p2_ocean4/regime_shared/ocean_4core/mockingjay 4 50000000 100000000 21192 28.3
+CS phaseA_b3_p2_ocean4/regime_shared/ocean_4core/random 4 50000000 100000000 24939 24.1
+CS phaseA_b3_p2_ocean4/regime_shared/ocean_4core/ship 4 50000000 100000000 23733 25.3
+CS phaseA_b3_p2_ocean4/regime_shared/ocean_4core/srrip 4 50000000 100000000 26230 22.9
+CS phaseA_b3_p2_ocean4/regime_shared/ocean_4core/srrip_bias 4 50000000 100000000 26173 22.9
+CS phaseA_b3_p2_ocean4_scaled/regime_private/ocean_4core/coalesce 4 50000000 100000000 19376 31.0
+CS phaseA_b3_p2_ocean4_scaled/regime_private/ocean_4core/drrip 4 50000000 100000000 16655 36.0
+CS phaseA_b3_p2_ocean4_scaled/regime_private/ocean_4core/hawkeye 4 50000000 100000000 17090 35.1
+CS phaseA_b3_p2_ocean4_scaled/regime_private/ocean_4core/lru 4 50000000 100000000 17126 35.0
+CS phaseA_b3_p2_ocean4_scaled/regime_private/ocean_4core/mockingjay 4 50000000 100000000 16167 37.1
+CS phaseA_b3_p2_ocean4_scaled/regime_private/ocean_4core/random 4 50000000 100000000 16320 36.8
+CS phaseA_b3_p2_ocean4_scaled/regime_private/ocean_4core/ship 4 50000000 100000000 16975 35.3
+CS phaseA_b3_p2_ocean4_scaled/regime_private/ocean_4core/srrip 4 50000000 100000000 22871 26.2
+CS phaseA_b3_p2_ocean4_scaled/regime_private/ocean_4core/srrip_bias 4 50000000 100000000 20794 28.9
+CS phaseA_b3_p2_ocean4_scaled/regime_shared/ocean_4core/coalesce 4 50000000 100000000 17720 33.9
+CS phaseA_b3_p2_ocean4_scaled/regime_shared/ocean_4core/drrip 4 50000000 100000000 17027 35.2
+CS phaseA_b3_p2_ocean4_scaled/regime_shared/ocean_4core/hawkeye 4 50000000 100000000 16556 36.2
+CS phaseA_b3_p2_ocean4_scaled/regime_shared/ocean_4core/lru 4 50000000 100000000 17135 35.0
+CS phaseA_b3_p2_ocean4_scaled/regime_shared/ocean_4core/mockingjay 4 50000000 100000000 17085 35.1
+CS phaseA_b3_p2_ocean4_scaled/regime_shared/ocean_4core/random 4 50000000 100000000 16774 35.8
+CS phaseA_b3_p2_ocean4_scaled/regime_shared/ocean_4core/ship 4 50000000 100000000 16751 35.8
+CS phaseA_b3_p2_ocean4_scaled/regime_shared/ocean_4core/srrip 4 50000000 100000000 21848 27.5
+CS phaseA_b3_p2_ocean4_scaled/regime_shared/ocean_4core/srrip_bias 4 50000000 100000000 22656 26.5
+CS phaseA_b3_b16_barnes16/regime_shared/barnes_16core/lru INCOMPLETE
+CS phaseA_b3_b16_fft16/regime_shared/fft_16core/lru INCOMPLETE
+CS phaseA_b3_b16_fluidanimate16/regime_shared/fluidanimate_16core/lru INCOMPLETE
+CS phaseA_b3_b16_fmm16/regime_shared/fmm_16core/lru 16 50000000 100000000 72642 33.0
+CS phaseA_b3_b16_lunc16/regime_shared/lunc_16core/lru INCOMPLETE
+CS phaseA_b3_b16_ocean16/regime_shared/ocean_16core/lru INCOMPLETE
+CS phaseA_b3_b16_oceannc16/regime_shared/oceannc_16core/lru INCOMPLETE
+CS phaseA_b3_b16_radix16/regime_shared/radix_16core/lru INCOMPLETE
+CS phaseA_b3_b16_raytrace16/regime_shared/raytrace_16core/lru INCOMPLETE
+CS phaseA_b3_b16_streamcluster16/regime_shared/streamcluster_16core/lru INCOMPLETE
+CS phaseA_b3_b16_volrend16/regime_shared/volrend_16core/lru INCOMPLETE
+CS phaseA_b3_b16_waternsq16/regime_shared/waternsq_16core/lru 16 50000000 100000000 61636 38.9
+CS phaseA_b3_b1_fft4/regime_shared/fft_4core/lru 4 50000000 100000000 39074 15.4
+CS phaseA_b3_b1_fmm4/regime_shared/fmm_4core/lru 4 50000000 100000000 12068 49.7
+CS phaseA_b3_b1_volrend4/regime_shared/volrend_4core/lru 4 50000000 100000000 15349 39.1
+CS phaseA_b3_b2_barnes8/regime_shared/barnes_8core/lru 8 50000000 100000000 37534 32.0
+CS phaseA_b3_b2_bodytrack8/regime_shared/bodytrack_8core/lru 8 50000000 100000000 46700 25.7
+CS phaseA_b3_b2_fft8/regime_shared/fft_8core/lru 8 50000000 100000000 38284 31.3
+CS phaseA_b3_b2_fluidanimate8/regime_shared/fluidanimate_8core/lru 8 50000000 100000000 56654 21.2
+CS phaseA_b3_b2_fmm8/regime_shared/fmm_8core/lru 8 50000000 100000000 24216 49.6
+CS phaseA_b3_b2_lunc8/regime_shared/lunc_8core/lru 8 50000000 100000000 52687 22.8
+CS phaseA_b3_b2_ocean8/regime_shared/ocean_8core/lru INCOMPLETE
+CS phaseA_b3_b2_oceannc8/regime_shared/oceannc_8core/lru INCOMPLETE
+CS phaseA_b3_b2_radix8/regime_shared/radix_8core/lru INCOMPLETE
+CS phaseA_b3_b2_raytrace8/regime_shared/raytrace_8core/lru 8 50000000 100000000 46459 25.8
+CS phaseA_b3_b2_streamcluster8/regime_shared/streamcluster_8core/lru 8 50000000 100000000 88294 13.6
+CS phaseA_b3_b2_vips8/regime_shared/vips_8core/lru 8 50000000 100000000 58433 20.5
+CS phaseA_b3_b2_volrend8/regime_shared/volrend_8core/lru 8 50000000 100000000 29191 41.1
+CS phaseA_b3_b2_waternsq8/regime_shared/waternsq_8core/lru 8 50000000 100000000 40927 29.3
+CS phaseA_b3_fc_g3_barnes4/regime_shared/barnes_4core/lru 4 50000000 100000000 16757 35.8
+CS phaseA_b3_fc_g3_barnesstd4/regime_shared/barnes_4core/lru 4 37900000 100000000 18849 29.3
+CS phaseA_b3_fc_g3_barnesstd4_force/regime_shared/barnes_4core/lru 4 37900000 50000000 12021 29.2
+CS phaseA_b3_fc_g3_barnesstd4_start/regime_shared/barnes_4core/lru 4 0 37900000 5349 28.3
+CS phaseA_b3_fc_g3_canneal4/regime_shared/canneal_4core/lru 4 50000000 100000000 30932 19.4
+CS phaseA_b3_fc_g3_canneal8/regime_shared/canneal_8core/lru 8 50000000 100000000 62369 19.2
+CS phaseA_b3_fc_g3_fmm4/regime_shared/fmm_4core/lru 4 50000000 100000000 12097 49.6
+CS phaseA_b3_fc_g3_ocean4/regime_shared/ocean_4core/lru 4 50000000 100000000 43456 13.8
+CS phaseA_b3_fc_g3_radix4/regime_shared/radix_4core/lru 4 50000000 100000000 47787 12.6
+CS phaseA_b3_fc_h2_bodytrack4/regime_shared/bodytrack_4core/lru 4 50000000 100000000 13246 45.3
+CS phaseA_b3_fc_h2_fluidanimate4/regime_shared/fluidanimate_4core/lru 4 50000000 100000000 15143 39.6
+CS phaseA_b3_fc_h2_oceannc4/regime_shared/oceannc_4core/lru 4 50000000 100000000 40429 14.8
+CS phaseA_b3_fc_h2_vips4/regime_shared/vips_4core/lru 4 50000000 100000000 17255 34.8
+CS phaseA_b3_fc_n2_lunc4/regime_shared/lunc_4core/lru 4 50000000 100000000 19342 31.0
+CS phaseA_b3_fc_b1_fft4/regime_shared/fft_4core/lru 4 50000000 100000000 15333 39.1
+CS phaseA_b3_fc_b1_fmm4/regime_shared/fmm_4core/lru 4 50000000 100000000 10585 56.7
+CS phaseA_b3_fc_b1_volrend4/regime_shared/volrend_4core/lru 4 50000000 100000000 13479 44.5
+CS phaseA_b3_fc_b2_barnes8/regime_shared/barnes_8core/lru INCOMPLETE
+CS phaseA_b3_fc_b2_fft8/regime_shared/fft_8core/lru INCOMPLETE
+CS phaseA_b3_fc_b2_fmm8/regime_shared/fmm_8core/lru INCOMPLETE
+CS phaseA_b3_fc_b2_lunc8/regime_shared/lunc_8core/lru INCOMPLETE
+CS phaseA_b3_fc_b2_raytrace8/regime_shared/raytrace_8core/lru INCOMPLETE
+CS phaseA_b3_fc_b2_streamcluster8/regime_shared/streamcluster_8core/lru INCOMPLETE
+CS phaseA_b3_fc_b2_volrend8/regime_shared/volrend_8core/lru INCOMPLETE
+CS phaseA_b3_fc_b2_waternsq8/regime_shared/waternsq_8core/lru INCOMPLETE
+G5 barnes/l2_2MB_mi100M/barnes_4c 4 363671756 2342 155.3
+G5 barnes/l2_2MB_mi150M/barnes_4c 4 565593490 3739 151.3
+G5 barnes/l2_2MB_mi50M/barnes_4c 4 163653240 1274 128.4
+G5 barnes/l2_2MB_whole/barnes_4c 4 2190973999 15418 142.1
+G5 barnes_leaf256/l2_2MB_mi150M/barnes_4c 4 562991116 3756 149.9
+G5 barnes_leaf256/l2_2MB_mi50M/barnes_4c 4 162813647 1095 148.7
+G5 canneal/l2_2MB_mi100M/canneal_4c 5 4264495734 30859 138.2
+G5 canneal/l2_2MB_mi150M/canneal_4c 5 4464353035 33268 134.2
+G5 canneal/l2_2MB_mi50M/canneal_4c 5 4065001800 29624 137.2
+G5 canneal/l2_8MB_mi100M/canneal_4c 5 4264475090 30452 140.0
+G5 canneal/l2_8MB_mi150M/canneal_4c 5 4464436530 31698 140.8
+G5 canneal/l2_8MB_mi50M/canneal_4c 5 4065008222 30011 135.5
+G5 canneal8/l2_2MB_mi150M/canneal_8c 9 5062334622 52564 96.3
+G5 canneal8/l2_2MB_mi50M/canneal_8c 9 4264254607 41816 102.0
+G5 heldout/fmm/l2_2MB_mi150M/fmm_4c 4 578820667 6786 85.3
+G5 heldout/fmm/l2_2MB_mi50M/fmm_4c 4 173055455 2852 60.7
+G5 heldout/radix/l2_2MB_mi830M/radix_4c 4 3320075064 32581 101.9
+G5 heldout/radix/l2_2MB_mi930M/radix_4c 4 3720142267 34136 109.0
+G5 heldout/waternsq/l2_2MB_mi150M/waternsq_4c 4 584102111 8151 71.7
+G5 heldout/waternsq/l2_2MB_mi50M/waternsq_4c 4 206827403 3316 62.4
+G5 heldout2/bodytrack/l2_2MB_mi150M/bodytrack_4c 6 674821638 5784 116.7
+G5 heldout2/bodytrack/l2_2MB_mi50M/bodytrack_4c 6 259693130 2344 110.8
+G5 heldout2/facesim/l2_2MB_mi150M/facesim_4c 4 8529491729 52503 162.5
+G5 heldout2/facesim/l2_2MB_mi50M/facesim_4c 4 8129686063 54478 149.2
+G5 heldout2/fluidanimate/l2_2MB_mi150M/fluidanimate_4c 5 716469433 6397 112.0
+G5 heldout2/fluidanimate/l2_2MB_mi50M/fluidanimate_4c 5 330464367 3117 106.0
+G5 heldout2/oceannc/l2_2MB_mi150M/oceannc_4c 4 601720414 8418 71.5
+G5 heldout2/oceannc/l2_2MB_mi50M/oceannc_4c 4 201953613 3137 64.4
+G5 heldout2/vips/l2_2MB_mi150M/vips_4c 7 718892626 6501 110.6
+G5 heldout2/vips/l2_2MB_mi50M/vips_4c 7 320188839 3059 104.7
+G5 l2_2MB_mi150M/ocean_4c 4 596013748 10070 59.2
+G5 l2_2MB_mi50M/ocean_4c 4 198817986 4202 47.3
+G5 l2_8MB_mi150M/ocean_4c 4 596007552 5304 112.4
+G5 l2_8MB_mi50M/ocean_4c 4 198822561 1648 120.7
+G5 newbench/fft/l2_2MB_mi150M/fft_4c 4 1938658147 104491 18.6
+G5 newbench/fft/l2_2MB_mi50M/fft_4c 4 1539228961 69575 22.1
+G5 newbench/lu/l2_2MB_mi150M/lu_4c 4 740989097 46368 16.0
+G5 newbench/lu/l2_2MB_mi50M/lu_4c 4 352160637 24446 14.4
+G5 newbench/lunc/l2_2MB_mi150M/lunc_4c 4 678848381 4802 141.4
+G5 newbench/lunc/l2_2MB_mi50M/lunc_4c 4 284644556 1834 155.2
+G5 newbench/radiosity/l2_2MB_mi150M/radiosity_4c 4 1271288646 127016 10.0
+G5 newbench/radiosity/l2_2MB_mi50M/radiosity_4c 4 874316063 91679 9.5
+G5 newbench/raytrace/l2_2MB_mi150M/raytrace_4c 4 774110654 54348 14.2
+G5 newbench/raytrace/l2_2MB_mi50M/raytrace_4c 4 382559026 29539 13.0
+G5 newbench/streamcluster/l2_2MB_mi150M/streamcluster_4c 5 714658783 52602 13.6
+G5 newbench/streamcluster/l2_2MB_mi50M/streamcluster_4c 5 326310419 23083 14.1
+G5 newbench/volrend/l2_2MB_mi150M/volrend_4c 4 2652285896 140751 18.8
+G5 newbench/volrend/l2_2MB_mi50M/volrend_4c 4 2276126500 103548 22.0
+G5 partB/barnes_16/l2_2MB_mi150M/barnes_16c 16 2331820467 43426 53.7
+G5 partB/barnes_16/l2_2MB_mi50M/barnes_16c 16 846272086 15291 55.3
+G5 partB/barnes_8/l2_2MB_mi150M/barnes_8c 8 1245509176 20828 59.8
+G5 partB/barnes_8/l2_2MB_mi50M/barnes_8c 8 447271963 7564 59.1
+G5 partB/bodytrack_16/l2_2MB_mi150M/bodytrack_16c 18 2541286221 40396 62.9
+G5 partB/bodytrack_16/l2_2MB_mi50M/bodytrack_16c 18 917001204 14057 65.2
+G5 partB/bodytrack_8/l2_2MB_mi150M/bodytrack_8c 10 1261758288 15691 80.4
+G5 partB/bodytrack_8/l2_2MB_mi50M/bodytrack_8c 10 453577623 5760 78.7
+G5 partB/canneal_16/l2_2MB_mi150M/canneal_16c 17 6258397912 90318 69.3
+G5 partB/canneal_16/l2_2MB_mi50M/canneal_16c 17 4659887442 58607 79.5
+G5 partB/fft_16/l2_2MB_mi150M/fft_16c 16 7743649011 103999 74.5
+G5 partB/fft_16/l2_2MB_mi50M/fft_16c 16 6146819278 77328 79.5
+G5 partB/fft_8/l2_2MB_mi150M/fft_8c 8 6556369604 79052 82.9
+G5 partB/fft_8/l2_2MB_mi50M/fft_8c 8 5756430363 67536 85.2
+G5 partB/fluidanimate_16/l2_2MB_mi150M/fluidanimate_16c 17 2902548509 45345 64.0
+G5 partB/fluidanimate_16/l2_2MB_mi50M/fluidanimate_16c 17 1635708627 21198 77.2
+G5 partB/fluidanimate_8/l2_2MB_mi150M/fluidanimate_8c 9 1369049225 17823 76.8
+G5 partB/fluidanimate_8/l2_2MB_mi50M/fluidanimate_8c 9 649161471 8055 80.6
+G5 partB/fmm_16/l2_2MB_mi150M/fmm_16c 16 1501135220 20258 74.1
+G5 partB/fmm_16/l2_2MB_mi50M/fmm_16c 16 109245881 1687 64.7
+G5 partB/fmm_8/l2_2MB_mi150M/fmm_8c 8 808665736 10528 76.8
+G5 partB/fmm_8/l2_2MB_mi50M/fmm_8c 8 108987906 1515 72.0
+G5 partB/lunc_16/l2_2MB_mi150M/lunc_16c 16 2692154037 46679 57.7
+G5 partB/lunc_16/l2_2MB_mi50M/lunc_16c 16 1122647076 17508 64.1
+G5 partB/lunc_8/l2_2MB_mi150M/lunc_8c 8 1231714551 18936 65.0
+G5 partB/lunc_8/l2_2MB_mi50M/lunc_8c 8 475568930 7085 67.1
+G5 partB/ocean_16/l2_2MB_mi150M/ocean_16c 16 2387356261 63216 37.8
+G5 partB/ocean_16/l2_2MB_mi50M/ocean_16c 16 799090680 21501 37.2
+G5 partB/ocean_8/l2_2MB_mi150M/ocean_8c 8 1188577890 27119 43.8
+G5 partB/ocean_8/l2_2MB_mi50M/ocean_8c 8 400122742 9530 42.0
+G5 partB/oceannc_16/l2_2MB_mi150M/oceannc_16c 16 2403883803 62743 38.3
+G5 partB/oceannc_16/l2_2MB_mi50M/oceannc_16c 16 806999515 20122 40.1
+G5 partB/oceannc_8/l2_2MB_mi150M/oceannc_8c 8 1206916755 26591 45.4
+G5 partB/oceannc_8/l2_2MB_mi50M/oceannc_8c 8 407255153 9105 44.7
+G5 partB/radix_16/l2_2MB_mi1610M/radix_16c UNREAD
+G5 partB/radix_16/l2_2MB_mi1710M/radix_16c UNREAD
+G5 partB/radix_8/l2_2MB_mi1610M/radix_8c 8 12879772172 156571 82.3
+G5 partB/radix_8/l2_2MB_mi1710M/radix_8c 8 13673262795 174144 78.5
+G5 partB/raytrace_16/l2_2MB_mi150M/raytrace_16c 16 2435528570 57385 42.4
+G5 partB/raytrace_16/l2_2MB_mi50M/raytrace_16c 16 910370269 18685 48.7
+G5 partB/raytrace_8/l2_2MB_mi150M/raytrace_8c 8 1336263789 23976 55.7
+G5 partB/raytrace_8/l2_2MB_mi50M/raytrace_8c 8 567626286 9427 60.2
+G5 partB/streamcluster_16/l2_2MB_mi150M/streamcluster_16c 17 2397793632 46207 51.9
+G5 partB/streamcluster_16/l2_2MB_mi50M/streamcluster_16c 17 798406619 13061 61.1
+G5 partB/streamcluster_8/l2_2MB_mi150M/streamcluster_8c 9 1275798961 20664 61.7
+G5 partB/streamcluster_8/l2_2MB_mi50M/streamcluster_8c 9 478027004 7086 67.5
+G5 partB/vips_16/l2_2MB_mi150M/vips_16c 19 2512325981 45451 55.3
+G5 partB/vips_16/l2_2MB_mi50M/vips_16c 19 916046858 13633 67.2
+G5 partB/vips_8/l2_2MB_mi150M/vips_8c 11 1317550375 17664 74.6
+G5 partB/vips_8/l2_2MB_mi50M/vips_8c 11 519155023 6741 77.0
+G5 partB/volrend_16/l2_2MB_mi150M/volrend_16c 16 3899586110 51297 76.0
+G5 partB/volrend_16/l2_2MB_mi50M/volrend_16c 16 2701056009 29636 91.1
+G5 partB/volrend_8/l2_2MB_mi150M/volrend_8c 8 3130462799 34763 90.1
+G5 partB/volrend_8/l2_2MB_mi50M/volrend_8c 8 2447397364 25186 97.2
+G5 partB/waternsq_16/l2_2MB_mi150M/waternsq_16c 16 2288654288 36266 63.1
+G5 partB/waternsq_16/l2_2MB_mi50M/waternsq_16c 16 778580019 11578 67.2
+G5 partB/waternsq_8/l2_2MB_mi150M/waternsq_8c 8 1140489989 15816 72.1
+G5 partB/waternsq_8/l2_2MB_mi50M/waternsq_8c 8 392080116 5262 74.5

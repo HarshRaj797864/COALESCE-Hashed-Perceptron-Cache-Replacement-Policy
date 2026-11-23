@@ -113,6 +113,11 @@ struct cache_stats {
   uint64_t coherence_dir_upgrade_g5_silent = 0;
   uint64_t coherence_dir_view_order_by_silent = 0;
   uint64_t coherence_dir_view_order_unexplained = 0;
+  // C (load_side_design_2026-11-18.md), records only: a read at the LLC that
+  // finds another core listed by the gem5-rule view as the line's exclusive
+  // holder -- LOADs (data and instruction), and any other read (TRANSLATION).
+  uint64_t coherence_dir_load_g5_owner_events = 0;
+  uint64_t coherence_dir_otherread_g5_owner_events = 0;
 
   // Sharer-count histogram, indexed by popcount(sharer_mask), recorded in the
   // replacement policy's per-way scan. Establishes whether cross-core sharing

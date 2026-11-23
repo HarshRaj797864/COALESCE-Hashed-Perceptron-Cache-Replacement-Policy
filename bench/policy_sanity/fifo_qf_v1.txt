@@ -1,0 +1,14 @@
+# H1 (fifo_check_design_2026-11-14.md): QF0 / QF1 recomputed on the laptop from the pulled runs (simulator/results/fifo/runs) against simulator/results/gem5_b3_view, server paths mapped; 2026-11-17
+01 | QF0 PASS: 8 buffers false -> true over 4 L0 controllers | QF1 COMPLETE-IDENTICAL: 2958 statistics lines equal (host lines aside); finalTick 574597583500
+02 | QF0 PASS: 8 buffers false -> true over 4 L0 controllers | QF1 COMPLETE-IDENTICAL: 2957 statistics lines equal (host lines aside); finalTick 386269570500
+03 | QF0 PASS: 10 buffers false -> true over 5 L0 controllers | QF1 COMPLETE-IDENTICAL: 3397 statistics lines equal (host lines aside); finalTick 7705267225000
+04 | QF0 PASS: 10 buffers false -> true over 5 L0 controllers | QF1 COMPLETE-IDENTICAL: 3373 statistics lines equal (host lines aside); finalTick 7528326499000
+05 | QF0 PASS: 18 buffers false -> true over 9 L0 controllers | QF1 COMPLETE-IDENTICAL: 5271 statistics lines equal (host lines aside); finalTick 7711279777500
+06 | QF0 PASS: 8 buffers false -> true over 4 L0 controllers | QF1 PANIC tick 323384552500 buffer system.ruby.l0_cntrl0.bufferFromL1 delta 500 arrival 323384553000 last 323384553500 phase window (short stop ends at 104456444500)
+07 | QF0 PASS: 8 buffers false -> true over 4 L0 controllers | QF1 COMPLETE-IDENTICAL: 2947 statistics lines equal (host lines aside); finalTick 304103892000
+08 | QF0 PASS: 8 buffers false -> true over 4 L0 controllers | QF1 COMPLETE-IDENTICAL: 2959 statistics lines equal (host lines aside); finalTick 1799956709000
+09 | QF0 PASS: 8 buffers false -> true over 4 L0 controllers | QF1 COMPLETE-IDENTICAL: 2952 statistics lines equal (host lines aside); finalTick 501798487000
+10 | QF0 PASS: 10 buffers false -> true over 5 L0 controllers | QF1 COMPLETE-IDENTICAL: 3424 statistics lines equal (host lines aside); finalTick 634101386500
+11 | QF0 PASS: 10 buffers false -> true over 5 L0 controllers | QF1 COMPLETE-IDENTICAL: 3409 statistics lines equal (host lines aside); finalTick 517103703000
+12 | QF0 PASS: 14 buffers false -> true over 7 L0 controllers | QF1 COMPLETE-IDENTICAL: 4287 statistics lines equal (host lines aside); finalTick 485707461000
+13 | QF0 PASS: 8 buffers false -> true over 4 L0 controllers | QF1 COMPLETE-IDENTICAL: 2964 statistics lines equal (host lines aside); finalTick 556775727500

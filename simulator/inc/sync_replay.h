@@ -61,7 +61,21 @@ bool mutex_ready(unsigned cpu, uint64_t mutex); // free and this core first? If 
 void mutex_take(unsigned cpu, uint64_t mutex, bool ordered);
 void mutex_release(unsigned cpu, uint64_t mutex);
 void note_mutex_stall(unsigned cpu);
+// Records only (lock_wait_design_2026-11-06.md): a cycle the core's acquire was held for its
+// mutex (notes whether another core held it or was ahead), and the acquire taking it (counts it
+// as waited, contended or own, in the core's phase).
+void note_mutex_wait(unsigned cpu, uint64_t mutex, bool measured);
+void note_mutex_taken(unsigned cpu, bool measured);
 void print_state(); // the mutexes held or waited for (a deadlock printout)
+
+// F-C (bench/policy_sanity/lock_fix_design_2026-11-12.md): sync_lock_word "none" (the
+// default: nothing changes) or "request": on the first cycle a mutex hold is contended,
+// the held core issues one ownership request for the mutex's word (the lock word), as a
+// waiter's failed lock cmpxchg does natively. Own waits issue nothing.
+void set_lock_word(const std::string& mode);
+bool lock_word_request();
+bool mutex_contended(unsigned cpu, uint64_t mutex); // another core holds it, or is ahead of this one in its queue
+void note_lock_word_request(unsigned cpu, bool measured);
 
 // A release is a fence, as an unlock or a barrier is on x86: it retires only
 // when every older store of its core has been performed -- issued to the L1D
@@ -69,6 +83,19 @@ void print_state(); // the mutexes held or waited for (a deadlock printout)
 // core's L1D registers a check for writes it still holds.
 void register_l1d_pending(unsigned cpu, std::function<bool()> has_pending_writes);
 bool l1d_pending_writes(unsigned cpu);
+
+// K2 step 3 (bench/policy_sanity/k2_sharing_gap_design_2026-11-17.md, amendment 2): a
+// DIAGNOSTIC setting, never the tool's. sync_lead_limit Delta (instructions; 0, the default,
+// is off: nothing is called and nothing printed). pos(c) = instructions core c has retired
+// since its trace's first record. S = the cores whose dispatch head is not held by a sync
+// record and which have not completed the phase. Core c is not dispatched in a cycle where
+// pos(c) - min over S of pos > Delta (unless its head is sync-held); with S empty, nothing
+// is held. Lead-held cycles count for the livelock check only. Records: printed when on.
+void set_lead_limit(uint64_t delta);
+uint64_t lead_limit();
+bool lead_check(unsigned cpu, uint64_t pos);                       // stores pos; true: hold this cycle
+void note_lead(unsigned cpu, bool waiting, bool held, bool measured); // this cycle's waiting flag and hold
+void set_done(unsigned cpu, bool done);                            // the core has completed the phase
 } // namespace champsim::sync
 
 #endif

@@ -1,0 +1,1014 @@
+# Part B sizing records; keys: 29
+barnes_8|CHOSEN|b65536||/home/harshraj/partB/barnes_8/barnes.in|
+barnes_8|NTHR|8
+barnes_8|NCPU|8
+barnes_8|SKIP|0
+barnes_8|MIN|1183045172
+barnes_8|MD5|dynamic 0a70bc1c7f373793332e83c727d6a380 /home/harshraj/barnes_std_build/codes/apps/barnes/BARNES
+barnes_8|MD5|static 75e48ad7d7768ff150217965b215baf7 /home/harshraj/splash-static/BARNES
+barnes_8|PROGS|barnes_8|/home/harshraj/barnes_std_build/codes/apps/barnes/BARNES||/home/harshraj/partB/barnes_8/barnes.in||0 1 2 3 4 5 6 7|0|auto
+barnes_8|JOBS|barnes8|barnes|8|0|50000000|100000000|barnes_8
+barnes_8|GEM5|barnes_8|/home/harshraj/splash-static/BARNES||/home/harshraj/partB/barnes_8/barnes.in||8|1:8|168h|50000000|150000000
+barnes_8|TOTAL|t0|1267346431
+barnes_8|TOTAL|t1|1206612425
+barnes_8|TOTAL|t2|1255428491
+barnes_8|TOTAL|t3|1256277179
+barnes_8|TOTAL|t4|1183045172
+barnes_8|TOTAL|t5|1235246815
+barnes_8|TOTAL|t6|1263470744
+barnes_8|TOTAL|t7|1191246782
+barnes_8|STARTS|8
+barnes_8|FIRST_BROADCAST|t7|50104
+barnes_8|LOG|=== 2026-11-11 13:39:46  barnes_8: E3 8 threads; E5 traced threads (0 1 2 3 4 5 6 7) >= 300 M each
+barnes_8|LOG|    dynamic /home/harshraj/barnes_std_build/codes/apps/barnes/BARNES (0a70bc1c)
+barnes_8|LOG|   rung b16384: BARNES  < barnes.in ( 16384 123  0.025 0.05 1.0 2.0 5.0 0.075 0.25 8 )
+barnes_8|LOG|      8 threads: t0 283M  t1 269M  t2 280M  t3 280M  t4 262M  t5 273M  t6 281M  t7 264M  
+barnes_8|LOG|      native window (t1 50-150 M; reported only): traced threads 89.2-150.0 M each; untraced/traced 0.00%
+barnes_8|LOG|      not chosen (E5): 0:282655083 1:268773489 2:279678239 3:280147354 4:262224049 5:273408666 6:280690276 7:264474004
+barnes_8|LOG|   rung b65536: BARNES  < barnes.in ( 65536 123  0.025 0.05 1.0 2.0 5.0 0.075 0.25 8 )
+barnes_8|LOG|      8 threads: t0 1267M  t1 1207M  t2 1255M  t3 1256M  t4 1183M  t5 1235M  t6 1263M  t7 1191M  
+barnes_8|LOG|      native window (t1 50-150 M; reported only): traced threads 87.1-121.4 M each; untraced/traced 0.00%
+barnes_8|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 1183 M)
+barnes_8|LOG|=== 2026-11-11 13:40:01  barnes_8: sized on b65536; gem5 8 CPUs, worker stop cpu[1:8] at 50 M and 150 M, limit 168h
+bodytrack_8|CHOSEN|simmedium|sequenceB_2 4 2 2000 5 0 8||/home/harshraj/heldout2/bodytrack/inputs/simmedium/sequenceB_2
+bodytrack_8|NTHR|10
+bodytrack_8|NCPU|10
+bodytrack_8|SKIP|0
+bodytrack_8|MIN|370713059
+bodytrack_8|MD5|dynamic a01e66caa828c07aed21e344d42212e6 /home/harshraj/heldout2_build/bodytrack/bodytrack.dyn
+bodytrack_8|MD5|static 59d390bcc44d8837fa38cc5205a3f8b4 /home/harshraj/heldout2_static/bodytrack
+bodytrack_8|PROGS|bodytrack_8|/home/harshraj/heldout2_build/bodytrack/bodytrack.dyn|sequenceB_2 4 2 2000 5 0 8||/home/harshraj/heldout2/bodytrack/inputs/simmedium/sequenceB_2|1 2 3 4 5 6 7 8|0|0
+bodytrack_8|JOBS|bodytrack8|bodytrack|8|0|50000000|100000000|bodytrack_8
+bodytrack_8|GEM5|bodytrack_8|/home/harshraj/heldout2_static/bodytrack|sequenceB_2 4 2 2000 5 0 8||/home/harshraj/heldout2/bodytrack/inputs/simmedium/sequenceB_2|10|1:9|168h|50000000|150000000
+bodytrack_8|TOTAL|t0|281591118
+bodytrack_8|TOTAL|t1|370713059
+bodytrack_8|TOTAL|t2|378732209
+bodytrack_8|TOTAL|t3|389245403
+bodytrack_8|TOTAL|t4|409746740
+bodytrack_8|TOTAL|t5|440102381
+bodytrack_8|TOTAL|t6|441976725
+bodytrack_8|TOTAL|t7|390170410
+bodytrack_8|TOTAL|t8|382633047
+bodytrack_8|TOTAL|t9|60390722
+bodytrack_8|STARTS|10
+bodytrack_8|FIRST_BROADCAST|t0|2681911
+bodytrack_8|LOG|=== 2026-11-11 13:40:06  bodytrack_8: E3 10 threads; E5 traced threads (1 2 3 4 5 6 7 8) >= 300 M each
+bodytrack_8|LOG|    dynamic /home/harshraj/heldout2_build/bodytrack/bodytrack.dyn (a01e66ca)
+bodytrack_8|LOG|   rung simmedium: bodytrack.dyn sequenceB_2 4 2 2000 5 0 8
+bodytrack_8|LOG|      10 threads: t0 282M  t1 371M  t2 379M  t3 389M  t4 410M  t5 440M  t6 442M  t7 390M  t8 383M  t9 60M  
+bodytrack_8|LOG|      native window (t1 50-150 M; reported only): traced threads 98.7-111.3 M each; untraced/traced 1.54%
+bodytrack_8|LOG|      untraced: t0 281.6M  t9 60.4M  
+bodytrack_8|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 370 M)
+bodytrack_8|LOG|=== 2026-11-11 13:40:17  bodytrack_8: sized on simmedium; gem5 10 CPUs, worker stop cpu[1:9] at 50 M and 150 M, limit 168h
+fft_8|CHOSEN|m24|-m24 -p8||
+fft_8|NTHR|8
+fft_8|NCPU|8
+fft_8|SKIP|0
+fft_8|MIN|1141086904
+fft_8|MD5|dynamic cda982a16dba1b575e7ff000f605ed25 /home/harshraj/newbench_build/fft/codes/kernels/fft/FFT.dyn
+fft_8|MD5|static b640125e31768f20651a1ee159ef9b5b /home/harshraj/splash-newbench/FFT
+fft_8|PROGS|fft_8|/home/harshraj/newbench_build/fft/codes/kernels/fft/FFT.dyn|-m24 -p8|||0 1 2 3 4 5 6 7|0|auto
+fft_8|JOBS|fft8|fft|8|0|50000000|100000000|fft_8
+fft_8|GEM5|fft_8|/home/harshraj/splash-newbench/FFT|-m24 -p8|||8|1:8|168h|50000000|150000000
+fft_8|TOTAL|t0|6102468813
+fft_8|TOTAL|t1|1141090542
+fft_8|TOTAL|t2|1141087068
+fft_8|TOTAL|t3|1141086904
+fft_8|TOTAL|t4|1141086917
+fft_8|TOTAL|t5|1141087784
+fft_8|TOTAL|t6|1141086980
+fft_8|TOTAL|t7|1141087076
+fft_8|STARTS|8
+fft_8|FIRST_BROADCAST|t7|907
+fft_8|LOG|=== 2026-11-11 13:39:46  fft_8: E3 8 threads; E5 traced threads (0 1 2 3 4 5 6 7) >= 300 M each
+fft_8|LOG|    dynamic /home/harshraj/newbench_build/fft/codes/kernels/fft/FFT.dyn (cda982a1)
+fft_8|LOG|   rung m22: FFT.dyn -m22 -p8
+fft_8|LOG|      8 threads: t0 1506M  t1 266M  t2 266M  t3 266M  t4 266M  t5 266M  t6 266M  t7 266M  
+fft_8|LOG|      native window (t1 50-150 M; reported only): traced threads 91.8-131.2 M each; untraced/traced 0.00%
+fft_8|LOG|      not chosen (E5): 1:265926680 2:265923670 3:265922929 4:265923307 5:265922728 6:265923488 7:265922996
+fft_8|LOG|   rung m24: FFT.dyn -m24 -p8
+fft_8|LOG|      8 threads: t0 6102M  t1 1141M  t2 1141M  t3 1141M  t4 1141M  t5 1141M  t6 1141M  t7 1141M  
+fft_8|LOG|      native window (t1 50-150 M; reported only): traced threads 100.0-158.4 M each; untraced/traced 0.00%
+fft_8|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 1141 M)
+fft_8|LOG|=== 2026-11-11 13:40:17  fft_8: sized on m24; gem5 8 CPUs, worker stop cpu[1:8] at 50 M and 150 M, limit 168h
+fluidanimate_8|CHOSEN|simmedium|8 5 in_100K.fluid out.fluid||/home/harshraj/heldout2/fluidanimate/inputs/simmedium/in_100K.fluid
+fluidanimate_8|NTHR|9
+fluidanimate_8|NCPU|9
+fluidanimate_8|SKIP|0
+fluidanimate_8|MIN|392087133
+fluidanimate_8|MD5|dynamic 99251eacee0fea4b2f152828b8826ce0 /home/harshraj/heldout2_build/fluidanimate/fluidanimate.dyn
+fluidanimate_8|MD5|static 5632b0123a78c14594850e9b71dd2c00 /home/harshraj/heldout2_static/fluidanimate
+fluidanimate_8|PROGS|fluidanimate_8|/home/harshraj/heldout2_build/fluidanimate/fluidanimate.dyn|8 5 in_100K.fluid out.fluid||/home/harshraj/heldout2/fluidanimate/inputs/simmedium/in_100K.fluid|1 2 3 4 5 6 7 8|0|0
+fluidanimate_8|JOBS|fluidanimate8|fluidanimate|8|0|50000000|100000000|fluidanimate_8
+fluidanimate_8|GEM5|fluidanimate_8|/home/harshraj/heldout2_static/fluidanimate|8 5 in_100K.fluid out.fluid||/home/harshraj/heldout2/fluidanimate/inputs/simmedium/in_100K.fluid|9|1:9|168h|50000000|150000000
+fluidanimate_8|TOTAL|t0|511693846
+fluidanimate_8|TOTAL|t1|399040290
+fluidanimate_8|TOTAL|t2|438707492
+fluidanimate_8|TOTAL|t3|392087133
+fluidanimate_8|TOTAL|t4|429668944
+fluidanimate_8|TOTAL|t5|439896028
+fluidanimate_8|TOTAL|t6|480850582
+fluidanimate_8|TOTAL|t7|407209002
+fluidanimate_8|TOTAL|t8|447323714
+fluidanimate_8|STARTS|9
+fluidanimate_8|LOG|=== 2026-11-11 13:40:06  fluidanimate_8: E3 9 threads; E5 traced threads (1 2 3 4 5 6 7 8) >= 300 M each
+fluidanimate_8|LOG|    dynamic /home/harshraj/heldout2_build/fluidanimate/fluidanimate.dyn (99251eac)
+fluidanimate_8|LOG|   rung simsmall: fluidanimate.dyn 8 5 in_35K.fluid out.fluid
+fluidanimate_8|LOG|      9 threads: t0 263M  t1 215M  t2 223M  t3 167M  t4 173M  t5 207M  t6 196M  t7 187M  t8 196M  
+fluidanimate_8|LOG|      native window (t1 50-150 M; reported only): traced threads 77.4-103.8 M each; untraced/traced 0.00%
+fluidanimate_8|LOG|      untraced: t0 262.8M  
+fluidanimate_8|LOG|      not chosen (E5): 1:215140037 2:223318763 3:167248242 4:172826087 5:206837186 6:196120353 7:187135219 8:195681896
+fluidanimate_8|LOG|   rung simmedium: fluidanimate.dyn 8 5 in_100K.fluid out.fluid
+fluidanimate_8|LOG|      9 threads: t0 512M  t1 399M  t2 439M  t3 392M  t4 430M  t5 440M  t6 481M  t7 407M  t8 447M  
+fluidanimate_8|LOG|      native window (t1 50-150 M; reported only): traced threads 100.0-119.3 M each; untraced/traced 0.00%
+fluidanimate_8|LOG|      untraced: t0 511.7M  
+fluidanimate_8|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 392 M)
+fluidanimate_8|LOG|=== 2026-11-11 13:40:22  fluidanimate_8: sized on simmedium; gem5 9 CPUs, worker stop cpu[1:9] at 50 M and 150 M, limit 168h
+fmm_8|CHOSEN|p65536||/home/harshraj/partB/fmm_8/fmm.in|
+fmm_8|NTHR|8
+fmm_8|NCPU|8
+fmm_8|SKIP|0
+fmm_8|MIN|1267608042
+fmm_8|MD5|dynamic aed6b1f2de841f93fe4c6f31d83397b6 /home/harshraj/b3_heldout_build/fmm/codes/apps/fmm/FMM.dyn
+fmm_8|MD5|static be09b0b21241673dbdf56ef37b756ce5 /home/harshraj/splash-heldout/FMM
+fmm_8|PROGS|fmm_8|/home/harshraj/b3_heldout_build/fmm/codes/apps/fmm/FMM.dyn||/home/harshraj/partB/fmm_8/fmm.in||0 1 2 3 4 5 6 7|0|auto
+fmm_8|JOBS|fmm8|fmm|8|0|50000000|100000000|fmm_8
+fmm_8|GEM5|fmm_8|/home/harshraj/splash-heldout/FMM||/home/harshraj/partB/fmm_8/fmm.in||8|1:8|168h|50000000|150000000
+fmm_8|TOTAL|t0|1337806324
+fmm_8|TOTAL|t1|1305622934
+fmm_8|TOTAL|t2|1288712468
+fmm_8|TOTAL|t3|1280800777
+fmm_8|TOTAL|t4|1276475087
+fmm_8|TOTAL|t5|1267608042
+fmm_8|TOTAL|t6|1277201761
+fmm_8|TOTAL|t7|1347389329
+fmm_8|STARTS|8
+fmm_8|FIRST_BROADCAST|t7|2308
+fmm_8|LOG|=== 2026-11-11 13:40:06  fmm_8: E3 8 threads; E5 traced threads (0 1 2 3 4 5 6 7) >= 300 M each
+fmm_8|LOG|    dynamic /home/harshraj/b3_heldout_build/fmm/codes/apps/fmm/FMM.dyn (aed6b1f2)
+fmm_8|LOG|   rung p16384: FMM.dyn  < fmm.in (two cluster plummer 16384 1e-6 8 5 .025 0.0 cost zones )
+fmm_8|LOG|      8 threads: t0 305M  t1 293M  t2 304M  t3 302M  t4 299M  t5 300M  t6 297M  t7 322M  
+fmm_8|LOG|      native window (t1 50-150 M; reported only): traced threads 100.0-102.8 M each; untraced/traced 0.00%
+fmm_8|LOG|      not chosen (E5): 1:292576083 4:299048417 5:299612650 6:297234459
+fmm_8|LOG|   rung p65536: FMM.dyn  < fmm.in (two cluster plummer 65536 1e-6 8 5 .025 0.0 cost zones )
+fmm_8|LOG|      8 threads: t0 1338M  t1 1306M  t2 1289M  t3 1281M  t4 1276M  t5 1268M  t6 1277M  t7 1347M  
+fmm_8|LOG|      native window (t1 50-150 M; reported only): traced threads 100.0-117.0 M each; untraced/traced 0.00%
+fmm_8|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 1267 M)
+fmm_8|LOG|=== 2026-11-11 13:40:19  fmm_8: sized on p65536; gem5 8 CPUs, worker stop cpu[1:8] at 50 M and 150 M, limit 168h
+lunc_8|CHOSEN|n1024|-n1024 -p8 -b16||
+lunc_8|NTHR|8
+lunc_8|NCPU|8
+lunc_8|SKIP|0
+lunc_8|MIN|360919180
+lunc_8|MD5|dynamic 2df78c2564ee15cc7fc1bd98f14802fa /home/harshraj/newbench_build/lunc/codes/kernels/lu/non_contiguous_blocks/LU.dyn
+lunc_8|MD5|static 58d11531bc828197d93b0d7d2aaa225a /home/harshraj/splash-newbench/LU-NC
+lunc_8|PROGS|lunc_8|/home/harshraj/newbench_build/lunc/codes/kernels/lu/non_contiguous_blocks/LU.dyn|-n1024 -p8 -b16|||0 1 2 3 4 5 6 7|0|auto
+lunc_8|JOBS|lunc8|lunc|8|0|50000000|100000000|lunc_8
+lunc_8|GEM5|lunc_8|/home/harshraj/splash-newbench/LU-NC|-n1024 -p8 -b16|||8|1:8|168h|50000000|150000000
+lunc_8|TOTAL|t0|509595424
+lunc_8|TOTAL|t1|360919180
+lunc_8|TOTAL|t2|370998844
+lunc_8|TOTAL|t3|380796667
+lunc_8|TOTAL|t4|390308112
+lunc_8|TOTAL|t5|399529375
+lunc_8|TOTAL|t6|408463496
+lunc_8|TOTAL|t7|425461194
+lunc_8|STARTS|8
+lunc_8|FIRST_BROADCAST|t7|2409
+lunc_8|LOG|=== 2026-11-11 13:39:46  lunc_8: E3 8 threads; E5 traced threads (0 1 2 3 4 5 6 7) >= 300 M each
+lunc_8|LOG|    dynamic /home/harshraj/newbench_build/lunc/codes/kernels/lu/non_contiguous_blocks/LU.dyn (2df78c25)
+lunc_8|LOG|   rung n1024: LU.dyn -n1024 -p8 -b16
+lunc_8|LOG|      8 threads: t0 510M  t1 361M  t2 371M  t3 381M  t4 390M  t5 400M  t6 408M  t7 425M  
+lunc_8|LOG|      native window (t1 50-150 M; reported only): traced threads 99.5-109.6 M each; untraced/traced 0.00%
+lunc_8|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 360 M)
+lunc_8|LOG|=== 2026-11-11 13:39:52  lunc_8: sized on n1024; gem5 8 CPUs, worker stop cpu[1:8] at 50 M and 150 M, limit 168h
+ocean_8|CHOSEN|n1026|-n1026 -p8 -e1e-7 -r20000 -t28800||
+ocean_8|NTHR|8
+ocean_8|NCPU|8
+ocean_8|SKIP|0
+ocean_8|MIN|654600416
+ocean_8|MD5|dynamic f89e2015271413ff5071c0f63d92903a /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/splash-3/codes/apps/ocean/contiguous_partitions/OCEAN
+ocean_8|MD5|static b1563bd2f395b7cd70ac4fcdcb265f80 /home/harshraj/splash-static/OCEAN
+ocean_8|PROGS|ocean_8|/home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/splash-3/codes/apps/ocean/contiguous_partitions/OCEAN|-n1026 -p8 -e1e-7 -r20000 -t28800|||0 1 2 3 4 5 6 7|0|auto
+ocean_8|JOBS|ocean8|ocean|8|0|50000000|100000000|ocean_8
+ocean_8|GEM5|ocean_8|/home/harshraj/splash-static/OCEAN|-n1026 -p8 -e1e-7 -r20000 -t28800|||8|1:8|168h|50000000|150000000
+ocean_8|TOTAL|t0|655674564
+ocean_8|TOTAL|t1|657256543
+ocean_8|TOTAL|t2|654600416
+ocean_8|TOTAL|t3|657135680
+ocean_8|TOTAL|t4|657131532
+ocean_8|TOTAL|t5|654731648
+ocean_8|TOTAL|t6|654602429
+ocean_8|TOTAL|t7|657607470
+ocean_8|STARTS|8
+ocean_8|FIRST_BROADCAST|t7|907
+ocean_8|LOG|=== 2026-11-11 13:39:46  ocean_8: E3 8 threads; E5 traced threads (0 1 2 3 4 5 6 7) >= 300 M each
+ocean_8|LOG|    dynamic /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/splash-3/codes/apps/ocean/contiguous_partitions/OCEAN (f89e2015)
+ocean_8|LOG|   rung n514: OCEAN -n514 -p8 -e1e-7 -r20000 -t28800
+ocean_8|LOG|      8 threads: t0 172M  t1 172M  t2 172M  t3 172M  t4 173M  t5 172M  t6 173M  t7 173M  
+ocean_8|LOG|      native window (t1 50-150 M; reported only): traced threads 100.0-100.6 M each; untraced/traced 0.00%
+ocean_8|LOG|      not chosen (E5): 0:172457831 1:172490549 2:171787051 3:171964392 4:172681947 5:171964574 6:172689349 7:172721503
+ocean_8|LOG|   rung n1026: OCEAN -n1026 -p8 -e1e-7 -r20000 -t28800
+ocean_8|LOG|      8 threads: t0 656M  t1 657M  t2 655M  t3 657M  t4 657M  t5 655M  t6 655M  t7 658M  
+ocean_8|LOG|      native window (t1 50-150 M; reported only): traced threads 97.0-101.7 M each; untraced/traced 0.00%
+ocean_8|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 654 M)
+ocean_8|LOG|=== 2026-11-11 13:40:03  ocean_8: sized on n1026; gem5 8 CPUs, worker stop cpu[1:8] at 50 M and 150 M, limit 168h
+oceannc_8|CHOSEN|n1026|-n1026 -p8 -e1e-7 -r20000 -t28800||
+oceannc_8|NTHR|8
+oceannc_8|NCPU|8
+oceannc_8|SKIP|0
+oceannc_8|MIN|723785627
+oceannc_8|MD5|dynamic f7a8da02a04f4d0eccfc713d24a460ba /home/harshraj/heldout2_build/oceannc/OCEAN.dyn
+oceannc_8|MD5|static ee0d1daf783756ad887b25d998566f06 /home/harshraj/heldout2_static/OCEAN-NC
+oceannc_8|PROGS|oceannc_8|/home/harshraj/heldout2_build/oceannc/OCEAN.dyn|-n1026 -p8 -e1e-7 -r20000 -t28800|||0 1 2 3 4 5 6 7|0|auto
+oceannc_8|JOBS|oceannc8|oceannc|8|0|50000000|100000000|oceannc_8
+oceannc_8|GEM5|oceannc_8|/home/harshraj/heldout2_static/OCEAN-NC|-n1026 -p8 -e1e-7 -r20000 -t28800|||8|1:8|168h|50000000|150000000
+oceannc_8|TOTAL|t0|731375872
+oceannc_8|TOTAL|t1|724862901
+oceannc_8|TOTAL|t2|724718506
+oceannc_8|TOTAL|t3|723933128
+oceannc_8|TOTAL|t4|723785627
+oceannc_8|TOTAL|t5|725137142
+oceannc_8|TOTAL|t6|725296390
+oceannc_8|TOTAL|t7|723929125
+oceannc_8|STARTS|8
+oceannc_8|FIRST_BROADCAST|t5|2656608
+oceannc_8|LOG|=== 2026-11-11 13:39:46  oceannc_8: E3 8 threads; E5 traced threads (0 1 2 3 4 5 6 7) >= 300 M each
+oceannc_8|LOG|    dynamic /home/harshraj/heldout2_build/oceannc/OCEAN.dyn (f7a8da02)
+oceannc_8|LOG|   rung n514: OCEAN.dyn -n514 -p8 -e1e-7 -r20000 -t28800
+oceannc_8|LOG|      8 threads: t0 195M  t1 193M  t2 193M  t3 193M  t4 193M  t5 194M  t6 193M  t7 194M  
+oceannc_8|LOG|      native window (t1 50-150 M; reported only): traced threads 98.4-100.4 M each; untraced/traced 0.00%
+oceannc_8|LOG|      not chosen (E5): 0:195145006 1:193369163 2:193074359 3:193158149 4:193456798 5:193818505 6:193157883 7:193729720
+oceannc_8|LOG|   rung n1026: OCEAN.dyn -n1026 -p8 -e1e-7 -r20000 -t28800
+oceannc_8|LOG|      8 threads: t0 731M  t1 725M  t2 725M  t3 724M  t4 724M  t5 725M  t6 725M  t7 724M  
+oceannc_8|LOG|      native window (t1 50-150 M; reported only): traced threads 99.4-100.3 M each; untraced/traced 0.00%
+oceannc_8|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 723 M)
+oceannc_8|LOG|=== 2026-11-11 13:40:03  oceannc_8: sized on n1026; gem5 8 CPUs, worker stop cpu[1:8] at 50 M and 150 M, limit 168h
+radix_8|CHOSEN|n67108864|-p8 -n67108864 -r1024||
+radix_8|NTHR|8
+radix_8|NCPU|8
+radix_8|SKIP|1560000000
+radix_8|MIN|2013390950
+radix_8|MD5|dynamic c9454330b7da0019d44e73b84497d57c /home/harshraj/b3_heldout_build/radix/codes/kernels/radix/RADIX.dyn
+radix_8|MD5|static 518a7bc9180c4cfa5899ce81cf324a04 /home/harshraj/splash-heldout/RADIX
+radix_8|PROGS|radix_8|/home/harshraj/b3_heldout_build/radix/codes/kernels/radix/RADIX.dyn|-p8 -n67108864 -r1024|||0 1 2 3 4 5 6 7|1560000000|0
+radix_8|JOBS|radix8|radix|8|0|50000000|100000000|radix_8
+radix_8|GEM5|radix_8|/home/harshraj/splash-heldout/RADIX|-p8 -n67108864 -r1024|||8|1:8|168h|1610000000|1710000000
+radix_8|TOTAL|t0|2013530695
+radix_8|TOTAL|t1|2013440305
+radix_8|TOTAL|t2|2013422582
+radix_8|TOTAL|t3|2013471771
+radix_8|TOTAL|t4|2013468314
+radix_8|TOTAL|t5|2013390950
+radix_8|TOTAL|t6|2013408806
+radix_8|TOTAL|t7|2013391187
+radix_8|STARTS|8
+radix_8|FIRST_BROADCAST|t6|1560284966
+radix_8|LOG|=== 2026-11-11 13:39:46  radix_8: E3 8 threads; E5 traced threads (0 1 2 3 4 5 6 7) >= 300 M each past the skip
+radix_8|LOG|    dynamic /home/harshraj/b3_heldout_build/radix/codes/kernels/radix/RADIX.dyn (c9454330)
+radix_8|LOG|   rung n16777216: RADIX.dyn -p8 -n16777216 -r1024
+radix_8|LOG|      8 threads: t0 504M  t1 503M  t2 503M  t3 503M  t4 504M  t5 503M  t6 503M  t7 504M  
+radix_8|LOG|      radix: the first barrier is released by t1 at 390072800 instructions (its pthread_cond_broadcast); skip 390 M
+radix_8|LOG|      native window: the reference t1 never reaches 540 M
+radix_8|LOG|      not chosen (E5): 0:503618981 1:503421309 2:503472592 3:503441147 4:503522409 5:503441193 6:503490993 7:503518766
+radix_8|LOG|   rung n33554432: RADIX.dyn -p8 -n33554432 -r1024
+radix_8|LOG|      8 threads: t0 1007M  t1 1007M  t2 1007M  t3 1007M  t4 1007M  t5 1007M  t6 1007M  t7 1007M  
+radix_8|LOG|      radix: the first barrier is released by t1 at 780143072 instructions (its pthread_cond_broadcast); skip 780 M
+radix_8|LOG|      native window (t1 830-930 M; reported only): traced threads 85.7-100.4 M each; untraced/traced 0.00%
+radix_8|LOG|      not chosen (E5): 0:1006935689 1:1006737774 2:1006789219 3:1006757632 4:1006838318 5:1006758107 6:1006807379 7:1006835780
+radix_8|LOG|   rung n67108864: RADIX.dyn -p8 -n67108864 -r1024
+radix_8|LOG|      8 threads: t0 2014M  t1 2013M  t2 2013M  t3 2013M  t4 2013M  t5 2013M  t6 2013M  t7 2013M  
+radix_8|LOG|      radix: the first barrier is released by t6 at 1560284966 instructions (its pthread_cond_broadcast); skip 1560 M
+radix_8|LOG|      native window (t1 1610-1710 M; reported only): traced threads 49.5-100.0 M each; untraced/traced 0.00%
+radix_8|LOG|      CHOSEN: E3 holds and every traced thread executes >= 1860 M (the least: 2013 M)
+radix_8|LOG|=== 2026-11-11 13:40:06  radix_8: sized on n67108864; gem5 8 CPUs, worker stop cpu[1:8] at 1610 M and 1710 M, limit 168h
+raytrace_8|CHOSEN|a1|-p8 -m128 balls4.env||/home/harshraj/newbench/raytrace/inputs/balls4.env /home/harshraj/newbench/raytrace/inputs/balls4.geo
+raytrace_8|NTHR|8
+raytrace_8|NCPU|8
+raytrace_8|SKIP|0
+raytrace_8|MIN|574861012
+raytrace_8|MD5|dynamic 254a07f78c1373e7d68755cf4863cb94 /home/harshraj/newbench_build/raytrace/codes/apps/raytrace/RAYTRACE.dyn
+raytrace_8|MD5|static e9f2d7aa272866a4179cd72ec1b0997f /home/harshraj/splash-newbench/RAYTRACE
+raytrace_8|PROGS|raytrace_8|/home/harshraj/newbench_build/raytrace/codes/apps/raytrace/RAYTRACE.dyn|-p8 -m128 balls4.env||/home/harshraj/newbench/raytrace/inputs/balls4.env /home/harshraj/newbench/raytrace/inputs/balls4.geo|0 1 2 3 4 5 6 7|0|auto
+raytrace_8|JOBS|raytrace8|raytrace|8|0|50000000|100000000|raytrace_8
+raytrace_8|GEM5|raytrace_8|/home/harshraj/splash-newbench/RAYTRACE|-p8 -m128 balls4.env||/home/harshraj/newbench/raytrace/inputs/balls4.env /home/harshraj/newbench/raytrace/inputs/balls4.geo|8|1:8|168h|50000000|150000000
+raytrace_8|TOTAL|t0|822009287
+raytrace_8|TOTAL|t1|574861012
+raytrace_8|TOTAL|t2|592380449
+raytrace_8|TOTAL|t3|619928864
+raytrace_8|TOTAL|t4|642942852
+raytrace_8|TOTAL|t5|591872948
+raytrace_8|TOTAL|t6|605425987
+raytrace_8|TOTAL|t7|648061391
+raytrace_8|STARTS|8
+raytrace_8|FIRST_BROADCAST|t6|22822
+raytrace_8|LOG|=== 2026-11-11 13:39:56  raytrace_8: E3 8 threads; E5 traced threads (0 1 2 3 4 5 6 7) >= 300 M each
+raytrace_8|LOG|    dynamic /home/harshraj/newbench_build/raytrace/codes/apps/raytrace/RAYTRACE.dyn (254a07f7)
+raytrace_8|LOG|   rung a1: RAYTRACE.dyn -p8 -m128 balls4.env
+raytrace_8|LOG|      8 threads: t0 822M  t1 575M  t2 592M  t3 620M  t4 643M  t5 592M  t6 605M  t7 648M  
+raytrace_8|LOG|      native window (t1 50-150 M; reported only): traced threads 68.8-104.7 M each; untraced/traced 0.00%
+raytrace_8|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 574 M)
+raytrace_8|LOG|=== 2026-11-11 13:40:05  raytrace_8: sized on a1; gem5 8 CPUs, worker stop cpu[1:8] at 50 M and 150 M, limit 168h
+streamcluster_8|CHOSEN|p16384|10 20 128 16384 16384 1000 none out.txt 8||
+streamcluster_8|NTHR|17
+streamcluster_8|NCPU|9
+streamcluster_8|SKIP|0
+streamcluster_8|MIN|3474161833
+streamcluster_8|MD5|dynamic 3662e65f6877789f84f05b84f2005813 /home/harshraj/newbench_build/streamcluster/src/streamcluster.dyn
+streamcluster_8|MD5|static c453a2211e05d90ec1ee4c1cc9a1204b /home/harshraj/splash-newbench/streamcluster
+streamcluster_8|PROGS|streamcluster_8|/home/harshraj/newbench_build/streamcluster/src/streamcluster.dyn|10 20 128 16384 16384 1000 none out.txt 8|||1 2 3 4 5 6 7 8|0|0
+streamcluster_8|JOBS|streamcluster8|streamcluster|8|0|50000000|100000000|streamcluster_8
+streamcluster_8|GEM5|streamcluster_8|/home/harshraj/splash-newbench/streamcluster|10 20 128 16384 16384 1000 none out.txt 8|||9|1:9|168h|50000000|150000000
+streamcluster_8|TOTAL|t0|177853141
+streamcluster_8|TOTAL|t1|3484893648
+streamcluster_8|TOTAL|t2|3474437845
+streamcluster_8|TOTAL|t3|3474384121
+streamcluster_8|TOTAL|t4|3474223192
+streamcluster_8|TOTAL|t5|3474287741
+streamcluster_8|TOTAL|t6|3474310368
+streamcluster_8|TOTAL|t7|3474351857
+streamcluster_8|TOTAL|t8|3474161833
+streamcluster_8|TOTAL|t9|3561
+streamcluster_8|TOTAL|t10|2207
+streamcluster_8|TOTAL|t11|2207
+streamcluster_8|TOTAL|t12|2207
+streamcluster_8|TOTAL|t13|2207
+streamcluster_8|TOTAL|t14|2207
+streamcluster_8|TOTAL|t15|2209
+streamcluster_8|TOTAL|t16|7693
+streamcluster_8|STARTS|17
+streamcluster_8|FIRST_BROADCAST|t1|5641191
+streamcluster_8|LOG|=== 2026-11-11 13:40:06  streamcluster_8: E3 17 threads; E5 traced threads (1 2 3 4 5 6 7 8) >= 300 M each
+streamcluster_8|LOG|    dynamic /home/harshraj/newbench_build/streamcluster/src/streamcluster.dyn (3662e65f)
+streamcluster_8|LOG|   rung p16384: streamcluster.dyn 10 20 128 16384 16384 1000 none out.txt 8
+streamcluster_8|LOG|      17 threads: t0 178M  t1 3485M  t2 3474M  t3 3474M  t4 3474M  t5 3474M  t6 3474M  t7 3474M  t8 3474M  t9 0M  t10 0M  t11 0M  t12 0M  t13 0M  t14 0M  t15 0M  t16 0M  
+streamcluster_8|LOG|      native window (t1 50-150 M; reported only): traced threads 99.8-100.0 M each; untraced/traced 0.00%
+streamcluster_8|LOG|      untraced: t0 177.9M  t9 0.0M  t10 0.0M  t11 0.0M  t12 0.0M  t13 0.0M  t14 0.0M  t15 0.0M  t16 0.0M  
+streamcluster_8|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 3474 M)
+streamcluster_8|LOG|=== 2026-11-11 13:40:25  streamcluster_8: sized on p16384; gem5 9 CPUs, worker stop cpu[1:9] at 50 M and 150 M, limit 168h
+vips_8|CHOSEN|simsmall|--vips-concurrency=8 im_benchmark pomegranate_1600x1200.v output.v||/home/harshraj/heldout2/vips/inputs/simsmall/pomegranate_1600x1200.v
+vips_8|NTHR|11
+vips_8|NCPU|11
+vips_8|SKIP|0
+vips_8|MIN|352324115
+vips_8|MD5|dynamic 1cd422bd6951033c42fdade08b3fc2f8 /home/harshraj/heldout2_build/vips/vips.dyn
+vips_8|MD5|static afb7b014fc8e88208b77d5a9ea69832f /home/harshraj/heldout2_static/vips
+vips_8|PROGS|vips_8|/home/harshraj/heldout2_build/vips/vips.dyn|--vips-concurrency=8 im_benchmark pomegranate_1600x1200.v output.v||/home/harshraj/heldout2/vips/inputs/simsmall/pomegranate_1600x1200.v|3 4 5 6 7 8 9 10|0|0
+vips_8|JOBS|vips8|vips|8|0|50000000|100000000|vips_8
+vips_8|GEM5|vips_8|/home/harshraj/heldout2_static/vips|--vips-concurrency=8 im_benchmark pomegranate_1600x1200.v output.v||/home/harshraj/heldout2/vips/inputs/simsmall/pomegranate_1600x1200.v|11|3:11|168h|50000000|150000000
+vips_8|TOTAL|t0|120094094
+vips_8|TOTAL|t1|14211
+vips_8|TOTAL|t2|13613
+vips_8|TOTAL|t3|352324115
+vips_8|TOTAL|t4|365855222
+vips_8|TOTAL|t5|398381413
+vips_8|TOTAL|t6|427327766
+vips_8|TOTAL|t7|383223816
+vips_8|TOTAL|t8|377782560
+vips_8|TOTAL|t9|378361395
+vips_8|TOTAL|t10|359976669
+vips_8|STARTS|11
+vips_8|FIRST_BROADCAST|t0|812004
+vips_8|LOG|=== 2026-11-11 13:40:06  vips_8: E3 11 threads; E5 traced threads (3 4 5 6 7 8 9 10) >= 300 M each
+vips_8|LOG|    dynamic /home/harshraj/heldout2_build/vips/vips.dyn (1cd422bd)
+vips_8|LOG|   rung simsmall: vips.dyn --vips-concurrency=8 im_benchmark pomegranate_1600x1200.v output.v
+vips_8|LOG|      11 threads: t0 120M  t1 0M  t2 0M  t3 352M  t4 366M  t5 398M  t6 427M  t7 383M  t8 378M  t9 378M  t10 360M  
+vips_8|LOG|      native window (t3 50-150 M; reported only): traced threads 91.2-112.4 M each; untraced/traced 0.01%
+vips_8|LOG|      untraced: t0 120.1M  t1 0.0M  t2 0.0M  
+vips_8|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 352 M)
+vips_8|LOG|=== 2026-11-11 13:40:20  vips_8: sized on simsmall; gem5 11 CPUs, worker stop cpu[3:11] at 50 M and 150 M, limit 168h
+volrend_8|CHOSEN|r16|8 head 16||/home/harshraj/newbench/volrend/inputs/head.den
+volrend_8|NTHR|8
+volrend_8|NCPU|8
+volrend_8|SKIP|0
+volrend_8|MIN|1034538956
+volrend_8|MD5|dynamic 903d3a3fafa235b1a5d10f534fee69e2 /home/harshraj/newbench_build/volrend/codes/apps/volrend/VOLREND.dyn
+volrend_8|MD5|static 95c1869ff332db0914b876261a74a296 /home/harshraj/splash-newbench/VOLREND
+volrend_8|PROGS|volrend_8|/home/harshraj/newbench_build/volrend/codes/apps/volrend/VOLREND.dyn|8 head 16||/home/harshraj/newbench/volrend/inputs/head.den|0 1 2 3 4 5 6 7|0|auto
+volrend_8|JOBS|volrend8|volrend|8|0|50000000|100000000|volrend_8
+volrend_8|GEM5|volrend_8|/home/harshraj/splash-newbench/VOLREND|8 head 16||/home/harshraj/newbench/volrend/inputs/head.den|8|1:8|168h|50000000|150000000
+volrend_8|TOTAL|t0|3427200214
+volrend_8|TOTAL|t1|1034538956
+volrend_8|TOTAL|t2|1220187038
+volrend_8|TOTAL|t3|1118793839
+volrend_8|TOTAL|t4|1261595907
+volrend_8|TOTAL|t5|1129482262
+volrend_8|TOTAL|t6|1063847057
+volrend_8|TOTAL|t7|1106989781
+volrend_8|STARTS|8
+volrend_8|FIRST_BROADCAST|t3|955
+volrend_8|LOG|=== 2026-11-11 13:39:46  volrend_8: E3 8 threads; E5 traced threads (0 1 2 3 4 5 6 7) >= 300 M each
+volrend_8|LOG|    dynamic /home/harshraj/newbench_build/volrend/codes/apps/volrend/VOLREND.dyn (903d3a3f)
+volrend_8|LOG|   rung r4: VOLREND.dyn 8 head 4
+volrend_8|LOG|      8 threads: t0 2335M  t1 356M  t2 275M  t3 323M  t4 293M  t5 310M  t6 271M  t7 294M  
+volrend_8|LOG|      native window (t1 50-150 M; reported only): traced threads 65.0-100.0 M each; untraced/traced 0.00%
+volrend_8|LOG|      not chosen (E5): 2:274684837 4:293473889 6:271119074 7:293573787
+volrend_8|LOG|   rung r16: VOLREND.dyn 8 head 16
+volrend_8|LOG|      8 threads: t0 3427M  t1 1035M  t2 1220M  t3 1119M  t4 1262M  t5 1129M  t6 1064M  t7 1107M  
+volrend_8|LOG|      native window (t1 50-150 M; reported only): traced threads 83.5-130.8 M each; untraced/traced 0.00%
+volrend_8|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 1034 M)
+volrend_8|LOG|=== 2026-11-11 13:40:07  volrend_8: sized on r16; gem5 8 CPUs, worker stop cpu[1:8] at 50 M and 150 M, limit 168h
+waternsq_8|CHOSEN|s32||/home/harshraj/partB/waternsq_8/waternsq.in|/home/harshraj/b3_heldout/inputs/random.in
+waternsq_8|NTHR|8
+waternsq_8|NCPU|8
+waternsq_8|SKIP|0
+waternsq_8|MIN|585592548
+waternsq_8|MD5|dynamic 086a6d1114f69ffa13d590778a586708 /home/harshraj/b3_heldout_build/waternsq/codes/apps/water-nsquared/WATER-NSQUARED.dyn
+waternsq_8|MD5|static 0d9e0ea6701a22f7870104288caf39bb /home/harshraj/splash-heldout/WATER-NSQUARED
+waternsq_8|PROGS|waternsq_8|/home/harshraj/b3_heldout_build/waternsq/codes/apps/water-nsquared/WATER-NSQUARED.dyn||/home/harshraj/partB/waternsq_8/waternsq.in|/home/harshraj/b3_heldout/inputs/random.in|0 1 2 3 4 5 6 7|0|auto
+waternsq_8|JOBS|waternsq8|waternsq|8|0|50000000|100000000|waternsq_8
+waternsq_8|GEM5|waternsq_8|/home/harshraj/splash-heldout/WATER-NSQUARED||/home/harshraj/partB/waternsq_8/waternsq.in|/home/harshraj/b3_heldout/inputs/random.in|8|1:8|168h|50000000|150000000
+waternsq_8|TOTAL|t0|618130679
+waternsq_8|TOTAL|t1|586215901
+waternsq_8|TOTAL|t2|585942021
+waternsq_8|TOTAL|t3|585876613
+waternsq_8|TOTAL|t4|585947561
+waternsq_8|TOTAL|t5|639313868
+waternsq_8|TOTAL|t6|621778228
+waternsq_8|TOTAL|t7|585592548
+waternsq_8|STARTS|8
+waternsq_8|FIRST_BROADCAST|t4|38298
+waternsq_8|LOG|=== 2026-11-11 13:39:46  waternsq_8: E3 8 threads; E5 traced threads (0 1 2 3 4 5 6 7) >= 300 M each
+waternsq_8|LOG|    dynamic /home/harshraj/b3_heldout_build/waternsq/codes/apps/water-nsquared/WATER-NSQUARED.dyn (086a6d11)
+waternsq_8|LOG|   rung s8: WATER-NSQUARED.dyn  < waternsq.in (1.5e-16 512 8 6  -1      3000     3  0 8 6.212752 )
+waternsq_8|LOG|      8 threads: t0 165M  t1 150M  t2 150M  t3 150M  t4 154M  t5 159M  t6 164M  t7 150M  
+waternsq_8|LOG|      native window (t1 50-150 M; reported only): traced threads 94.8-109.3 M each; untraced/traced 0.00%
+waternsq_8|LOG|      not chosen (E5): 0:164560558 1:150044515 2:150107192 3:150134783 4:154442012 5:159081185 6:163613091 7:150108171
+waternsq_8|LOG|   rung s16: WATER-NSQUARED.dyn  < waternsq.in (1.5e-16 512 16 6  -1      3000     3  0 8 6.212752 )
+waternsq_8|LOG|      8 threads: t0 314M  t1 299M  t2 299M  t3 317M  t4 308M  t5 299M  t6 326M  t7 299M  
+waternsq_8|LOG|      native window (t1 50-150 M; reported only): traced threads 94.9-108.2 M each; untraced/traced 0.00%
+waternsq_8|LOG|      not chosen (E5): 1:299213874 2:299348735 5:299403047 7:299355652
+waternsq_8|LOG|   rung s32: WATER-NSQUARED.dyn  < waternsq.in (1.5e-16 512 32 6  -1      3000     3  0 8 6.212752 )
+waternsq_8|LOG|      8 threads: t0 618M  t1 586M  t2 586M  t3 586M  t4 586M  t5 639M  t6 622M  t7 586M  
+waternsq_8|LOG|      native window (t1 50-150 M; reported only): traced threads 96.0-102.7 M each; untraced/traced 0.00%
+waternsq_8|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 585 M)
+waternsq_8|LOG|=== 2026-11-11 13:40:07  waternsq_8: sized on s32; gem5 8 CPUs, worker stop cpu[1:8] at 50 M and 150 M, limit 168h
+barnes_16|CHOSEN|b65536||/home/harshraj/partB/barnes_16/barnes.in|
+barnes_16|NTHR|16
+barnes_16|NCPU|16
+barnes_16|SKIP|0
+barnes_16|MIN|587370113
+barnes_16|MD5|dynamic 0a70bc1c7f373793332e83c727d6a380 /home/harshraj/barnes_std_build/codes/apps/barnes/BARNES
+barnes_16|MD5|static 75e48ad7d7768ff150217965b215baf7 /home/harshraj/splash-static/BARNES
+barnes_16|PROGS|barnes_16|/home/harshraj/barnes_std_build/codes/apps/barnes/BARNES||/home/harshraj/partB/barnes_16/barnes.in||0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15|0|auto
+barnes_16|JOBS|barnes16|barnes|16|0|50000000|100000000|barnes_16
+barnes_16|GEM5|barnes_16|/home/harshraj/splash-static/BARNES||/home/harshraj/partB/barnes_16/barnes.in||16|1:16|240h|50000000|150000000
+barnes_16|TOTAL|t0|640976079
+barnes_16|TOTAL|t1|603390412
+barnes_16|TOTAL|t2|603291832
+barnes_16|TOTAL|t3|625578108
+barnes_16|TOTAL|t4|630005502
+barnes_16|TOTAL|t5|631087440
+barnes_16|TOTAL|t6|625490525
+barnes_16|TOTAL|t7|595830982
+barnes_16|TOTAL|t8|587370113
+barnes_16|TOTAL|t9|604275420
+barnes_16|TOTAL|t10|631251342
+barnes_16|TOTAL|t11|625736649
+barnes_16|TOTAL|t12|637839848
+barnes_16|TOTAL|t13|623009556
+barnes_16|TOTAL|t14|602772701
+barnes_16|TOTAL|t15|591859448
+barnes_16|STARTS|16
+barnes_16|FIRST_BROADCAST|t15|25528
+barnes_16|LOG|=== 2026-11-11 13:40:25  barnes_16: E3 16 threads; E5 traced threads (0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15) >= 300 M each
+barnes_16|LOG|    dynamic /home/harshraj/barnes_std_build/codes/apps/barnes/BARNES (0a70bc1c)
+barnes_16|LOG|    the ladder starts at b65536, the rung chosen at 8 threads
+barnes_16|LOG|   rung b65536: BARNES  < barnes.in ( 65536 123  0.025 0.05 1.0 2.0 5.0 0.075 0.25 16 )
+barnes_16|LOG|      16 threads: t0 641M  t1 603M  t2 603M  t3 626M  t4 630M  t5 631M  t6 625M  t7 596M  t8 587M  t9 604M  t10 631M  t11 626M  t12 638M  t13 623M  t14 603M  t15 592M  
+barnes_16|LOG|      native window (t1 50-150 M; reported only): traced threads 30.7-128.9 M each; untraced/traced 0.00%
+barnes_16|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 587 M)
+barnes_16|LOG|=== 2026-11-11 13:40:33  barnes_16: sized on b65536; gem5 16 CPUs, worker stop cpu[1:16] at 50 M and 150 M, limit 240h
+bodytrack_16|CHOSEN|simlarge|sequenceB_4 4 4 4000 5 0 16||/home/harshraj/heldout2/bodytrack/inputs/simlarge/sequenceB_4
+bodytrack_16|NTHR|18
+bodytrack_16|NCPU|18
+bodytrack_16|SKIP|0
+bodytrack_16|MIN|664207124
+bodytrack_16|MD5|dynamic a01e66caa828c07aed21e344d42212e6 /home/harshraj/heldout2_build/bodytrack/bodytrack.dyn
+bodytrack_16|MD5|static 59d390bcc44d8837fa38cc5205a3f8b4 /home/harshraj/heldout2_static/bodytrack
+bodytrack_16|PROGS|bodytrack_16|/home/harshraj/heldout2_build/bodytrack/bodytrack.dyn|sequenceB_4 4 4 4000 5 0 16||/home/harshraj/heldout2/bodytrack/inputs/simlarge/sequenceB_4|1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16|0|0
+bodytrack_16|JOBS|bodytrack16|bodytrack|16|0|50000000|100000000|bodytrack_16
+bodytrack_16|GEM5|bodytrack_16|/home/harshraj/heldout2_static/bodytrack|sequenceB_4 4 4 4000 5 0 16||/home/harshraj/heldout2/bodytrack/inputs/simlarge/sequenceB_4|18|1:17|240h|50000000|150000000
+bodytrack_16|TOTAL|t0|638936883
+bodytrack_16|TOTAL|t1|664207124
+bodytrack_16|TOTAL|t2|704659971
+bodytrack_16|TOTAL|t3|689981305
+bodytrack_16|TOTAL|t4|716744715
+bodytrack_16|TOTAL|t5|703662584
+bodytrack_16|TOTAL|t6|727491849
+bodytrack_16|TOTAL|t7|837348805
+bodytrack_16|TOTAL|t8|710983910
+bodytrack_16|TOTAL|t9|697140424
+bodytrack_16|TOTAL|t10|714349084
+bodytrack_16|TOTAL|t11|683050185
+bodytrack_16|TOTAL|t12|701206068
+bodytrack_16|TOTAL|t13|704763767
+bodytrack_16|TOTAL|t14|702728525
+bodytrack_16|TOTAL|t15|694860420
+bodytrack_16|TOTAL|t16|699613273
+bodytrack_16|TOTAL|t17|120769161
+bodytrack_16|STARTS|18
+bodytrack_16|FIRST_BROADCAST|t0|2700635
+bodytrack_16|LOG|=== 2026-11-11 13:41:05  bodytrack_16: E3 18 threads; E5 traced threads (1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16) >= 300 M each
+bodytrack_16|LOG|    dynamic /home/harshraj/heldout2_build/bodytrack/bodytrack.dyn (a01e66ca)
+bodytrack_16|LOG|    the ladder starts at simmedium, the rung chosen at 8 threads
+bodytrack_16|LOG|   rung simmedium: bodytrack.dyn sequenceB_2 4 2 2000 5 0 16
+bodytrack_16|LOG|      18 threads: t0 282M  t1 187M  t2 198M  t3 204M  t4 204M  t5 191M  t6 195M  t7 194M  t8 193M  t9 202M  t10 204M  t11 204M  t12 198M  t13 199M  t14 199M  t15 194M  t16 239M  t17 60M  
+bodytrack_16|LOG|      native window (t1 50-150 M; reported only): traced threads 100.0-135.8 M each; untraced/traced 7.81%
+bodytrack_16|LOG|      untraced: t0 281.7M  t17 60.4M  
+bodytrack_16|LOG|      not chosen (E5): 1:186602986 2:198132383 3:204000579 4:203968843 5:190597267 6:194990317 7:193642566 8:193321765 9:201776612 10:204356909 11:203508264 12:198356169 13:198957961 14:198673158 15:193526164 16:239302885
+bodytrack_16|LOG|   rung simlarge: bodytrack.dyn sequenceB_4 4 4 4000 5 0 16
+bodytrack_16|LOG|      18 threads: t0 639M  t1 664M  t2 705M  t3 690M  t4 717M  t5 704M  t6 727M  t7 837M  t8 711M  t9 697M  t10 714M  t11 683M  t12 701M  t13 705M  t14 703M  t15 695M  t16 700M  t17 121M  
+bodytrack_16|LOG|      native window (t1 50-150 M; reported only): traced threads 100.0-106.0 M each; untraced/traced 1.27%
+bodytrack_16|LOG|      untraced: t0 638.9M  t17 120.8M  
+bodytrack_16|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 664 M)
+bodytrack_16|LOG|=== 2026-11-11 13:41:28  bodytrack_16: sized on simlarge; gem5 18 CPUs, worker stop cpu[1:17] at 50 M and 150 M, limit 240h
+canneal_16|CHOSEN|traced|16 15000 2000 /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/100000.nets 128||
+canneal_16|NTHR|17
+canneal_16|NCPU|17
+canneal_16|SKIP|0
+canneal_16|MD5|static f675a03ae694b7341e92be15a2e72999 /home/harshraj/splash-static/CANNEAL
+canneal_16|GEM5|canneal_16|/home/harshraj/splash-static/CANNEAL|16 15000 2000 /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/pin/100000.nets 128|||17|1:17|240h|50000000|150000000
+fft_16|CHOSEN|m24|-m24 -p16||
+fft_16|NTHR|16
+fft_16|NCPU|16
+fft_16|SKIP|0
+fft_16|MIN|570638085
+fft_16|MD5|dynamic cda982a16dba1b575e7ff000f605ed25 /home/harshraj/newbench_build/fft/codes/kernels/fft/FFT.dyn
+fft_16|MD5|static b640125e31768f20651a1ee159ef9b5b /home/harshraj/splash-newbench/FFT
+fft_16|PROGS|fft_16|/home/harshraj/newbench_build/fft/codes/kernels/fft/FFT.dyn|-m24 -p16|||0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15|0|auto
+fft_16|JOBS|fft16|fft|16|0|50000000|100000000|fft_16
+fft_16|GEM5|fft_16|/home/harshraj/splash-newbench/FFT|-m24 -p16|||16|1:16|240h|50000000|150000000
+fft_16|TOTAL|t0|5532033197
+fft_16|TOTAL|t1|570642507
+fft_16|TOTAL|t2|570639393
+fft_16|TOTAL|t3|570639494
+fft_16|TOTAL|t4|570638626
+fft_16|TOTAL|t5|570638527
+fft_16|TOTAL|t6|570638672
+fft_16|TOTAL|t7|570638940
+fft_16|TOTAL|t8|570639659
+fft_16|TOTAL|t9|570638670
+fft_16|TOTAL|t10|570639842
+fft_16|TOTAL|t11|570639599
+fft_16|TOTAL|t12|570639051
+fft_16|TOTAL|t13|570638871
+fft_16|TOTAL|t14|570639787
+fft_16|TOTAL|t15|570638085
+fft_16|STARTS|16
+fft_16|FIRST_BROADCAST|t15|907
+fft_16|LOG|=== 2026-11-11 13:40:35  fft_16: E3 16 threads; E5 traced threads (0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15) >= 300 M each
+fft_16|LOG|    dynamic /home/harshraj/newbench_build/fft/codes/kernels/fft/FFT.dyn (cda982a1)
+fft_16|LOG|    the ladder starts at m24, the rung chosen at 8 threads
+fft_16|LOG|   rung m24: FFT.dyn -m24 -p16
+fft_16|LOG|      16 threads: t0 5532M  t1 571M  t2 571M  t3 571M  t4 571M  t5 571M  t6 571M  t7 571M  t8 571M  t9 571M  t10 571M  t11 571M  t12 571M  t13 571M  t14 571M  t15 571M  
+fft_16|LOG|      native window (t1 50-150 M; reported only): traced threads 38.3-107.2 M each; untraced/traced 0.00%
+fft_16|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 570 M)
+fft_16|LOG|=== 2026-11-11 13:40:54  fft_16: sized on m24; gem5 16 CPUs, worker stop cpu[1:16] at 50 M and 150 M, limit 240h
+fluidanimate_16|CHOSEN|simlarge|16 5 in_300K.fluid out.fluid||/home/harshraj/heldout2/fluidanimate/inputs/simlarge/in_300K.fluid
+fluidanimate_16|NTHR|17
+fluidanimate_16|NCPU|17
+fluidanimate_16|SKIP|0
+fluidanimate_16|MIN|549841943
+fluidanimate_16|MD5|dynamic 99251eacee0fea4b2f152828b8826ce0 /home/harshraj/heldout2_build/fluidanimate/fluidanimate.dyn
+fluidanimate_16|MD5|static 5632b0123a78c14594850e9b71dd2c00 /home/harshraj/heldout2_static/fluidanimate
+fluidanimate_16|PROGS|fluidanimate_16|/home/harshraj/heldout2_build/fluidanimate/fluidanimate.dyn|16 5 in_300K.fluid out.fluid||/home/harshraj/heldout2/fluidanimate/inputs/simlarge/in_300K.fluid|1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16|0|0
+fluidanimate_16|JOBS|fluidanimate16|fluidanimate|16|0|50000000|100000000|fluidanimate_16
+fluidanimate_16|GEM5|fluidanimate_16|/home/harshraj/heldout2_static/fluidanimate|16 5 in_300K.fluid out.fluid||/home/harshraj/heldout2/fluidanimate/inputs/simlarge/in_300K.fluid|17|1:17|240h|50000000|150000000
+fluidanimate_16|TOTAL|t0|1523336382
+fluidanimate_16|TOTAL|t1|692736793
+fluidanimate_16|TOTAL|t2|623127976
+fluidanimate_16|TOTAL|t3|750829098
+fluidanimate_16|TOTAL|t4|669206974
+fluidanimate_16|TOTAL|t5|613107901
+fluidanimate_16|TOTAL|t6|549841943
+fluidanimate_16|TOTAL|t7|660812132
+fluidanimate_16|TOTAL|t8|591083378
+fluidanimate_16|TOTAL|t9|745723725
+fluidanimate_16|TOTAL|t10|666604163
+fluidanimate_16|TOTAL|t11|717234296
+fluidanimate_16|TOTAL|t12|798038445
+fluidanimate_16|TOTAL|t13|640377618
+fluidanimate_16|TOTAL|t14|575102620
+fluidanimate_16|TOTAL|t15|692640973
+fluidanimate_16|TOTAL|t16|617788016
+fluidanimate_16|STARTS|17
+fluidanimate_16|LOG|=== 2026-11-11 13:41:05  fluidanimate_16: E3 17 threads; E5 traced threads (1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16) >= 300 M each
+fluidanimate_16|LOG|    dynamic /home/harshraj/heldout2_build/fluidanimate/fluidanimate.dyn (99251eac)
+fluidanimate_16|LOG|    the ladder starts at simmedium, the rung chosen at 8 threads
+fluidanimate_16|LOG|   rung simmedium: fluidanimate.dyn 16 5 in_100K.fluid out.fluid
+fluidanimate_16|LOG|      17 threads: t0 555M  t1 210M  t2 211M  t3 236M  t4 225M  t5 206M  t6 206M  t7 229M  t8 220M  t9 230M  t10 229M  t11 255M  t12 246M  t13 215M  t14 215M  t15 240M  t16 230M  
+fluidanimate_16|LOG|      native window (t1 50-150 M; reported only): traced threads 97.9-121.7 M each; untraced/traced 0.00%
+fluidanimate_16|LOG|      untraced: t0 555.5M  
+fluidanimate_16|LOG|      not chosen (E5): 1:210287016 2:211117987 3:235776917 4:225294110 5:206038001 6:205923533 7:229472072 8:220071051 9:230289561 10:229481445 11:255152807 12:245572626 13:214644693 14:214939739 15:240046340 16:229652557
+fluidanimate_16|LOG|   rung simlarge: fluidanimate.dyn 16 5 in_300K.fluid out.fluid
+fluidanimate_16|LOG|      17 threads: t0 1523M  t1 693M  t2 623M  t3 751M  t4 669M  t5 613M  t6 550M  t7 661M  t8 591M  t9 746M  t10 667M  t11 717M  t12 798M  t13 640M  t14 575M  t15 693M  t16 618M  
+fluidanimate_16|LOG|      native window (t1 50-150 M; reported only): traced threads 72.9-129.6 M each; untraced/traced 0.00%
+fluidanimate_16|LOG|      untraced: t0 1523.3M  
+fluidanimate_16|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 549 M)
+fluidanimate_16|LOG|=== 2026-11-11 13:41:24  fluidanimate_16: sized on simlarge; gem5 17 CPUs, worker stop cpu[1:17] at 50 M and 150 M, limit 240h
+fmm_16|CHOSEN|p65536||/home/harshraj/partB/fmm_16/fmm.in|
+fmm_16|NTHR|16
+fmm_16|NCPU|16
+fmm_16|SKIP|0
+fmm_16|MIN|629673511
+fmm_16|MD5|dynamic aed6b1f2de841f93fe4c6f31d83397b6 /home/harshraj/b3_heldout_build/fmm/codes/apps/fmm/FMM.dyn
+fmm_16|MD5|static be09b0b21241673dbdf56ef37b756ce5 /home/harshraj/splash-heldout/FMM
+fmm_16|PROGS|fmm_16|/home/harshraj/b3_heldout_build/fmm/codes/apps/fmm/FMM.dyn||/home/harshraj/partB/fmm_16/fmm.in||0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15|0|auto
+fmm_16|JOBS|fmm16|fmm|16|0|50000000|100000000|fmm_16
+fmm_16|GEM5|fmm_16|/home/harshraj/splash-heldout/FMM||/home/harshraj/partB/fmm_16/fmm.in||16|1:16|240h|50000000|150000000
+fmm_16|TOTAL|t0|693902931
+fmm_16|TOTAL|t1|639605241
+fmm_16|TOTAL|t2|629673511
+fmm_16|TOTAL|t3|647373704
+fmm_16|TOTAL|t4|631945200
+fmm_16|TOTAL|t5|642230174
+fmm_16|TOTAL|t6|641114361
+fmm_16|TOTAL|t7|654348159
+fmm_16|TOTAL|t8|651627616
+fmm_16|TOTAL|t9|706005105
+fmm_16|TOTAL|t10|638132924
+fmm_16|TOTAL|t11|649976481
+fmm_16|TOTAL|t12|634534092
+fmm_16|TOTAL|t13|653462778
+fmm_16|TOTAL|t14|633887412
+fmm_16|TOTAL|t15|635854480
+fmm_16|STARTS|16
+fmm_16|FIRST_BROADCAST|t9|2365
+fmm_16|LOG|=== 2026-11-11 13:40:55  fmm_16: E3 16 threads; E5 traced threads (0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15) >= 300 M each
+fmm_16|LOG|    dynamic /home/harshraj/b3_heldout_build/fmm/codes/apps/fmm/FMM.dyn (aed6b1f2)
+fmm_16|LOG|    the ladder starts at p65536, the rung chosen at 8 threads
+fmm_16|LOG|   rung p65536: FMM.dyn  < fmm.in (two cluster plummer 65536 1e-6 16 5 .025 0.0 cost zones )
+fmm_16|LOG|      16 threads: t0 694M  t1 640M  t2 630M  t3 647M  t4 632M  t5 642M  t6 641M  t7 654M  t8 652M  t9 706M  t10 638M  t11 650M  t12 635M  t13 653M  t14 634M  t15 636M  
+fmm_16|LOG|      native window (t1 50-150 M; reported only): traced threads 35.7-154.3 M each; untraced/traced 0.00%
+fmm_16|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 629 M)
+fmm_16|LOG|=== 2026-11-11 13:41:03  fmm_16: sized on p65536; gem5 16 CPUs, worker stop cpu[1:16] at 50 M and 150 M, limit 240h
+lunc_16|CHOSEN|n2048|-n2048 -p16 -b16||
+lunc_16|NTHR|16
+lunc_16|NCPU|16
+lunc_16|SKIP|0
+lunc_16|MIN|1439839414
+lunc_16|MD5|dynamic 2df78c2564ee15cc7fc1bd98f14802fa /home/harshraj/newbench_build/lunc/codes/kernels/lu/non_contiguous_blocks/LU.dyn
+lunc_16|MD5|static 58d11531bc828197d93b0d7d2aaa225a /home/harshraj/splash-newbench/LU-NC
+lunc_16|PROGS|lunc_16|/home/harshraj/newbench_build/lunc/codes/kernels/lu/non_contiguous_blocks/LU.dyn|-n2048 -p16 -b16|||0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15|0|auto
+lunc_16|JOBS|lunc16|lunc|16|0|50000000|100000000|lunc_16
+lunc_16|GEM5|lunc_16|/home/harshraj/splash-newbench/LU-NC|-n2048 -p16 -b16|||16|1:16|240h|50000000|150000000
+lunc_16|TOTAL|t0|2069560541
+lunc_16|TOTAL|t1|1439839414
+lunc_16|TOTAL|t2|1460297930
+lunc_16|TOTAL|t3|1480484948
+lunc_16|TOTAL|t4|1500382213
+lunc_16|TOTAL|t5|1519991919
+lunc_16|TOTAL|t6|1539311572
+lunc_16|TOTAL|t7|1558344011
+lunc_16|TOTAL|t8|1577086943
+lunc_16|TOTAL|t9|1595542300
+lunc_16|TOTAL|t10|1613708148
+lunc_16|TOTAL|t11|1631586675
+lunc_16|TOTAL|t12|1649177443
+lunc_16|TOTAL|t13|1666475861
+lunc_16|TOTAL|t14|1683489475
+lunc_16|TOTAL|t15|1716641720
+lunc_16|STARTS|16
+lunc_16|FIRST_BROADCAST|t15|2404
+lunc_16|LOG|=== 2026-11-11 13:40:35  lunc_16: E3 16 threads; E5 traced threads (0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15) >= 300 M each
+lunc_16|LOG|    dynamic /home/harshraj/newbench_build/lunc/codes/kernels/lu/non_contiguous_blocks/LU.dyn (2df78c25)
+lunc_16|LOG|    the ladder starts at n1024, the rung chosen at 8 threads
+lunc_16|LOG|   rung n1024: LU.dyn -n1024 -p16 -b16
+lunc_16|LOG|      16 threads: t0 322M  t1 161M  t2 166M  t3 172M  t4 177M  t5 182M  t6 187M  t7 192M  t8 197M  t9 202M  t10 210M  t11 206M  t12 215M  t13 219M  t14 222M  t15 226M  
+lunc_16|LOG|      native window (t1 50-150 M; reported only): traced threads 100.0-141.0 M each; untraced/traced 0.00%
+lunc_16|LOG|      not chosen (E5): 1:160643818 2:166256754 3:171734076 4:177066576 5:182253957 6:187297464 7:192197185 8:196951754 9:201562791 10:210350703 11:206030121 12:214529796 13:218563030 14:222452697 15:226198493
+lunc_16|LOG|   rung n2048: LU.dyn -n2048 -p16 -b16
+lunc_16|LOG|      16 threads: t0 2070M  t1 1440M  t2 1460M  t3 1480M  t4 1500M  t5 1520M  t6 1539M  t7 1558M  t8 1577M  t9 1596M  t10 1614M  t11 1632M  t12 1649M  t13 1666M  t14 1683M  t15 1717M  
+lunc_16|LOG|      native window (t1 50-150 M; reported only): traced threads 98.2-119.8 M each; untraced/traced 0.00%
+lunc_16|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 1439 M)
+lunc_16|LOG|=== 2026-11-11 13:40:52  lunc_16: sized on n2048; gem5 16 CPUs, worker stop cpu[1:16] at 50 M and 150 M, limit 240h
+ocean_16|CHOSEN|n1026|-n1026 -p16 -e1e-7 -r20000 -t28800||
+ocean_16|NTHR|16
+ocean_16|NCPU|16
+ocean_16|SKIP|0
+ocean_16|MIN|317019305
+ocean_16|MD5|dynamic f89e2015271413ff5071c0f63d92903a /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/splash-3/codes/apps/ocean/contiguous_partitions/OCEAN
+ocean_16|MD5|static b1563bd2f395b7cd70ac4fcdcb265f80 /home/harshraj/splash-static/OCEAN
+ocean_16|PROGS|ocean_16|/home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/splash-3/codes/apps/ocean/contiguous_partitions/OCEAN|-n1026 -p16 -e1e-7 -r20000 -t28800|||0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15|0|auto
+ocean_16|JOBS|ocean16|ocean|16|0|50000000|100000000|ocean_16
+ocean_16|GEM5|ocean_16|/home/harshraj/splash-static/OCEAN|-n1026 -p16 -e1e-7 -r20000 -t28800|||16|1:16|240h|50000000|150000000
+ocean_16|TOTAL|t0|319778739
+ocean_16|TOTAL|t1|318039457
+ocean_16|TOTAL|t2|318144077
+ocean_16|TOTAL|t3|318213935
+ocean_16|TOTAL|t4|318939850
+ocean_16|TOTAL|t5|318848387
+ocean_16|TOTAL|t6|318915582
+ocean_16|TOTAL|t7|317110639
+ocean_16|TOTAL|t8|318144452
+ocean_16|TOTAL|t9|317111260
+ocean_16|TOTAL|t10|318840023
+ocean_16|TOTAL|t11|317019305
+ocean_16|TOTAL|t12|319012098
+ocean_16|TOTAL|t13|317177326
+ocean_16|TOTAL|t14|318941712
+ocean_16|TOTAL|t15|318844506
+ocean_16|STARTS|16
+ocean_16|FIRST_BROADCAST|t6|941
+ocean_16|LOG|=== 2026-11-11 13:40:25  ocean_16: E3 16 threads; E5 traced threads (0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15) >= 300 M each
+ocean_16|LOG|    dynamic /home/harshraj/COALESCE-Hashed-Perceptron-Cache-Replacement-Policy/simulator/tracer/splash-3/codes/apps/ocean/contiguous_partitions/OCEAN (f89e2015)
+ocean_16|LOG|    the ladder starts at n1026, the rung chosen at 8 threads
+ocean_16|LOG|   rung n1026: OCEAN -n1026 -p16 -e1e-7 -r20000 -t28800
+ocean_16|LOG|      16 threads: t0 320M  t1 318M  t2 318M  t3 318M  t4 319M  t5 319M  t6 319M  t7 317M  t8 318M  t9 317M  t10 319M  t11 317M  t12 319M  t13 317M  t14 319M  t15 319M  
+ocean_16|LOG|      native window (t1 50-150 M; reported only): traced threads 99.3-101.1 M each; untraced/traced 0.00%
+ocean_16|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 317 M)
+ocean_16|LOG|=== 2026-11-11 13:40:34  ocean_16: sized on n1026; gem5 16 CPUs, worker stop cpu[1:16] at 50 M and 150 M, limit 240h
+oceannc_16|CHOSEN|n1026|-n1026 -p16 -e1e-7 -r20000 -t28800||
+oceannc_16|NTHR|16
+oceannc_16|NCPU|16
+oceannc_16|SKIP|0
+oceannc_16|MIN|355361711
+oceannc_16|MD5|dynamic f7a8da02a04f4d0eccfc713d24a460ba /home/harshraj/heldout2_build/oceannc/OCEAN.dyn
+oceannc_16|MD5|static ee0d1daf783756ad887b25d998566f06 /home/harshraj/heldout2_static/OCEAN-NC
+oceannc_16|PROGS|oceannc_16|/home/harshraj/heldout2_build/oceannc/OCEAN.dyn|-n1026 -p16 -e1e-7 -r20000 -t28800|||0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15|0|auto
+oceannc_16|JOBS|oceannc16|oceannc|16|0|50000000|100000000|oceannc_16
+oceannc_16|GEM5|oceannc_16|/home/harshraj/heldout2_static/OCEAN-NC|-n1026 -p16 -e1e-7 -r20000 -t28800|||16|1:16|240h|50000000|150000000
+oceannc_16|TOTAL|t0|364168848
+oceannc_16|TOTAL|t1|355361711
+oceannc_16|TOTAL|t2|355364085
+oceannc_16|TOTAL|t3|356075093
+oceannc_16|TOTAL|t4|356402544
+oceannc_16|TOTAL|t5|355677683
+oceannc_16|TOTAL|t6|356021145
+oceannc_16|TOTAL|t7|355902748
+oceannc_16|TOTAL|t8|355364159
+oceannc_16|TOTAL|t9|355901343
+oceannc_16|TOTAL|t10|355674176
+oceannc_16|TOTAL|t11|356215207
+oceannc_16|TOTAL|t12|356014344
+oceannc_16|TOTAL|t13|355757848
+oceannc_16|TOTAL|t14|355754217
+oceannc_16|TOTAL|t15|355365894
+oceannc_16|STARTS|16
+oceannc_16|FIRST_BROADCAST|t7|836915
+oceannc_16|LOG|=== 2026-11-11 13:40:25  oceannc_16: E3 16 threads; E5 traced threads (0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15) >= 300 M each
+oceannc_16|LOG|    dynamic /home/harshraj/heldout2_build/oceannc/OCEAN.dyn (f7a8da02)
+oceannc_16|LOG|    the ladder starts at n1026, the rung chosen at 8 threads
+oceannc_16|LOG|   rung n1026: OCEAN.dyn -n1026 -p16 -e1e-7 -r20000 -t28800
+oceannc_16|LOG|      16 threads: t0 364M  t1 355M  t2 355M  t3 356M  t4 356M  t5 356M  t6 356M  t7 356M  t8 355M  t9 356M  t10 356M  t11 356M  t12 356M  t13 356M  t14 356M  t15 355M  
+oceannc_16|LOG|      native window (t1 50-150 M; reported only): traced threads 97.1-104.2 M each; untraced/traced 0.00%
+oceannc_16|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 355 M)
+oceannc_16|LOG|=== 2026-11-11 13:40:34  oceannc_16: sized on n1026; gem5 16 CPUs, worker stop cpu[1:16] at 50 M and 150 M, limit 240h
+radix_16|CHOSEN|n134217728|-p16 -n134217728 -r1024||
+radix_16|NTHR|16
+radix_16|NCPU|16
+radix_16|SKIP|1560000000
+radix_16|MIN|2013371106
+radix_16|MD5|dynamic c9454330b7da0019d44e73b84497d57c /home/harshraj/b3_heldout_build/radix/codes/kernels/radix/RADIX.dyn
+radix_16|MD5|static 518a7bc9180c4cfa5899ce81cf324a04 /home/harshraj/splash-heldout/RADIX
+radix_16|PROGS|radix_16|/home/harshraj/b3_heldout_build/radix/codes/kernels/radix/RADIX.dyn|-p16 -n134217728 -r1024|||0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15|1560000000|0
+radix_16|JOBS|radix16|radix|16|0|50000000|100000000|radix_16
+radix_16|GEM5|radix_16|/home/harshraj/splash-heldout/RADIX|-p16 -n134217728 -r1024|||16|1:16|240h|1610000000|1710000000
+radix_16|TOTAL|t0|2013633662
+radix_16|TOTAL|t1|2013371106
+radix_16|TOTAL|t2|2013422478
+radix_16|TOTAL|t3|2013390968
+radix_16|TOTAL|t4|2013471641
+radix_16|TOTAL|t5|2013391180
+radix_16|TOTAL|t6|2013440582
+radix_16|TOTAL|t7|2013409293
+radix_16|TOTAL|t8|2013521691
+radix_16|TOTAL|t9|2013391187
+radix_16|TOTAL|t10|2013440802
+radix_16|TOTAL|t11|2013409765
+radix_16|TOTAL|t12|2013490487
+radix_16|TOTAL|t13|2013409460
+radix_16|TOTAL|t14|2013427675
+radix_16|TOTAL|t15|2013505621
+radix_16|STARTS|16
+radix_16|FIRST_BROADCAST|t1|1560283616
+radix_16|LOG|=== 2026-11-11 13:40:25  radix_16: E3 16 threads; E5 traced threads (0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15) >= 300 M each past the skip
+radix_16|LOG|    dynamic /home/harshraj/b3_heldout_build/radix/codes/kernels/radix/RADIX.dyn (c9454330)
+radix_16|LOG|    the ladder starts at n67108864, the rung chosen at 8 threads
+radix_16|LOG|   rung n67108864: RADIX.dyn -p16 -n67108864 -r1024
+radix_16|LOG|      16 threads: t0 1007M  t1 1007M  t2 1007M  t3 1007M  t4 1007M  t5 1007M  t6 1007M  t7 1007M  t8 1007M  t9 1007M  t10 1007M  t11 1007M  t12 1007M  t13 1007M  t14 1007M  t15 1007M  
+radix_16|LOG|      radix: the first barrier is released by t3 at 780144282 instructions (its pthread_cond_broadcast); skip 780 M
+radix_16|LOG|      native window (t1 830-930 M; reported only): traced threads 50.7-100.0 M each; untraced/traced 0.00%
+radix_16|LOG|      not chosen (E5): 0:1007000485 1:1006738452 2:1006789336 3:1006758058 4:1006838577 5:1006758031 6:1006807697 7:1006776251 8:1006857156 9:1006888501 10:1006808322 11:1006758402 12:1006777133 13:1006776907 14:1006872766 15:1006794772
+radix_16|LOG|   rung n134217728: RADIX.dyn -p16 -n134217728 -r1024
+radix_16|LOG|      16 threads: t0 2014M  t1 2013M  t2 2013M  t3 2013M  t4 2013M  t5 2013M  t6 2013M  t7 2013M  t8 2014M  t9 2013M  t10 2013M  t11 2013M  t12 2013M  t13 2013M  t14 2013M  t15 2014M  
+radix_16|LOG|      radix: the first barrier is released by t1 at 1560283616 instructions (its pthread_cond_broadcast); skip 1560 M
+radix_16|LOG|      native window (t1 1610-1710 M; reported only): traced threads 92.3-111.2 M each; untraced/traced 0.00%
+radix_16|LOG|      CHOSEN: E3 holds and every traced thread executes >= 1860 M (the least: 2013 M)
+radix_16|LOG|=== 2026-11-11 13:40:41  radix_16: sized on n134217728; gem5 16 CPUs, worker stop cpu[1:16] at 1610 M and 1710 M, limit 240h
+raytrace_16|CHOSEN|a2|-p16 -m128 -a2 balls4.env||/home/harshraj/newbench/raytrace/inputs/balls4.env /home/harshraj/newbench/raytrace/inputs/balls4.geo
+raytrace_16|NTHR|16
+raytrace_16|NCPU|16
+raytrace_16|SKIP|0
+raytrace_16|MIN|556307453
+raytrace_16|MD5|dynamic 254a07f78c1373e7d68755cf4863cb94 /home/harshraj/newbench_build/raytrace/codes/apps/raytrace/RAYTRACE.dyn
+raytrace_16|MD5|static e9f2d7aa272866a4179cd72ec1b0997f /home/harshraj/splash-newbench/RAYTRACE
+raytrace_16|PROGS|raytrace_16|/home/harshraj/newbench_build/raytrace/codes/apps/raytrace/RAYTRACE.dyn|-p16 -m128 -a2 balls4.env||/home/harshraj/newbench/raytrace/inputs/balls4.env /home/harshraj/newbench/raytrace/inputs/balls4.geo|0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15|0|auto
+raytrace_16|JOBS|raytrace16|raytrace|16|0|50000000|100000000|raytrace_16
+raytrace_16|GEM5|raytrace_16|/home/harshraj/splash-newbench/RAYTRACE|-p16 -m128 -a2 balls4.env||/home/harshraj/newbench/raytrace/inputs/balls4.env /home/harshraj/newbench/raytrace/inputs/balls4.geo|16|1:16|240h|50000000|150000000
+raytrace_16|TOTAL|t0|728994217
+raytrace_16|TOTAL|t1|624991243
+raytrace_16|TOTAL|t2|658881485
+raytrace_16|TOTAL|t3|564082162
+raytrace_16|TOTAL|t4|631163075
+raytrace_16|TOTAL|t5|642711822
+raytrace_16|TOTAL|t6|621748038
+raytrace_16|TOTAL|t7|632941352
+raytrace_16|TOTAL|t8|609760198
+raytrace_16|TOTAL|t9|556307453
+raytrace_16|TOTAL|t10|612509780
+raytrace_16|TOTAL|t11|611874144
+raytrace_16|TOTAL|t12|617980203
+raytrace_16|TOTAL|t13|674828422
+raytrace_16|TOTAL|t14|570109543
+raytrace_16|TOTAL|t15|651042060
+raytrace_16|STARTS|16
+raytrace_16|FIRST_BROADCAST|t14|13120
+raytrace_16|LOG|=== 2026-11-11 13:40:45  raytrace_16: E3 16 threads; E5 traced threads (0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15) >= 300 M each
+raytrace_16|LOG|    dynamic /home/harshraj/newbench_build/raytrace/codes/apps/raytrace/RAYTRACE.dyn (254a07f7)
+raytrace_16|LOG|    the ladder starts at a1, the rung chosen at 8 threads
+raytrace_16|LOG|   rung a1: RAYTRACE.dyn -p16 -m128 balls4.env
+raytrace_16|LOG|      16 threads: t0 504M  t1 253M  t2 324M  t3 301M  t4 261M  t5 322M  t6 314M  t7 333M  t8 320M  t9 284M  t10 326M  t11 277M  t12 323M  t13 310M  t14 335M  t15 310M  
+raytrace_16|LOG|      native window (t1 50-150 M; reported only): traced threads 100.0-151.0 M each; untraced/traced 0.00%
+raytrace_16|LOG|      not chosen (E5): 1:253289657 4:260937610 9:284078374 11:276625717
+raytrace_16|LOG|   rung a2: RAYTRACE.dyn -p16 -m128 -a2 balls4.env
+raytrace_16|LOG|      16 threads: t0 729M  t1 625M  t2 659M  t3 564M  t4 631M  t5 643M  t6 622M  t7 633M  t8 610M  t9 556M  t10 613M  t11 612M  t12 618M  t13 675M  t14 570M  t15 651M  
+raytrace_16|LOG|      native window (t1 50-150 M; reported only): traced threads 91.8-105.4 M each; untraced/traced 0.00%
+raytrace_16|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 556 M)
+raytrace_16|LOG|=== 2026-11-11 13:41:01  raytrace_16: sized on a2; gem5 16 CPUs, worker stop cpu[1:16] at 50 M and 150 M, limit 240h
+streamcluster_16|CHOSEN|p16384|10 20 128 16384 16384 1000 none out.txt 16||
+streamcluster_16|NTHR|33
+streamcluster_16|NCPU|17
+streamcluster_16|SKIP|0
+streamcluster_16|MIN|1737788972
+streamcluster_16|MD5|dynamic 3662e65f6877789f84f05b84f2005813 /home/harshraj/newbench_build/streamcluster/src/streamcluster.dyn
+streamcluster_16|MD5|static c453a2211e05d90ec1ee4c1cc9a1204b /home/harshraj/splash-newbench/streamcluster
+streamcluster_16|PROGS|streamcluster_16|/home/harshraj/newbench_build/streamcluster/src/streamcluster.dyn|10 20 128 16384 16384 1000 none out.txt 16|||1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16|0|0
+streamcluster_16|JOBS|streamcluster16|streamcluster|16|0|50000000|100000000|streamcluster_16
+streamcluster_16|GEM5|streamcluster_16|/home/harshraj/splash-newbench/streamcluster|10 20 128 16384 16384 1000 none out.txt 16|||17|1:17|240h|50000000|150000000
+streamcluster_16|TOTAL|t0|177882186
+streamcluster_16|TOTAL|t1|1748960028
+streamcluster_16|TOTAL|t2|1737957026
+streamcluster_16|TOTAL|t3|1737822787
+streamcluster_16|TOTAL|t4|1738056760
+streamcluster_16|TOTAL|t5|1737873256
+streamcluster_16|TOTAL|t6|1737904192
+streamcluster_16|TOTAL|t7|1738019872
+streamcluster_16|TOTAL|t8|1737788972
+streamcluster_16|TOTAL|t9|1737910837
+streamcluster_16|TOTAL|t10|1737930573
+streamcluster_16|TOTAL|t11|1737931224
+streamcluster_16|TOTAL|t12|1737900076
+streamcluster_16|TOTAL|t13|1737873578
+streamcluster_16|TOTAL|t14|1738014776
+streamcluster_16|TOTAL|t15|1737805789
+streamcluster_16|TOTAL|t16|1737819347
+streamcluster_16|TOTAL|t17|2785
+streamcluster_16|TOTAL|t18|1298
+streamcluster_16|TOTAL|t19|1298
+streamcluster_16|TOTAL|t20|1298
+streamcluster_16|TOTAL|t21|1298
+streamcluster_16|TOTAL|t22|1300
+streamcluster_16|TOTAL|t23|1298
+streamcluster_16|TOTAL|t24|1298
+streamcluster_16|TOTAL|t25|1298
+streamcluster_16|TOTAL|t26|1298
+streamcluster_16|TOTAL|t27|1298
+streamcluster_16|TOTAL|t28|1298
+streamcluster_16|TOTAL|t29|1298
+streamcluster_16|TOTAL|t30|1298
+streamcluster_16|TOTAL|t31|1298
+streamcluster_16|TOTAL|t32|14111
+streamcluster_16|STARTS|33
+streamcluster_16|FIRST_BROADCAST|t1|3781640
+streamcluster_16|LOG|=== 2026-11-11 13:40:55  streamcluster_16: E3 33 threads; E5 traced threads (1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16) >= 300 M each
+streamcluster_16|LOG|    dynamic /home/harshraj/newbench_build/streamcluster/src/streamcluster.dyn (3662e65f)
+streamcluster_16|LOG|    the ladder starts at p16384, the rung chosen at 8 threads
+streamcluster_16|LOG|   rung p16384: streamcluster.dyn 10 20 128 16384 16384 1000 none out.txt 16
+streamcluster_16|LOG|      33 threads: t0 178M  t1 1749M  t2 1738M  t3 1738M  t4 1738M  t5 1738M  t6 1738M  t7 1738M  t8 1738M  t9 1738M  t10 1738M  t11 1738M  t12 1738M  t13 1738M  t14 1738M  t15 1738M  t16 1738M  t17 0M  t18 0M  t19 0M  t20 0M  t21 0M  t22 0M  t23 0M  t24 0M  t25 0M  t26 0M  t27 0M  t28 0M  t29 0M  t30 0M  t31 0M  t32 0M  
+streamcluster_16|LOG|      native window (t1 50-150 M; reported only): traced threads 99.5-100.0 M each; untraced/traced 0.00%
+streamcluster_16|LOG|      untraced: t0 177.9M  t17 0.0M  t18 0.0M  t19 0.0M  t20 0.0M  t21 0.0M  t22 0.0M  t23 0.0M  t24 0.0M  t25 0.0M  t26 0.0M  t27 0.0M  t28 0.0M  t29 0.0M  t30 0.0M  t31 0.0M  t32 0.0M  
+streamcluster_16|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 1737 M)
+streamcluster_16|LOG|=== 2026-11-11 13:41:11  streamcluster_16: sized on p16384; gem5 17 CPUs, worker stop cpu[1:17] at 50 M and 150 M, limit 240h
+vips_16|CHOSEN|simmedium|--vips-concurrency=16 im_benchmark vulture_2336x2336.v output.v||/home/harshraj/heldout2/vips/inputs/simmedium/vulture_2336x2336.v
+vips_16|NTHR|19
+vips_16|NCPU|19
+vips_16|SKIP|0
+vips_16|MIN|568779752
+vips_16|MD5|dynamic 1cd422bd6951033c42fdade08b3fc2f8 /home/harshraj/heldout2_build/vips/vips.dyn
+vips_16|MD5|static afb7b014fc8e88208b77d5a9ea69832f /home/harshraj/heldout2_static/vips
+vips_16|PROGS|vips_16|/home/harshraj/heldout2_build/vips/vips.dyn|--vips-concurrency=16 im_benchmark vulture_2336x2336.v output.v||/home/harshraj/heldout2/vips/inputs/simmedium/vulture_2336x2336.v|3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18|0|0
+vips_16|JOBS|vips16|vips|16|0|50000000|100000000|vips_16
+vips_16|GEM5|vips_16|/home/harshraj/heldout2_static/vips|--vips-concurrency=16 im_benchmark vulture_2336x2336.v output.v||/home/harshraj/heldout2/vips/inputs/simmedium/vulture_2336x2336.v|19|3:19|240h|50000000|150000000
+vips_16|TOTAL|t0|122101410
+vips_16|TOTAL|t1|43777
+vips_16|TOTAL|t2|44179
+vips_16|TOTAL|t3|573322994
+vips_16|TOTAL|t4|579934651
+vips_16|TOTAL|t5|611827381
+vips_16|TOTAL|t6|625755060
+vips_16|TOTAL|t7|605884675
+vips_16|TOTAL|t8|615096500
+vips_16|TOTAL|t9|615671057
+vips_16|TOTAL|t10|604460587
+vips_16|TOTAL|t11|604913804
+vips_16|TOTAL|t12|581698196
+vips_16|TOTAL|t13|568779752
+vips_16|TOTAL|t14|594747375
+vips_16|TOTAL|t15|614795343
+vips_16|TOTAL|t16|614307448
+vips_16|TOTAL|t17|599821038
+vips_16|TOTAL|t18|607683391
+vips_16|STARTS|19
+vips_16|FIRST_BROADCAST|t0|812004
+vips_16|LOG|=== 2026-11-11 13:41:05  vips_16: E3 19 threads; E5 traced threads (3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18) >= 300 M each
+vips_16|LOG|    dynamic /home/harshraj/heldout2_build/vips/vips.dyn (1cd422bd)
+vips_16|LOG|    the ladder starts at simsmall, the rung chosen at 8 threads
+vips_16|LOG|   rung simsmall: vips.dyn --vips-concurrency=16 im_benchmark pomegranate_1600x1200.v output.v
+vips_16|LOG|      19 threads: t0 121M  t1 0M  t2 0M  t3 165M  t4 185M  t5 186M  t6 207M  t7 206M  t8 221M  t9 178M  t10 206M  t11 211M  t12 182M  t13 206M  t14 181M  t15 199M  t16 172M  t17 154M  t18 186M  
+vips_16|LOG|      native window (t3 50-150 M; reported only): traced threads 100.0-133.3 M each; untraced/traced 0.01%
+vips_16|LOG|      untraced: t0 120.5M  t1 0.0M  t2 0.0M  
+vips_16|LOG|      not chosen (E5): 3:164931460 4:185034025 5:185821282 6:206657091 7:206458431 8:221149671 9:177997358 10:205775341 11:211117377 12:181981297 13:205958155 14:180977929 15:198633109 16:172253203 17:154064524 18:185735379
+vips_16|LOG|   rung simmedium: vips.dyn --vips-concurrency=16 im_benchmark vulture_2336x2336.v output.v
+vips_16|LOG|      19 threads: t0 122M  t1 0M  t2 0M  t3 573M  t4 580M  t5 612M  t6 626M  t7 606M  t8 615M  t9 616M  t10 604M  t11 605M  t12 582M  t13 569M  t14 595M  t15 615M  t16 614M  t17 600M  t18 608M  
+vips_16|LOG|      native window (t3 50-150 M; reported only): traced threads 93.1-109.1 M each; untraced/traced 0.01%
+vips_16|LOG|      untraced: t0 122.1M  t1 0.0M  t2 0.0M  
+vips_16|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 568 M)
+vips_16|LOG|=== 2026-11-11 13:41:30  vips_16: sized on simmedium; gem5 19 CPUs, worker stop cpu[3:19] at 50 M and 150 M, limit 240h
+volrend_16|CHOSEN|r16|16 head 16||/home/harshraj/newbench/volrend/inputs/head.den
+volrend_16|NTHR|16
+volrend_16|NCPU|16
+volrend_16|SKIP|0
+volrend_16|MIN|540060379
+volrend_16|MD5|dynamic 903d3a3fafa235b1a5d10f534fee69e2 /home/harshraj/newbench_build/volrend/codes/apps/volrend/VOLREND.dyn
+volrend_16|MD5|static 95c1869ff332db0914b876261a74a296 /home/harshraj/splash-newbench/VOLREND
+volrend_16|PROGS|volrend_16|/home/harshraj/newbench_build/volrend/codes/apps/volrend/VOLREND.dyn|16 head 16||/home/harshraj/newbench/volrend/inputs/head.den|0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15|0|auto
+volrend_16|JOBS|volrend16|volrend|16|0|50000000|100000000|volrend_16
+volrend_16|GEM5|volrend_16|/home/harshraj/splash-newbench/VOLREND|16 head 16||/home/harshraj/newbench/volrend/inputs/head.den|16|1:16|240h|50000000|150000000
+volrend_16|TOTAL|t0|2635793031
+volrend_16|TOTAL|t1|784268996
+volrend_16|TOTAL|t2|559296045
+volrend_16|TOTAL|t3|553001786
+volrend_16|TOTAL|t4|566441284
+volrend_16|TOTAL|t5|570423827
+volrend_16|TOTAL|t6|563204562
+volrend_16|TOTAL|t7|573268575
+volrend_16|TOTAL|t8|558453237
+volrend_16|TOTAL|t9|605539362
+volrend_16|TOTAL|t10|584781711
+volrend_16|TOTAL|t11|540060379
+volrend_16|TOTAL|t12|579245650
+volrend_16|TOTAL|t13|560463555
+volrend_16|TOTAL|t14|564446597
+volrend_16|TOTAL|t15|566919615
+volrend_16|STARTS|16
+volrend_16|FIRST_BROADCAST|t15|955
+volrend_16|LOG|=== 2026-11-11 13:40:35  volrend_16: E3 16 threads; E5 traced threads (0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15) >= 300 M each
+volrend_16|LOG|    dynamic /home/harshraj/newbench_build/volrend/codes/apps/volrend/VOLREND.dyn (903d3a3f)
+volrend_16|LOG|    the ladder starts at r16, the rung chosen at 8 threads
+volrend_16|LOG|   rung r16: VOLREND.dyn 16 head 16
+volrend_16|LOG|      16 threads: t0 2636M  t1 784M  t2 559M  t3 553M  t4 566M  t5 570M  t6 563M  t7 573M  t8 558M  t9 606M  t10 585M  t11 540M  t12 579M  t13 560M  t14 564M  t15 567M  
+volrend_16|LOG|      native window (t1 50-150 M; reported only): traced threads 75.6-100.0 M each; untraced/traced 0.00%
+volrend_16|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 540 M)
+volrend_16|LOG|=== 2026-11-11 13:40:44  volrend_16: sized on r16; gem5 16 CPUs, worker stop cpu[1:16] at 50 M and 150 M, limit 240h
+waternsq_16|CHOSEN|s64||/home/harshraj/partB/waternsq_16/waternsq.in|/home/harshraj/b3_heldout/inputs/random.in
+waternsq_16|NTHR|16
+waternsq_16|NCPU|16
+waternsq_16|SKIP|0
+waternsq_16|MIN|585651404
+waternsq_16|MD5|dynamic 086a6d1114f69ffa13d590778a586708 /home/harshraj/b3_heldout_build/waternsq/codes/apps/water-nsquared/WATER-NSQUARED.dyn
+waternsq_16|MD5|static 0d9e0ea6701a22f7870104288caf39bb /home/harshraj/splash-heldout/WATER-NSQUARED
+waternsq_16|PROGS|waternsq_16|/home/harshraj/b3_heldout_build/waternsq/codes/apps/water-nsquared/WATER-NSQUARED.dyn||/home/harshraj/partB/waternsq_16/waternsq.in|/home/harshraj/b3_heldout/inputs/random.in|0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15|0|auto
+waternsq_16|JOBS|waternsq16|waternsq|16|0|50000000|100000000|waternsq_16
+waternsq_16|GEM5|waternsq_16|/home/harshraj/splash-heldout/WATER-NSQUARED||/home/harshraj/partB/waternsq_16/waternsq.in|/home/harshraj/b3_heldout/inputs/random.in|16|1:16|240h|50000000|150000000
+waternsq_16|TOTAL|t0|657350313
+waternsq_16|TOTAL|t1|586584312
+waternsq_16|TOTAL|t2|595256402
+waternsq_16|TOTAL|t3|586701078
+waternsq_16|TOTAL|t4|595665338
+waternsq_16|TOTAL|t5|586471521
+waternsq_16|TOTAL|t6|595460953
+waternsq_16|TOTAL|t7|586779747
+waternsq_16|TOTAL|t8|595662472
+waternsq_16|TOTAL|t9|585651404
+waternsq_16|TOTAL|t10|613015828
+waternsq_16|TOTAL|t11|604237551
+waternsq_16|TOTAL|t12|631772274
+waternsq_16|TOTAL|t13|621643085
+waternsq_16|TOTAL|t14|648938809
+waternsq_16|TOTAL|t15|595458731
+waternsq_16|STARTS|16
+waternsq_16|FIRST_BROADCAST|t0|17958632
+waternsq_16|LOG|=== 2026-11-11 13:40:45  waternsq_16: E3 16 threads; E5 traced threads (0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15) >= 300 M each
+waternsq_16|LOG|    dynamic /home/harshraj/b3_heldout_build/waternsq/codes/apps/water-nsquared/WATER-NSQUARED.dyn (086a6d11)
+waternsq_16|LOG|    the ladder starts at s32, the rung chosen at 8 threads
+waternsq_16|LOG|   rung s32: WATER-NSQUARED.dyn  < waternsq.in (1.5e-16 512 32 6  -1      3000     3  0 16 6.212752 )
+waternsq_16|LOG|      16 threads: t0 337M  t1 292M  t2 297M  t3 292M  t4 297M  t5 292M  t6 297M  t7 292M  t8 297M  t9 292M  t10 315M  t11 305M  t12 301M  t13 310M  t14 324M  t15 297M  
+waternsq_16|LOG|      native window (t1 50-150 M; reported only): traced threads 98.1-107.7 M each; untraced/traced 0.00%
+waternsq_16|LOG|      not chosen (E5): 1:292342696 2:296651674 3:292237514 4:296741662 5:292212367 6:296790342 7:292440968 8:296615593 9:292003980 15:296618673
+waternsq_16|LOG|   rung s64: WATER-NSQUARED.dyn  < waternsq.in (1.5e-16 512 64 6  -1      3000     3  0 16 6.212752 )
+waternsq_16|LOG|      16 threads: t0 657M  t1 587M  t2 595M  t3 587M  t4 596M  t5 586M  t6 595M  t7 587M  t8 596M  t9 586M  t10 613M  t11 604M  t12 632M  t13 622M  t14 649M  t15 595M  
+waternsq_16|LOG|      native window (t1 50-150 M; reported only): traced threads 99.1-110.9 M each; untraced/traced 0.00%
+waternsq_16|LOG|      CHOSEN: E3 holds and every traced thread executes >= 300 M (the least: 585 M)
+waternsq_16|LOG|=== 2026-11-11 13:41:03  waternsq_16: sized on s64; gem5 16 CPUs, worker stop cpu[1:16] at 50 M and 150 M, limit 240h

@@ -80,6 +80,11 @@ NEWBENCH = ('fft', 'lu', 'raytrace', 'streamcluster', 'volrend', 'radiosity', 'l
 WORKLOADS = WORKLOADS + tuple((p, f'{p}_4t_window_', f'newbench/{p}/l2_2MB_mi50M/{p}_4c', f'newbench/{p}/l2_2MB_mi150M/{p}_4c', 4, None)
                               for p in NEWBENCH)
 HELD_OUT = HELD_OUT | set(NEWBENCH)
+# Part B (breadth_bc_design_2026-11-10.md, amendment 1): canneal at 16 cores
+# keeps the procedure of its 4- and 8-core points -- the sync_mx/canneal16
+# traces (threads 1-16; rows canneal_16t_t<k> by `window`, records 50-150 M)
+# against gem5's 16 workers, the same 5% rule as canneal at 4 and 8
+WORKLOADS = WORKLOADS + (('canneal16', 'canneal_16t_', 'partB/canneal_16/l2_2MB_mi50M/canneal_16c', 'partB/canneal_16/l2_2MB_mi150M/canneal_16c', 16, None),)
 HELD_OUT_SOFT = 0.08
 KNOWN_DIFFERENT = {'barnes-std': 'expected: the barnes_4t traces are of a 256-body-leaf build, this gem5 run the standard one'}
 

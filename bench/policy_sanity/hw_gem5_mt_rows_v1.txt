@@ -1,0 +1,8 @@
+# hw_score.py g5mt: G5MT <span> <gem5 MT.L1_GETX per KI> <gem5 SS.L1_GETX per KI> (the panel windows)
+G5MT fluidanimate 0.113157 0.000518
+G5MT vips 0.008109 0.000023
+G5MT barnes_std_force 0.003530 0.000010
+G5MT ocean_2_MB 0.068810 0.000801
+G5MT canneal_4c_2_MB 0.222962 0.000669
+G5MT radix 0.092152 0.000005
+G5MT lunc 0.095164 0.000013

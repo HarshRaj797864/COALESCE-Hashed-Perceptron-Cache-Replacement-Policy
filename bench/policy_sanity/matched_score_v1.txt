@@ -1,0 +1,7 @@
+== fluidanimate: simulator/results/mw/logs/phaseA_b3_mw_h2_fluidanimate4/regime_shared/fluidanimate_4core/lru/run.log
+   R_g5 (this log) 0.400: 18744 events in 412,469,348 instructions; gem5 0.1137 per 1,000
+   QM1 (reported): binned events in the measured spans 18744 against the counter 18744
+   counter run 1: R_g5m not computed -- core 0 (thread 1) clipped by 2,116,931 (window 48,700,000-142,400,000, span 50,816,931-150,816,932)
+   counter run 2: R_g5m not computed -- core 0 (thread 1) clipped by 2,116,931 (window 48,700,000-142,400,000, span 50,816,931-150,816,932)
+   counter run 3: R_g5m not computed -- core 0 (thread 1) clipped by 2,116,931 (window 48,700,000-142,400,000, span 50,816,931-150,816,932)
+   -> R_g5m not computed

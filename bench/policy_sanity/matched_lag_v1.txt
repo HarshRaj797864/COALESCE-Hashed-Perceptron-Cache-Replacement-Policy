@@ -1,0 +1,36 @@
+# matched_b3.py lag bench/policy_sanity/matched_loc_set2_v1.txt bench/policy_sanity/h2_count_rows_v1.txt bench/policy_sanity/partB_v2loc_rows_v1.txt bench/policy_sanity/partB_count_rows_v1.txt (step 1; RERUN if the largest |lag| exceeds 5,000,000; no ratio)
+LAG fluidanimate max 7600000 start [-1300000, 0] end [-7600000, 0] -> RERUN
+LAG oceannc max 2000000 start [0, 2000000] end [-100000, 1900000] -> not rerun
+LAG streamcluster max 9700000 start [-5800000, 0] end [-9700000, 0] -> RERUN
+LAG vips max 1100000 start [-700000, 0] end [-1100000, 0] -> not rerun
+LAG barnes_16 max 28900000 start [-400000, 0] end [-28900000, 0] -> RERUN
+LAG barnes_8 max 700000 start [-400000, 0] end [-700000, 0] -> not rerun
+LAG bodytrack_16 max 3500000 start [-2400000, 0] end [-3500000, 0] -> not rerun
+LAG bodytrack_8 max 4500000 start [-4100000, 0] end [-4500000, 0] -> not rerun
+LAG fft_16 max 68100000 start [-68000000, 0] end [-68100000, 0] -> RERUN
+LAG fft_4 max 17000000 start [-16800000, 0] end [-17000000, 0] -> RERUN
+LAG fft_8 max 67000000 start [-67000000, 0] end [-66400000, 0] -> RERUN
+LAG fluidanimate_16 max 43300000 start [-2100000, 0] end [-43300000, 0] -> RERUN
+LAG fluidanimate_8 max 25000000 start [-7700000, 0] end [-25000000, 0] -> RERUN
+LAG fmm_16 max 64900000 start [-50800000, 100000] end [-64900000, 100000] -> RERUN
+LAG fmm_4 max 18400000 start [-13900000, 100000] end [-18400000, 100000] -> RERUN
+LAG fmm_8 max 65200000 start [-50600000, 200000] end [-65200000, 200000] -> RERUN
+LAG lunc_16 max 18200000 start [-10800000, 0] end [-18200000, 0] -> RERUN
+LAG lunc_8 max 14500000 start [-5000000, 0] end [-14500000, 0] -> RERUN
+LAG ocean_16 max 2300000 start [-300000, 0] end [-2300000, 0] -> not rerun
+LAG ocean_8 max 3100000 start [-100000, 0] end [-3100000, 0] -> not rerun
+LAG oceannc_16 max 400000 start [-100000, 0] end [-400000, 0] -> not rerun
+LAG oceannc_8 max 100000 start [-100000, 0] end [-100000, 0] -> not rerun
+LAG radix_16 not located (gem5 per-CPU rows missing (a gem5 run not ended))
+LAG radix_8 max 2400000 start [-100000, 100000] end [-2400000, 100000] -> not rerun
+LAG raytrace_16 max 18800000 start [-11400000, 0] end [-18800000, 100000] -> RERUN
+LAG raytrace_8 max 9900000 start [-4200000, 0] end [-9900000, 0] -> RERUN
+LAG streamcluster_16 max 9700000 start [-9700000, 0] end [-9700000, 0] -> RERUN
+LAG streamcluster_8 max 9700000 start [-9400000, 0] end [-9700000, 0] -> RERUN
+LAG vips_16 max 1400000 start [-700000, 0] end [-1400000, 0] -> not rerun
+LAG vips_8 max 1200000 start [-800000, 0] end [-1200000, 0] -> not rerun
+LAG volrend_16 max 40000000 start [-12200000, 0] end [-40000000, 0] -> RERUN
+LAG volrend_4 max 8200000 start [-300000, 100000] end [-8200000, 0] -> RERUN
+LAG volrend_8 max 22500000 start [-4900000, 0] end [-22500000, 0] -> RERUN
+LAG waternsq_16 max 12300000 start [-3700000, 600000] end [-12300000, 2400000] -> RERUN
+LAG waternsq_8 max 12300000 start [-3700000, 100000] end [-12300000, 100000] -> RERUN

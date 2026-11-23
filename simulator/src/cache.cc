@@ -679,7 +679,14 @@ void CACHE::dir_on_llc_request(const tag_lookup_type& pkt)
   using champsim::coherence::dir_req;
   const dir_req kind = pkt.type == access_type::RFO ? dir_req::store : (pkt.type == access_type::WRITE ? dir_req::writeback : dir_req::read);
   const auto r = champsim::coherence::dir_llc_request(dir_line(pkt.address), pkt.cpu, kind);
-  dir_log_event(kind == dir_req::store ? 'G' : (kind == dir_req::read ? 'L' : 'W'), pkt, r.protocol_others, r.presence_others, r.g5_others);
+  dir_log_event(kind == dir_req::store ? 'G' : (kind == dir_req::read ? 'L' : 'W'), pkt, r.protocol_others, r.presence_others, r.g5_others,
+                kind == dir_req::read ? (r.g5_excl_others ? 1 : 0) : -1);
+  if (kind == dir_req::read && r.g5_excl_others) { // C: load-side communication, records only
+    if (pkt.type == access_type::LOAD)
+      ++sim_stats.coherence_dir_load_g5_owner_events;
+    else
+      ++sim_stats.coherence_dir_otherread_g5_owner_events;
+  }
   if (kind != dir_req::store)
     return;
   if (r.presence_others != 0) {
@@ -695,6 +702,8 @@ void CACHE::dir_on_llc_request(const tag_lookup_type& pkt)
   if (r.g5_others != 0) { // step 3: the gem5-rule view
     ++sim_stats.coherence_dir_rfo_g5_events;
     sim_stats.coherence_dir_rfo_g5_cores += static_cast<uint64_t>(__builtin_popcount(r.g5_others));
+    if (champsim::coherence::position_bins() != 0) // matched B3 windows: records only, off by default
+      champsim::coherence::count_g5_rfo_at_position(static_cast<unsigned>(pkt.cpu));
   }
 }
 
@@ -766,17 +775,18 @@ void CACHE::dir_invalidate_line(uint64_t line)
 // for. kind: L, G, W -- a load, RFO or writeback accepted at the LLC; U -- an
 // upgrade; S -- a stale fill dropped. (I, a private copy invalidated, is
 // written by dir_invalidate_line, before the G or U line that caused it.)
-//   kind cache cycle warmup cpu instr_id ip v_line line type protocol_others presence_others g5_others
-// (g5_others, the gem5-rule view, since 2026-10-19: readers take 12 fields or more)
+//   kind cache cycle warmup cpu instr_id ip v_line line type protocol_others presence_others g5_others [g5_excl_others]
+// (g5_others, the gem5-rule view, since 2026-10-19: readers take 12 fields or more;
+//  g5_excl_others, 0 or 1, on L lines only since 2026-11-18, C: load_side_design_2026-11-18.md)
 template <typename T>
-void CACHE::dir_log_event(char kind, const T& pkt, uint32_t protocol_others, uint32_t presence_others, uint32_t g5_others) const
+void CACHE::dir_log_event(char kind, const T& pkt, uint32_t protocol_others, uint32_t presence_others, uint32_t g5_others, int g5_excl_others) const
 {
   auto* f = champsim::coherence::dir_event_log();
   if (f == nullptr)
     return;
-  fmt::print(f, "{} {} {} {} {} {} {:x} {:x} {:x} {} {:x} {:x} {:x}\n", kind, NAME, current_time.time_since_epoch() / clock_period, warmup ? 1 : 0, pkt.cpu,
+  fmt::print(f, "{} {} {} {} {} {} {:x} {:x} {:x} {} {:x} {:x} {:x}{}\n", kind, NAME, current_time.time_since_epoch() / clock_period, warmup ? 1 : 0, pkt.cpu,
              pkt.instr_id, pkt.ip.template to<uint64_t>(), dir_line(pkt.v_address), dir_line(pkt.address), access_type_names.at(champsim::to_underlying(pkt.type)),
-             protocol_others, presence_others, g5_others);
+             protocol_others, presence_others, g5_others, g5_excl_others < 0 ? std::string{} : (g5_excl_others ? std::string{" 1"} : std::string{" 0"}));
 }
 
 // Synchronised replay (sync_replay.h): does a store from this L1D's core
@@ -1177,6 +1187,8 @@ void CACHE::end_phase(unsigned finished_cpu)
   roi_stats.coherence_dir_upgrade_g5_events = sim_stats.coherence_dir_upgrade_g5_events;
   roi_stats.coherence_dir_upgrade_g5_cores = sim_stats.coherence_dir_upgrade_g5_cores;
   roi_stats.coherence_dir_upgrade_g5_silent = sim_stats.coherence_dir_upgrade_g5_silent;
+  roi_stats.coherence_dir_load_g5_owner_events = sim_stats.coherence_dir_load_g5_owner_events;
+  roi_stats.coherence_dir_otherread_g5_owner_events = sim_stats.coherence_dir_otherread_g5_owner_events;
   roi_stats.coherence_dir_stale_fills = sim_stats.coherence_dir_stale_fills;
   dir_selfcheck();
   std::copy(std::begin(sim_stats.coherence_sharer_hist), std::end(sim_stats.coherence_sharer_hist), std::begin(roi_stats.coherence_sharer_hist));

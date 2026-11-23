@@ -1,0 +1,36 @@
+# partB_score.py --fc fcrows bench/policy_sanity/partB_keys_v1.txt simulator/results/partB/stage2fc/ref simulator/results/partB/stage2fc/logs
+FCQ fft_4 ok
+FCQ volrend_4 ok
+FCQ fmm_4 ok
+FCQ ocean_8 PENDING no F-C log
+FCQ oceannc_8 PENDING no F-C log
+FCQ radix_8 PENDING no F-C log
+FCQ barnes_8 PENDING the F-C rerun has not completed
+FCQ lunc_8 PENDING the F-C rerun has not completed
+FCQ fft_8 PENDING the F-C rerun has not completed
+FCQ volrend_8 PENDING the F-C rerun has not completed
+FCQ waternsq_8 PENDING the F-C rerun has not completed
+FCQ raytrace_8 PENDING the F-C rerun has not completed
+FCQ fmm_8 PENDING the F-C rerun has not completed
+FCQ streamcluster_8 PENDING the F-C rerun has not completed
+FCQ fluidanimate_8 PENDING no F-C log
+FCQ vips_8 PENDING no F-C log
+FCQ bodytrack_8 PENDING no F-C log
+FCQ ocean_16 PENDING no F-C log
+FCQ oceannc_16 PENDING no F-C log
+FCQ radix_16 PENDING no F-C log
+FCQ barnes_16 PENDING no F-C log
+FCQ lunc_16 PENDING no F-C log
+FCQ fft_16 PENDING no F-C log
+FCQ volrend_16 PENDING no F-C log
+FCQ waternsq_16 PENDING no F-C log
+FCQ raytrace_16 PENDING no F-C log
+FCQ fmm_16 PENDING no F-C log
+FCQ streamcluster_16 PENDING no F-C log
+FCQ fluidanimate_16 PENDING no F-C log
+FCQ vips_16 PENDING no reference log
+FCQ bodytrack_16 PENDING no reference log
+FCQ canneal_16 PENDING no F-C log
+FCQ waternsq4 PENDING no F-C log
+FCQ raytrace4 PENDING no F-C log
+FCQ streamcluster4 PENDING no F-C log

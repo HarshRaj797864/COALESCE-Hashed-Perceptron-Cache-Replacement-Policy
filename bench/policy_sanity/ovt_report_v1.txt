@@ -1,0 +1,27 @@
+# H1b (fifo_overtake_design_2026-11-14.md, amendment 1): QO0 / QO1 / QO2 and the report recomputed on the laptop from the pulled runs (simulator/results/ovt/runs) against simulator/results/gem5_b3_view, server paths mapped; 2026-11-17
+01 | QO0 HOLDS: config.ini equal (4648 lines) once the output path is mapped | QO1 COMPLETE-IDENTICAL: 2958 statistics lines equal (host lines aside); finalTick 574597583500
+01_ocean2: L0 overtakes 0 in the run, 0 in the window (-); window L0 messages 32,395,416; 0.000 per million; other buffers 12472 (unordered 12472, ordered 0); margin (ticks) min - max -; H1 no panic
+02 | QO0 HOLDS: config.ini equal (4648 lines) once the output path is mapped | QO1 COMPLETE-IDENTICAL: 2957 statistics lines equal (host lines aside); finalTick 386269570500
+02_ocean8: L0 overtakes 0 in the run, 0 in the window (-); window L0 messages 32,415,408; 0.000 per million; other buffers 34047 (unordered 34047, ordered 0); margin (ticks) min - max -; H1 no panic
+03 | QO0 HOLDS: config.ini equal (5544 lines) once the output path is mapped | QO1 COMPLETE-IDENTICAL: 3397 statistics lines equal (host lines aside); finalTick 7705267225000
+03_canneal4_2MB: L0 overtakes 0 in the run, 0 in the window (-); window L0 messages 7,469,435; 0.000 per million; other buffers 1669 (unordered 1669, ordered 0); margin (ticks) min - max -; H1 no panic
+04 | QO0 HOLDS: config.ini equal (5544 lines) once the output path is mapped | QO1 COMPLETE-IDENTICAL: 3373 statistics lines equal (host lines aside); finalTick 7528326499000
+04_canneal4_8MB: L0 overtakes 0 in the run, 0 in the window (-); window L0 messages 7,650,735; 0.000 per million; other buffers 1588 (unordered 1588, ordered 0); margin (ticks) min - max -; H1 no panic
+05 | QO0 HOLDS: config.ini equal (9128 lines) once the output path is mapped | QO1 COMPLETE-IDENTICAL: 5271 statistics lines equal (host lines aside); finalTick 7711279777500
+05_canneal8: L0 overtakes 0 in the run, 0 in the window (-); window L0 messages 15,265,908; 0.000 per million; other buffers 1678 (unordered 1678, ordered 0); margin (ticks) min - max -; H1 no panic
+06 | QO0 HOLDS: config.ini equal (4648 lines) once the output path is mapped | QO1 COMPLETE-IDENTICAL: 2952 statistics lines equal (host lines aside); finalTick 327495144500 | QO2 HOLDS: the first L0 overtake is H1's panic line exactly (tick 323384552500, system.ruby.l0_cntrl0.bufferFromL1)
+06_barnes: L0 overtakes 1 in the run, 1 in the window (FromL1 1); window L0 messages 9,602,428; 0.104 per million; other buffers 528 (unordered 528, ordered 0); margin (ticks) min 500 max 500; H1 PANIC
+07 | QO0 HOLDS: config.ini equal (4648 lines) once the output path is mapped | QO1 COMPLETE-IDENTICAL: 2947 statistics lines equal (host lines aside); finalTick 304103892000
+07_barnes256: L0 overtakes 0 in the run, 0 in the window (-); window L0 messages 16,664,395; 0.000 per million; other buffers 551 (unordered 551, ordered 0); margin (ticks) min - max -; H1 no panic
+08 | QO0 HOLDS: config.ini equal (4648 lines) once the output path is mapped | QO1 COMPLETE-IDENTICAL: 2959 statistics lines equal (host lines aside); finalTick 1799956709000
+08_radix: L0 overtakes 0 in the run, 0 in the window (-); window L0 messages 76,524,407; 0.000 per million; other buffers 7116 (unordered 7116, ordered 0); margin (ticks) min - max -; H1 no panic
+09 | QO0 HOLDS: config.ini equal (4648 lines) once the output path is mapped | QO1 COMPLETE-IDENTICAL: 2952 statistics lines equal (host lines aside); finalTick 501798487000
+09_lunc: L0 overtakes 0 in the run, 0 in the window (-); window L0 messages 37,180,533; 0.000 per million; other buffers 9892 (unordered 9892, ordered 0); margin (ticks) min - max -; H1 no panic
+10 | QO0 HOLDS: config.ini equal (5544 lines) once the output path is mapped | QO1 COMPLETE-IDENTICAL: 3424 statistics lines equal (host lines aside); finalTick 634101386500
+10_streamcluster: L0 overtakes 0 in the run, 0 in the window (-); window L0 messages 12,614,090; 0.000 per million; other buffers 1753 (unordered 1753, ordered 0); margin (ticks) min - max -; H1 no panic
+11 | QO0 HOLDS: config.ini equal (5544 lines) once the output path is mapped | QO1 COMPLETE-IDENTICAL: 3409 statistics lines equal (host lines aside); finalTick 517103703000
+11_fluidanimate: L0 overtakes 0 in the run, 0 in the window (-); window L0 messages 2,309,480; 0.000 per million; other buffers 629 (unordered 629, ordered 0); margin (ticks) min - max -; H1 no panic
+12 | QO0 HOLDS: config.ini equal (7336 lines) once the output path is mapped | QO1 COMPLETE-IDENTICAL: 4287 statistics lines equal (host lines aside); finalTick 485707461000
+12_vips: L0 overtakes 0 in the run, 0 in the window (-); window L0 messages 7,198,540; 0.000 per million; other buffers 1023 (unordered 1023, ordered 0); margin (ticks) min - max -; H1 no panic
+13 | QO0 HOLDS: config.ini equal (4648 lines) once the output path is mapped | QO1 COMPLETE-IDENTICAL: 2964 statistics lines equal (host lines aside); finalTick 556775727500
+13_oceannc: L0 overtakes 0 in the run, 0 in the window (-); window L0 messages 48,406,586; 0.000 per million; other buffers 9216 (unordered 9216, ordered 0); margin (ticks) min - max -; H1 no panic

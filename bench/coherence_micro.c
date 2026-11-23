@@ -44,6 +44,14 @@
  *   llc_out   A loads; B, C, D sweep; B stores
  *   offchip   A loads; SWEEP; B stores
  *
+ * Q16 (breadth_bc_design_2026-11-10.md, amendment 5): built with -DNT=16
+ * -DACT0=12, sixteen threads run; the four roles fall on threads 12-15
+ * (A = 12 + j % 4, ...) and threads 0-11 only wait, so every case's hand
+ * count is the 4-thread one. One more case:
+ *   s16       EVERY thread loads; then thread NT-1 stores (NT holders, then
+ *             one upgrade that finds the other NT-1)
+ * The defaults, NT 4 and ACT0 0, are the program as it was.
+ *
  * Markers: right after the start barrier each thread stores to its own line
  * of start_mark[], right after its last step to end_mark[]; micro_trim.py cuts
  * the traces there. Built with -DM5OPS (the gem5 binary only), thread 0 resets
@@ -56,7 +64,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define NT 4
+#ifndef NT
+#define NT 4                 /* threads (Q16: 16) */
+#endif
+#ifndef ACT0
+#define ACT0 0               /* the first of the four acting threads (Q16: 12); the others only wait */
+#endif
+#if ACT0 < 0 || ACT0 + 4 > NT
+#error "the acting threads ACT0 .. ACT0 + 3 must lie in 0 .. NT - 1"
+#endif
 #define LINE 64
 #define WPL (LINE / sizeof(uint64_t))
 #define RING_LINES 64        /* 4 KB */
@@ -96,11 +112,13 @@ static pthread_barrier_t step_barrier;
 #define STEP_WAIT(t, w) chase((t), (w))
 #endif
 
-struct step { enum op op[4]; long wait; };
+struct step { enum op op[4]; enum op all; enum op last; long wait; };   /* all: every thread; last: thread NT - 1 */
 
 static int schedule(const char *c, struct step *s)
 {
-#define S(a, b, cc, d, w) (s[n].op[0] = a, s[n].op[1] = b, s[n].op[2] = cc, s[n].op[3] = d, s[n].wait = w, n++)
+#define S(a, b, cc, d, w) (s[n].op[0] = a, s[n].op[1] = b, s[n].op[2] = cc, s[n].op[3] = d, s[n].all = NONE, s[n].last = NONE, s[n].wait = w, n++)
+#define SALL(o, w) (S(NONE, NONE, NONE, NONE, w), s[n - 1].all = o)
+#define SLAST(o, w) (S(NONE, NONE, NONE, NONE, w), s[n - 1].last = o)
   int n = 0;
   if (!strcmp(c, "pp_lock")) { S(LOCK, NONE, NONE, NONE, W_STEP); S(NONE, LOCK, NONE, NONE, W_STEP); S(LOCK, NONE, NONE, NONE, W_STEP); S(NONE, LOCK, NONE, NONE, W_STEP); }
   else if (!strcmp(c, "pp_store")) { S(ST, NONE, NONE, NONE, W_STEP); S(NONE, ST, NONE, NONE, W_STEP); S(ST, NONE, NONE, NONE, W_STEP); S(NONE, ST, NONE, NONE, W_STEP); }
@@ -112,9 +130,12 @@ static int schedule(const char *c, struct step *s)
   else if (!strcmp(c, "priv_S")) { S(LD, NONE, NONE, NONE, W_STEP); S(NONE, NONE, LD, NONE, W_STEP); S(FLUSH, FLUSH, FLUSH, FLUSH, W_BULK); S(NONE, ST, NONE, NONE, W_STEP); }
   else if (!strcmp(c, "llc_out")) { S(LD, NONE, NONE, NONE, W_STEP); S(NONE, SWEEP, SWEEP, SWEEP, W_BULK); S(NONE, ST, NONE, NONE, W_STEP); }
   else if (!strcmp(c, "offchip")) { S(LD, NONE, NONE, NONE, W_STEP); S(SWEEP, SWEEP, SWEEP, SWEEP, W_BULK); S(NONE, ST, NONE, NONE, W_STEP); }
+  else if (!strcmp(c, "s16")) { SALL(LD, W_STEP); SLAST(ST, W_STEP); }
   else return -1;
   return n;
 #undef S
+#undef SALL
+#undef SLAST
 }
 
 static uint64_t chase(int t, long n)
@@ -153,10 +174,16 @@ static void *worker(void *arg)
     m5_reset_stats();
   acc += chase(t, W_STEP);                              /* warm the ring (the traces start cold) */
   for (long j = 0; j < ROUNDS; j++) {
-    const int role = (int)((t - j % NT + NT) % NT);     /* 0 = A, 1 = B, 2 = C, 3 = D */
+    const int a = t - ACT0;                             /* the acting threads: ACT0 .. ACT0 + 3 */
+    const int role = (a >= 0 && a < 4) ? (int)((a - j % 4 + 4) % 4) : -1;   /* 0 = A, 1 = B, 2 = C, 3 = D; -1 waits */
     volatile uint64_t *x = &X[j].v;
     for (int s = 0; s < ns; s++) {
-      switch (st[s].op[role]) {
+      enum op o = role >= 0 ? st[s].op[role] : NONE;
+      if (st[s].all != NONE)
+        o = st[s].all;
+      if (st[s].last != NONE && t == NT - 1)
+        o = st[s].last;
+      switch (o) {
       case LD: acc += *x; break;
       case ST: *x = (uint64_t)j; break;
       case RMW: __asm__ volatile("addq $1, %0" : "+m"(*x)); break;
@@ -190,7 +217,7 @@ int main(int argc, char **argv)
     return 2;
   }
   X = aligned_alloc(4096, 4096 * (size_t)(ROUNDS / 64 + 1));   /* never touched before its round */
-  printf("start_mark %p end_mark %p X %p case %s rounds %ld\n", (void *)start_mark, (void *)end_mark, (void *)X, CASE, ROUNDS);
+  printf("start_mark %p end_mark %p X %p case %s rounds %ld threads %d actors %d\n", (void *)start_mark, (void *)end_mark, (void *)X, CASE, ROUNDS, NT, ACT0);
   fflush(stdout);
   pthread_barrier_init(&start, NULL, NT);
 #ifdef BARRIER_STEPS

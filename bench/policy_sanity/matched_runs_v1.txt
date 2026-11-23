@@ -1,0 +1,1 @@
+fluidanimate4|phaseA_b3_fc_h2_fluidanimate4|fluidanimate_4core|/home/harshraj/sync_fc/cfg/fluidanimate.json|phaseA_b3_mw_h2_fluidanimate4

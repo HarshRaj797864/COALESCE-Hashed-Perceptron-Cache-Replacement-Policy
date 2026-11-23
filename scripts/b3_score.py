@@ -114,6 +114,24 @@ REFS['new'] = {f'{p}4': (f'{p} 2 MB', f'newbench/{p}/l2_2MB_mi50M/{p}_4c', f'new
 REFS['set2'] = {f'{p}4': (f'{p} 2 MB', f'heldout2/{p}/l2_2MB_mi50M/{p}_4c', f'heldout2/{p}/l2_2MB_mi150M/{p}_4c')
                 for p in ('fluidanimate', 'bodytrack', 'facesim', 'vips', 'oceannc')}
 REFS['set2']['streamcluster4'] = ('streamcluster 2MB', 'newbench/streamcluster/l2_2MB_mi50M/streamcluster_4c', 'newbench/streamcluster/l2_2MB_mi150M/streamcluster_4c')
+# GEN@partB: Part B of the breadth plan (breadth_bc_design_2026-11-10.md; the
+# scoring note is its amendment 7 = Note 3). B1: fft, volrend, fmm at 4 cores
+# against their existing gem5 runs, trees phaseA_b3_b1_<p>4; B2 and B16: 14
+# programs at 8 and 16 threads against gem5 stopped when a traced worker (CPU 0
+# aside) reaches the skip + 50 M and + 150 M, trees phaseA_b3_b2_<p>8 and
+# phaseA_b3_b16_<p>16; canneal at 16 from step 5's LRU run, tree
+# phaseA_b3_p2_canneal16 (score it as p2@partB). scripts/partB_score.py score
+# prints only the keys that pass every check.
+PARTB_PROGRAMS = ('ocean', 'oceannc', 'radix', 'barnes', 'lunc', 'fft', 'volrend', 'waternsq', 'raytrace', 'fmm',
+                  'streamcluster', 'fluidanimate', 'vips', 'bodytrack')
+PARTB_SKIP_M = {'radix': 1560}   # sizing's skip, the same at 8 and 16 threads (partB_sizing_results_2026-11-11.md)
+REFS['partB'] = {'fft4': ('fft 4c 2MB', 'newbench/fft/l2_2MB_mi50M/fft_4c', 'newbench/fft/l2_2MB_mi150M/fft_4c'),
+                 'volrend4': ('volrend 4c 2MB', 'newbench/volrend/l2_2MB_mi50M/volrend_4c', 'newbench/volrend/l2_2MB_mi150M/volrend_4c'),
+                 'fmm4': ('fmm 4c 2MB', 'heldout/fmm/l2_2MB_mi50M/fmm_4c', 'heldout/fmm/l2_2MB_mi150M/fmm_4c')}
+for _n in (8, 16):
+    for _p in PARTB_PROGRAMS + (('canneal',) if _n == 16 else ()):
+        _a = PARTB_SKIP_M.get(_p, 0)
+        REFS['partB'][f'{_p}{_n}'] = (f'{_p} {_n}c 2MB', f'partB/{_p}_{_n}/l2_2MB_mi{_a + 50}M/{_p}_{_n}c', f'partB/{_p}_{_n}/l2_2MB_mi{_a + 150}M/{_p}_{_n}c')
 SET2_ROLE = {'oceannc4': 'ocean non-contiguous (reported apart, never counted)', 'streamcluster4': 'streamcluster (newbench amendment 3: a step 4 program)'}
 HELD_MIN_EVENTS = 500   # below this many gem5 store misses that find another core, a held-out program does not discriminate
 NOT_ONE_PROGRAM = {('', 'barnes4'): 'NOT ONE PROGRAM: these traces are of a 256-body-leaf build and this gem5 run is the standard one. Void. Score GEN@leaf256.'}
@@ -134,11 +152,16 @@ def gem5_rows(root):
             p = line.split()
             if len(p) >= 2 and re.fullmatch(r'-?[0-9.e+]+', p[1]) and p[0] not in s:
                 s[p[0]] = float(p[1])
-        if dumps != 1:
-            sys.exit(f'{stats}: {dumps} statistics dumps, expected 1')
         log = open(f'{d}/run.log').read() if os.path.exists(f'{d}/run.log') else ''
         m = re.search(r'Exiting @ tick \d+ because (.*)', log)
         ended = 'max_insts' if m and 'max instruction count' in m.group(1) else ('program_end' if m else 'NOT_ENDED')
+        if dumps == 0 and ended == 'NOT_ENDED':
+            # Part B's runs end over days: one still running, or stopped by its
+            # time limit, has written no statistics. No row; its scorer says why.
+            print(f'# {os.path.relpath(d, root)}: not ended, no statistics -- no row')
+            continue
+        if dumps != 1:
+            sys.exit(f'{stats}: {dumps} statistics dumps, expected 1')
         cpus = sorted((k for k in s if re.fullmatch(r'system\.cpu\d+\.commitStats0\.numInsts', k)), key=lambda k: int(re.search(r'cpu(\d+)', k).group(1)))
         if sum(s[k] for k in cpus) != s['simInsts']:
             sys.exit(f'{stats}: per-cpu instructions do not sum to simInsts')
@@ -149,15 +172,20 @@ def gem5_rows(root):
               int(s['system.ruby.l2_cntrl0.L2cache.m_demand_hits']), ','.join(str(int(s[k])) for k in cpus))
 
 
-def load(path, cols, key):
+def load(path, cols, key, keep=None):
     out = {}
     for line in open(path):
         p = line.split()
         if not p or p[0].startswith('#'):
             continue
         row = dict(zip(cols, p))
-        out[key(row)] = row
+        if keep is None or keep(row):
+            out[key(row)] = row
     return out
+
+
+def lru(row):
+    return row['pol'] == 'lru'
 
 
 def window(g, a, b):
@@ -176,8 +204,10 @@ def window(g, a, b):
 
 
 def score(phasea, b3, gem5, gens):
-    P = load(phasea, PHASEA, lambda r: (r['tree'], r['rg']))
-    C = load(b3, B3, lambda r: (r['tree'], r['rg']))
+    # LRU rows only: every B3 tree is LRU alone, but step 5's trees (canneal16
+    # for Part B) hold nine policies under one tree name
+    P = load(phasea, PHASEA, lambda r: (r['tree'], r['rg']), lru)
+    C = load(b3, B3, lambda r: (r['tree'], r['rg']), lru)
     G = load(gem5, GEM5, lambda r: r['run'])
     for spec in gens:
         gen, _, ref = spec.partition('@')
@@ -265,7 +295,7 @@ def score(phasea, b3, gem5, gens):
                 else:
                     verdict = f'R_b {rb:.3f} ' + ('in the band' if BAND[0] <= rb <= BAND[1] else 'OUT OF THE BAND')
                 print(f"   {'':13s} held-out P1, level {c.get('level', '-')}: {verdict}")
-            if ref in ('new', 'set2'):
+            if ref in ('new', 'set2', 'partB'):
                 # newbench_design_2026-10-19.md: P8 R_g5 in the band, P9 R_b >= R_g5,
                 # P10 demand traffic within the band, for each discriminating program.
                 # Held-out set 2 (heldout2_design_2026-11-04.md): the same three as
@@ -273,6 +303,11 @@ def score(phasea, b3, gem5, gens):
                 ge = w['ss_getx'] + w['mt_getx']
                 what = 'new benchmark' if ref == 'new' else SET2_ROLE.get(suf, 'held-out set 2')
                 pn = ('P15', 'P16', 'P17') if ref == 'set2' and suf != 'streamcluster4' else ('P8', 'P9', 'P10')
+                if ref == 'partB':
+                    # B1 keeps step 4's P8-P10; B2 is P18-P20, B16 P22-P24
+                    nc = int(re.search(r'(\d+)$', suf).group(1))
+                    what = {4: 'Part B, B1 (4 cores)', 8: 'Part B, B2 (8 cores)', 16: 'Part B, B16 (16 cores)'}[nc]
+                    pn = {4: ('P8', 'P9', 'P10'), 8: ('P18', 'P19', 'P20'), 16: ('P22', 'P23', 'P24')}[nc]
                 if ge < HELD_MIN_EVENTS:
                     print(f"   {'':13s} {what}: not discriminating: gem5 counts {ge} store misses that find another core (fewer than {HELD_MIN_EVENTS})")
                 elif c.get('rfo_g5', '-') in ('-', None):

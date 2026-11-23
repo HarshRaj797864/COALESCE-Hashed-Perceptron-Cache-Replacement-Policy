@@ -1,0 +1,498 @@
+# v2_located.py run bench/policy_sanity/partB_keys_v1.txt bench/policy_sanity/partB_count_rows_v1.txt simulator/results/partB/stage2/count/runs bench/policy_sanity/gem5_percpu_v3.txt bench/policy_sanity/gem5_mix_v7.txt
+== fft_4: threads 0,1,2,3; gem5 runs newbench/fft/l2_2MB_mi50M/fft_4c and newbench/fft/l2_2MB_mi150M/fft_4c
+   loads   gem5  207.766   counter windows [207.663, 207.664] -> inside   located [207.785, 207.785] -> inside
+   stores  gem5  103.756   counter windows [103.709, 103.709] -> inside   located [103.765, 103.765] -> inside
+   RMWs    gem5    0.000   counter windows [0.000, 0.000] -> inside   located [0.000, 0.000] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -0.20 [-16.80, +0.00]; end median -0.40 [-17.00, +0.00]
+           t0: start  -16.80  end  -17.00
+           t1: start   -0.20  end   -0.40
+           t2: start   +0.00  end   +0.00
+           t3: start   -0.20  end   -0.40
+== volrend_4: threads 0,1,2,3; gem5 runs newbench/volrend/l2_2MB_mi50M/volrend_4c and newbench/volrend/l2_2MB_mi150M/volrend_4c
+   loads   gem5  194.693   counter windows [193.748, 193.986] -> inside   located [193.639, 193.815] -> inside
+   stores  gem5   40.646   counter windows [39.763, 40.252] -> inside   located [39.951, 40.556] -> inside
+   RMWs    gem5    0.995   counter windows [0.798, 0.967] -> inside   located [0.831, 1.023] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median +0.00 [-0.30, +0.10]; end median -8.00 [-8.20, +0.00]
+           t0: start   +0.10  end   -8.00
+           t1: start   -0.30  end   +0.00
+           t2: start   +0.00  end   -8.00
+           t3: start   +0.00  end   -8.20
+== fmm_4: threads 0,1,2,3; gem5 runs heldout/fmm/l2_2MB_mi50M/fmm_4c and heldout/fmm/l2_2MB_mi150M/fmm_4c
+   loads   gem5  147.139   counter windows [145.358, 145.361] -> inside   located [145.403, 145.553] -> inside
+   stores  gem5   24.404   counter windows [23.554, 23.558] -> inside   located [22.935, 23.360] -> inside
+   RMWs    gem5    1.124   counter windows [0.820, 0.821] -> OUTSIDE   located [0.803, 0.812] -> OUTSIDE   reading W2
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -13.60 [-13.90, +0.10]; end median -8.50 [-18.40, +0.10]
+           t0: start  -13.70  end   -5.50
+           t1: start  -13.50  end  -11.50
+           t2: start  -13.90  end  -18.37
+           t3: start   +0.10  end   +0.10
+== ocean_8: threads 0,1,2,3,4,5,6,7; gem5 runs partB/ocean_8/l2_2MB_mi50M/ocean_8c and partB/ocean_8/l2_2MB_mi150M/ocean_8c
+   loads   gem5  304.313   counter windows [306.510, 306.513] -> inside   located [304.644, 305.358] -> inside
+   stores  gem5   73.128   counter windows [73.534, 73.535] -> inside   located [72.700, 72.998] -> inside
+   RMWs    gem5    0.036   counter windows [0.029, 0.029] -> inside   located [0.029, 0.030] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -0.05 [-0.10, +0.00]; end median -1.50 [-3.10, +0.00]
+           t0: start   +0.00  end   +0.00
+           t1: start   -0.10  end   -3.10
+           t2: start   -0.10  end   -0.20
+           t3: start   +0.00  end   -2.90
+           t4: start   +0.00  end   +0.00
+           t5: start   +0.00  end   -2.80
+           t6: start   -0.10  end   -2.90
+           t7: start   -0.10  end   -0.10
+== oceannc_8: threads 0,1,2,3,4,5,6,7; gem5 runs partB/oceannc_8/l2_2MB_mi50M/oceannc_8c and partB/oceannc_8/l2_2MB_mi150M/oceannc_8c
+   loads   gem5  320.320   counter windows [320.114, 320.116] -> inside   located [320.323, 320.323] -> inside
+   stores  gem5   54.029   counter windows [54.134, 54.153] -> inside   located [54.024, 54.025] -> inside
+   RMWs    gem5    0.036   counter windows [0.029, 0.029] -> inside   located [0.029, 0.029] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -0.05 [-0.10, +0.00]; end median -0.10 [-0.10, +0.00]
+           t0: start   -0.10  end   -0.10
+           t1: start   -0.10  end   -0.10
+           t2: start   -0.10  end   -0.10
+           t3: start   +0.00  end   -0.10
+           t4: start   +0.00  end   -0.10
+           t5: start   -0.10  end   -0.10
+           t6: start   +0.00  end   -0.10
+           t7: start   +0.00  end   +0.00
+== radix_8: threads 0,1,2,3,4,5,6,7; gem5 runs partB/radix_8/l2_2MB_mi1610M/radix_8c and partB/radix_8/l2_2MB_mi1710M/radix_8c
+   loads   gem5  273.949   counter windows [273.935, 273.935] -> inside   located [273.950, 273.950] -> inside
+   stores  gem5  178.270   counter windows [178.311, 178.311] -> inside   located [178.268, 178.268] -> inside
+   RMWs    gem5   95.639   counter windows [95.584, 95.584] -> inside   located [95.641, 95.641] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -0.05 [-0.10, +0.10]; end median -0.55 [-2.40, +0.10]
+           t0: start   +0.10  end   +0.10
+           t1: start   +0.00  end   -2.30
+           t2: start   -0.10  end   -0.90
+           t3: start   -0.10  end   -0.30
+           t4: start   +0.00  end   -0.10
+           t5: start   -0.10  end   +0.00
+           t6: start   -0.10  end   -0.80
+           t7: start   +0.00  end   -2.40
+== barnes_8: threads 0,1,2,3,4,5,6,7; gem5 runs partB/barnes_8/l2_2MB_mi50M/barnes_8c and partB/barnes_8/l2_2MB_mi150M/barnes_8c
+   loads   gem5  323.106   counter windows [323.483, 323.483] -> inside   located [323.482, 323.483] -> inside
+   stores  gem5  208.500   counter windows [208.055, 208.057] -> inside   located [208.055, 208.058] -> inside
+   RMWs    gem5    9.733   counter windows [9.713, 9.714] -> inside   located [9.712, 9.714] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -0.10 [-0.40, +0.00]; end median -0.35 [-0.70, +0.00]
+           t0: start   -0.40  end   -0.70
+           t1: start   +0.00  end   -0.20
+           t2: start   -0.10  end   -0.40
+           t3: start   -0.40  end   -0.70
+           t4: start   +0.00  end   +0.00
+           t5: start   -0.10  end   -0.30
+           t6: start   -0.40  end   -0.70
+           t7: start   -0.10  end   -0.10
+== lunc_8: threads 0,1,2,3,4,5,6,7; gem5 runs partB/lunc_8/l2_2MB_mi50M/lunc_8c and partB/lunc_8/l2_2MB_mi150M/lunc_8c
+   loads   gem5  234.893   counter windows [234.927, 234.927] -> inside   located [234.904, 234.936] -> inside
+   stores  gem5  113.712   counter windows [113.732, 113.732] -> inside   located [113.716, 113.737] -> inside
+   RMWs    gem5    0.002   counter windows [0.002, 0.002] -> inside   located [0.002, 0.002] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -1.50 [-5.00, +0.00]; end median -7.35 [-14.50, +0.00]
+           t0: start   -3.70  end   -4.20
+           t1: start   -5.00  end  -14.50
+           t2: start   -2.70  end  -12.40
+           t3: start   +0.00  end  -10.60
+           t4: start   -1.00  end   -8.40
+           t5: start   -1.50  end   -6.30
+           t6: start   -1.50  end   -4.20
+           t7: start   -1.50  end   +0.00
+== fft_8: threads 0,1,2,3,4,5,6,7; gem5 runs partB/fft_8/l2_2MB_mi50M/fft_8c and partB/fft_8/l2_2MB_mi150M/fft_8c
+   loads   gem5  208.417   counter windows [208.639, 208.639] -> inside   located [209.358, 209.359] -> inside
+   stores  gem5  104.146   counter windows [104.248, 104.248] -> inside   located [106.547, 106.547] -> inside
+   RMWs    gem5    0.000   counter windows [0.000, 0.000] -> inside   located [0.000, 0.000] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -0.35 [-67.00, +0.00]; end median -0.30 [-66.40, +0.00]
+           t0: start  -67.00  end  -66.40
+           t1: start   -0.30  end   -0.10
+           t2: start   -0.10  end   +0.00
+           t3: start   -0.40  end   -0.80
+           t4: start   -0.40  end   -0.90
+           t5: start   -0.30  end   -0.20
+           t6: start   -0.40  end   -0.40
+           t7: start   +0.00  end   +0.00
+== volrend_8: threads 0,1,2,3,4,5,6,7; gem5 runs partB/volrend_8/l2_2MB_mi50M/volrend_8c and partB/volrend_8/l2_2MB_mi150M/volrend_8c
+   loads   gem5  194.812   counter windows [193.552, 193.763] -> inside   located [193.825, 194.006] -> inside
+   stores  gem5   41.519   counter windows [38.674, 39.009] -> OUTSIDE   located [38.383, 38.878] -> OUTSIDE   reading W2
+   RMWs    gem5    1.083   counter windows [0.776, 0.946] -> OUTSIDE   located [0.844, 0.870] -> OUTSIDE   reading W2
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -4.15 [-4.90, +0.00]; end median -20.95 [-22.50, +0.00]
+           t0: start   -3.20  end  -18.10
+           t1: start   +0.00  end   +0.00
+           t2: start   -4.20  end  -21.30
+           t3: start   -4.10  end  -20.90
+           t4: start   -4.90  end  -22.50
+           t5: start   -4.20  end  -21.00
+           t6: start   -4.10  end  -20.90
+           t7: start   -4.20  end  -21.10
+== waternsq_8: threads 0,1,2,3,4,5,6,7; gem5 runs partB/waternsq_8/l2_2MB_mi50M/waternsq_8c and partB/waternsq_8/l2_2MB_mi150M/waternsq_8c
+   loads   gem5  230.690   counter windows [231.339, 231.340] -> inside   located [231.132, 231.252] -> inside
+   stores  gem5   88.548   counter windows [88.511, 88.511] -> inside   located [88.403, 88.426] -> inside
+   RMWs    gem5    0.080   counter windows [0.074, 0.074] -> inside   located [0.075, 0.075] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -3.70 [-3.70, +0.10]; end median -12.09 [-12.29, +0.10]
+           t0: start   -1.30  end   -4.10
+           t1: start   -3.70  end  -12.19
+           t2: start   -3.70  end  -12.12
+           t3: start   -3.70  end  -12.09
+           t4: start   -3.70  end  -12.29
+           t5: start   -2.50  end   -8.19
+           t6: start   +0.10  end   +0.10
+           t7: start   -3.70  end  -12.09
+== raytrace_8: threads 0,1,2,3,4,5,6,7; gem5 runs partB/raytrace_8/l2_2MB_mi50M/raytrace_8c and partB/raytrace_8/l2_2MB_mi150M/raytrace_8c
+   loads   gem5  373.317   counter windows [373.521, 373.545] -> inside   located [373.220, 373.347] -> inside
+   stores  gem5   25.921   counter windows [25.862, 25.866] -> inside   located [25.884, 25.894] -> inside
+   RMWs    gem5    0.122   counter windows [0.121, 0.121] -> inside   located [0.121, 0.121] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -1.65 [-4.20, +0.00]; end median -7.60 [-9.90, +0.00]
+           t0: start   -1.40  end   -7.70
+           t1: start   -4.20  end   -9.90
+           t2: start   -3.60  end   -5.10
+           t3: start   -3.90  end   -7.50
+           t4: start   -1.50  end   -9.40
+           t5: start   -1.10  end   -0.80
+           t6: start   +0.00  end   +0.00
+           t7: start   -1.80  end   -8.40
+== fmm_8: threads 0,1,2,3,4,5,6,7; gem5 runs partB/fmm_8/l2_2MB_mi50M/fmm_8c and partB/fmm_8/l2_2MB_mi150M/fmm_8c
+   loads   gem5  144.595   counter windows [145.584, 145.587] -> inside   located [157.890, 158.021] -> OUTSIDE
+   stores  gem5   22.811   counter windows [17.819, 17.823] -> OUTSIDE   located [29.738, 29.945] -> OUTSIDE   reading W2
+   RMWs    gem5    0.549   counter windows [0.402, 0.402] -> OUTSIDE   located [2.491, 2.493] -> OUTSIDE   reading W2
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -49.40 [-50.43, +0.20]; end median -63.60 [-65.20, +0.20]
+           t0: start  -50.43  end  -65.20
+           t1: start  -49.40  end  -63.20
+           t2: start  -49.40  end  -63.50
+           t3: start  -49.40  end  -63.40
+           t4: start  -49.40  end  -63.70
+           t5: start  -49.40  end  -64.10
+           t6: start  -49.27  end  -64.00
+           t7: start   +0.20  end   +0.20
+== streamcluster_8: threads 1,2,3,4,5,6,7,8; gem5 runs partB/streamcluster_8/l2_2MB_mi50M/streamcluster_8c and partB/streamcluster_8/l2_2MB_mi150M/streamcluster_8c
+   loads   gem5  283.347   counter windows [283.296, 283.296] -> inside   located [283.349, 283.349] -> inside
+   stores  gem5    1.358   counter windows [1.346, 1.346] -> inside   located [1.358, 1.358] -> inside
+   RMWs    gem5    0.010   counter windows [0.010, 0.010] -> inside   located [0.010, 0.010] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -9.40 [-9.40, +0.00]; end median -9.70 [-9.70, +0.00]
+           t1: start   +0.00  end   +0.00
+           t2: start   -9.40  end   -9.70
+           t3: start   -9.40  end   -9.70
+           t4: start   -9.40  end   -9.70
+           t5: start   -9.40  end   -9.70
+           t6: start   -9.40  end   -9.70
+           t7: start   -9.40  end   -9.70
+           t8: start   -9.40  end   -9.70
+== fluidanimate_8: threads 1,2,3,4,5,6,7,8; gem5 runs partB/fluidanimate_8/l2_2MB_mi50M/fluidanimate_8c and partB/fluidanimate_8/l2_2MB_mi150M/fluidanimate_8c
+   loads   gem5  233.644   counter windows [232.315, 232.315] -> inside   located [234.510, 234.836] -> inside
+   stores  gem5   45.678   counter windows [45.053, 45.053] -> inside   located [45.057, 45.258] -> inside
+   RMWs    gem5    4.842   counter windows [4.678, 4.678] -> inside   located [4.710, 4.755] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -4.30 [-7.70, +0.00]; end median -13.40 [-25.00, +0.00]
+           t1: start   -7.30  end  -23.20
+           t2: start   -4.00  end  -12.20
+           t3: start   -7.70  end  -25.00
+           t4: start   -4.60  end  -14.60
+           t5: start   -3.50  end  -11.40
+           t6: start   +0.00  end   +0.00
+           t7: start   -6.60  end  -20.90
+           t8: start   -3.30  end   -9.80
+== vips_8: threads 3,4,5,6,7,8,9,10; gem5 runs partB/vips_8/l2_2MB_mi50M/vips_8c and partB/vips_8/l2_2MB_mi150M/vips_8c
+   loads   gem5  190.188   counter windows [189.889, 189.987] -> inside   located [189.842, 190.048] -> inside
+   stores  gem5   55.657   counter windows [55.610, 55.622] -> inside   located [55.578, 55.659] -> inside
+   RMWs    gem5    0.219   counter windows [0.217, 0.218] -> inside   located [0.217, 0.218] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -0.20 [-0.80, +0.00]; end median -0.35 [-1.20, +0.00]
+           t3: start   -0.80  end   -1.20
+           t4: start   -0.30  end   -0.60
+           t5: start   +0.00  end   -0.70
+           t6: start   +0.00  end   -0.70
+           t7: start   -0.10  end   -0.10
+           t8: start   -0.20  end   -0.10
+           t9: start   -0.20  end   +0.00
+           t10: start   -0.30  end   -0.10
+== bodytrack_8: threads 1,2,3,4,5,6,7,8; gem5 runs partB/bodytrack_8/l2_2MB_mi50M/bodytrack_8c and partB/bodytrack_8/l2_2MB_mi150M/bodytrack_8c
+   loads   gem5  201.373   counter windows [201.181, 201.388] -> inside   located [201.258, 201.382] -> inside
+   stores  gem5   58.159   counter windows [57.674, 58.465] -> inside   located [57.822, 58.398] -> inside
+   RMWs    gem5   24.387   counter windows [24.186, 24.606] -> inside   located [24.275, 24.604] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -2.90 [-4.10, +0.00]; end median -3.10 [-4.50, +0.00]
+           t1: start   +0.00  end   +0.00
+           t2: start   -1.80  end   -2.90
+           t3: start   -2.70  end   -2.60
+           t4: start   -4.10  end   -4.50
+           t5: start   -3.70  end   -3.60
+           t6: start   -3.00  end   -2.90
+           t7: start   -3.20  end   -3.30
+           t8: start   -2.80  end   -3.40
+== ocean_16: threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15; gem5 runs partB/ocean_16/l2_2MB_mi50M/ocean_16c and partB/ocean_16/l2_2MB_mi150M/ocean_16c
+   loads   gem5  316.784   counter windows [317.461, 317.462] -> inside   located [316.486, 316.554] -> inside
+   stores  gem5   71.388   counter windows [71.306, 71.306] -> inside   located [71.298, 71.312] -> inside
+   RMWs    gem5    0.058   counter windows [0.044, 0.045] -> inside   located [0.043, 0.043] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -0.10 [-0.30, +0.00]; end median -0.60 [-2.30, +0.00]
+           t0: start   -0.10  end   -0.90
+           t1: start   -0.30  end   -2.30
+           t2: start   -0.10  end   -1.00
+           t3: start   -0.20  end   -0.20
+           t4: start   -0.20  end   -0.30
+           t5: start   -0.20  end   -2.20
+           t6: start   +0.00  end   -0.90
+           t7: start   +0.00  end   +0.00
+           t8: start   -0.10  end   -0.10
+           t9: start   -0.20  end   -2.20
+           t10: start   +0.00  end   -0.90
+           t11: start   +0.00  end   +0.00
+           t12: start   -0.10  end   -0.20
+           t13: start   -0.20  end   -2.20
+           t14: start   -0.10  end   +0.00
+           t15: start   -0.20  end   -0.20
+== oceannc_16: threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15; gem5 runs partB/oceannc_16/l2_2MB_mi50M/oceannc_16c and partB/oceannc_16/l2_2MB_mi150M/oceannc_16c
+   loads   gem5  328.869   counter windows [328.773, 328.774] -> inside   located [328.903, 328.904] -> inside
+   stores  gem5   65.036   counter windows [64.918, 64.918] -> inside   located [65.027, 65.028] -> inside
+   RMWs    gem5    0.058   counter windows [0.039, 0.039] -> inside   located [0.039, 0.040] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median +0.00 [-0.10, +0.00]; end median -0.25 [-0.40, +0.00]
+           t0: start   +0.00  end   -0.20
+           t1: start   -0.10  end   -0.20
+           t2: start   +0.00  end   -0.30
+           t3: start   -0.10  end   -0.30
+           t4: start   +0.00  end   -0.10
+           t5: start   -0.10  end   -0.30
+           t6: start   +0.00  end   -0.30
+           t7: start   +0.00  end   -0.40
+           t8: start   +0.00  end   -0.20
+           t9: start   -0.10  end   -0.30
+           t10: start   +0.00  end   -0.30
+           t11: start   +0.00  end   -0.40
+           t12: start   +0.00  end   -0.20
+           t13: start   +0.00  end   -0.10
+           t14: start   +0.00  end   -0.20
+           t15: start   +0.00  end   +0.00
+== radix_16: threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15; gem5 runs partB/radix_16/l2_2MB_mi1610M/radix_16c and partB/radix_16/l2_2MB_mi1710M/radix_16c
+   NOT READ: a gem5 run is missing from the per-CPU or mix rows
+== barnes_16: threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15; gem5 runs partB/barnes_16/l2_2MB_mi50M/barnes_16c and partB/barnes_16/l2_2MB_mi150M/barnes_16c
+   loads   gem5  323.157   counter windows [322.089, 322.133] -> inside   located [322.798, 323.315] -> inside
+   stores  gem5  208.352   counter windows [205.441, 205.453] -> inside   located [206.673, 207.641] -> inside
+   RMWs    gem5    9.756   counter windows [10.372, 10.378] -> OUTSIDE   located [9.801, 10.058] -> inside   reading W1
+           lock-wait stores per 1,000 (counter windows) 0.0402, 0.0418, 0.0309; B 0.0418; s 0.097; gap 0.616 -> reading L1
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -0.10 [-0.40, +0.00]; end median -1.95 [-28.90, +0.00]
+           t0: start   -0.40  end   -3.50
+           t1: start   -0.20  end   -8.80
+           t2: start   -0.10  end   -8.30
+           t3: start   -0.30  end   -0.30
+           t4: start   -0.20  end   -0.20
+           t5: start   -0.20  end   -0.20
+           t6: start   -0.30  end   -0.40
+           t7: start   +0.00  end  -19.10
+           t8: start   +0.00  end  -28.90
+           t9: start   +0.00  end   -5.70
+           t10: start   +0.00  end   +0.00
+           t11: start   -0.10  end   +0.00
+           t12: start   -0.20  end   -0.30
+           t13: start   -0.10  end   -0.20
+           t14: start   -0.10  end  -16.40
+           t15: start   +0.00  end  -24.50
+== lunc_16: threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15; gem5 runs partB/lunc_16/l2_2MB_mi50M/lunc_16c and partB/lunc_16/l2_2MB_mi150M/lunc_16c
+   loads   gem5  234.471   counter windows [234.465, 234.465] -> inside   located [234.455, 234.460] -> inside
+   stores  gem5  113.280   counter windows [113.274, 113.274] -> inside   located [113.273, 113.276] -> inside
+   RMWs    gem5    0.001   counter windows [0.001, 0.001] -> inside   located [0.001, 0.001] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -2.40 [-10.80, +0.00]; end median -2.20 [-18.20, +0.00]
+           t0: start  -10.80  end  -10.60
+           t1: start   -4.80  end  -18.20
+           t2: start   +0.00  end  -13.60
+           t3: start   -2.10  end   -9.00
+           t4: start   -2.30  end   -4.50
+           t5: start   -2.40  end   +0.00
+           t6: start   -2.40  end   -2.10
+           t7: start   -2.50  end   -2.10
+           t8: start   -2.50  end   -2.10
+           t9: start   -2.30  end   -2.10
+           t10: start   -2.40  end   -2.10
+           t11: start   -2.50  end   -2.20
+           t12: start   -2.50  end   -2.20
+           t13: start   -2.40  end   -2.20
+           t14: start   -2.40  end   -2.20
+           t15: start   -2.30  end   -2.10
+== fft_16: threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15; gem5 runs partB/fft_16/l2_2MB_mi50M/fft_16c and partB/fft_16/l2_2MB_mi150M/fft_16c
+   loads   gem5  208.287   counter windows [208.367, 208.367] -> inside   located [208.561, 208.561] -> inside
+   stores  gem5  104.083   counter windows [104.124, 104.124] -> inside   located [104.509, 104.509] -> inside
+   RMWs    gem5    0.000   counter windows [0.000, 0.000] -> inside   located [0.000, 0.000] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -0.95 [-68.00, +0.00]; end median -1.00 [-68.10, +0.00]
+           t0: start  -68.00  end  -68.10
+           t1: start   -0.90  end   -0.30
+           t2: start   +0.00  end   +0.00
+           t3: start   -1.00  end   -1.50
+           t4: start   -0.80  end   -0.40
+           t5: start   -1.00  end   -1.40
+           t6: start   -1.00  end   -1.30
+           t7: start   +0.00  end   -0.80
+           t8: start   -1.00  end   -1.20
+           t9: start   -0.90  end   -0.90
+           t10: start   -1.00  end   -1.20
+           t11: start   -1.00  end   -1.10
+           t12: start   -0.60  end   -0.70
+           t13: start   -1.00  end   -1.10
+           t14: start   -0.10  end   -0.80
+           t15: start   -0.10  end   -0.80
+== volrend_16: threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15; gem5 runs partB/volrend_16/l2_2MB_mi50M/volrend_16c and partB/volrend_16/l2_2MB_mi150M/volrend_16c
+   loads   gem5  195.131   counter windows [192.854, 193.145] -> inside   located [193.266, 193.385] -> inside
+   stores  gem5   41.615   counter windows [38.526, 38.601] -> OUTSIDE   located [38.921, 39.097] -> OUTSIDE   reading W2
+   RMWs    gem5    1.007   counter windows [0.703, 0.886] -> OUTSIDE   located [0.828, 0.975] -> inside   reading W1
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -11.70 [-12.20, +0.00]; end median -38.65 [-40.00, +0.00]
+           t0: start  -11.70  end  -38.70
+           t1: start   +0.00  end   +0.00
+           t2: start  -12.10  end  -40.00
+           t3: start  -11.80  end  -39.10
+           t4: start  -11.70  end  -39.20
+           t5: start  -11.60  end  -38.60
+           t6: start  -11.60  end  -38.20
+           t7: start  -12.20  end  -39.10
+           t8: start  -12.20  end  -39.70
+           t9: start  -12.00  end  -38.90
+           t10: start  -11.20  end  -37.00
+           t11: start  -11.30  end  -36.30
+           t12: start  -11.00  end  -36.10
+           t13: start  -11.70  end  -38.50
+           t14: start  -11.70  end  -38.50
+           t15: start  -11.80  end  -38.80
+== waternsq_16: threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15; gem5 runs partB/waternsq_16/l2_2MB_mi50M/waternsq_16c and partB/waternsq_16/l2_2MB_mi150M/waternsq_16c
+   loads   gem5  232.414   counter windows [232.407, 232.407] -> inside   located [232.694, 232.761] -> inside
+   stores  gem5   88.955   counter windows [88.669, 88.669] -> inside   located [88.758, 88.819] -> inside
+   RMWs    gem5    0.154   counter windows [0.135, 0.135] -> inside   located [0.141, 0.146] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -3.00 [-3.70, +0.60]; end median -9.89 [-12.29, +2.40]
+           t0: start   +0.60  end   +2.40
+           t1: start   -3.60  end  -11.99
+           t2: start   -3.00  end   -9.99
+           t3: start   -3.63  end  -12.09
+           t4: start   -3.00  end   -9.89
+           t5: start   -3.60  end  -12.09
+           t6: start   -3.00  end   -9.89
+           t7: start   -3.60  end  -11.99
+           t8: start   -3.00  end   -9.93
+           t9: start   -3.70  end  -12.29
+           t10: start   -1.80  end   -5.90
+           t11: start   -2.50  end   -8.13
+           t12: start   -0.50  end   -1.57
+           t13: start   -1.20  end   -4.00
+           t14: start   +0.00  end   +0.10
+           t15: start   -3.00  end   -9.92
+== raytrace_16: threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15; gem5 runs partB/raytrace_16/l2_2MB_mi50M/raytrace_16c and partB/raytrace_16/l2_2MB_mi150M/raytrace_16c
+   loads   gem5  373.230   counter windows [373.933, 374.035] -> inside   located [373.194, 373.327] -> inside
+   stores  gem5   26.016   counter windows [25.948, 25.967] -> inside   located [25.993, 25.999] -> inside
+   RMWs    gem5    0.123   counter windows [0.120, 0.121] -> inside   located [0.122, 0.122] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -3.95 [-11.40, +0.00]; end median -7.30 [-18.80, +0.10]
+           t0: start   -0.90  end   +0.10
+           t1: start   -9.70  end  -16.50
+           t2: start   -8.90  end  -12.90
+           t3: start  -11.40  end  -16.70
+           t4: start   -9.50  end  -18.80
+           t5: start   -6.60  end   -7.20
+           t6: start   -5.60  end   -7.20
+           t7: start   -7.70  end  -15.20
+           t8: start   -7.90  end  -16.00
+           t9: start   -2.30  end   -9.90
+           t10: start   -2.10  end   -4.60
+           t11: start   -0.20  end   -4.30
+           t12: start   -0.90  end   -5.60
+           t13: start   -0.70  end   +0.00
+           t14: start   +0.00  end   -7.30
+           t15: start   -0.20  end   -7.30
+== fmm_16: threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15; gem5 runs partB/fmm_16/l2_2MB_mi50M/fmm_16c and partB/fmm_16/l2_2MB_mi150M/fmm_16c
+   loads   gem5  143.570   counter windows [148.279, 148.287] -> inside   located [150.616, 150.654] -> inside
+   stores  gem5   19.330   counter windows [22.454, 22.456] -> OUTSIDE   located [23.365, 23.479] -> OUTSIDE   reading W2
+   RMWs    gem5    0.397   counter windows [0.918, 0.919] -> OUTSIDE   located [1.422, 1.427] -> OUTSIDE   reading W2
+           lock-wait stores per 1,000 (counter windows) 0.0006, 0.0005, 0.0005; B 0.0006; s 0.471; gap 0.521 -> reading L1
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -49.70 [-50.72, +0.10]; end median -63.50 [-64.90, +0.10]
+           t0: start  -50.63  end  -64.80
+           t1: start  -49.70  end  -63.70
+           t2: start  -49.70  end  -63.30
+           t3: start  -49.70  end  -63.80
+           t4: start  -49.70  end  -63.60
+           t5: start  -49.70  end  -63.40
+           t6: start  -49.70  end  -63.50
+           t7: start  -49.70  end  -63.20
+           t8: start  -49.70  end  -63.80
+           t9: start  -49.70  end  -63.50
+           t10: start  -49.70  end  -63.90
+           t11: start  -49.70  end  -63.40
+           t12: start  -49.62  end  -63.43
+           t13: start  -49.62  end  -63.50
+           t14: start  -49.70  end  -63.80
+           t15: start   +0.10  end   +0.10
+== streamcluster_16: threads 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16; gem5 runs partB/streamcluster_16/l2_2MB_mi50M/streamcluster_16c and partB/streamcluster_16/l2_2MB_mi150M/streamcluster_16c
+   loads   gem5  283.232   counter windows [283.239, 283.239] -> inside   located [283.235, 283.235] -> inside
+   stores  gem5    1.319   counter windows [1.319, 1.319] -> inside   located [1.319, 1.319] -> inside
+   RMWs    gem5    0.020   counter windows [0.020, 0.020] -> inside   located [0.020, 0.020] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -9.70 [-9.70, +0.00]; end median -9.70 [-9.70, +0.00]
+           t1: start   +0.00  end   +0.00
+           t2: start   -9.70  end   -9.70
+           t3: start   -9.70  end   -9.70
+           t4: start   -9.70  end   -9.70
+           t5: start   -9.70  end   -9.70
+           t6: start   -9.70  end   -9.70
+           t7: start   -9.70  end   -9.70
+           t8: start   -9.70  end   -9.70
+           t9: start   -9.70  end   -9.70
+           t10: start   -9.70  end   -9.70
+           t11: start   -9.70  end   -9.70
+           t12: start   -9.70  end   -9.70
+           t13: start   -9.70  end   -9.70
+           t14: start   -9.70  end   -9.70
+           t15: start   -9.70  end   -9.70
+           t16: start   -9.70  end   -9.70
+== fluidanimate_16: threads 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16; gem5 runs partB/fluidanimate_16/l2_2MB_mi50M/fluidanimate_16c and partB/fluidanimate_16/l2_2MB_mi150M/fluidanimate_16c
+   loads   gem5  217.620   counter windows [228.716, 228.716] -> inside   located [222.642, 223.956] -> inside
+   stores  gem5   47.026   counter windows [48.436, 48.436] -> inside   located [47.308, 48.430] -> inside
+   RMWs    gem5    5.290   counter windows [5.437, 5.437] -> inside   located [5.283, 5.473] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -1.00 [-2.10, +0.00]; end median -21.35 [-43.30, +0.00]
+           t1: start   +0.00  end  -15.80
+           t2: start   -0.80  end  -29.20
+           t3: start   -0.60  end   -4.60
+           t4: start   -0.90  end  -20.30
+           t5: start   -1.00  end  -31.20
+           t6: start   -2.10  end  -43.30
+           t7: start   -1.20  end  -21.90
+           t8: start   -1.60  end  -35.30
+           t9: start   -0.50  end   -5.60
+           t10: start   -1.30  end  -20.80
+           t11: start   -0.90  end   +0.00
+           t12: start   -1.30  end  -11.00
+           t13: start   -0.70  end  -26.00
+           t14: start   -1.40  end  -38.60
+           t15: start   -1.00  end  -15.90
+           t16: start   -1.40  end  -30.30
+== vips_16: threads 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18; gem5 runs partB/vips_16/l2_2MB_mi50M/vips_16c and partB/vips_16/l2_2MB_mi150M/vips_16c
+   loads   gem5  189.830   counter windows [189.842, 189.935] -> inside   located [189.869, 189.959] -> inside
+   stores  gem5   56.522   counter windows [56.239, 56.313] -> inside   located [56.265, 56.332] -> inside
+   RMWs    gem5    0.210   counter windows [0.208, 0.209] -> inside   located [0.208, 0.209] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -0.40 [-0.70, +0.00]; end median -0.70 [-1.40, +0.00]
+           t3: start   -0.50  end   -0.90
+           t4: start   +0.00  end   -0.70
+           t5: start   +0.00  end   +0.00
+           t6: start   +0.00  end   -0.10
+           t7: start   -0.60  end   +0.00
+           t8: start   -0.10  end   -0.20
+           t9: start   -0.20  end   -0.10
+           t10: start   -0.20  end   -0.70
+           t11: start   -0.30  end   -0.10
+           t12: start   -0.50  end   -1.00
+           t13: start   -0.40  end   -0.90
+           t14: start   -0.40  end   -0.10
+           t15: start   -0.50  end   -0.70
+           t16: start   -0.70  end   -0.90
+           t17: start   -0.70  end   -1.40
+           t18: start   -0.70  end   -1.30
+== bodytrack_16: threads 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16; gem5 runs partB/bodytrack_16/l2_2MB_mi50M/bodytrack_16c and partB/bodytrack_16/l2_2MB_mi150M/bodytrack_16c
+   loads   gem5  201.336   counter windows [201.366, 201.423] -> inside   located [201.391, 201.418] -> inside
+   stores  gem5   58.142   counter windows [57.989, 58.184] -> inside   located [58.059, 58.205] -> inside
+   RMWs    gem5   24.501   counter windows [24.519, 24.637] -> inside   located [24.588, 24.622] -> inside
+   placement (gem5 window minus counter window, M instructions, over threads and runs): start median -1.50 [-2.40, +0.00]; end median -2.40 [-3.50, +0.00]
+           t1: start   +0.00  end   +0.00
+           t2: start   -1.40  end   -1.70
+           t3: start   -2.10  end   -3.50
+           t4: start   -2.40  end   -3.50
+           t5: start   -1.60  end   -2.70
+           t6: start   -1.20  end   -2.10
+           t7: start   -1.30  end   -2.40
+           t8: start   -2.30  end   -2.80
+           t9: start   -2.10  end   -3.00
+           t10: start   -2.40  end   -3.00
+           t11: start   -1.70  end   -2.80
+           t12: start   -1.20  end   -2.30
+           t13: start   -1.20  end   -2.20
+           t14: start   -1.40  end   -1.90
+           t15: start   -1.00  end   -2.10
+           t16: start   -2.10  end   -2.40
+
+== Control C: keys passing v2 on the counter windows, on the located windows
+   24 of 24 still pass
+== Readings, primary then secondary
+   barnes_16: RMWs W1
+   fmm_4: RMWs W2
+   fmm_8: stores W2; RMWs W2
+   fmm_16: stores W2; RMWs W2
+   volrend_4: passes v2 (nothing to explain)
+   volrend_8: stores W2; RMWs W2
+   volrend_16: stores W2; RMWs W1

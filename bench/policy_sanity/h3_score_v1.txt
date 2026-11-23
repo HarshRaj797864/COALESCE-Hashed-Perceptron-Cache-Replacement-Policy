@@ -1,0 +1,174 @@
+== H3 (h3_statistics_design_2026-11-14.md)
+   class fixed: s_e 0.0457%, delta 0.1407% (log units)
+   class scaled: s_e 0.0211%, delta 0.0651% (log units)
+
+== P11 restated (shared vs private at one size)
+   canneal 4c, fixed 2 MB: tau_b +0.778 over 9, exact p 0.00243 -- beyond chance (p < 0.05)
+      tau_delta +0.778; separated in both: 32 agree, 4 disagree; tied: 0 in A, 0 in B (delta 0.1407% / 0.1407%)
+      top-1 agrees (mockingjay / mockingjay, under delta); top-3 overlap 3 of 3
+      noise ceiling: median +1.000, 5th percentile +1.000; noise interval +0.778 .. +0.778 -> BELOW THE NOISE CEILING
+   canneal 4c, 2 MB a core: tau_b +0.333 over 9, exact p 0.26 -- NOT beyond chance (p >= 0.05)
+      tau_delta +0.310; separated in both: 23 agree, 12 disagree; tied: 1 in A, 0 in B (delta 0.0651% / 0.0651%)
+      top-1 agrees (mockingjay / mockingjay, under delta); top-3 overlap 1 of 3
+      noise ceiling: median +1.000, 5th percentile +0.944; noise interval +0.278 .. +0.333 -> BELOW THE NOISE CEILING
+   canneal 8c, fixed 2 MB: tau_b +0.500 over 9, exact p 0.0752 -- NOT beyond chance (p >= 0.05)
+      tau_delta +0.571; separated in both: 27 agree, 7 disagree; tied: 1 in A, 1 in B (delta 0.1407% / 0.1407%)
+      top-1 differs (coalesce / srrip, under delta); top-3 overlap 2 of 3
+      noise ceiling: median +1.000, 5th percentile +0.944; noise interval +0.500 .. +0.611 -> BELOW THE NOISE CEILING
+   canneal 8c, 2 MB a core: tau_b +0.278 over 9, exact p 0.358 -- NOT beyond chance (p >= 0.05)
+      tau_delta +0.319; separated in both: 22 agree, 11 disagree; tied: 3 in A, 0 in B (delta 0.0651% / 0.0651%)
+      top-1 differs (srrip / mockingjay, under delta); top-3 overlap 1 of 3
+      noise ceiling: median +1.000, 5th percentile +0.889; noise interval +0.222 .. +0.389 -> BELOW THE NOISE CEILING
+
+== the size controls (one regime, fixed 2 MB vs 2 MB a core)
+   canneal 4c, private: tau_b +0.389 over 9, exact p 0.18 -- NOT beyond chance (p >= 0.05)
+      tau_delta +0.389; separated in both: 25 agree, 11 disagree; tied: 0 in A, 0 in B (delta 0.1407% / 0.0651%)
+      top-1 agrees (mockingjay / mockingjay, under delta); top-3 overlap 2 of 3
+      noise ceiling: median +1.000, 5th percentile +1.000; noise interval +0.389 .. +0.389 -> BELOW THE NOISE CEILING
+   canneal 4c, shared: tau_b +0.500 over 9, exact p 0.0752 -- NOT beyond chance (p >= 0.05)
+      tau_delta +0.479; separated in both: 26 agree, 9 disagree; tied: 0 in A, 1 in B (delta 0.1407% / 0.0651%)
+      top-1 agrees (mockingjay / mockingjay, under delta); top-3 overlap 2 of 3
+      noise ceiling: median +1.000, 5th percentile +0.944; noise interval +0.444 .. +0.500 -> BELOW THE NOISE CEILING
+   canneal 8c, private: tau_b +0.167 over 9, exact p 0.612 -- NOT beyond chance (p >= 0.05)
+      tau_delta +0.197; separated in both: 21 agree, 14 disagree; tied: 1 in A, 0 in B (delta 0.1407% / 0.0651%)
+      top-1 differs (srrip / mockingjay, under delta); top-3 overlap 2 of 3
+      noise ceiling: median +1.000, 5th percentile +0.944; noise interval +0.167 .. +0.222 -> BELOW THE NOISE CEILING
+   canneal 8c, shared: tau_b +0.389 over 9, exact p 0.18 -- NOT beyond chance (p >= 0.05)
+      tau_delta +0.412; separated in both: 23 agree, 9 disagree; tied: 1 in A, 3 in B (delta 0.1407% / 0.0651%)
+      top-1 differs (coalesce / srrip, under delta); top-3 overlap 2 of 3
+      noise ceiling: median +0.944, 5th percentile +0.889; noise interval +0.333 .. +0.500 -> BELOW THE NOISE CEILING
+   ocean 4c, private: tau_b +0.611 over 9, exact p 0.0247 -- beyond chance (p < 0.05)
+      tau_delta +0.629; separated in both: 28 agree, 6 disagree; tied: 1 in A, 1 in B (delta 0.1407% / 0.0651%)
+      top-1 differs (drrip / mockingjay, under delta); top-3 overlap 3 of 3
+      noise ceiling: median +1.000, 5th percentile +0.944; noise interval +0.556 .. +0.667 -> BELOW THE NOISE CEILING
+   ocean 4c, shared: tau_b +0.667 over 9, exact p 0.0127 -- beyond chance (p < 0.05)
+      tau_delta +0.629; separated in both: 28 agree, 6 disagree; tied: 2 in A, 0 in B (delta 0.1407% / 0.0651%)
+      top-1 differs (mockingjay / hawkeye, under delta); top-3 overlap 3 of 3
+      noise ceiling: median +1.000, 5th percentile +0.889; noise interval +0.556 .. +0.667 -> BELOW THE NOISE CEILING
+
+== P13 restated (ocean, shared vs private)
+   ocean 4c, fixed 2 MB: tau_b +0.778 over 9, exact p 0.00243 -- beyond chance (p < 0.05)
+      tau_delta +0.870; separated in both: 32 agree, 2 disagree; tied: 2 in A, 1 in B (delta 0.1407% / 0.1407%)
+      top-1 agrees (mockingjay / drrip, under delta); top-3 overlap 3 of 3
+      noise ceiling: median +1.000, 5th percentile +0.889; noise interval +0.778 .. +0.889 -> BELOW THE NOISE CEILING
+   ocean 4c, 2 MB a core: tau_b +0.944 over 9, exact p 4.96e-05 -- beyond chance (p < 0.05)
+      tau_delta +0.930; separated in both: 34 agree, 1 disagree; tied: 0 in A, 1 in B (delta 0.0651% / 0.0651%)
+      top-1 differs (hawkeye / mockingjay, under delta); top-3 overlap 3 of 3
+      noise ceiling: median +1.000, 5th percentile +0.944; noise interval +0.889 .. +0.944 -> WITHIN NOISE
+
+== P14 restated (canneal 4c fixed shared, 64 vs 16 LLC MSHRs)
+   64 vs 16: tau_b +1.000 over 9, exact p 5.51e-06 -- beyond chance (p < 0.05)
+      tau_delta +1.000; separated in both: 36 agree, 0 disagree; tied: 0 in A, 0 in B (delta 0.1407% / 0.1407%)
+      top-1 agrees (mockingjay / mockingjay, under delta); top-3 overlap 3 of 3
+      noise ceiling: median +1.000, 5th percentile +1.000; noise interval +1.000 .. +1.000 -> WITHIN NOISE
+
+== P12 restated (canneal fixed 2 MB: ln(1 + best gain) shared minus private)
+   canneal 4c: +0.0335 (shared +13.92%, private +10.17%); robust if > sqrt(2) delta = 0.0020: ROBUST
+   canneal 8c: +0.0922 (shared +13.18%, private +3.21%); robust if > sqrt(2) delta = 0.0020: ROBUST
+
+== synchronised (step 5) vs drifting (the level-2 A5 rerun), shared
+   canneal 4c, fixed 2 MB: tau_b +1.000 over 9, exact p 5.51e-06 -- beyond chance (p < 0.05)
+      tau_delta +1.000; separated in both: 36 agree, 0 disagree; tied: 0 in A, 0 in B (delta 0.1407% / 0.1407%)
+      top-1 agrees (mockingjay / mockingjay, under delta); top-3 overlap 3 of 3
+      noise ceiling: median +1.000, 5th percentile +1.000; noise interval +1.000 .. +1.000 -> WITHIN NOISE
+   canneal 4c, 2 MB a core: tau_b +1.000 over 9, exact p 5.51e-06 -- beyond chance (p < 0.05)
+      tau_delta +0.986; separated in both: 35 agree, 0 disagree; tied: 1 in A, 0 in B (delta 0.0651% / 0.0651%)
+      top-1 agrees (mockingjay / mockingjay, under delta); top-3 overlap 3 of 3
+      noise ceiling: median +1.000, 5th percentile +0.944; noise interval +0.944 .. +1.000 -> WITHIN NOISE
+   canneal 8c, fixed 2 MB: tau_b +0.944 over 9, exact p 4.96e-05 -- beyond chance (p < 0.05)
+      tau_delta +1.000; separated in both: 35 agree, 0 disagree; tied: 1 in A, 1 in B (delta 0.1407% / 0.1407%)
+      top-1 agrees (coalesce / coalesce, under delta); top-3 overlap 3 of 3
+      noise ceiling: median +1.000, 5th percentile +0.944; noise interval +0.944 .. +1.000 -> WITHIN NOISE
+   canneal 8c, 2 MB a core: tau_b +0.833 over 9, exact p 0.000854 -- beyond chance (p < 0.05)
+      tau_delta +1.000; separated in both: 33 agree, 0 disagree; tied: 3 in A, 3 in B (delta 0.0651% / 0.0651%)
+      top-1 agrees (srrip / srrip, under delta); top-3 overlap 2 of 3
+      noise ceiling: median +0.944, 5th percentile +0.889; noise interval +0.833 .. +1.000 -> BELOW THE NOISE CEILING
+   canneal 16c, fixed 2 MB: tau_b +0.944 over 9, exact p 4.96e-05 -- beyond chance (p < 0.05)
+      tau_delta +1.000; separated in both: 35 agree, 0 disagree; tied: 1 in A, 1 in B (delta 0.1407% / 0.1407%)
+      top-1 agrees (coalesce / srrip, under delta); top-3 overlap 3 of 3
+      noise ceiling: median +1.000, 5th percentile +0.944; noise interval +0.944 .. +1.000 -> WITHIN NOISE
+   canneal 16c, 2 MB a core: tau_b +0.722 over 9, exact p 0.00589 -- beyond chance (p < 0.05)
+      tau_delta +0.907; separated in both: 24 agree, 0 disagree; tied: 8 in A, 11 in B (delta 0.0651% / 0.0651%)
+      top-1 agrees (lru / hawkeye, under delta); top-3 overlap 2 of 3
+      noise ceiling: median +0.833, 5th percentile +0.667; noise interval +0.556 .. +0.944 -> WITHIN NOISE
+   ocean 4c, fixed 2 MB: tau_b +0.833 over 9, exact p 0.000854 -- beyond chance (p < 0.05)
+      tau_delta +0.841; separated in both: 31 agree, 2 disagree; tied: 2 in A, 1 in B (delta 0.1407% / 0.1407%)
+      top-1 agrees (mockingjay / mockingjay, under delta); top-3 overlap 3 of 3
+      noise ceiling: median +0.944, 5th percentile +0.889; noise interval +0.722 .. +0.889 -> BELOW THE NOISE CEILING
+   ocean 4c, 2 MB a core: tau_b +0.833 over 9, exact p 0.000854 -- beyond chance (p < 0.05)
+      tau_delta +0.833; separated in both: 33 agree, 3 disagree; tied: 0 in A, 0 in B (delta 0.0651% / 0.0651%)
+      top-1 agrees (hawkeye / hawkeye, under delta); top-3 overlap 2 of 3
+      noise ceiling: median +1.000, 5th percentile +1.000; noise interval +0.833 .. +0.833 -> BELOW THE NOISE CEILING
+   median over 8: +0.889, bootstrap 95% +0.833 .. +1.000
+
+== A6 restated (8 baselines; drifting traces, b3v4 binary: no tie rule)
+   4c matched shared 1 vs private 4: tau_b +0.857 over 8, exact p 0.00174 -- beyond chance (p < 0.05)
+      top-1 agrees (mockingjay / mockingjay); top-3 overlap 3 of 3
+   4c matched shared 2 vs private 8: tau_b +0.571 over 8, exact p 0.061 -- NOT beyond chance (p >= 0.05)
+      top-1 agrees (mockingjay / mockingjay); top-3 overlap 2 of 3
+   4c matched shared 4 vs private 16: tau_b +0.429 over 8, exact p 0.179 -- NOT beyond chance (p >= 0.05)
+      top-1 differs (mockingjay / hawkeye); top-3 overlap 2 of 3
+   4c control private 1 vs 4: tau_b +0.643 over 8, exact p 0.0312 -- beyond chance (p < 0.05)
+      top-1 differs (hawkeye / mockingjay); top-3 overlap 3 of 3
+   4c control private 2 vs 8: tau_b +0.429 over 8, exact p 0.179 -- NOT beyond chance (p >= 0.05)
+      top-1 agrees (mockingjay / mockingjay); top-3 overlap 2 of 3
+   4c control private 4 vs 16: tau_b +0.214 over 8, exact p 0.548 -- NOT beyond chance (p >= 0.05)
+      top-1 differs (mockingjay / hawkeye); top-3 overlap 2 of 3
+   4c control shared 1 vs 4: tau_b +0.500 over 8, exact p 0.109 -- NOT beyond chance (p >= 0.05)
+      top-1 agrees (mockingjay / mockingjay); top-3 overlap 2 of 3
+   4c control shared 2 vs 8: tau_b +0.571 over 8, exact p 0.061 -- NOT beyond chance (p >= 0.05)
+      top-1 agrees (mockingjay / mockingjay); top-3 overlap 2 of 3
+   4c control shared 4 vs 16: tau_b +0.286 over 8, exact p 0.399 -- NOT beyond chance (p >= 0.05)
+      top-1 differs (mockingjay / srrip_bias); top-3 overlap 1 of 3
+   4c matched (counted): median +0.571 over 3, bootstrap 95% +0.429 .. +0.857
+   4c controls: median +0.464 over 6, bootstrap 95% +0.250 .. +0.607
+   8c matched shared 1 vs private 8: tau_b +1.000 over 8, exact p 4.96e-05 -- beyond chance (p < 0.05)
+      top-1 agrees (mockingjay / mockingjay); top-3 overlap 3 of 3
+   8c matched shared 2 vs private 16: tau_b +0.286 over 8, exact p 0.399 -- NOT beyond chance (p >= 0.05)
+      top-1 differs (srrip / hawkeye); top-3 overlap 1 of 3
+   8c matched shared 4 vs private 32: tau_b +0.071 over 8, exact p 0.905 -- NOT beyond chance (p >= 0.05)
+      top-1 differs (srrip / hawkeye); top-3 overlap 1 of 3
+   8c control private 1 vs 8: tau_b +0.714 over 8, exact p 0.0141 -- beyond chance (p < 0.05)
+      top-1 differs (hawkeye / mockingjay); top-3 overlap 3 of 3
+   8c control private 2 vs 16: tau_b +0.286 over 8, exact p 0.399 -- NOT beyond chance (p >= 0.05)
+      top-1 differs (mockingjay / hawkeye); top-3 overlap 2 of 3
+   8c control private 4 vs 32: tau_b +0.357 over 8, exact p 0.275 -- NOT beyond chance (p >= 0.05)
+      top-1 agrees (hawkeye / hawkeye); top-3 overlap 2 of 3
+   8c control shared 1 vs 8: tau_b +0.429 over 8, exact p 0.179 -- NOT beyond chance (p >= 0.05)
+      top-1 agrees (mockingjay / mockingjay); top-3 overlap 2 of 3
+   8c control shared 2 vs 16: tau_b +0.714 over 8, exact p 0.0141 -- beyond chance (p < 0.05)
+      top-1 agrees (srrip / srrip); top-3 overlap 2 of 3
+   8c control shared 4 vs 32: tau_b -0.071 over 8, exact p 0.905 -- NOT beyond chance (p >= 0.05)
+      top-1 differs (srrip / ship); top-3 overlap 0 of 3
+   8c matched (counted): median +0.286 over 3, bootstrap 95% +0.071 .. +1.000
+   8c controls: median +0.393 over 6, bootstrap 95% +0.107 .. +0.714
+
+== C0 restated (invalidation latency L against 0; level-2 drifting; 8 baselines; no tie rule)
+   L 20: canneal 4c: tau_b +1.000 over 8, exact p 4.96e-05 -- beyond chance (p < 0.05)
+      top-1 agrees (mockingjay / mockingjay); top-3 overlap 3 of 3
+   L 20: canneal 8c: tau_b +1.000 over 8, exact p 4.96e-05 -- beyond chance (p < 0.05)
+      top-1 agrees (srrip / srrip); top-3 overlap 3 of 3
+   L 20: ocean 4c: tau_b +0.929 over 8, exact p 0.000397 -- beyond chance (p < 0.05)
+      top-1 agrees (mockingjay / mockingjay); top-3 overlap 3 of 3
+   L 50: canneal 4c: tau_b +1.000 over 8, exact p 4.96e-05 -- beyond chance (p < 0.05)
+      top-1 agrees (mockingjay / mockingjay); top-3 overlap 3 of 3
+   L 50: canneal 8c: tau_b +1.000 over 8, exact p 4.96e-05 -- beyond chance (p < 0.05)
+      top-1 agrees (srrip / srrip); top-3 overlap 3 of 3
+   L 50: ocean 4c: tau_b +0.929 over 8, exact p 0.000397 -- beyond chance (p < 0.05)
+      top-1 agrees (mockingjay / mockingjay); top-3 overlap 3 of 3
+   L 100: canneal 4c: tau_b +1.000 over 8, exact p 4.96e-05 -- beyond chance (p < 0.05)
+      top-1 agrees (mockingjay / mockingjay); top-3 overlap 3 of 3
+   L 100: canneal 8c: tau_b +1.000 over 8, exact p 4.96e-05 -- beyond chance (p < 0.05)
+      top-1 agrees (srrip / srrip); top-3 overlap 3 of 3
+   L 100: ocean 4c: tau_b +0.929 over 8, exact p 0.000397 -- beyond chance (p < 0.05)
+      top-1 agrees (mockingjay / mockingjay); top-3 overlap 3 of 3
+
+== R1: COALESCE's place (fixed 2 MB, shared)
+   canneal 8c: 1st coalesce, 2nd mockingjay at +0.67%
+      signs over the 5 windows ----- (stable)
+      gap 0.6702% vs delta 0.1407% -> the paper writes "coalesce is 1st"
+   canneal 16c: 1st coalesce, 2nd srrip at +0.06%
+      gap 0.0624% vs delta 0.1407% -> the paper writes "tied for first: coalesce, srrip"
+
+== R4: P11's explanation at 2 MB a core
+   canneal 4c / 8c at 2 MB a core read BELOW THE NOISE CEILING / BELOW THE NOISE CEILING -> NOT SUPPORTED: the sentence is withdrawn; the failure stands without that explanation

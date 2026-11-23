@@ -35,6 +35,8 @@
 long O3_CPU::operate()
 {
   long progress{0};
+  if (champsim::coherence::position_bins() != 0) // matched B3 windows: records only, off by default
+    champsim::coherence::note_position(static_cast<unsigned>(cpu), static_cast<uint64_t>(num_retired));
   progress += retire_rob();                    // retire
   progress += complete_inflight_instruction(); // finalize execution
   progress += execute_instruction();           // execute instructions
@@ -71,6 +73,8 @@ void O3_CPU::begin_phase()
   stats.begin_instrs = num_retired;
   stats.begin_cycles = begin_phase_time.time_since_epoch() / clock_period;
   sim_stats = stats;
+  if (champsim::coherence::position_bins() != 0) // matched B3 windows: the measured span's start
+    champsim::coherence::note_phase_position(static_cast<unsigned>(cpu), warmup, true, static_cast<uint64_t>(num_retired));
 }
 
 void O3_CPU::end_phase(unsigned finished_cpu)
@@ -78,6 +82,8 @@ void O3_CPU::end_phase(unsigned finished_cpu)
   // Record where the phase ended (overwrite if this is later)
   sim_stats.end_instrs = num_retired;
   sim_stats.end_cycles = current_time.time_since_epoch() / clock_period;
+  if (champsim::coherence::position_bins() != 0) // matched B3 windows: the span's end, overwritten as end_instrs is
+    champsim::coherence::note_phase_position(static_cast<unsigned>(cpu), warmup, false, static_cast<uint64_t>(num_retired));
 
   if (finished_cpu == this->cpu) {
     finish_phase_instr = num_retired;
@@ -409,10 +415,13 @@ long O3_CPU::dispatch_instruction()
     return sync_hold::none;
   };
   auto sync_ready = [&sync_check](const ooo_model_instr& x) { return sync_check(x) == sync_hold::none; };
+  // K2 step 3 (sync_replay.h): a diagnostic lead limit; off (0) by default, then never consulted
+  const bool lead_on = champsim::sync::lead_limit() != 0;
+  const bool lead_hold = lead_on && champsim::sync::lead_check(static_cast<unsigned>(cpu), static_cast<uint64_t>(num_retired));
 
   // dispatch DISPATCH_WIDTH instructions into the ROB
   while (available_dispatch_bandwidth.has_remaining() && !std::empty(DISPATCH_BUFFER) && DISPATCH_BUFFER.front().ready_time <= current_time
-         && sync_ready(DISPATCH_BUFFER.front())
+         && sync_ready(DISPATCH_BUFFER.front()) && !lead_hold
          && std::size(ROB) != ROB_SIZE
          && ((std::size_t)std::count_if(std::begin(LQ), std::end(LQ), [](const auto& lq_entry) { return !lq_entry.has_value(); })
              >= std::size(DISPATCH_BUFFER.front().source_memory))
@@ -421,8 +430,11 @@ long O3_CPU::dispatch_instruction()
       champsim::sync::note_acquire(static_cast<unsigned>(cpu));
       if (x.sync_mutex != 0) {
         champsim::sync::note_mutex_record(x.sync_mutex);
-        if (mutex_timing)
+        if (mutex_timing) {
           champsim::sync::mutex_take(static_cast<unsigned>(cpu), x.sync_mutex, x.sync_ordered);
+          champsim::sync::note_mutex_taken(static_cast<unsigned>(cpu), !warmup);
+        }
+        lock_word_asked = false; // the next acquire may ask again (F-C)
       }
     }
     ROB.push_back(std::move(DISPATCH_BUFFER.front()));
@@ -435,9 +447,29 @@ long O3_CPU::dispatch_instruction()
   if (!std::empty(DISPATCH_BUFFER)) {
     if (const auto h = sync_check(DISPATCH_BUFFER.front()); h != sync_hold::none) {
       champsim::sync::note_stall(static_cast<unsigned>(cpu));
-      if (h == sync_hold::mutex)
+      if (h == sync_hold::mutex) {
+        const auto& x = DISPATCH_BUFFER.front();
         champsim::sync::note_mutex_stall(static_cast<unsigned>(cpu));
+        champsim::sync::note_mutex_wait(static_cast<unsigned>(cpu), x.sync_mutex, !warmup);
+        // F-C (lock_fix_design_2026-11-12.md): on the first contended cycle of this hold, one
+        // ownership request for the mutex's word, as a native waiter's failed lock cmpxchg.
+        // Not an instruction: nothing enters the ROB; retried while the L1D's queue is full.
+        if (champsim::sync::lock_word_request() && !lock_word_asked && champsim::sync::mutex_contended(static_cast<unsigned>(cpu), x.sync_mutex)) {
+          CacheBus::request_type packet;
+          packet.v_address = champsim::address{x.sync_mutex};
+          packet.instr_id = x.instr_id;
+          packet.ip = x.ip;
+          if (L1D_bus.issue_rfo(packet)) {
+            lock_word_asked = true;
+            champsim::sync::note_lock_word_request(static_cast<unsigned>(cpu), !warmup);
+          }
+        }
+      }
     }
+  }
+  if (lead_on) {
+    const bool waiting = !std::empty(DISPATCH_BUFFER) && sync_check(DISPATCH_BUFFER.front()) != sync_hold::none;
+    champsim::sync::note_lead(static_cast<unsigned>(cpu), waiting, lead_hold && !waiting && !std::empty(DISPATCH_BUFFER), !warmup);
   }
 
   return available_dispatch_bandwidth.amount_consumed();
@@ -543,8 +575,8 @@ void O3_CPU::do_memory_scheduling(ooo_model_instr& instr)
     // the shared cache never saw an ownership request
     // (b3v2_canneal_barnes_2026-10-07.md). The trace has no lock prefix, so
     // unlocked RMWs are treated the same: they too need ownership before the
-    // write completes.
-    const bool is_rmw = std::find(std::begin(instr.destination_memory), std::end(instr.destination_memory), smem) != std::end(instr.destination_memory);
+    // write completes. Setting rmw_as_rfo false (Part A) turns this off.
+    const bool is_rmw = champsim::coherence::rmw_as_rfo() && std::find(std::begin(instr.destination_memory), std::end(instr.destination_memory), smem) != std::end(instr.destination_memory);
     (*q_entry)->rmw = is_rmw;
 
     // Check for forwarding

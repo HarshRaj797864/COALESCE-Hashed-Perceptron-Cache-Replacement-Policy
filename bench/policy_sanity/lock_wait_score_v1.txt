@@ -1,0 +1,100 @@
+== Round 2 step 1 (lock_wait_design_2026-11-06.md): R_g5(k) = ((C + k N) / I_c) / (G / I_g)
+
+== fluidanimate (fail); rerun simulator/results/lockwait/logs/phaseA_b3_lc_h2_fluidanimate4/regime_shared/fluidanimate_4core/lru/run.log; Q0-full holds
+   C 18681 in I_c 412469354; G 43879 in I_g 386005066; R_g5 0.398
+   measured waited acquires: contended N 70, own 52492; warm-up: contended 31, own 50825; by CPU {0: (7, 12911, 2137879, 7, 11237), 1: (38, 13193, 2266514, 12, 14446), 2: (2, 12946, 2306386, 8, 10961), 3: (23, 13442, 2442574, 4, 14181)}
+   W_m 9153353 measured cycles held / 361529342 measured cycles = 2.5318%
+   R_g5(1) 0.400  R_g5(2) 0.401
+
+== vips (fail); rerun simulator/results/lockwait/logs/phaseA_b3_lc_h2_vips4/regime_shared/vips_4core/lru/run.log; Q0-full holds
+   C 1032 in I_c 411131895; G 3242 in I_g 398703787; R_g5 0.309
+   measured waited acquires: contended N 9, own 0; warm-up: contended 57, own 193; by CPU {0: (3, 0, 5580, 7, 56), 1: (4, 0, 6418, 20, 46), 2: (0, 0, 0, 15, 44), 3: (2, 0, 2010, 15, 47)}
+   W_m 14008 measured cycles held / 352679176 measured cycles = 0.0040%
+   R_g5(1) 0.311  R_g5(2) 0.314   (reported, decides nothing)
+
+== barnes std window (fail); rerun simulator/results/lockwait/logs/phaseA_b3_lc_g3_barnesstd4/regime_shared/barnes_4core/lru/run.log; Q0-full holds
+   C 12082 in I_c 435383460; G 44867 in I_g 401940250; R_g5 0.249
+   measured waited acquires: contended N 60443, own 253386; warm-up: contended 51446, own 145874; by CPU {0: (14566, 57057, 12840356, 10217, 44698), 1: (14588, 66416, 14059008, 10340, 35041), 2: (17579, 61920, 14251665, 15360, 34982), 3: (13710, 67993, 13909075, 15529, 31153)}
+   W_m 55060104 measured cycles held / 414341128 measured cycles = 13.2886%
+   R_g5(1) 1.492  R_g5(2) 2.736
+
+== barnes-256 (fail); rerun simulator/results/lockwait/logs/phaseA_b3_lc_g3_barnes4/regime_shared/barnes_4core/lru/run.log; Q0-full holds
+   C 81202 in I_c 411617099; G 295420 in I_g 400177469; R_g5 0.267
+   measured waited acquires: contended N 271397, own 1695138; warm-up: contended 182373, own 913782; by CPU {0: (66364, 423680, 65949073, 47894, 242545), 1: (59217, 440711, 66324200, 47643, 237628), 2: (83542, 401735, 67184244, 44073, 216188), 3: (62274, 429012, 66764793, 42763, 217421)}
+   W_m 266222310 measured cycles held / 392226365 measured cycles = 67.8747%
+   R_g5(1) 1.160  R_g5(2) 2.054
+
+== barnes std start (fail-noE); rerun simulator/results/lockwait/logs/phaseA_b3_lc_g3_barnesstd4_start/regime_shared/barnes_4core/lru/run.log; Q0-full holds
+   C 26838 in I_c 153244676; G 123076 in I_g 163653240; R_g5 0.233
+   measured waited acquires: contended N 43875, own 132712; warm-up: contended 0, own 0; by CPU {0: (8009, 38468, 6528660, 0, 0), 1: (8186, 30682, 5513871, 0, 0), 2: (13770, 33934, 6993467, 0, 0), 3: (13910, 29628, 6536840, 0, 0)}
+   W_m 25572838 measured cycles held / 161613005 measured cycles = 15.8235%
+   R_g5(1) 0.614  R_g5(2) 0.994
+
+== bodytrack (reported); rerun simulator/results/lockwait/logs/phaseA_b3_lc_h2_bodytrack4/regime_shared/bodytrack_4core/lru/run.log; Q0-full holds
+   C 9307 in I_c 416086207; G 26542 in I_g 415128508; R_g5 0.350
+   measured waited acquires: contended N 30, own 18; warm-up: contended 180, own 54; by CPU {0: (6, 5, 1883, 92, 11), 1: (4, 5, 2973, 16, 21), 2: (12, 4, 3165, 20, 10), 3: (8, 4, 3375, 52, 12)}
+   W_m 11396 measured cycles held / 250856699 measured cycles = 0.0045%
+   R_g5(1) 0.351  R_g5(2) 0.352   (reported, decides nothing)
+
+== barnes std force (agree); rerun simulator/results/lockwait/logs/phaseA_b3_lc_g3_barnesstd4_force/regime_shared/barnes_4core/lru/run.log; Q0-full holds
+   C 453 in I_c 201991713; G 708 in I_g 200018516; R_g5 0.634
+   measured waited acquires: contended N 36, own 86151; warm-up: contended 51446, own 145874; by CPU {0: (7, 16440, 2472809, 10217, 44698), 1: (10, 23180, 3263147, 10340, 35041), 2: (7, 19097, 2744192, 15360, 34982), 3: (12, 27434, 3907155, 15529, 31153)}
+   W_m 12387303 measured cycles held / 173020072 measured cycles = 7.1595%
+   R_g5(1) 0.684  R_g5(2) 0.734
+
+== ocean 2 MB (agree); rerun simulator/results/lockwait/logs/phaseA_b3_lc_g3_ocean4/regime_shared/ocean_4core/lru/run.log; Q0-full holds
+   C 19109 in I_c 402687798; G 27649 in I_g 397195762; R_g5 0.682
+   measured waited acquires: contended N 870, own 123; warm-up: contended 838, own 158; by CPU {0: (288, 42, 195646, 311, 31), 1: (234, 36, 120271, 154, 47), 2: (98, 22, 47420, 160, 41), 3: (250, 23, 72045, 213, 39)}
+   W_m 435382 measured cycles held / 1459707876 measured cycles = 0.0298%
+   R_g5(1) 0.713  R_g5(2) 0.744
+
+== canneal 4c 2 MB (agree-ctl); rerun simulator/results/lockwait/logs/phaseA_b3_lc_g3_canneal4/regime_shared/canneal_4core/lru/run.log; Q0-full holds
+   C 91207 in I_c 401547440; G 89307 in I_g 399351235; R_g5 1.016
+   measured waited acquires: contended N 0, own 0; warm-up: contended 3, own 0; by CPU {0: (0, 0, 0, 1, 0), 1: (0, 0, 0, 1, 0), 2: (0, 0, 0, 0, 0), 3: (0, 0, 0, 1, 0)}
+   W_m 0 measured cycles held / 833616919 measured cycles = 0.0000%
+   R_g5(1) 1.016  R_g5(2) 1.016
+
+== canneal 8c (agree-ctl); rerun simulator/results/lockwait/logs/phaseA_b3_lc_g3_canneal8/regime_shared/canneal_8core/lru/run.log; Q0-full holds
+   C 403703 in I_c 803586534; G 260815 in I_g 798080015; R_g5 1.537
+   measured waited acquires: contended N 0, own 0; warm-up: contended 7, own 0; by CPU {0: (0, 0, 0, 0, 0), 1: (0, 0, 0, 1, 0), 2: (0, 0, 0, 1, 0), 3: (0, 0, 0, 1, 0), 4: (0, 0, 0, 1, 0), 5: (0, 0, 0, 1, 0), 6: (0, 0, 0, 1, 0), 7: (0, 0, 0, 1, 0)}
+   W_m 0 measured cycles held / 1830034757 measured cycles = 0.0000%
+   R_g5(1) 1.537  R_g5(2) 1.537
+
+== radix (agree-ctl); rerun simulator/results/lockwait/logs/phaseA_b3_lc_g3_radix4/regime_shared/radix_4core/lru/run.log; Q0-full holds
+   C 36813 in I_c 403466207; G 36869 in I_g 400067203; R_g5 0.990
+   measured waited acquires: contended N 15, own 0; warm-up: contended 15, own 1; by CPU {0: (1, 0, 42, 3, 0), 1: (4, 0, 907, 3, 0), 2: (5, 0, 2720, 5, 0), 3: (5, 0, 6754, 4, 1)}
+   W_m 10423 measured cycles held / 1541572304 measured cycles = 0.0007%
+   R_g5(1) 0.990  R_g5(2) 0.991
+
+== lunc (agree); rerun simulator/results/lockwait/logs/phaseA_b3_lc_n2_lunc4/regime_shared/lunc_4core/lru/run.log; Q0-full holds
+   C 72366 in I_c 415176209; G 37519 in I_g 394203825; R_g5 1.831
+   measured waited acquires: contended N 18, own 0; warm-up: contended 21, own 2; by CPU {0: (6, 0, 2097, 4, 0), 1: (5, 0, 988, 4, 0), 2: (5, 0, 3350, 5, 2), 3: (2, 0, 671, 8, 0)}
+   W_m 7106 measured cycles held / 496739131 measured cycles = 0.0014%
+   R_g5(1) 1.832  R_g5(2) 1.832
+
+== ocean non-contiguous (agree); rerun simulator/results/lockwait/logs/phaseA_b3_lc_h2_oceannc4/regime_shared/oceannc_4core/lru/run.log; Q0-full holds
+   C 20364 in I_c 400256323; G 30667 in I_g 399766801; R_g5 0.663
+   measured waited acquires: contended N 879, own 233; warm-up: contended 535, own 184; by CPU {0: (239, 56, 103409, 144, 42), 1: (204, 59, 84135, 135, 50), 2: (220, 53, 113095, 117, 47), 3: (216, 65, 109437, 139, 45)}
+   W_m 410076 measured cycles held / 1312855183 measured cycles = 0.0312%
+   R_g5(1) 0.692  R_g5(2) 0.720
+
+== fmm (reported); rerun simulator/results/lockwait/logs/phaseA_b3_lc_g3_fmm4/regime_shared/fmm_4core/lru/run.log; Q0-full holds
+   C 6954 in I_c 423401180; G 9953 in I_g 405765212; R_g5 0.670
+   measured waited acquires: contended N 449, own 32711; warm-up: contended 33, own 10032; by CPU {0: (89, 7610, 1309193, 9, 555), 1: (141, 8226, 1398730, 11, 616), 2: (160, 8809, 1504578, 11, 662), 3: (59, 8066, 1243658, 2, 8199)}
+   W_m 5456159 measured cycles held / 187274577 measured cycles = 2.9135%
+   R_g5(1) 0.713  R_g5(2) 0.756   (reported, decides nothing)
+
+== The rules (design § 4)
+   P-L1 fluidanimate: [0.400, 0.401] misses the band (short: R(2) < 0.5)
+   P-L1 barnes std window: [1.492, 2.736] meets the band
+   P-L1 barnes std start: [0.614, 0.994] meets the band
+   P-L1 barnes-256: [1.160, 2.054] meets the band
+   P-L2 barnes std force: R(1) 0.684, R(2) 0.734 both in the band
+   P-L2 ocean 2 MB: R(1) 0.713, R(2) 0.744 both in the band
+   P-L2 canneal 4c 2 MB: R(1) 1.016, R(2) 1.016 both in the band
+   P-L2 canneal 8c: R(1) 1.537, R(2) 1.537 both in the band
+   P-L2 radix: R(1) 0.990, R(2) 0.991 both in the band
+   P-L2 lunc: R(1) 1.832, R(2) 1.832 both in the band
+   P-L2 ocean non-contiguous: R(1) 0.692, R(2) 0.720 both in the band
+   P-L1 holds on 3 of 4 failing spans (1 short); P-L2 on 7 of 7 agreeing spans
+   VERDICT: H-C2 SUPPORTED: the F-C note is written next

@@ -148,6 +148,9 @@ public:
   CacheBus L1I_bus, L1D_bus;
   champsim::modules::cache_module* l1i;
 
+  // F-C (lock_fix_design_2026-11-12.md): the acquire at the dispatch head has issued its lock-word request
+  bool lock_word_asked = false;
+
   void initialize() final;
   long operate() final;
   void begin_phase() final;

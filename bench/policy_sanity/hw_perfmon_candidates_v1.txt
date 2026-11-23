@@ -1,0 +1,57 @@
+# D candidates from Intel's perfmon (https://github.com/intel/perfmon, branch main, read 2026-11-23), P-core files only.
+# Rule (hw_direction_design part 1): demand RFO, L3 hit, snoop HITM in another core; its clean twin (snoop hit, no forward); loads XSNP HITM/FWD.
+# file md5s:
+#   55f10e6cc8735c0219c9e630ae44792b  mapfile.csv
+#   b1bc7d217888b0d6dd356124f25406f5  alderlake_goldencove_core.json
+#   7a47c7eecd986aea03cf7a48ae6aec4c  arrowlake_lioncove_core.json
+#   c9679ab685b4e1912e0a0694eec7e59e  broadwell_core.json
+#   0c7bef96ca9311adafb250047f4708c0  haswell_core.json
+#   7adafb3296ac918d3dcfa4453fc47f72  icelake_core.json
+#   162221a456ee6687a406befea0a30cb3  lunarlake_lioncove_core.json
+#   939e0956353e170be9bbf39d370a49a9  meteorlake_redwoodcove_core.json
+#   81231126b3d794e509d6e558ef1ee64b  rocketlake_core.json
+#   6718d10f27db02359dbdebaf3efd559f  skylake_core.json
+#   165b33aeadb210c98f749b0e533253e6  tigerlake_core.json
+# model IDs (mapfile.csv):
+#   haswell 6-3C 6-45 6-46 | broadwell 6-3D 6-47 | skylake (Skylake..Comet Lake) 6-4E 6-5E 6-8E 6-9E 6-A5 6-A6 | icelake 6-7D 6-7E
+#   tigerlake 6-8C 6-8D | rocketlake 6-A7 | alderlake_goldencove (Alder / Raptor Lake) 6-97 6-9A 6-B7 6-BA 6-BF
+#   meteorlake_redwoodcove 6-AA 6-AC 6-B5 | arrowlake_lioncove 6-C5 6-C6 | lunarlake_lioncove 6-BD
+EV haswell MEM_LOAD_UOPS_L3_HIT_RETIRED.XSNP_HIT code=0xD2 umask=0x02 msr=0 | Retired load uops which data sources were L3 and cross-core snoop hits in on-pkg core cache.
+EV haswell MEM_LOAD_UOPS_L3_HIT_RETIRED.XSNP_HITM code=0xD2 umask=0x04 msr=0 | Retired load uops which data sources were HitM responses from shared L3.
+EV haswell OFFCORE_RESPONSE.DEMAND_RFO.L3_HIT.HITM_OTHER_CORE code=0xB7,0xBB umask=0x01 msr=0x10003C0002 | Counts all demand data writes (RFOs) hit in the L3 and the snoop to one of the sibling cores hits the line in M state and the line is forwarded
+EV haswell OFFCORE_RESPONSE.DEMAND_RFO.L3_HIT.HIT_OTHER_CORE_NO_FWD code=0xB7,0xBB umask=0x01 msr=0x4003C0002 | Counts all demand data writes (RFOs) hit in the L3 and the snoops to sibling cores hit in either E/S state and the line is not forwarded
+EV broadwell MEM_LOAD_UOPS_L3_HIT_RETIRED.XSNP_HIT code=0xD2 umask=0x02 msr=0 | This event counts retired load uops which data sources were L3 hit and a cross-core snoop hit in the on-pkg core cache.
+EV broadwell MEM_LOAD_UOPS_L3_HIT_RETIRED.XSNP_HITM code=0xD2 umask=0x04 msr=0 | This event counts retired load uops which data sources were HitM responses from a core on same socket (shared L3).
+EV broadwell OFFCORE_RESPONSE.DEMAND_RFO.L3_HIT.SNOOP_HIT_NO_FWD code=0xB7,0xBB umask=0x01 msr=0x4003C0002 | Counts all demand data writes (RFOs)
+EV broadwell OFFCORE_RESPONSE.DEMAND_RFO.L3_HIT.SNOOP_HITM code=0xB7,0xBB umask=0x01 msr=0x10003C0002 | Counts all demand data writes (RFOs)
+EV skylake MEM_LOAD_L3_HIT_RETIRED.XSNP_HIT code=0xD2 umask=0x02 msr=0 | Retired load instructions which data sources were L3 and cross-core snoop hits in on-pkg core cache.
+EV skylake MEM_LOAD_L3_HIT_RETIRED.XSNP_HITM code=0xD2 umask=0x04 msr=0 | Retired load instructions which data sources were HitM responses from shared L3.
+EV skylake OFFCORE_RESPONSE.DEMAND_RFO.L3_HIT.SNOOP_HITM code=0xB7,0xBB umask=0x01 msr=0x10001C0002 | Counts all demand data writes (RFOs)
+EV skylake OFFCORE_RESPONSE.DEMAND_RFO.L3_HIT.SNOOP_HIT_NO_FWD code=0xB7,0xBB umask=0x01 msr=0x4001C0002 | Counts all demand data writes (RFOs)
+EV icelake MEM_LOAD_L3_HIT_RETIRED.XSNP_HIT code=0xd2 umask=0x02 msr=0x00 | Counts retired load instructions whose data sources were L3 and cross-core snoop hits in on-pkg core cache.
+EV icelake MEM_LOAD_L3_HIT_RETIRED.XSNP_HITM code=0xd2 umask=0x04 msr=0x00 | Counts retired load instructions whose data sources were HitM responses from shared L3.
+EV icelake OCR.DEMAND_RFO.L3_HIT.SNOOP_HIT_NO_FWD code=0xB7,0xBB umask=0x01 msr=0x4003C0002 | Counts demand reads for ownership (RFO) requests and software prefetches for exclusive ownership (PREFETCHW) that hit a cacheline in the L3 where a snoop hit in another core, data forwarding is not re
+EV icelake OCR.DEMAND_RFO.L3_HIT.SNOOP_HITM code=0xB7,0xBB umask=0x01 msr=0x10003C0002 | Counts demand reads for ownership (RFO) requests and software prefetches for exclusive ownership (PREFETCHW) that hit a cacheline in the L3 where a snoop hit in another cores caches, data forwarding i
+EV tigerlake MEM_LOAD_L3_HIT_RETIRED.XSNP_NO_FWD code=0xd2 umask=0x02 msr=0x00 | Counts retired load instructions in which the L3 supplied the data and a cross-core snoop hit in another cores caches on this socket but that other core did not forward the data back (SNOOP_HIT_NO_FWD
+EV tigerlake MEM_LOAD_L3_HIT_RETIRED.XSNP_FWD code=0xd2 umask=0x04 msr=0x00 | Counts retired load instructions where a cross-core snoop hit in another cores caches on this socket, the data was forwarded back to the requesting core as the data was modified (SNOOP_HITM) or the L3
+EV tigerlake OCR.DEMAND_RFO.L3_HIT.SNOOP_HITM code=0xB7,0xBB umask=0x01 msr=0x10003C0002 | Counts demand reads for ownership (RFO) requests and software prefetches for exclusive ownership (PREFETCHW) that hit a cacheline in the L3 where a snoop hit in another cores caches, data forwarding i
+EV rocketlake MEM_LOAD_L3_HIT_RETIRED.XSNP_HIT code=0xd2 umask=0x02 msr=0x00 | Counts retired load instructions whose data sources were L3 and cross-core snoop hits in on-pkg core cache.
+EV rocketlake MEM_LOAD_L3_HIT_RETIRED.XSNP_HITM code=0xd2 umask=0x04 msr=0x00 | Counts retired load instructions whose data sources were HitM responses from shared L3.
+EV rocketlake OCR.DEMAND_RFO.L3_HIT.SNOOP_HIT_NO_FWD code=0xB7,0xBB umask=0x01 msr=0x4003C0002 | Counts demand reads for ownership (RFO) requests and software prefetches for exclusive ownership (PREFETCHW) that hit a cacheline in the L3 where a snoop hit in another core, data forwarding is not re
+EV rocketlake OCR.DEMAND_RFO.L3_HIT.SNOOP_HITM code=0xB7,0xBB umask=0x01 msr=0x10003C0002 | Counts demand reads for ownership (RFO) requests and software prefetches for exclusive ownership (PREFETCHW) that hit a cacheline in the L3 where a snoop hit in another cores caches, data forwarding i
+EV alderlake_goldencove OCR.DEMAND_RFO.L3_HIT.SNOOP_HITM code=0x2A,0x2B umask=0x01 msr=0x10003C0002 | Counts demand read for ownership (RFO) requests and software prefetches for exclusive ownership (PREFETCHW) that resulted in a snoop hit in another cores caches, data forwarding is required as the dat
+EV alderlake_goldencove MEM_LOAD_L3_HIT_RETIRED.XSNP_HIT code=0xd2 umask=0x02 msr=0x00 | Counts retired load instructions whose data sources were L3 and cross-core snoop hits in on-pkg core cache.
+EV alderlake_goldencove MEM_LOAD_L3_HIT_RETIRED.XSNP_NO_FWD code=0xd2 umask=0x02 msr=0x00 | Counts retired load instructions whose data sources were L3 and cross-core snoop hits in on-pkg core cache.
+EV alderlake_goldencove MEM_LOAD_L3_HIT_RETIRED.XSNP_HITM code=0xd2 umask=0x04 msr=0x00 | Counts retired load instructions whose data sources were HitM responses from shared L3.
+EV alderlake_goldencove MEM_LOAD_L3_HIT_RETIRED.XSNP_FWD code=0xd2 umask=0x04 msr=0x00 | Counts retired load instructions whose data sources were HitM responses from shared L3.
+EV meteorlake_redwoodcove OCR.DEMAND_RFO.L3_HIT.SNOOP_HITM code=0x2A,0x2B umask=0x01 msr=0x10003C0002 | Counts demand read for ownership (RFO) requests and software prefetches for exclusive ownership (PREFETCHW) that resulted in a snoop hit in another cores caches, data forwarding is required as the dat
+EV meteorlake_redwoodcove MEM_LOAD_L3_HIT_RETIRED.XSNP_NO_FWD code=0xd2 umask=0x02 msr=0x00 | Counts retired load instructions whose data sources were L3 and cross-core snoop hits in on-pkg core cache.
+EV meteorlake_redwoodcove MEM_LOAD_L3_HIT_RETIRED.XSNP_FWD code=0xd2 umask=0x04 msr=0x00 | Counts retired load instructions whose data sources were HitM responses from shared L3.
+EV arrowlake_lioncove OCR.DEMAND_RFO.L3_HIT.SNOOP_HITM code=0x2A,0x2B umask=0x01 msr=0x40001E00002 | Counts demand read for ownership (RFO) requests and software prefetches for exclusive ownership (PREFETCHW) that were supplied by the L3 cache where a snoop hit in another cores caches, data forwardin
+EV arrowlake_lioncove MEM_LOAD_L3_HIT_RETIRED.XSNP_NO_FWD code=0xd2 umask=0x02 msr=0x00 | Counts retired load instructions whose data sources were L3 and cross-core snoop hits in on-pkg core cache.
+EV arrowlake_lioncove MEM_LOAD_L3_HIT_RETIRED.XSNP_HITM code=0xd2 umask=0x04 msr=0x00 | Counts retired load instructions whose data sources were HitM responses from shared L3, Hit-with-FWD is normally excluded.
+EV arrowlake_lioncove MEM_LOAD_L3_HIT_RETIRED.XSNP_FWD code=0xd2 umask=0x10 msr=0x00 | Counts retired load instructions whose data sources were a cross-core Snoop hits and forwards data from an in on-package core cache (induced by NI$)
+EV lunarlake_lioncove OCR.DEMAND_RFO.L3_HIT.SNOOP_HITM code=0x2A,0x2B umask=0x01 msr=0x40001E00002 | Counts demand read for ownership (RFO) requests and software prefetches for exclusive ownership (PREFETCHW) that were supplied by the L3 cache where a snoop hit in another cores caches, data forwardin
+EV lunarlake_lioncove MEM_LOAD_L3_HIT_RETIRED.XSNP_NO_FWD code=0xd2 umask=0x02 msr=0x00 | Counts retired load instructions whose data sources were L3 and cross-core snoop hits in on-pkg core cache.
+EV lunarlake_lioncove MEM_LOAD_L3_HIT_RETIRED.XSNP_HITM code=0xd2 umask=0x04 msr=0x00 | Counts retired load instructions whose data sources were HitM responses from shared L3, Hit-with-FWD is normally excluded.
+EV lunarlake_lioncove MEM_LOAD_L3_HIT_RETIRED.XSNP_FWD code=0xd2 umask=0x10 msr=0x00 | Counts retired load instructions whose data sources were a cross-core Snoop hits and forwards data from an in on-package core cache (induced by NI$)

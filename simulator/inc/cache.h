@@ -183,7 +183,7 @@ public:
   bool dir_ownership_wait(const tag_lookup_type& pkt) const;     // C0: must it wait for invalidations?
   void dir_invalidate_line(uint64_t line);                       // B3 v4: another core took the line
   template <typename T>
-  void dir_log_event(char kind, const T& pkt, uint32_t protocol_others, uint32_t presence_others, uint32_t g5_others = 0) const; // diagnosis only; off by default
+  void dir_log_event(char kind, const T& pkt, uint32_t protocol_others, uint32_t presence_others, uint32_t g5_others = 0, int g5_excl_others = -1) const; // diagnosis only; off by default
   void dir_selfcheck();
   bool has_pending_writes() const; // synchronised replay: a store of this core not yet performed here
   std::vector<access_type> pref_activate_mask;

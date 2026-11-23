@@ -5,6 +5,7 @@
 #   bench/policy_sanity/check_coherence_exact.sh            # ~25 min on a 12-core laptop (8 at a time), ~16 GB of temporary traces
 #   BIN=simulator/bin/champsim_x  bench/policy_sanity/check_coherence_exact.sh
 #   ONLY="order pingpong" LEVELS="0 2" bench/policy_sanity/check_coherence_exact.sh
+#   LOGDIR=/some/dir ...   keeps the traces and logs (to diff two binaries' logs)
 #
 # Every case runs at each private_coherence level (B3 v4,
 # b3v4_coherent_private_design_2026-10-11.md): 0 none, 1 an RFO at the LLC
@@ -133,6 +134,36 @@
 #   known flaw, as in wb_control.
 # Every mx log must print its mutex order and no release of a mutex not held;
 # the older sync cases (no mutex addresses) must print no mutex line at all.
+# Waited acquires (K1 of lock_wait_design_2026-11-06.md; records only; summed
+#   over the four cores, all measured at warm-up 0): mx_excl contended 199,
+#   own 0 (every acquire but the very first finds another core holding the
+#   mutex or ahead in its queue); mx_handover contended 0, own 198 (each core's
+#   next acquire waits for its own release, 99 + 99); the _rec cases 0 / 0
+#   (recorded order never takes the timing path); mx_cond printed, not
+#   asserted; cases without mutex records print no such line.
+# mx_lockword, R = 50 (2026-11-12, F-C, lock_fix_design_2026-11-12.md K1): A = 0
+#   and B = 1 alternate on the mutex; each section is ACQUIRE, an RMW of the
+#   mutex's word M (the lock), 30,000 instructions, an RMW of M (the unlock),
+#   RELEASE, then 10,000 instructions outside; B starts 15,000 in. 100
+#   acquires, 99 hand-overs, every acquire but the first contended (99 / 0).
+#   200 RMWs, none forwarded (30,000 apart). Levels 1, 2: each hand-over's
+#   lock RMW finds M at the old holder: 99 events, 1 core, 2 copies dropped
+#   (198). Level 0: nothing is invalidated, so only B's first lock RMW leaves
+#   its core: 1.
+# The _req cases replay their base case's traces with sync_lock_word request
+#   (F-C): a contended mutex hold issues one ownership request for M.
+#   mx_lockword_req (K1): per hand-over the waiter's request finds M at the
+#   holder, the holder's unlock RMW finds it at the waiter, the waiter's lock
+#   RMW finds it at the holder: levels 1, 2: 297 events, 594 copies dropped;
+#   99 requests, all measured. Level 0: B's first request takes M's first
+#   copy into B's caches (1 event); every later access hits a copy never
+#   invalidated: 1, as without.
+#   mx_handover_req (K2): own waits only: everything as mx_handover, 0 requests.
+#   mx_excl_req (K3): 199 requests (the contended acquires). The totals mix
+#   M's events with Y's, so they are split by line from the event log
+#   (COHERENCE_EVENT_LOG): Y's presence and protocol events and cores equal
+#   mx_excl's; M's are printed, not asserted (who asked last depends on the
+#   queue's timing). Cases without _req print no lock-word line.
 # offchip, R = 2, two pairs (2026-10-17; asserted since 2026-10-19, ~15 min a
 #   run, so not in the default list): A LOADs X_j, then reads 4 MB cyclically,
 #   so X_j leaves A's private caches and the LLC; then B RMWs X_j. B's RFO
@@ -166,11 +197,16 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 S="$ROOT/simulator"
 BIN="${BIN:-$S/bin/champsim}"
 GEN="$ROOT/bench/policy_sanity/coherence_exact_traces.py"
-ONLY="${ONLY:-order pingpong upgrade upgrade_l2 forward storm wb_control wb_evict silent_own sync_pingpong sync_barrier sync_storepp mx_handover mx_handover_rec mx_excl mx_cond mx_cond_rec}"
+ONLY="${ONLY:-order pingpong upgrade upgrade_l2 forward storm wb_control wb_evict silent_own sync_pingpong sync_barrier sync_storepp mx_handover mx_handover_rec mx_excl mx_cond mx_cond_rec mx_lockword mx_lockword_req mx_handover_req mx_excl_req}"
 LEVELS="${LEVELS:-0 1 2}"
+# LEAD=N (K2 step 3, k2_sharing_gap_design_2026-11-17.md amendment 2, check KL2): every config
+# gets sync_lead_limit N, and every log must print its line once; without LEAD, no log may
+LEAD="${LEAD:-}"
+LEADOPT=""; [ -n "$LEAD" ] && LEADOPT="--sync-lead-limit $LEAD"
 JOBS="${JOBS:-$(nproc)}"
 [ -x "$BIN" ] || { echo "no binary at $BIN"; exit 2; }
-W="$(mktemp -d)"; trap 'rm -rf "$W"' EXIT
+# LOGDIR=dir keeps every trace and log there (a Q0 diff of two binaries); otherwise a temporary directory
+if [ -n "${LOGDIR:-}" ]; then W="$LOGDIR"; mkdir -p "$W" || exit 2; else W="$(mktemp -d)"; trap 'rm -rf "$W"' EXIT; fi
 
 # Expected "v1e v1s pre prc pte ptc rmw fwd upe upc inv [g5e g5c g5u [sre vord vbs]]" ('-' = not asserted).
 # $1 case (order_private for the private regime)  $2 level
@@ -209,6 +245,11 @@ expected() {
     mx_excl:[12])            echo "199 594 199 199 199 199 400 0 0 0 398" ;;
     mx_cond:0|mx_cond_rec:0) echo "- - 50 150 50 150 50 0 0 0 0" ;;
     mx_cond:[12]|mx_cond_rec:[12]) echo "- - 50 150 50 150 50 0 0 0 300" ;;
+    mx_lockword:0|mx_lockword_req:0) echo "1 1 1 1 1 1 200 0 0 0 0" ;;
+    mx_lockword:[12])        echo "99 99 99 99 99 99 200 0 0 0 198" ;;
+    mx_lockword_req:[12])    echo "297 297 297 297 297 297 200 0 0 0 594" ;;
+    mx_handover_req:*)       expected mx_handover "$2" ;;
+    mx_excl_req:*)           echo "- - - - - - 400 0 - - -" ;;
     *) echo "NONE" ;;
   esac
 }
@@ -292,7 +333,60 @@ judge() {
     mx_*)      echo "$mx" | grep -q '^SYNC MUTEX ORDER: timing .*releases of a mutex not held 0)' || { ok=0; echo "        mutex order line: '$mx', want timing, 0 releases not held"; } ;;
     *)         [ -z "$mx" ] || { ok=0; echo "        a mutex line on traces without mutex records: '$mx'"; } ;;
   esac
-  if [ "$ok" = 1 ]; then printf 'ok    %-22s %s   self-check %s, registered %s, stale-holders %s%s\n' "$label" "$got" "$chk" "$reg" "$viol" "${minwb:+, LLC writebacks $wb}"
+  # waited acquires, summed over cores: "measured contended own cycles; warmup contended own" (lines)
+  local wa wwant=""
+  wa=$(awk '/^CPU [0-9]+ MUTEX WAITED ACQUIRES:/ { n++; c += $8; o += $10; y += $12; wc += $15; wo += $17 }
+            END { if (n) print c, o, y, wc, wo, n }' "$log")
+  case "$label" in
+    mx_*_rec*)      wwant="0 0" ;;
+    mx_excl,*)      wwant="199 0" ;;
+    mx_handover,*|mx_handover_req,*) wwant="0 198" ;;
+    mx_excl_req,*)  wwant="199 0" ;;
+    mx_lockword,*|mx_lockword_req,*) wwant="99 0" ;;
+    mx_cond,*)      wwant="-" ;;
+  esac
+  case "$label" in
+    mx_*) local na; na=$(grep -c '^CPU [0-9]* MUTEX ACQUIRES:' "$log")
+          [ -n "$wa" ] && [ "$(echo "$wa" | cut -d' ' -f6)" = "$na" ] || { ok=0; echo "        waited-acquire lines: '$wa', want one per MUTEX ACQUIRES line ($na)"; }
+          [ "$wwant" = - ] || [ "$(echo "$wa" | cut -d' ' -f1,2)" = "$wwant" ] || { ok=0; echo "        waited acquires (measured contended, own): $(echo "$wa" | cut -d' ' -f1,2), want $wwant"; }
+          [ "$wwant" = - ] || [ "$(echo "$wa" | cut -d' ' -f4,5)" = "0 0" ] || { ok=0; echo "        waited acquires in warm-up at warm-up 0: $(echo "$wa" | cut -d' ' -f4,5)"; } ;;
+    *)    [ -z "$wa" ] || { ok=0; echo "        a waited-acquire line on traces without mutex records: '$wa'"; } ;;
+  esac
+  # F-C lock-word requests, summed over cores: "measured warmup lines" (lock_fix_design_2026-11-12.md)
+  local lw lwant="" lmode; lmode=$(grep -c '^SYNC LOCK WORD: request$' "$log")
+  lw=$(awk '/^CPU [0-9]+ LOCK-WORD REQUESTS:/ { n++; m += $6; w += $8 } END { if (n) print m, w, n }' "$log")
+  case "$label" in
+    mx_lockword_req,*) lwant="99 0" ;;
+    mx_handover_req,*) lwant="0 0" ;;
+    mx_excl_req,*)     lwant="199 0" ;;
+  esac
+  if [ -n "$lwant" ]; then
+    [ "$lmode" = 1 ] || { ok=0; echo "        no 'SYNC LOCK WORD: request' line"; }
+    [ -n "$lw" ] && [ "$(echo "$lw" | cut -d' ' -f1,2)" = "$lwant" ] || { ok=0; echo "        lock-word requests (measured, warm-up, lines): '$lw', want $lwant"; }
+  else
+    [ "$lmode" = 0 ] && [ -z "$lw" ] || { ok=0; echo "        a lock-word line without sync_lock_word request: mode lines $lmode, requests '$lw'"; }
+  fi
+  # K2 step 3: the lead limit's line exactly when LEAD is set
+  if [ -n "$LEAD" ]; then
+    [ "$(grep -c "^SYNC LEAD LIMIT: $LEAD instructions\$" "$log")" = 1 ] || { ok=0; echo "        no single 'SYNC LEAD LIMIT: $LEAD instructions' line"; }
+  else
+    [ "$(grep -c 'LEAD LIMIT\|LEAD HOLDS' "$log")" = 0 ] || { ok=0; echo "        a lead-limit line without LEAD"; }
+  fi
+  # mx_excl_req: Y's events from the event log equal mx_excl's (pre prc pte ptc); M's are printed
+  local ysplit=""
+  case "$label" in
+    mx_excl_req,*)
+      local ywant; ywant=$(expected mx_excl "$level" | cut -d' ' -f3-6)
+      # the log's others fields are core masks in hex: count their bits
+      ysplit=$(awk -v y="$(printf '%x' $((0x50000000 >> 6)))" -v m="$(printf '%x' $((0x7F000040 >> 6)))" '
+        function bits(h,   x, n) { x = strtonum("0x" h); n = 0; while (x) { n += x % 2; x = int(x / 2) } return n }
+        $1 == "G" && $2 == "LLC" && $4 == "0" { k = ($8 == y) ? "y" : ($8 == m) ? "m" : "o"; p = bits($11); r = bits($12)
+                                               if (r > 0) { pe[k]++; pc[k] += r }  if (p > 0) { te[k]++; tc[k] += p } }
+        END { printf "Y %d %d %d %d M %d %d %d %d other %d", pe["y"], pc["y"], te["y"], tc["y"], pe["m"], pc["m"], te["m"], tc["m"], pe["o"] + te["o"] }' "${log%.log}.events")
+      [ "$(echo "$ysplit" | cut -d' ' -f2-5)" = "$ywant" ] || { ok=0; echo "        Y's events (pre prc pte ptc) from the event log: '$ysplit', want Y $ywant"; }
+      [ "$(echo "$ysplit" | awk '{ print $NF }')" = 0 ] || { ok=0; echo "        events on a line neither Y nor M: '$ysplit'"; } ;;
+  esac
+  if [ "$ok" = 1 ]; then printf 'ok    %-22s %s   self-check %s, registered %s, stale-holders %s%s%s%s%s\n' "$label" "$got" "$chk" "$reg" "$viol" "${minwb:+, LLC writebacks $wb}" "${wa:+, waited (c o cyc; wc wo; lines) $wa}" "${lw:+, lock-word requests (m w; lines) $lw}" "${ysplit:+, by line: $ysplit}"
   else printf 'FAIL  %-22s got  %s   self-check %s, registered %s, stale-holders %s, LLC writebacks %s\n      %-22s want %s%s\n' "$label" "$got" "$chk" "$reg" "$viol" "$wb" "" "$want" "${minwb:+   (LLC writebacks >= $minwb)}"; fail=1; fi
 }
 
@@ -319,22 +413,31 @@ judge_storm() {
 
 for L in $LEVELS; do
   case "$L" in 0|1|2) ;; *) echo "LEVELS: '$L' is not 0, 1 or 2"; exit 2 ;; esac
-  "$S/scripts/make_config.py" --policy lru --cores 4 --regime shared  --private-coherence "$L" -o "$W/shared$L.json"  >/dev/null || exit 2
-  "$S/scripts/make_config.py" --policy lru --cores 4 --regime private --private-coherence "$L" -o "$W/private$L.json" >/dev/null || exit 2
-  "$S/scripts/make_config.py" --policy lru --cores 4 --regime shared  --private-coherence "$L" --sync-mutex-order recorded -o "$W/sharedrec$L.json" >/dev/null || exit 2
+  # shellcheck disable=SC2086
+  "$S/scripts/make_config.py" --policy lru --cores 4 --regime shared  --private-coherence "$L" $LEADOPT -o "$W/shared$L.json"  >/dev/null || exit 2
+  # shellcheck disable=SC2086
+  "$S/scripts/make_config.py" --policy lru --cores 4 --regime private --private-coherence "$L" $LEADOPT -o "$W/private$L.json" >/dev/null || exit 2
+  # shellcheck disable=SC2086
+  "$S/scripts/make_config.py" --policy lru --cores 4 --regime shared  --private-coherence "$L" --sync-mutex-order recorded $LEADOPT -o "$W/sharedrec$L.json" >/dev/null || exit 2
+  # shellcheck disable=SC2086
+  "$S/scripts/make_config.py" --policy lru --cores 4 --regime shared  --private-coherence "$L" --sync-lock-word request $LEADOPT -o "$W/sharedreq$L.json" >/dev/null || exit 2
 done
 echo "binary: $BIN"
+[ -z "$LEAD" ] || echo "sync_lead_limit: $LEAD (K2 step 3, KL2)"
 echo "columns: v1e v1s pre prc pte ptc rmw fwd upe upc inv g5e g5c g5u sre vord vbs"
 pids=""
 for c in $ONLY; do
-  # a case ending _rec replays its base case's traces in recorded mutex order;
-  # each case gets its own trace directory, so no run reads a file being rewritten
-  g="${c%_rec}"; mkdir -p "$W/$c"
+  # a case ending _rec replays its base case's traces in recorded mutex order, one
+  # ending _req with sync_lock_word request (F-C); each case gets its own trace
+  # directory, so no run reads a file being rewritten
+  g="${c%_rec}"; g="${g%_req}"; mkdir -p "$W/$c"
   n=$(python3 "$GEN" "$g" "$W/$c") || { echo "trace generation failed for $c"; exit 2; }
   for L in $LEVELS; do
     for rg in shared $( [ "$c" = order ] && echo private ); do
-      cfg="$W/$rg$L.json"; [ "$g" = "$c" ] || cfg="$W/${rg}rec$L.json"
+      cfg="$W/$rg$L.json"; case "$c" in *_rec) cfg="$W/${rg}rec$L.json" ;; *_req) cfg="$W/${rg}req$L.json" ;; esac
       while [ "$(jobs -rp | wc -l)" -ge "$JOBS" ]; do sleep 1; done
+      # mx_excl_req's totals are split by line from the event log (see the header)
+      [ "$c" = mx_excl_req ] && export COHERENCE_EVENT_LOG="$W/${c}_${rg}_$L.events" || unset COHERENCE_EVENT_LOG
       "$BIN" --config "$cfg" --warmup-instructions 0 --simulation-instructions "$n" \
         "$W/$c/${g}0.champsimtrace" "$W/$c/${g}1.champsimtrace" "$W/$c/${g}2.champsimtrace" "$W/$c/${g}3.champsimtrace" > "$W/${c}_${rg}_$L.log" 2>&1 &
       pids="$pids $!"

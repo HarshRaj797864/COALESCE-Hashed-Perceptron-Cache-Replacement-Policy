@@ -23,10 +23,12 @@ protocol, program by program, with pre-registered pass/fail rules.
   line to evict?
 
 > **Status (November 2026): work in progress.** The simulator agrees with
-> gem5 on seven program spans and reads low on five; those are under
-> diagnosis (see [Validation](#validation-against-gem5)). Policy results are
-> being rerun on the finished simulator. **No claim is made yet that COALESCE
-> beats the baselines.**
+> gem5 on eight program spans and reads low on five; those are under
+> diagnosis (see [Validation](#validation-against-gem5)). The replacement
+> policies have been rerun on the finished simulator (171 runs; see
+> [the COALESCE policy](#the-coalesce-policy)). **No claim is made that
+> COALESCE beats the baselines**: it leads in two configurations by under 1%
+> and trails in others.
 
 ---
 
@@ -95,6 +97,7 @@ SPLASH-3 and PARSEC):
 | barnes, force phase | development | 0.634 | agrees |
 | radix | held out | 0.990 | agrees |
 | LU, non-contiguous | held out | 1.831 | agrees |
+| streamcluster (PARSEC) | held out | 0.925 | agrees |
 | ocean, non-contiguous | reported apart (a layout of a development program) | 0.663 | agrees |
 | barnes, start / whole window | development | 0.233 / 0.249 | **reads low** |
 | barnes, 256-body leaves | development | 0.267 | **reads low** |
@@ -103,8 +106,7 @@ SPLASH-3 and PARSEC):
 
 - **Not scored**, because the same-stream or set-up checks failed:
   - fft, volrend, fmm;
-  - bodytrack, whose untraced main thread does over 1% of the work;
-  - streamcluster, being re-traced.
+  - bodytrack, whose untraced main thread does over 1% of the work.
 - **Not discriminating** (fewer than 500 sharing events in gem5): LU
   contiguous, raytrace, water-nsquared, facesim.
 
@@ -168,10 +170,32 @@ that was never told about fills, or a `find_victim` that was silently never
 called. All were fixed, and three guards (below) now stop those classes from
 returning.
 
-**Status:** the policy's design is frozen until the gem5 validation is
-settled. Earlier measurements on the pre-synchronised simulator showed it
-fastest in one configuration and behind in others; the final rankings are
-being rerun on the finished tool. No performance claim is made here.
+**Results on the finished simulator** (November 2026; COALESCE and the eight
+baselines; canneal at 4, 8 and 16 cores, ocean at 4; 50 M +
+100 M instructions a core; ranked by the slowest core's cycles;
+`bench/policy_sanity/policy_results_2026-11-10.md`, with the run-to-run
+noise and exact p-values of `bench/policy_sanity/h3_results_2026-11-23.md`):
+- **Sharing raises the stakes.** On canneal with a fixed 2 MB LLC, the best
+  policy beats LRU by 13.9% (4 cores) and 13.2% (8 cores) when the threads
+  share data. Run as separate programs, the same threads give 10.2% and
+  3.2%.
+- **Sharing is not shown to reorder the policies.** On canneal the shared
+  and private rankings agree only in part (Kendall τ_b +0.78 and +0.50 at a
+  fixed 2 MB, +0.33 and +0.28 at 2 MB a core; only the +0.78 is beyond
+  chance, exact p 0.002). But changing only the LLC
+  size, in one regime, reorders them as much (τ +0.17 to +0.50). On ocean,
+  the control, the rankings agree (+0.78, +0.94).
+- **COALESCE** is first on canneal at 8 cores with a fixed 2 MB LLC and
+  threads sharing, ahead of the next policy by 0.67%: more than the
+  run-to-run noise (0.14%), and in all five shifted measurement windows.
+  At 16 cores it is tied for first with SRRIP (0.06%, within the noise). In the
+  same setting at 4 cores it is fourth. With a large LLC or without sharing it trails, down to
+  ninth (8.5% slower than LRU on canneal at 4 cores, 8 MB, private).
+- barnes was run but is not ranked, because it does not yet agree with gem5.
+
+**Status:** the policy's design stays frozen until the gem5 validation is
+settled. The margins above are small and come from one workload, so no
+performance claim is made here.
 
 ## Building
 

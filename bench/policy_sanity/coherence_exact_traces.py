@@ -202,15 +202,16 @@ def accesses(case):
         # (the _nosync controls, the same traces with the records left out)
         # the cores race and the counts change.
         return sync_accesses(case)
-    if case in ('mx_handover', 'mx_excl', 'mx_cond'):
-        # 2026-10-19, mutex order by simulated timing (sync_mutex_design_2026-10-19.md).
+    if case in ('mx_handover', 'mx_excl', 'mx_cond', 'mx_lockword'):
+        # 2026-10-19, mutex order by simulated timing (sync_mutex_design_2026-10-19.md);
+        # mx_lockword 2026-11-12 (F-C, lock_fix_design_2026-11-12.md).
         return mx_accesses(case)
     sys.exit(f"unknown case {case!r}")
 
 
 SYNC_MAGIC = 0x53594E4353594E43
 SYNC = {}   # filled by sync_accesses / mx_accesses: {core: {index: (release_id, wait_id, kind[, mutex, ordered])}}
-MUTEX = 0x7F000040                    # the mutex's address: only a name, never accessed
+MUTEX = 0x7F000040                    # the mutex's address: only a name, except in mx_lockword (its lock word)
 
 
 def sync_accesses(case):
@@ -298,7 +299,17 @@ def mx_accesses(case):
       can merge at the LLC, and the LLC's own mask (v1) records only the
       miss's owner: v1 is not asserted (2026-10-19, the event log: two LOADs
       130 cycles apart, the second merged; v1 read 101 and, staggered, 100 of
-      150, while presence and the protocol view listed all three)."""
+      150, while presence and the protocol view listed all three).
+    mx_lockword, R = 50 (2026-11-12, F-C, lock_fix_design_2026-11-12.md): cores
+      A = 0 and B = 1 alternate on the mutex, whose word M is now accessed as
+      glibc's lock word is: ACQUIRE, RMW M (the lock), 30,000 instructions,
+      RMW M (the unlock), RELEASE -- the tracer's order (champsim_tracer.cpp
+      SyncExit) -- then 10,000 instructions outside. B starts 15,000 in, so
+      each core asks while the other holds M: 100 acquires, 99 hand-overs, all
+      but the first contended. Without the lock-word request each hand-over
+      moves M once (the new holder's lock RMW finds the old holder); with it,
+      three times (the waiter's request finds the holder, the holder's unlock
+      finds the waiter, the waiter's lock finds the holder)."""
     acc = {c: {} for c in range(4)}
     SYNC.clear()
     for c in range(4):
@@ -333,6 +344,19 @@ def mx_accesses(case):
             last = rel_id(c)
             SYNC[c][i + 3 + 3000] = (last, 0, 1, MUTEX, 0)
             pos[c] = i + 4 + 3000 + 10
+    elif case == 'mx_lockword':
+        A, B = 0, 1
+        pos[B] += 15000
+        last = 0
+        for k in range(2 * R):                       # the native order alternates A, B, A, B
+            c = A if k % 2 == 0 else B
+            i = pos[c]
+            SYNC[c][i] = (0, last, 2, MUTEX, 0)
+            acc[c][i + 1] = (MUTEX, True)            # the lock: an RMW of the lock word
+            acc[c][i + 2 + 30000] = (MUTEX, True)    # the unlock
+            last = rel_id(c)
+            SYNC[c][i + 3 + 30000] = (last, 0, 1, MUTEX, 0)
+            pos[c] = i + 4 + 30000 + 10000
     else:   # mx_cond
         last, last_cond = 0, False                   # the mutex's last release, and whether a condition wait made it
         for j in range(R):
@@ -368,8 +392,10 @@ def mx_accesses(case):
     n = max(pos.values()) + 20000
     # mx_handover in recorded order: A waits through B's 1 M alone, then needs
     # about 1 M more after B is done, and B keeps running meanwhile: its tail
-    # must outlast that (a wrap, 2026-10-19).
-    return n, n + (2_000_000 if case == 'mx_handover' else 300_000), acc
+    # must outlast that (a wrap, 2026-10-19). mx_lockword: A and B each wait
+    # through the other's 50 sections (~1.5 M instructions' time) while cores
+    # 2 and 3 keep running (a wrap, 2026-11-12).
+    return n, n + (2_000_000 if case in ('mx_handover', 'mx_lockword') else 300_000), acc
 
 
 def main():

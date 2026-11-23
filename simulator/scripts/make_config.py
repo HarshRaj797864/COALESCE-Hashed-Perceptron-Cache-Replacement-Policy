@@ -22,7 +22,7 @@ import sys
 
 POLICIES = [
     "coalesce", "coalesce_no_mesi", "coalesce_no_sharer",
-    "lru", "srrip", "drrip", "ship", "hawkeye", "mockingjay", "srrip_bias", "random",
+    "lru", "srrip", "srrip_pub", "drrip", "ship", "hawkeye", "mockingjay", "srrip_bias", "random",
 ]
 
 
@@ -65,7 +65,8 @@ def _llc_sets(cores: int, per_core_mb: float | None) -> int:
 
 def build(policy: str, cores: int, regime: str, llc_per_core_mb: float | None = None,
           private_coherence: int = 0, coherence_latency: int = 0, sync_mutex_order: str | None = None,
-          llc_mshr: int | None = None) -> dict:
+          llc_mshr: int | None = None, rmw_as_rfo: int | None = None, sync_lock_word: str | None = None,
+          sync_lead_limit: int | None = None) -> dict:
     """Mirror the historical btp_config.json hierarchy so results stay comparable."""
     if coherence_latency and private_coherence != 2:
         raise SystemExit("--coherence-latency needs --private-coherence 2")
@@ -110,6 +111,20 @@ def build(policy: str, cores: int, regime: str, llc_per_core_mb: float | None = 
         # mutex next. Absent means "timing", the simulator's default; written
         # only when given, so every other config is byte-identical to before.
         **({"sync_mutex_order": sync_mutex_order} if sync_mutex_order else {}),
+        # Part A (upstream_equiv_design_2026-11-10.md): 0 issues a
+        # read-modify-write's load as a load, as upstream ChampSim does. Written
+        # only when given, so every other config is byte-identical to before; a
+        # binary without the setting ignores it, so a run at 0 must print
+        # "RMW LOADS AS RFO: off".
+        **({"rmw_as_rfo": bool(rmw_as_rfo)} if rmw_as_rfo is not None else {}),
+        # F-C (lock_fix_design_2026-11-12.md): "request" makes a contended mutex
+        # waiter issue one ownership request for the lock word. Written only when
+        # given, so every other config is byte-identical to before; a binary
+        # without it ignores the key, so a run must print "SYNC LOCK WORD: request".
+        **({"sync_lock_word": sync_lock_word} if sync_lock_word else {}),
+        # K2 step 3 (k2_sharing_gap_design_2026-11-17.md, amendment 2): a DIAGNOSTIC lead
+        # limit, never the tool's setting; written only when given.
+        **({"sync_lead_limit": sync_lead_limit} if sync_lead_limit else {}),
     }
 
 
@@ -138,11 +153,23 @@ def main() -> int:
                          "addresses are affected")
     ap.add_argument("--llc-mshr", type=int, default=None,
                     help="the LLC's MSHRs (default 16, as every earlier run; the step-5 sensitivity run uses 64)")
+    ap.add_argument("--rmw-as-rfo", type=int, choices=[0, 1], default=None,
+                    help="Part A: 0 issues a read-modify-write's load as a load, as upstream ChampSim "
+                         "does; 1 (the simulator's default when omitted) as an RFO (B3 v3 step 1)")
+    ap.add_argument("--sync-lock-word", choices=["none", "request"], default=None,
+                    help="F-C: a mutex acquire held while another core holds the mutex (or is ahead "
+                         "in its queue) issues one ownership request for the lock word (request); "
+                         "none, the simulator's default when omitted, issues nothing")
+    ap.add_argument("--sync-lead-limit", type=int, default=None,
+                    help="K2 step 3, a diagnostic only: hold a core at dispatch while it has retired more "
+                         "than N instructions beyond the slowest core not waiting at a sync record and "
+                         "not done (0 or omitted: off)")
     ap.add_argument("-o", "--output", help="write here instead of stdout")
     args = ap.parse_args()
 
     text = json.dumps(build(args.policy, args.cores, args.regime, args.llc_per_core_mb,
-                            args.private_coherence, args.coherence_latency, args.sync_mutex_order, args.llc_mshr), indent=2) + "\n"
+                            args.private_coherence, args.coherence_latency, args.sync_mutex_order, args.llc_mshr, args.rmw_as_rfo,
+                            args.sync_lock_word, args.sync_lead_limit), indent=2) + "\n"
     if args.output:
         with open(args.output, "w") as fh:
             fh.write(text)

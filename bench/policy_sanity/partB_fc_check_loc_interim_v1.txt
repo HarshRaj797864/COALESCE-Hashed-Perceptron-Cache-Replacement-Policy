@@ -1,0 +1,755 @@
+== Part B: the checks (breadth_bc_design_2026-11-10.md, Note 3; on the F-C binary, amendment 10; v2 on the located windows, amendment 12)
+   counter LOG 2026-11-13 11:11:07 QE-h2 holds: 354 lines equal, the 14 other pairs the dump asked are the 14 gem5 aborts on; CPUID replaced 401 unlisted 0
+   counter LOG 2026-11-13 12:46:38 COUNT DONE: 124 of 124 exited 0 with the options and thread files Note 2 names
+   counter markers: {'done': 'yes', 'counter_md5': '22776143da830acac58082ebc8f2eede'}
+
+== fft_4 (Part B, B1 (4 cores; step 4's P8-P10)); traced threads 0,1,2,3
+   QB    holds: the 8-thread key's binaries, SIZED there (QB held at sizing); QG checks gem5 ran that key's static binary
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 0); instructions t0 531.7 M, t1 531.7 M, t2 531.7 M, t3 531.7 M
+   Q3    holds (view-order raw 0 = by silent re-listing 0; releases of a mutex not held 1, reported)
+   QG    holds: 4 CPUs, /home/harshraj/splash-newbench/FFT, L2 2 MB, randomization false, stop on CPUs 1,2,3
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 399.4 M window instructions (under 1% needed); per CPU 0:99.83M 1:99.80M 2:100.00M 3:99.80M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 107.762 in [107.752, 107.752]; stores 55.754 in [55.750, 55.750]; RMWs 0.000 in [0.000, 0.000]; host run 107.730, 55.741, 0.000
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 207.766 in [207.785, 207.785]; stores 103.756 in [103.765, 103.765]; RMWs 0.000 in [0.000, 0.000]; counter windows (reported): loads [207.663, 207.664], stores [103.709, 103.709], RMWs [0.000, 0.000]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 207.591 / 207.851, stores 103.677 / 103.795; instructions 100.00 M / 99.83 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 207.689 / 207.765, stores 103.721 / 103.755; instructions 100.00 M / 99.80 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 207.687 / 207.686, stores 103.720 / 103.719; instructions 100.00 M / 100.00 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 207.688 / 207.762, stores 103.720 / 103.753; instructions 100.00 M / 99.80 M
+   500   FAILS: gem5 counts 0 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> NOT SCORED: fails 500
+   FC    holds: the F-C rerun qualifies against its g6 reference (lock_fix_score.py qualify)
+
+== volrend_4 (Part B, B1 (4 cores; step 4's P8-P10)); traced threads 0,1,2,3
+   QB    holds: the 8-thread key's binaries, SIZED there (QB held at sizing); QG checks gem5 ran that key's static binary
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 0); instructions t0 623.6 M, t1 579.0 M, t2 588.5 M, t3 588.3 M
+   Q3    holds (view-order raw 25 = by silent re-listing 25; releases of a mutex not held 1, reported)
+   QG    holds: 4 CPUs, /home/harshraj/splash-newbench/VOLREND, L2 2 MB, randomization false, stop on CPUs 1,2,3
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 376.2 M window instructions (under 1% needed); per CPU 0:91.95M 1:100.29M 2:92.04M 3:91.87M
+   QC    FAILS: stores: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 194.067 in [193.747, 193.985]; stores 39.141 in [39.762, 40.250] <-- outside; RMWs 0.944 in [0.798, 0.967]; host run 193.936, 39.142, 0.951
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 194.693 in [193.639, 193.815]; stores 40.646 in [39.951, 40.556]; RMWs 0.995 in [0.831, 1.023]; counter windows (reported): loads [193.748, 193.986], stores [39.763, 40.252], RMWs [0.798, 0.967]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 193.798 / 192.869, stores 45.211 / 36.466; instructions 100.00 M / 91.95 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 193.343 / 196.844, stores 36.640 / 48.616; instructions 100.00 M / 100.29 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 193.765 / 194.560, stores 35.021 / 34.209; instructions 100.00 M / 92.04 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 194.087 / 194.306, stores 44.136 / 42.578; instructions 100.00 M / 91.87 M
+   500   holds: gem5 counts 6888 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> NOT SCORED: fails QC
+   FC    holds: the F-C rerun qualifies against its g6 reference (lock_fix_score.py qualify)
+
+== fmm_4 (Part B, B1 (4 cores; step 4's P8-P10)); traced threads 0,1,2,3
+   QB    holds: the 8-thread key's binaries, SIZED there (QB held at sizing); QG checks gem5 ran that key's static binary
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 215000000); instructions t0 200.5 M, t1 215.0 M, t2 215.0 M, t3 215.0 M
+   Q3    holds (view-order raw 59 = by silent re-listing 59; releases of a mutex not held 1, reported)
+   QG    holds: 4 CPUs, /home/harshraj/splash-heldout/FMM, L2 2 MB, randomization false, stop on CPUs 1,2,3
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 405.8 M window instructions (under 1% needed); per CPU 0:108.21M 1:101.97M 2:95.59M 3:100.00M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 138.022 in [138.078, 138.083]; stores 18.452 in [18.451, 18.454]; RMWs 0.821 in [0.820, 0.821]; host run 138.116, 18.483, 0.821
+   v2    FAILS: RMWs: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 147.139 in [145.403, 145.553]; stores 24.404 in [22.935, 23.360]; RMWs 1.124 in [0.803, 0.812] <-- outside; counter windows (reported): loads [145.358, 145.361], stores [23.554, 23.558], RMWs [0.820, 0.821]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 145.213 / 145.620, stores 22.936 / 24.197; instructions 100.00 M / 108.21 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 144.813 / 146.422, stores 24.960 / 23.137; instructions 99.95 M / 101.97 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 146.014 / 148.830, stores 23.300 / 24.160; instructions 100.00 M / 95.59 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 145.393 / 147.896, stores 23.037 / 26.153; instructions 100.00 M / 100.00 M
+   500   holds: gem5 counts 9953 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> NOT SCORED: fails v2
+   FC    holds: the F-C rerun qualifies against its g6 reference (lock_fix_score.py qualify)
+
+== ocean_8 (Part B, B2 (8 cores; P18-P20)); traced threads 0,1,2,3,4,5,6,7
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 220000000); instructions t0 219.4 M, t1 220.0 M, t2 220.0 M, t3 220.0 M, t4 220.0 M, t5 220.0 M, t6 220.0 M, t7 220.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 8 CPUs, /home/harshraj/splash-static/OCEAN, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 788.5 M window instructions (under 1% needed); per CPU 0:99.99M 1:97.05M 2:99.88M 3:97.18M 4:100.00M 5:97.18M 6:97.17M 7:100.00M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 304.707 in [304.718, 304.721]; stores 68.455 in [68.456, 68.457]; RMWs 0.030 in [0.029, 0.029]; host run 289.473, 130.619, 0.029
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 304.313 in [304.644, 305.358]; stores 73.128 in [72.700, 72.998]; RMWs 0.036 in [0.029, 0.030]; counter windows (reported): loads [306.510, 306.513], stores [73.534, 73.535], RMWs [0.029, 0.029]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 309.520 / 303.349, stores 74.025 / 73.143; instructions 100.00 M / 99.99 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 309.488 / 305.209, stores 73.926 / 73.132; instructions 100.00 M / 97.05 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 303.556 / 303.178, stores 73.073 / 73.114; instructions 100.00 M / 99.88 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 303.367 / 305.339, stores 73.145 / 73.164; instructions 100.00 M / 97.18 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 303.364 / 303.342, stores 73.147 / 73.148; instructions 100.00 M / 100.00 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 309.486 / 305.343, stores 73.926 / 73.168; instructions 100.00 M / 97.18 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 309.630 / 305.451, stores 73.888 / 73.081; instructions 100.00 M / 97.17 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 303.667 / 303.412, stores 73.149 / 73.072; instructions 100.00 M / 100.00 M
+   500   holds: gem5 counts 30113 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== oceannc_8 (Part B, B2 (8 cores; P18-P20)); traced threads 0,1,2,3,4,5,6,7
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 225000000); instructions t0 217.4 M, t1 225.0 M, t2 225.0 M, t3 225.0 M, t4 225.0 M, t5 225.0 M, t6 225.0 M, t7 225.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 8 CPUs, /home/harshraj/heldout2_static/OCEAN-NC, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 799.7 M window instructions (under 1% needed); per CPU 0:99.98M 1:99.93M 2:99.95M 3:99.94M 4:99.96M 5:99.94M 6:99.96M 7:100.00M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 320.118 in [320.104, 320.106]; stores 52.759 in [52.767, 52.775]; RMWs 0.030 in [0.029, 0.029]; host run 319.277, 68.919, 0.030
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 320.320 in [320.323, 320.323]; stores 54.029 in [54.024, 54.025]; RMWs 0.036 in [0.029, 0.029]; counter windows (reported): loads [320.114, 320.116], stores [54.134, 54.153], RMWs [0.029, 0.029]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 320.124 / 320.332, stores 54.059 / 54.035; instructions 100.00 M / 99.98 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 320.218 / 320.225, stores 54.058 / 54.079; instructions 100.00 M / 99.93 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 319.993 / 320.278, stores 54.346 / 54.038; instructions 100.00 M / 99.95 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 319.995 / 320.314, stores 54.341 / 54.041; instructions 100.00 M / 99.94 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 319.940 / 320.361, stores 54.144 / 53.994; instructions 100.00 M / 99.96 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 320.389 / 320.294, stores 54.009 / 54.031; instructions 100.00 M / 99.94 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 320.185 / 320.366, stores 54.044 / 54.007; instructions 100.00 M / 99.96 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 320.079 / 320.393, stores 54.094 / 54.009; instructions 100.00 M / 100.00 M
+   500   holds: gem5 counts 28695 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== radix_8 (Part B, B2 (8 cores; P18-P20)); traced threads 0,1,2,3,4,5,6,7
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 215000000); instructions t0 215.0 M, t1 215.0 M, t2 215.0 M, t3 215.0 M, t4 215.0 M, t5 215.0 M, t6 215.0 M, t7 215.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 8 CPUs, /home/harshraj/splash-heldout/RADIX, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 793.5 M window instructions (under 1% needed); per CPU 0:99.99M 1:97.74M 2:99.11M 3:99.75M 4:99.94M 5:100.06M 6:99.31M 7:97.59M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 273.935 in [273.935, 273.935]; stores 178.311 in [178.311, 178.311]; RMWs 95.584 in [95.584, 95.584]; host run 273.935, 178.311, 95.584
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 273.949 in [273.950, 273.950]; stores 178.270 in [178.268, 178.268]; RMWs 95.639 in [95.641, 95.641]; counter windows (reported): loads [273.935, 273.935], stores [178.311, 178.311], RMWs [95.584, 95.584]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 273.963 / 273.954, stores 178.263 / 178.289; instructions 100.00 M / 99.99 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 273.957 / 273.931, stores 178.320 / 178.238; instructions 100.00 M / 97.74 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 273.932 / 273.949, stores 178.317 / 178.265; instructions 100.00 M / 99.11 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 273.918 / 273.927, stores 178.318 / 178.288; instructions 100.00 M / 99.75 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 273.904 / 273.964, stores 178.319 / 178.301; instructions 100.00 M / 99.94 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 273.930 / 273.924, stores 178.320 / 178.297; instructions 100.00 M / 100.06 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 273.918 / 273.950, stores 178.318 / 178.263; instructions 100.00 M / 99.31 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 273.960 / 273.995, stores 178.312 / 178.213; instructions 100.00 M / 97.59 M
+   500   holds: gem5 counts 26509 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== barnes_8 (Part B, B2 (8 cores; P18-P20)); traced threads 0,1,2,3,4,5,6,7
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 260000000); instructions t0 211.3 M, t1 260.0 M, t2 260.0 M, t3 260.0 M, t4 260.0 M, t5 260.0 M, t6 260.0 M, t7 260.0 M
+   Q3    FAILS: not complete; unexplained -; mutex order -; sync replay -; traces - (want 0:sync_pb/barnes_8/raw0_aligned.champsimtrace.xz,1:sync_pb/barnes_8/raw1.champsimtrace.xz,2:sync_pb/barnes_8/raw2.champsimtrace.xz,3:sync_pb/barnes_8/raw3.champsimtrace.xz,4:sync_pb/barnes_8/raw4.champsimtrace.xz,5:sync_pb/barnes_8/raw5.champsimtrace.xz,6:sync_pb/barnes_8/raw6.champsimtrace.xz,7:sync_pb/barnes_8/raw7.champsimtrace.xz); rows incomplete; self-check - / registered -; stale-holders -; level - (view-order raw - = by silent re-listing -; releases of a mutex not held -, reported)
+   QG    holds: 8 CPUs, /home/harshraj/splash-static/BARNES, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 798.2 M window instructions (under 1% needed); per CPU 0:99.72M 1:99.79M 2:99.66M 3:99.66M 4:100.00M 5:99.78M 6:99.66M 7:99.97M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 307.888 in [308.216, 308.217]; stores 200.117 in [200.322, 200.324]; RMWs 9.700 in [9.713, 9.714]; host run 308.217, 200.322, 9.714
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 323.106 in [323.482, 323.483]; stores 208.500 in [208.055, 208.058]; RMWs 9.733 in [9.712, 9.714]; counter windows (reported): loads [323.483, 323.483], stores [208.055, 208.057], RMWs [9.713, 9.714]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 323.475 / 323.156, stores 208.149 / 208.755; instructions 100.00 M / 99.72 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 323.402 / 323.105, stores 208.754 / 208.584; instructions 100.00 M / 99.79 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 323.392 / 323.018, stores 208.653 / 209.527; instructions 100.00 M / 99.66 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 323.510 / 323.069, stores 208.346 / 209.043; instructions 100.00 M / 99.66 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 323.292 / 323.221, stores 209.196 / 207.042; instructions 100.00 M / 100.00 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 323.742 / 323.032, stores 206.419 / 208.449; instructions 100.00 M / 99.78 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 323.404 / 323.085, stores 208.016 / 209.130; instructions 100.00 M / 99.66 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 323.643 / 323.165, stores 206.906 / 207.477; instructions 100.00 M / 99.97 M
+   500   holds: gem5 counts 3257 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> NOT SCORED: fails Q3
+   FC    PENDING: the F-C rerun has not completed
+
+== lunc_8 (Part B, B2 (8 cores; P18-P20)); traced threads 0,1,2,3,4,5,6,7
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 310000000); instructions t0 217.5 M, t1 310.0 M, t2 310.0 M, t3 310.0 M, t4 310.0 M, t5 310.0 M, t6 310.0 M, t7 310.0 M
+   Q3    FAILS: not complete; unexplained -; mutex order -; sync replay -; traces - (want 0:sync_pb/lunc_8/raw0_aligned.champsimtrace.xz,1:sync_pb/lunc_8/raw1.champsimtrace.xz,2:sync_pb/lunc_8/raw2.champsimtrace.xz,3:sync_pb/lunc_8/raw3.champsimtrace.xz,4:sync_pb/lunc_8/raw4.champsimtrace.xz,5:sync_pb/lunc_8/raw5.champsimtrace.xz,6:sync_pb/lunc_8/raw6.champsimtrace.xz,7:sync_pb/lunc_8/raw7.champsimtrace.xz); rows incomplete; self-check - / registered -; stale-holders -; level - (view-order raw - = by silent re-listing -; releases of a mutex not held -, reported)
+   QG    holds: 8 CPUs, /home/harshraj/splash-newbench/LU-NC, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 756.1 M window instructions (under 1% needed); per CPU 0:99.48M 1:90.46M 2:90.29M 3:89.36M 4:92.58M 5:95.15M 6:97.28M 7:101.54M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 234.927 in [234.927, 234.927]; stores 113.731 in [113.731, 113.731]; RMWs 0.002 in [0.002, 0.002]; host run 234.927, 113.732, 0.002
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 234.893 in [234.904, 234.936]; stores 113.712 in [113.716, 113.737]; RMWs 0.002 in [0.002, 0.002]; counter windows (reported): loads [234.927, 234.927], stores [113.732, 113.732], RMWs [0.002, 0.002]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 234.979 / 234.954, stores 113.768 / 113.758; instructions 100.00 M / 99.48 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 234.931 / 234.948, stores 113.727 / 113.739; instructions 100.00 M / 90.46 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 234.923 / 234.686, stores 113.719 / 113.574; instructions 100.00 M / 90.29 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 234.699 / 234.686, stores 113.581 / 113.572; instructions 100.00 M / 89.36 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 234.974 / 234.971, stores 113.762 / 113.756; instructions 100.00 M / 92.58 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 234.970 / 234.964, stores 113.757 / 113.757; instructions 100.00 M / 95.15 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 234.958 / 234.959, stores 113.764 / 113.758; instructions 100.00 M / 97.28 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 234.983 / 234.949, stores 113.774 / 113.759; instructions 100.00 M / 101.54 M
+   500   holds: gem5 counts 128207 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> NOT SCORED: fails Q3
+   FC    PENDING: the F-C rerun has not completed
+
+== fft_8 (Part B, B2 (8 cores; P18-P20)); traced threads 0,1,2,3,4,5,6,7
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 0); instructions t0 1141.0 M, t1 1141.0 M, t2 1141.0 M, t3 1141.0 M, t4 1141.0 M, t5 1141.0 M, t6 1141.0 M, t7 1141.0 M
+   Q3    FAILS: not complete; unexplained -; mutex order -; sync replay -; traces - (want 0:sync_pb/fft_8/raw0_aligned.champsimtrace.xz,1:sync_pb/fft_8/raw1.champsimtrace.xz,2:sync_pb/fft_8/raw2.champsimtrace.xz,3:sync_pb/fft_8/raw3.champsimtrace.xz,4:sync_pb/fft_8/raw4.champsimtrace.xz,5:sync_pb/fft_8/raw5.champsimtrace.xz,6:sync_pb/fft_8/raw6.champsimtrace.xz,7:sync_pb/fft_8/raw7.champsimtrace.xz); rows incomplete; self-check - / registered -; stale-holders -; level - (view-order raw - = by silent re-listing -; releases of a mutex not held -, reported)
+   QG    holds: 8 CPUs, /home/harshraj/splash-newbench/FFT, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 799.9 M window instructions (under 1% needed); per CPU 0:100.59M 1:100.18M 2:100.09M 3:99.58M 4:99.48M 5:100.11M 6:99.91M 7:100.00M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 108.000 in [108.000, 108.000]; stores 55.792 in [55.792, 55.792]; RMWs 0.000 in [0.000, 0.000]; host run 107.996, 55.789, 0.000
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 208.417 in [209.358, 209.359]; stores 104.146 in [106.547, 106.547]; RMWs 0.000 in [0.000, 0.000]; counter windows (reported): loads [208.639, 208.639], stores [104.248, 104.248], RMWs [0.000, 0.000]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 208.640 / 208.707, stores 104.249 / 104.295; instructions 100.00 M / 100.59 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 208.638 / 208.621, stores 104.248 / 104.241; instructions 100.00 M / 100.18 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 208.638 / 208.484, stores 104.248 / 104.182; instructions 100.00 M / 100.09 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 208.638 / 207.964, stores 104.248 / 103.922; instructions 100.00 M / 99.58 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 208.638 / 208.150, stores 104.248 / 104.013; instructions 100.00 M / 99.48 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 208.638 / 208.515, stores 104.248 / 104.198; instructions 100.00 M / 100.11 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 208.638 / 208.247, stores 104.248 / 104.064; instructions 100.00 M / 99.91 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 208.638 / 208.638, stores 104.248 / 104.248; instructions 100.00 M / 100.00 M
+   500   FAILS: gem5 counts 0 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> NOT SCORED: fails Q3, 500
+   FC    PENDING: the F-C rerun has not completed
+
+== volrend_8 (Part B, B2 (8 cores; P18-P20)); traced threads 0,1,2,3,4,5,6,7
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 0); instructions t0 1102.3 M, t1 1131.4 M, t2 1140.9 M, t3 1122.8 M, t4 1151.0 M, t5 1156.0 M, t6 1346.2 M, t7 1142.6 M
+   Q3    FAILS: not complete; unexplained -; mutex order -; sync replay -; traces - (want 0:sync_pb/volrend_8/raw0_aligned.champsimtrace.xz,1:sync_pb/volrend_8/raw1.champsimtrace.xz,2:sync_pb/volrend_8/raw2.champsimtrace.xz,3:sync_pb/volrend_8/raw3.champsimtrace.xz,4:sync_pb/volrend_8/raw4.champsimtrace.xz,5:sync_pb/volrend_8/raw5.champsimtrace.xz,6:sync_pb/volrend_8/raw6.champsimtrace.xz,7:sync_pb/volrend_8/raw7.champsimtrace.xz); rows incomplete; self-check - / registered -; stale-holders -; level - (view-order raw - = by silent re-listing -; releases of a mutex not held -, reported)
+   QG    holds: 8 CPUs, /home/harshraj/splash-newbench/VOLREND, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 683.1 M window instructions (under 1% needed); per CPU 0:85.09M 1:100.00M 2:82.84M 3:83.20M 4:82.43M 5:83.24M 6:83.25M 7:83.02M
+   QC    FAILS: stores, RMWs: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 193.655 in [193.551, 193.762]; stores 39.489 in [38.673, 39.008] <-- outside; RMWs 0.957 in [0.776, 0.946] <-- outside; host run 194.080, 38.470, 0.756
+   v2    FAILS: RMWs: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 194.812 in [193.825, 194.006]; stores 41.519 in [38.383, 38.878] <-- 5-8% outside: scored, the miss stated; RMWs 1.083 in [0.844, 0.870] <-- outside; counter windows (reported): loads [193.552, 193.763], stores [38.674, 39.009], RMWs [0.776, 0.946]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 195.002 / 187.088, stores 37.742 / 40.784; instructions 100.00 M / 85.09 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 194.443 / 199.079, stores 39.238 / 52.710; instructions 100.00 M / 100.00 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 194.352 / 196.185, stores 46.052 / 43.973; instructions 100.00 M / 82.84 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 186.419 / 193.969, stores 39.011 / 38.876; instructions 100.00 M / 83.20 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 194.431 / 196.017, stores 41.427 / 33.487; instructions 100.00 M / 82.43 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 194.630 / 194.877, stores 38.931 / 33.570; instructions 100.00 M / 83.24 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 195.859 / 194.850, stores 33.774 / 42.960; instructions 100.00 M / 83.25 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 194.744 / 195.763, stores 33.220 / 43.490; instructions 100.00 M / 83.02 M
+   500   holds: gem5 counts 15685 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> NOT SCORED: fails Q3, QC, v2
+   FC    PENDING: the F-C rerun has not completed
+
+== waternsq_8 (Part B, B2 (8 cores; P18-P20)); traced threads 0,1,2,3,4,5,6,7
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 230000000); instructions t0 215.4 M, t1 230.0 M, t2 230.0 M, t3 230.0 M, t4 230.0 M, t5 230.0 M, t6 230.0 M, t7 230.0 M
+   Q3    FAILS: not complete; unexplained -; mutex order -; sync replay -; traces - (want 0:sync_pb/waternsq_8/raw0_aligned.champsimtrace.xz,1:sync_pb/waternsq_8/raw1.champsimtrace.xz,2:sync_pb/waternsq_8/raw2.champsimtrace.xz,3:sync_pb/waternsq_8/raw3.champsimtrace.xz,4:sync_pb/waternsq_8/raw4.champsimtrace.xz,5:sync_pb/waternsq_8/raw5.champsimtrace.xz,6:sync_pb/waternsq_8/raw6.champsimtrace.xz,7:sync_pb/waternsq_8/raw7.champsimtrace.xz); rows incomplete; self-check - / registered -; stale-holders -; level - (view-order raw - = by silent re-listing -; releases of a mutex not held -, reported)
+   QG    holds: 8 CPUs, /home/harshraj/splash-heldout/WATER-NSQUARED, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 748.4 M window instructions (under 1% needed); per CPU 0:97.13M 1:91.40M 2:91.44M 3:91.46M 4:91.34M 5:94.19M 6:100.00M 7:91.45M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 225.408 in [225.415, 225.416]; stores 87.054 in [87.057, 87.057]; RMWs 0.074 in [0.074, 0.074]; host run 226.632, 87.541, 0.077
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 230.690 in [231.132, 231.252]; stores 88.548 in [88.403, 88.426]; RMWs 0.080 in [0.075, 0.075]; counter windows (reported): loads [231.339, 231.340], stores [88.511, 88.511], RMWs [0.074, 0.074]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 235.923 / 222.944, stores 87.423 / 90.397; instructions 99.91 M / 97.13 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 236.380 / 235.624, stores 87.565 / 87.338; instructions 99.91 M / 91.40 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 223.288 / 235.459, stores 90.355 / 87.338; instructions 99.92 M / 91.44 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 235.888 / 235.483, stores 87.394 / 87.364; instructions 99.91 M / 91.46 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 217.342 / 235.947, stores 91.591 / 87.505; instructions 99.92 M / 91.34 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 236.059 / 229.326, stores 87.397 / 88.975; instructions 99.91 M / 94.19 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 229.885 / 217.018, stores 88.966 / 91.695; instructions 99.92 M / 100.00 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 235.956 / 235.529, stores 87.398 / 87.348; instructions 99.91 M / 91.45 M
+   500   holds: gem5 counts 2123 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> NOT SCORED: fails Q3
+   FC    PENDING: the F-C rerun has not completed
+
+== raytrace_8 (Part B, B2 (8 cores; P18-P20)); traced threads 0,1,2,3,4,5,6,7
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 400000000); instructions t0 215.0 M, t1 234.1 M, t2 347.5 M, t3 274.0 M, t4 319.5 M, t5 344.8 M, t6 342.8 M, t7 311.5 M
+   Q3    FAILS: not complete; unexplained -; mutex order -; sync replay -; traces - (want 0:sync_pb/raytrace_8/raw0_aligned.champsimtrace.xz,1:sync_pb/raytrace_8/raw1.champsimtrace.xz,2:sync_pb/raytrace_8/raw2.champsimtrace.xz,3:sync_pb/raytrace_8/raw3.champsimtrace.xz,4:sync_pb/raytrace_8/raw4.champsimtrace.xz,5:sync_pb/raytrace_8/raw5.champsimtrace.xz,6:sync_pb/raytrace_8/raw6.champsimtrace.xz,7:sync_pb/raytrace_8/raw7.champsimtrace.xz); rows incomplete; self-check - / registered -; stale-holders -; level - (view-order raw - = by silent re-listing -; releases of a mutex not held -, reported)
+   QG    holds: 8 CPUs, /home/harshraj/splash-newbench/RAYTRACE, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 768.6 M window instructions (under 1% needed); per CPU 0:93.75M 1:94.26M 2:98.53M 3:96.40M 4:92.10M 5:100.27M 6:100.00M 7:93.33M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 373.204 in [373.164, 373.188]; stores 25.659 in [25.648, 25.653]; RMWs 0.121 in [0.121, 0.121]; host run 373.245, 25.657, 0.121
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 373.317 in [373.220, 373.347]; stores 25.921 in [25.884, 25.894]; RMWs 0.122 in [0.121, 0.121]; counter windows (reported): loads [373.521, 373.545], stores [25.862, 25.866], RMWs [0.121, 0.121]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 371.445 / 371.386, stores 25.773 / 25.741; instructions 100.00 M / 93.75 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 376.631 / 366.402, stores 25.779 / 25.982; instructions 100.00 M / 94.26 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 378.069 / 374.168, stores 26.251 / 26.147; instructions 100.00 M / 98.53 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 374.490 / 375.971, stores 26.080 / 25.803; instructions 100.00 M / 96.40 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 380.411 / 370.077, stores 26.679 / 25.060; instructions 100.00 M / 92.10 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 370.134 / 378.035, stores 25.500 / 26.271; instructions 100.00 M / 100.27 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 370.571 / 380.449, stores 25.031 / 26.694; instructions 100.00 M / 100.00 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 366.606 / 369.089, stores 25.839 / 25.571; instructions 100.00 M / 93.33 M
+   500   holds: gem5 counts 670 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> NOT SCORED: fails Q3
+   FC    PENDING: the F-C rerun has not completed
+
+== fmm_8 (Part B, B2 (8 cores; P18-P20)); traced threads 0,1,2,3,4,5,6,7
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 270000000); instructions t0 212.8 M, t1 270.0 M, t2 270.0 M, t3 270.0 M, t4 270.0 M, t5 270.0 M, t6 270.0 M, t7 270.0 M
+   Q3    FAILS: not complete; unexplained -; mutex order -; sync replay -; traces - (want 0:sync_pb/fmm_8/raw0_aligned.champsimtrace.xz,1:sync_pb/fmm_8/raw1.champsimtrace.xz,2:sync_pb/fmm_8/raw2.champsimtrace.xz,3:sync_pb/fmm_8/raw3.champsimtrace.xz,4:sync_pb/fmm_8/raw4.champsimtrace.xz,5:sync_pb/fmm_8/raw5.champsimtrace.xz,6:sync_pb/fmm_8/raw6.champsimtrace.xz,7:sync_pb/fmm_8/raw7.champsimtrace.xz); rows incomplete; self-check - / registered -; stale-holders -; level - (view-order raw - = by silent re-listing -; releases of a mutex not held -, reported)
+   QG    holds: 8 CPUs, /home/harshraj/splash-heldout/FMM, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 699.7 M window instructions (under 1% needed); per CPU 0:85.24M 1:86.19M 2:85.96M 3:86.04M 4:85.72M 5:85.31M 6:85.22M 7:100.00M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 139.502 in [139.361, 139.364]; stores 14.029 in [13.978, 13.982]; RMWs 0.401 in [0.402, 0.402]; host run 139.423, 13.984, 0.402
+   v2    FAILS: loads, stores, RMWs: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 144.595 in [157.890, 158.021] <-- outside; stores 22.811 in [29.738, 29.945] <-- outside; RMWs 0.549 in [2.491, 2.493] <-- outside; counter windows (reported): loads [145.584, 145.587], stores [17.819, 17.823], RMWs [0.402, 0.402]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 142.838 / 140.138, stores 15.332 / 22.900; instructions 100.00 M / 85.24 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 142.413 / 142.283, stores 15.860 / 20.461; instructions 100.00 M / 86.19 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 141.929 / 140.426, stores 16.895 / 23.297; instructions 100.00 M / 85.96 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 142.052 / 141.108, stores 16.194 / 22.158; instructions 100.00 M / 86.04 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 142.319 / 140.915, stores 15.990 / 21.953; instructions 100.00 M / 85.72 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 141.640 / 142.024, stores 17.313 / 20.680; instructions 100.00 M / 85.31 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 168.120 / 141.967, stores 30.147 / 20.697; instructions 100.00 M / 85.22 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 143.357 / 164.562, stores 14.848 / 29.256; instructions 100.00 M / 100.00 M
+   500   holds: gem5 counts 1882 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> NOT SCORED: fails Q3, v2
+   FC    PENDING: the F-C rerun has not completed
+
+== streamcluster_8 (Part B, B2 (8 cores; P18-P20)); traced threads 1,2,3,4,5,6,7,8
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 215000000); instructions t1 215.0 M, t2 215.0 M, t3 215.0 M, t4 215.0 M, t5 215.0 M, t6 215.0 M, t7 215.0 M, t8 215.0 M
+   Q3    FAILS: not complete; unexplained -; mutex order -; sync replay -; traces - (want 0:sync_pb/streamcluster_8/raw1.champsimtrace.xz,1:sync_pb/streamcluster_8/raw2.champsimtrace.xz,2:sync_pb/streamcluster_8/raw3.champsimtrace.xz,3:sync_pb/streamcluster_8/raw4.champsimtrace.xz,4:sync_pb/streamcluster_8/raw5.champsimtrace.xz,5:sync_pb/streamcluster_8/raw6.champsimtrace.xz,6:sync_pb/streamcluster_8/raw7.champsimtrace.xz,7:sync_pb/streamcluster_8/raw8.champsimtrace.xz); rows incomplete; self-check - / registered -; stale-holders -; level - (view-order raw - = by silent re-listing -; releases of a mutex not held -, reported)
+   QG    holds: 9 CPUs, /home/harshraj/splash-newbench/streamcluster, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7,8
+   QW    holds: untraced CPUs 0 commit 0.000% of the traced CPUs' 797.8 M window instructions (under 1% needed); per CPU 0:0.00M 1:100.00M 2:99.69M 3:99.68M 4:99.68M 5:99.68M 6:99.68M 7:99.68M 8:99.69M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 283.285 in [283.295, 283.295]; stores 1.278 in [1.278, 1.278]; RMWs 0.010 in [0.010, 0.010]; host run 283.312, 1.245, 0.010
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 283.347 in [283.349, 283.349]; stores 1.358 in [1.358, 1.358]; RMWs 0.010 in [0.010, 0.010]; counter windows (reported): loads [283.296, 283.296], stores [1.346, 1.346], RMWs [0.010, 0.010]
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 283.238 / 283.228, stores 1.807 / 1.810; instructions 100.00 M / 100.00 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 283.309 / 283.369, stores 1.280 / 1.294; instructions 100.00 M / 99.69 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 283.309 / 283.355, stores 1.280 / 1.293; instructions 100.00 M / 99.68 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 283.301 / 283.361, stores 1.280 / 1.293; instructions 100.00 M / 99.68 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 283.308 / 283.369, stores 1.281 / 1.293; instructions 100.00 M / 99.68 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 283.292 / 283.362, stores 1.280 / 1.293; instructions 100.00 M / 99.68 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 283.302 / 283.369, stores 1.280 / 1.294; instructions 100.00 M / 99.68 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 283.306 / 283.367, stores 1.280 / 1.293; instructions 100.00 M / 99.69 M
+   500   holds: gem5 counts 9462 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> NOT SCORED: fails Q3
+   FC    PENDING: the F-C rerun has not completed
+
+== fluidanimate_8 (Part B, B2 (8 cores; P18-P20)); traced threads 1,2,3,4,5,6,7,8
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 215000000); instructions t1 215.0 M, t2 215.0 M, t3 215.0 M, t4 215.0 M, t5 215.0 M, t6 215.0 M, t7 215.0 M, t8 215.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 9 CPUs, /home/harshraj/heldout2_static/fluidanimate, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7,8
+   QW    holds: untraced CPUs 0 commit 0.000% of the traced CPUs' 719.9 M window instructions (under 1% needed); per CPU 0:0.00M 1:84.13M 2:91.80M 3:82.71M 4:90.01M 5:92.06M 6:100.00M 7:85.71M 8:93.47M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 231.833 in [232.315, 232.315]; stores 44.959 in [45.053, 45.053]; RMWs 4.670 in [4.678, 4.678]; host run 232.315, 45.053, 4.678
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 233.644 in [234.510, 234.836]; stores 45.678 in [45.057, 45.258]; RMWs 4.842 in [4.710, 4.755]; counter windows (reported): loads [232.315, 232.315], stores [45.053, 45.053], RMWs [4.678, 4.678]
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 227.820 / 230.661, stores 42.023 / 42.501; instructions 100.00 M / 84.13 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 227.768 / 233.807, stores 42.454 / 45.782; instructions 100.00 M / 91.80 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 232.838 / 231.005, stores 45.111 / 43.024; instructions 100.00 M / 82.71 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 232.518 / 233.861, stores 45.258 / 45.937; instructions 100.00 M / 90.01 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 238.938 / 234.665, stores 48.962 / 46.692; instructions 100.00 M / 92.06 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 234.271 / 237.157, stores 46.397 / 49.204; instructions 100.00 M / 100.00 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 229.685 / 231.978, stores 43.584 / 44.052; instructions 100.00 M / 85.71 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 234.681 / 235.060, stores 46.630 / 47.255; instructions 100.00 M / 93.47 M
+   500   holds: gem5 counts 43766 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== vips_8 (Part B, B2 (8 cores; P18-P20)); traced threads 3,4,5,6,7,8,9,10
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 215000000); instructions t3 215.0 M, t4 215.0 M, t5 215.0 M, t6 215.0 M, t7 215.0 M, t8 215.0 M, t9 215.0 M, t10 215.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 11 CPUs, /home/harshraj/heldout2_static/vips, L2 2 MB, randomization false, stop on CPUs 3,4,5,6,7,8,9,10
+   QW    holds: untraced CPUs 0,1,2 commit 0.007% of the traced CPUs' 798.3 M window instructions (under 1% needed); per CPU 0:0.05M 1:0.00M 2:0.00M 3:99.61M 4:99.64M 5:99.30M 6:99.36M 7:99.95M 8:100.07M 9:100.24M 10:100.18M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 189.960 in [189.807, 189.899]; stores 55.494 in [55.483, 55.507]; RMWs 0.217 in [0.217, 0.218]; host run 190.013, 55.605, 0.217
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 190.188 in [189.842, 190.048]; stores 55.657 in [55.578, 55.659]; RMWs 0.219 in [0.217, 0.218]; counter windows (reported): loads [189.889, 189.987], stores [55.610, 55.622], RMWs [0.217, 0.218]
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 189.620 / 190.105, stores 56.007 / 55.136; instructions 100.00 M / 99.61 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 190.374 / 190.628, stores 56.550 / 56.555; instructions 100.00 M / 99.64 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 189.974 / 190.195, stores 55.154 / 55.348; instructions 100.00 M / 99.30 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 190.047 / 189.868, stores 55.221 / 55.172; instructions 100.00 M / 99.36 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 190.160 / 189.777, stores 55.997 / 55.145; instructions 100.00 M / 99.95 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 189.893 / 190.444, stores 55.232 / 56.229; instructions 100.00 M / 100.07 M
+          t9 (counter gem5 1 / gem5 CPU 9, reported): loads 189.828 / 190.279, stores 55.091 / 56.014; instructions 100.00 M / 100.24 M
+          t10 (counter gem5 1 / gem5 CPU 10, reported): loads 190.001 / 190.206, stores 55.645 / 55.650; instructions 100.00 M / 100.18 M
+   500   holds: gem5 counts 9739 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== bodytrack_8 (Part B, B2 (8 cores; P18-P20)); traced threads 1,2,3,4,5,6,7,8
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 215000000); instructions t1 215.0 M, t2 215.0 M, t3 215.0 M, t4 215.0 M, t5 215.0 M, t6 215.0 M, t7 215.0 M, t8 215.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 10 CPUs, /home/harshraj/heldout2_static/bodytrack, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7,8
+   QW    FAILS: untraced CPUs 0,9 commit 1.259% of the traced CPUs' 798.1 M window instructions (under 1% needed); per CPU 0:10.05M 1:100.00M 2:98.92M 3:100.09M 4:99.60M 5:100.09M 6:100.09M 7:99.94M 8:99.41M 9:0.00M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 195.290 in [195.080, 195.224]; stores 53.629 in [53.238, 53.975]; RMWs 24.685 in [24.186, 24.606]; host run 195.893, 53.895, 24.605
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 201.373 in [201.258, 201.382]; stores 58.159 in [57.822, 58.398]; RMWs 24.387 in [24.275, 24.604]; counter windows (reported): loads [201.181, 201.388], stores [57.674, 58.465], RMWs [24.186, 24.606]
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 201.536 / 201.381, stores 58.023 / 58.157; instructions 100.00 M / 100.00 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 201.563 / 201.394, stores 58.027 / 58.120; instructions 100.00 M / 98.92 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 201.323 / 201.350, stores 58.351 / 58.184; instructions 100.00 M / 100.09 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 201.323 / 201.368, stores 58.352 / 58.182; instructions 100.00 M / 99.60 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 200.837 / 201.364, stores 58.978 / 58.178; instructions 100.00 M / 100.09 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 201.467 / 201.353, stores 58.155 / 58.182; instructions 100.00 M / 100.09 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 201.413 / 201.387, stores 58.171 / 58.147; instructions 100.00 M / 99.94 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 201.645 / 201.387, stores 57.903 / 58.118; instructions 100.00 M / 99.41 M
+   500   holds: gem5 counts 26822 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== ocean_16 (Part B, B16 (16 cores; P22-P24)); traced threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 220000000); instructions t0 219.0 M, t1 220.0 M, t2 220.0 M, t3 220.0 M, t4 220.0 M, t5 220.0 M, t6 220.0 M, t7 220.0 M, t8 220.0 M, t9 220.0 M, t10 220.0 M, t11 220.0 M, t12 220.0 M, t13 220.0 M, t14 220.0 M, t15 220.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 16 CPUs, /home/harshraj/splash-static/OCEAN, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 1588.3 M window instructions (under 1% needed); per CPU 0:99.16M 1:97.96M 2:99.11M 3:99.99M 4:99.91M 5:97.99M 6:99.14M 7:100.01M 8:99.93M 9:97.98M 10:99.13M 11:100.01M 12:99.93M 13:98.01M 14:100.05M 15:99.96M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 316.556 in [316.566, 316.566]; stores 68.138 in [68.138, 68.138]; RMWs 0.046 in [0.044, 0.045]; host run 322.030, 67.337, 0.049
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 316.784 in [316.486, 316.554]; stores 71.388 in [71.298, 71.312]; RMWs 0.058 in [0.043, 0.043]; counter windows (reported): loads [317.461, 317.462], stores [71.306, 71.306], RMWs [0.044, 0.045]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 315.792 / 316.808, stores 71.378 / 71.295; instructions 100.00 M / 99.16 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 317.517 / 317.980, stores 71.151 / 71.482; instructions 100.00 M / 97.96 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 319.584 / 316.706, stores 71.275 / 71.318; instructions 100.00 M / 99.11 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 315.802 / 316.778, stores 71.374 / 71.387; instructions 100.00 M / 99.99 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 316.934 / 315.583, stores 71.371 / 71.429; instructions 100.00 M / 99.91 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 315.911 / 317.988, stores 71.394 / 71.460; instructions 100.00 M / 97.99 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 319.373 / 316.724, stores 71.443 / 71.292; instructions 100.00 M / 99.14 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 317.640 / 316.785, stores 71.165 / 71.365; instructions 100.00 M / 100.01 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 316.820 / 315.595, stores 71.354 / 71.413; instructions 100.00 M / 99.93 M
+          t9 (counter gem5 1 / gem5 CPU 9, reported): loads 316.816 / 317.987, stores 71.356 / 71.460; instructions 100.00 M / 97.98 M
+          t10 (counter gem5 1 / gem5 CPU 10, reported): loads 319.582 / 316.724, stores 71.278 / 71.287; instructions 100.00 M / 99.13 M
+          t11 (counter gem5 1 / gem5 CPU 11, reported): loads 317.519 / 316.783, stores 71.150 / 71.366; instructions 100.00 M / 100.01 M
+          t12 (counter gem5 1 / gem5 CPU 12, reported): loads 316.927 / 315.601, stores 71.360 / 71.404; instructions 100.00 M / 99.93 M
+          t13 (counter gem5 1 / gem5 CPU 13, reported): loads 319.633 / 318.067, stores 71.313 / 71.469; instructions 100.00 M / 98.01 M
+          t14 (counter gem5 1 / gem5 CPU 14, reported): loads 317.632 / 316.845, stores 71.153 / 71.373; instructions 100.00 M / 100.05 M
+          t15 (counter gem5 1 / gem5 CPU 15, reported): loads 315.903 / 315.683, stores 71.381 / 71.413; instructions 100.00 M / 99.96 M
+   500   holds: gem5 counts 129876 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== oceannc_16 (Part B, B16 (16 cores; P22-P24)); traced threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 225000000); instructions t0 217.4 M, t1 225.0 M, t2 225.0 M, t3 225.0 M, t4 225.0 M, t5 225.0 M, t6 225.0 M, t7 225.0 M, t8 225.0 M, t9 225.0 M, t10 225.0 M, t11 225.0 M, t12 225.0 M, t13 225.0 M, t14 225.0 M, t15 225.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 16 CPUs, /home/harshraj/heldout2_static/OCEAN-NC, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 1596.9 M window instructions (under 1% needed); per CPU 0:99.87M 1:99.86M 2:99.79M 3:99.77M 4:99.91M 5:99.76M 6:99.69M 7:99.68M 8:99.82M 9:99.76M 10:99.69M 11:99.68M 12:99.81M 13:99.94M 14:99.87M 15:100.00M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 328.762 in [328.768, 328.768]; stores 62.884 in [62.881, 62.881]; RMWs 0.041 in [0.039, 0.039]; host run 329.272, 61.917, 0.039
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 328.869 in [328.903, 328.904]; stores 65.036 in [65.027, 65.028]; RMWs 0.058 in [0.039, 0.040]; counter windows (reported): loads [328.773, 328.774], stores [64.918, 64.918], RMWs [0.039, 0.039]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 328.738 / 328.817, stores 65.061 / 65.016; instructions 100.00 M / 99.87 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 328.788 / 328.748, stores 64.939 / 65.156; instructions 100.00 M / 99.86 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 328.673 / 328.881, stores 65.073 / 65.071; instructions 100.00 M / 99.79 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 328.785 / 328.920, stores 64.928 / 65.062; instructions 100.00 M / 99.77 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 328.760 / 328.789, stores 65.079 / 65.142; instructions 100.00 M / 99.91 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 328.722 / 328.856, stores 64.911 / 65.045; instructions 100.00 M / 99.76 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 328.841 / 328.994, stores 64.766 / 64.956; instructions 100.00 M / 99.69 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 328.844 / 329.021, stores 64.765 / 64.941; instructions 100.00 M / 99.68 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 328.820 / 328.902, stores 64.908 / 65.020; instructions 100.00 M / 99.82 M
+          t9 (counter gem5 1 / gem5 CPU 9, reported): loads 328.723 / 328.853, stores 64.909 / 65.046; instructions 100.00 M / 99.76 M
+          t10 (counter gem5 1 / gem5 CPU 10, reported): loads 328.841 / 328.993, stores 64.768 / 64.952; instructions 100.00 M / 99.69 M
+          t11 (counter gem5 1 / gem5 CPU 11, reported): loads 328.648 / 329.015, stores 65.061 / 64.946; instructions 100.00 M / 99.68 M
+          t12 (counter gem5 1 / gem5 CPU 12, reported): loads 328.821 / 328.905, stores 64.909 / 65.017; instructions 100.00 M / 99.81 M
+          t13 (counter gem5 1 / gem5 CPU 13, reported): loads 328.762 / 328.667, stores 64.919 / 65.115; instructions 100.00 M / 99.94 M
+          t14 (counter gem5 1 / gem5 CPU 14, reported): loads 328.844 / 328.818, stores 64.766 / 65.007; instructions 100.00 M / 99.87 M
+          t15 (counter gem5 1 / gem5 CPU 15, reported): loads 328.767 / 328.719, stores 64.918 / 65.087; instructions 100.00 M / 100.00 M
+   500   holds: gem5 counts 216832 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== radix_16 (Part B, B16 (16 cores; P22-P24)); traced threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 215000000); instructions t0 215.0 M, t1 215.0 M, t2 215.0 M, t3 215.0 M, t4 215.0 M, t5 215.0 M, t6 215.0 M, t7 215.0 M, t8 215.0 M, t9 215.0 M, t10 215.0 M, t11 215.0 M, t12 215.0 M, t13 215.0 M, t14 215.0 M, t15 215.0 M
+   Q3    FAILS: no run log; no rows
+   QG    FAILS: 1610 M ended NOT_ENDED; 1610 M: no gem5 row; 1710 M ended NOT_ENDED; 1710 M: no gem5 row: 16 CPUs, /home/harshraj/splash-heldout/RADIX, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QW    FAILS: gem5 per-CPU rows missing
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 273.943 in [273.943, 273.943]; stores 178.314 in [178.314, 178.314]; RMWs 95.581 in [95.581, 95.581]; host run 273.943, 178.314, 95.581
+   v2    FAILS: not checked (counter runs, gem5 per-CPU rows or gem5_mix rows missing)
+   500   FAILS: no gem5 window
+   -> PENDING: no ChampSim run log yet; gem5 runs at 1610 M and 1710 M not ended yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== barnes_16 (Part B, B16 (16 cores; P22-P24)); traced threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 260000000); instructions t0 211.3 M, t1 260.0 M, t2 260.0 M, t3 260.0 M, t4 260.0 M, t5 260.0 M, t6 260.0 M, t7 260.0 M, t8 260.0 M, t9 260.0 M, t10 260.0 M, t11 260.0 M, t12 260.0 M, t13 260.0 M, t14 260.0 M, t15 260.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 16 CPUs, /home/harshraj/splash-static/BARNES, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 1485.5 M window instructions (under 1% needed); per CPU 0:96.95M 1:91.43M 2:91.86M 3:99.98M 4:99.95M 5:99.96M 6:99.94M 7:80.96M 8:71.10M 9:94.33M 10:100.04M 11:100.01M 12:99.92M 13:99.91M 14:83.72M 15:75.48M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 306.645 in [307.179, 307.220]; stores 197.500 in [197.778, 197.788]; RMWs 10.364 in [10.372, 10.378]; host run 307.385, 197.890, 10.391
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 323.157 in [322.798, 323.315]; stores 208.352 in [206.673, 207.641]; RMWs 9.756 in [9.801, 10.058]; counter windows (reported): loads [322.089, 322.133], stores [205.441, 205.453], RMWs [10.372, 10.378]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 320.872 / 323.211, stores 200.823 / 207.491; instructions 100.00 M / 96.95 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 320.430 / 323.242, stores 202.152 / 208.178; instructions 100.00 M / 91.43 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 320.174 / 323.180, stores 202.279 / 208.275; instructions 100.00 M / 91.86 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 323.310 / 323.030, stores 209.128 / 209.462; instructions 100.00 M / 99.98 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 323.314 / 323.025, stores 208.999 / 209.339; instructions 100.00 M / 99.95 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 323.381 / 323.063, stores 208.690 / 209.065; instructions 100.00 M / 99.96 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 323.387 / 323.064, stores 208.663 / 209.051; instructions 100.00 M / 99.94 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 320.665 / 323.348, stores 201.586 / 206.943; instructions 100.00 M / 80.96 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 321.014 / 323.338, stores 201.782 / 206.755; instructions 100.00 M / 71.10 M
+          t9 (counter gem5 1 / gem5 CPU 9, reported): loads 320.663 / 323.167, stores 203.077 / 208.128; instructions 100.00 M / 94.33 M
+          t10 (counter gem5 1 / gem5 CPU 10, reported): loads 323.498 / 323.145, stores 208.377 / 208.792; instructions 100.00 M / 100.04 M
+          t11 (counter gem5 1 / gem5 CPU 11, reported): loads 323.344 / 323.141, stores 208.986 / 208.855; instructions 100.00 M / 100.01 M
+          t12 (counter gem5 1 / gem5 CPU 12, reported): loads 323.488 / 323.052, stores 208.444 / 209.326; instructions 100.00 M / 99.92 M
+          t13 (counter gem5 1 / gem5 CPU 13, reported): loads 323.398 / 323.082, stores 208.753 / 209.126; instructions 100.00 M / 99.91 M
+          t14 (counter gem5 1 / gem5 CPU 14, reported): loads 321.946 / 323.328, stores 204.248 / 206.830; instructions 100.00 M / 83.72 M
+          t15 (counter gem5 1 / gem5 CPU 15, reported): loads 320.666 / 323.238, stores 201.176 / 206.542; instructions 100.00 M / 75.48 M
+   500   holds: gem5 counts 13569 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== lunc_16 (Part B, B16 (16 cores; P22-P24)); traced threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 585000000); instructions t0 215.7 M, t1 585.0 M, t2 585.0 M, t3 585.0 M, t4 585.0 M, t5 585.0 M, t6 585.0 M, t7 585.0 M, t8 585.0 M, t9 585.0 M, t10 585.0 M, t11 585.0 M, t12 585.0 M, t13 585.0 M, t14 585.0 M, t15 585.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 16 CPUs, /home/harshraj/splash-newbench/LU-NC, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 1569.5 M window instructions (under 1% needed); per CPU 0:100.22M 1:86.66M 2:86.43M 3:93.11M 4:97.81M 5:102.37M 6:100.29M 7:100.43M 8:100.42M 9:100.17M 10:100.26M 11:100.36M 12:100.34M 13:100.22M 14:100.21M 15:100.20M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 234.465 in [234.465, 234.465]; stores 113.274 in [113.274, 113.274]; RMWs 0.001 in [0.001, 0.001]; host run 234.465, 113.274, 0.001
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 234.471 in [234.455, 234.460]; stores 113.280 in [113.273, 113.276]; RMWs 0.001 in [0.001, 0.001]; counter windows (reported): loads [234.465, 234.465], stores [113.274, 113.274], RMWs [0.001, 0.001]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 234.380 / 234.381, stores 113.232 / 113.233; instructions 100.00 M / 100.22 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 234.306 / 234.312, stores 113.139 / 113.136; instructions 100.00 M / 86.66 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 234.880 / 234.311, stores 113.520 / 113.134; instructions 100.00 M / 86.43 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 234.381 / 234.913, stores 113.232 / 113.529; instructions 100.00 M / 93.11 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 234.381 / 234.903, stores 113.232 / 113.542; instructions 100.00 M / 97.81 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 234.381 / 234.896, stores 113.232 / 113.553; instructions 100.00 M / 102.37 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 234.381 / 234.381, stores 113.232 / 113.233; instructions 100.00 M / 100.29 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 234.380 / 234.382, stores 113.232 / 113.234; instructions 100.00 M / 100.43 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 234.381 / 234.381, stores 113.232 / 113.234; instructions 100.00 M / 100.42 M
+          t9 (counter gem5 1 / gem5 CPU 9, reported): loads 234.859 / 234.381, stores 113.492 / 113.233; instructions 100.00 M / 100.17 M
+          t10 (counter gem5 1 / gem5 CPU 10, reported): loads 234.380 / 234.381, stores 113.232 / 113.233; instructions 100.00 M / 100.26 M
+          t11 (counter gem5 1 / gem5 CPU 11, reported): loads 234.307 / 234.382, stores 113.140 / 113.234; instructions 100.00 M / 100.36 M
+          t12 (counter gem5 1 / gem5 CPU 12, reported): loads 234.900 / 234.381, stores 113.548 / 113.234; instructions 100.00 M / 100.34 M
+          t13 (counter gem5 1 / gem5 CPU 13, reported): loads 234.381 / 234.381, stores 113.232 / 113.233; instructions 100.00 M / 100.22 M
+          t14 (counter gem5 1 / gem5 CPU 14, reported): loads 234.380 / 234.381, stores 113.232 / 113.233; instructions 100.00 M / 100.21 M
+          t15 (counter gem5 1 / gem5 CPU 15, reported): loads 234.381 / 234.381, stores 113.232 / 113.233; instructions 100.00 M / 100.20 M
+   500   holds: gem5 counts 134310 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== fft_16 (Part B, B16 (16 cores; P22-P24)); traced threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 0); instructions t0 570.6 M, t1 570.6 M, t2 570.6 M, t3 570.6 M, t4 570.6 M, t5 570.6 M, t6 570.6 M, t7 570.6 M, t8 570.6 M, t9 570.6 M, t10 570.6 M, t11 570.6 M, t12 570.6 M, t13 570.6 M, t14 570.6 M, t15 570.6 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 16 CPUs, /home/harshraj/splash-newbench/FFT, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 1596.8 M window instructions (under 1% needed); per CPU 0:99.93M 1:100.57M 2:100.03M 3:99.55M 4:100.40M 5:99.58M 6:99.74M 7:99.18M 8:99.79M 9:100.00M 10:99.82M 11:99.85M 12:99.88M 13:99.88M 14:99.35M 15:99.28M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 107.876 in [107.876, 107.876]; stores 55.741 in [55.741, 55.741]; RMWs 0.000 in [0.000, 0.000]; host run 107.876, 55.742, 0.000
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 208.287 in [208.561, 208.561]; stores 104.083 in [104.509, 104.509]; RMWs 0.000 in [0.000, 0.000]; counter windows (reported): loads [208.367, 208.367], stores [104.124, 104.124], RMWs [0.000, 0.000]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 208.367 / 208.260, stores 104.124 / 104.105; instructions 100.00 M / 99.93 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 208.367 / 207.725, stores 104.124 / 103.842; instructions 100.00 M / 100.57 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 208.367 / 208.406, stores 104.124 / 104.143; instructions 100.00 M / 100.03 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 208.367 / 207.936, stores 104.124 / 103.908; instructions 100.00 M / 99.55 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 208.367 / 207.884, stores 104.124 / 103.913; instructions 100.00 M / 100.40 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 208.367 / 207.910, stores 104.124 / 103.895; instructions 100.00 M / 99.58 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 208.368 / 208.030, stores 104.124 / 103.955; instructions 100.00 M / 99.74 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 208.367 / 208.755, stores 104.124 / 104.305; instructions 100.00 M / 99.18 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 208.368 / 208.088, stores 104.124 / 103.984; instructions 100.00 M / 99.79 M
+          t9 (counter gem5 1 / gem5 CPU 9, reported): loads 208.368 / 208.368, stores 104.124 / 104.124; instructions 100.00 M / 100.00 M
+          t10 (counter gem5 1 / gem5 CPU 10, reported): loads 208.368 / 208.121, stores 104.124 / 104.000; instructions 100.00 M / 99.82 M
+          t11 (counter gem5 1 / gem5 CPU 11, reported): loads 208.367 / 208.155, stores 104.124 / 104.017; instructions 100.00 M / 99.85 M
+          t12 (counter gem5 1 / gem5 CPU 12, reported): loads 208.368 / 208.874, stores 104.124 / 104.356; instructions 100.00 M / 99.88 M
+          t13 (counter gem5 1 / gem5 CPU 13, reported): loads 208.367 / 208.199, stores 104.124 / 104.039; instructions 100.00 M / 99.88 M
+          t14 (counter gem5 1 / gem5 CPU 14, reported): loads 208.368 / 208.992, stores 104.124 / 104.403; instructions 100.00 M / 99.35 M
+          t15 (counter gem5 1 / gem5 CPU 15, reported): loads 208.367 / 208.904, stores 104.124 / 104.352; instructions 100.00 M / 99.28 M
+   500   FAILS: gem5 counts 0 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== volrend_16 (Part B, B16 (16 cores; P22-P24)); traced threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 0); instructions t0 688.0 M, t1 458.9 M, t2 704.6 M, t3 761.0 M, t4 581.5 M, t5 660.3 M, t6 696.9 M, t7 587.3 M, t8 596.6 M, t9 458.5 M, t10 431.9 M, t11 428.7 M, t12 608.1 M, t13 545.9 M, t14 445.7 M, t15 644.2 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 16 CPUs, /home/harshraj/splash-newbench/VOLREND, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 1198.5 M window instructions (under 1% needed); per CPU 0:73.00M 1:100.00M 2:72.10M 3:72.77M 4:72.45M 5:73.08M 6:73.35M 7:73.05M 8:72.47M 9:73.01M 10:74.16M 11:74.92M 12:74.88M 13:73.16M 14:73.16M 15:72.97M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 192.895 in [192.853, 193.144]; stores 38.767 in [38.525, 38.600]; RMWs 0.890 in [0.703, 0.886]; host run 193.190, 38.659, 0.801
+   v2    holds by the held-out rule (stores +6.4% from the range): per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 195.131 in [193.266, 193.385]; stores 41.615 in [38.921, 39.097] <-- 5-8% outside: scored, the miss stated; RMWs 1.007 in [0.828, 0.975]; counter windows (reported): loads [192.854, 193.145], stores [38.526, 38.601], RMWs [0.703, 0.886]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 195.638 / 196.261, stores 32.290 / 43.328; instructions 100.00 M / 73.00 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 192.947 / 198.320, stores 51.120 / 54.745; instructions 100.00 M / 100.00 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 193.000 / 200.464, stores 39.172 / 47.063; instructions 100.00 M / 72.10 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 193.124 / 196.913, stores 38.561 / 44.409; instructions 100.00 M / 72.77 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 192.347 / 199.496, stores 38.905 / 46.601; instructions 100.00 M / 72.45 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 195.762 / 195.141, stores 38.060 / 39.838; instructions 100.00 M / 73.08 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 193.820 / 193.926, stores 38.418 / 40.327; instructions 100.00 M / 73.35 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 193.931 / 193.218, stores 32.535 / 32.152; instructions 100.00 M / 73.05 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 197.249 / 198.682, stores 35.192 / 35.893; instructions 100.00 M / 72.47 M
+          t9 (counter gem5 1 / gem5 CPU 9, reported): loads 187.160 / 195.619, stores 40.121 / 32.521; instructions 100.00 M / 73.01 M
+          t10 (counter gem5 1 / gem5 CPU 10, reported): loads 193.372 / 192.773, stores 40.558 / 34.191; instructions 100.00 M / 74.16 M
+          t11 (counter gem5 1 / gem5 CPU 11, reported): loads 195.782 / 186.929, stores 34.115 / 39.943; instructions 100.00 M / 74.92 M
+          t12 (counter gem5 1 / gem5 CPU 12, reported): loads 187.780 / 187.234, stores 37.585 / 40.375; instructions 100.00 M / 74.88 M
+          t13 (counter gem5 1 / gem5 CPU 13, reported): loads 193.159 / 195.494, stores 40.102 / 43.059; instructions 100.00 M / 73.16 M
+          t14 (counter gem5 1 / gem5 CPU 14, reported): loads 191.879 / 195.156, stores 39.917 / 43.251; instructions 100.00 M / 73.16 M
+          t15 (counter gem5 1 / gem5 CPU 15, reported): loads 193.376 / 195.884, stores 39.772 / 43.568; instructions 100.00 M / 72.97 M
+   500   holds: gem5 counts 34827 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== waternsq_16 (Part B, B16 (16 cores; P22-P24)); traced threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 235000000); instructions t0 217.1 M, t1 235.0 M, t2 235.0 M, t3 235.0 M, t4 235.0 M, t5 235.0 M, t6 235.0 M, t7 235.0 M, t8 235.0 M, t9 235.0 M, t10 235.0 M, t11 235.0 M, t12 235.0 M, t13 235.0 M, t14 235.0 M, t15 235.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 16 CPUs, /home/harshraj/splash-heldout/WATER-NSQUARED, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 1510.1 M window instructions (under 1% needed); per CPU 0:101.70M 1:91.53M 2:92.95M 3:91.46M 4:93.03M 5:91.47M 6:93.01M 7:91.54M 8:92.99M 9:91.34M 10:95.84M 11:94.24M 12:98.86M 13:97.13M 14:100.00M 15:92.99M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 226.457 in [226.476, 226.476]; stores 87.190 in [87.196, 87.196]; RMWs 0.135 in [0.135, 0.135]; host run 227.744, 87.664, 0.136
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 232.414 in [232.694, 232.761]; stores 88.955 in [88.758, 88.819]; RMWs 0.154 in [0.141, 0.146]; counter windows (reported): loads [232.407, 232.407], stores [88.669, 88.669], RMWs [0.135, 0.135]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 230.008 / 219.652, stores 89.291 / 91.891; instructions 99.92 M / 101.70 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 235.693 / 236.070, stores 87.690 / 87.855; instructions 99.92 M / 91.53 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 235.661 / 238.417, stores 87.640 / 87.663; instructions 99.92 M / 92.95 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 235.892 / 236.233, stores 87.663 / 87.867; instructions 99.92 M / 91.46 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 235.777 / 238.162, stores 87.646 / 87.669; instructions 99.92 M / 93.03 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 237.849 / 236.171, stores 87.382 / 87.856; instructions 99.90 M / 91.47 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 237.969 / 238.282, stores 87.367 / 87.676; instructions 99.90 M / 93.01 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 237.718 / 236.087, stores 87.374 / 87.906; instructions 99.90 M / 91.54 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 237.986 / 238.415, stores 87.456 / 87.750; instructions 99.90 M / 92.99 M
+          t9 (counter gem5 1 / gem5 CPU 9, reported): loads 236.691 / 236.926, stores 87.868 / 88.102; instructions 99.92 M / 91.34 M
+          t10 (counter gem5 1 / gem5 CPU 10, reported): loads 231.647 / 231.918, stores 88.824 / 89.189; instructions 99.91 M / 95.84 M
+          t11 (counter gem5 1 / gem5 CPU 11, reported): loads 225.577 / 230.197, stores 90.434 / 89.568; instructions 99.91 M / 94.24 M
+          t12 (counter gem5 1 / gem5 CPU 12, reported): loads 223.851 / 225.432, stores 90.724 / 90.603; instructions 99.93 M / 98.86 M
+          t13 (counter gem5 1 / gem5 CPU 13, reported): loads 220.051 / 223.867, stores 91.815 / 90.954; instructions 99.91 M / 97.13 M
+          t14 (counter gem5 1 / gem5 CPU 14, reported): loads 218.144 / 217.842, stores 92.142 / 92.235; instructions 99.93 M / 100.00 M
+          t15 (counter gem5 1 / gem5 CPU 15, reported): loads 237.998 / 238.428, stores 87.381 / 87.680; instructions 99.90 M / 92.99 M
+   500   holds: gem5 counts 12974 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== raytrace_16 (Part B, B16 (16 cores; P22-P24)); traced threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 400000000); instructions t0 215.0 M, t1 400.0 M, t2 400.0 M, t3 400.0 M, t4 398.1 M, t5 391.9 M, t6 355.7 M, t7 298.9 M, t8 370.8 M, t9 317.7 M, t10 369.5 M, t11 255.9 M, t12 271.7 M, t13 400.0 M, t14 400.0 M, t15 400.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 16 CPUs, /home/harshraj/splash-newbench/RAYTRACE, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 1525.2 M window instructions (under 1% needed); per CPU 0:100.99M 1:93.22M 2:95.97M 3:94.71M 4:90.74M 5:99.42M 6:98.39M 7:92.46M 8:91.86M 9:92.36M 10:97.58M 11:95.89M 12:95.30M 13:100.70M 14:92.69M 15:92.89M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 373.677 in [373.571, 373.672]; stores 25.773 in [25.734, 25.751]; RMWs 0.123 in [0.120, 0.121]; host run 373.656, 25.758, 0.121
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 373.230 in [373.194, 373.327]; stores 26.016 in [25.993, 25.999]; RMWs 0.123 in [0.122, 0.122]; counter windows (reported): loads [373.933, 374.035], stores [25.948, 25.967], RMWs [0.120, 0.121]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 380.308 / 380.390, stores 27.185 / 27.218; instructions 100.00 M / 100.99 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 367.796 / 367.350, stores 25.230 / 25.399; instructions 100.00 M / 93.22 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 374.823 / 372.123, stores 26.060 / 26.306; instructions 100.00 M / 95.97 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 381.029 / 375.326, stores 26.926 / 25.954; instructions 100.00 M / 94.71 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 375.922 / 371.003, stores 25.903 / 25.026; instructions 100.00 M / 90.74 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 373.017 / 378.067, stores 25.075 / 26.641; instructions 100.00 M / 99.42 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 378.499 / 380.794, stores 26.592 / 26.834; instructions 100.00 M / 98.39 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 373.506 / 372.045, stores 25.452 / 25.678; instructions 100.00 M / 92.46 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 375.254 / 372.501, stores 25.204 / 25.182; instructions 100.00 M / 91.86 M
+          t9 (counter gem5 1 / gem5 CPU 9, reported): loads 366.168 / 365.173, stores 26.676 / 26.607; instructions 100.00 M / 92.36 M
+          t10 (counter gem5 1 / gem5 CPU 10, reported): loads 375.750 / 375.474, stores 25.901 / 25.999; instructions 100.00 M / 97.58 M
+          t11 (counter gem5 1 / gem5 CPU 11, reported): loads 376.050 / 376.282, stores 26.177 / 25.812; instructions 100.00 M / 95.89 M
+          t12 (counter gem5 1 / gem5 CPU 12, reported): loads 376.215 / 369.301, stores 25.764 / 25.607; instructions 100.00 M / 95.30 M
+          t13 (counter gem5 1 / gem5 CPU 13, reported): loads 369.595 / 375.808, stores 25.541 / 26.191; instructions 100.00 M / 100.70 M
+          t14 (counter gem5 1 / gem5 CPU 14, reported): loads 371.578 / 370.934, stores 25.756 / 25.667; instructions 100.00 M / 92.69 M
+          t15 (counter gem5 1 / gem5 CPU 15, reported): loads 367.421 / 367.261, stores 25.793 / 25.908; instructions 100.00 M / 92.89 M
+   500   holds: gem5 counts 2240 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== fmm_16 (Part B, B16 (16 cores; P22-P24)); traced threads 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 270000000); instructions t0 212.8 M, t1 270.0 M, t2 270.0 M, t3 270.0 M, t4 270.0 M, t5 270.0 M, t6 270.0 M, t7 270.0 M, t8 270.0 M, t9 270.0 M, t10 270.0 M, t11 270.0 M, t12 270.0 M, t13 270.0 M, t14 270.0 M, t15 270.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 16 CPUs, /home/harshraj/splash-heldout/FMM, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+   QW    holds: untraced CPUs none commit 0.000% of the traced CPUs' 1391.9 M window instructions (under 1% needed); per CPU 0:85.85M 1:86.02M 2:86.38M 3:85.86M 4:86.14M 5:86.32M 6:86.25M 7:86.50M 8:85.96M 9:86.20M 10:85.84M 11:86.30M 12:86.18M 13:86.16M 14:85.94M 15:100.00M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 140.877 in [140.851, 140.860]; stores 17.417 in [17.388, 17.390]; RMWs 0.920 in [0.918, 0.919]; host run 140.918, 17.400, 0.918
+   v2    FAILS: stores, RMWs: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 143.570 in [150.616, 150.654]; stores 19.330 in [23.365, 23.479] <-- outside; RMWs 0.397 in [1.422, 1.427] <-- outside; counter windows (reported): loads [148.279, 148.287], stores [22.454, 22.456], RMWs [0.918, 0.919]
+          t0 (counter gem5 1 / gem5 CPU 0, reported): loads 168.990 / 142.599, stores 27.381 / 17.752; instructions 100.00 M / 85.85 M
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 146.273 / 141.404, stores 23.550 / 19.139; instructions 100.00 M / 86.02 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 147.121 / 142.625, stores 21.512 / 17.827; instructions 100.00 M / 86.38 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 147.528 / 142.729, stores 21.719 / 17.643; instructions 100.00 M / 85.86 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 147.420 / 142.313, stores 21.015 / 18.038; instructions 100.00 M / 86.14 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 147.070 / 142.150, stores 22.351 / 18.330; instructions 100.00 M / 86.32 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 146.610 / 141.390, stores 22.120 / 19.783; instructions 100.00 M / 86.25 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 146.726 / 142.899, stores 21.982 / 17.467; instructions 100.00 M / 86.50 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 147.361 / 142.806, stores 22.036 / 17.519; instructions 100.00 M / 85.96 M
+          t9 (counter gem5 1 / gem5 CPU 9, reported): loads 147.423 / 140.298, stores 21.715 / 20.416; instructions 100.00 M / 86.20 M
+          t10 (counter gem5 1 / gem5 CPU 10, reported): loads 146.677 / 142.232, stores 23.093 / 18.230; instructions 100.00 M / 85.84 M
+          t11 (counter gem5 1 / gem5 CPU 11, reported): loads 147.200 / 140.997, stores 22.378 / 19.621; instructions 100.00 M / 86.30 M
+          t12 (counter gem5 1 / gem5 CPU 12, reported): loads 146.175 / 140.608, stores 22.429 / 21.006; instructions 100.00 M / 86.18 M
+          t13 (counter gem5 1 / gem5 CPU 13, reported): loads 146.279 / 141.752, stores 22.606 / 19.044; instructions 100.00 M / 86.16 M
+          t14 (counter gem5 1 / gem5 CPU 14, reported): loads 146.929 / 141.303, stores 22.009 / 19.734; instructions 100.00 M / 85.94 M
+          t15 (counter gem5 1 / gem5 CPU 15, reported): loads 146.680 / 165.491, stores 21.409 / 26.565; instructions 100.00 M / 100.00 M
+   500   holds: gem5 counts 4207 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== streamcluster_16 (Part B, B16 (16 cores; P22-P24)); traced threads 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 215000000); instructions t1 215.0 M, t2 215.0 M, t3 215.0 M, t4 215.0 M, t5 215.0 M, t6 215.0 M, t7 215.0 M, t8 215.0 M, t9 215.0 M, t10 215.0 M, t11 215.0 M, t12 215.0 M, t13 215.0 M, t14 215.0 M, t15 215.0 M, t16 215.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 17 CPUs, /home/harshraj/splash-newbench/streamcluster, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+   QW    holds: untraced CPUs 0 commit 0.000% of the traced CPUs' 1599.4 M window instructions (under 1% needed); per CPU 0:0.00M 1:100.00M 2:99.96M 3:99.97M 4:99.96M 5:99.95M 6:99.95M 7:99.96M 8:99.96M 9:99.96M 10:99.96M 11:99.96M 12:99.96M 13:99.96M 14:99.96M 15:99.96M 16:99.96M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 283.195 in [283.238, 283.238]; stores 1.248 in [1.248, 1.248]; RMWs 0.020 in [0.020, 0.020]; host run 283.256, 1.215, 0.020
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 283.232 in [283.235, 283.235]; stores 1.319 in [1.319, 1.319]; RMWs 0.020 in [0.020, 0.020]; counter windows (reported): loads [283.239, 283.239], stores [1.319, 1.319], RMWs [0.020, 0.020]
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 283.206 / 283.197, stores 1.369 / 1.373; instructions 100.00 M / 100.00 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 283.238 / 283.241, stores 1.318 / 1.315; instructions 100.00 M / 99.96 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 283.247 / 283.231, stores 1.315 / 1.319; instructions 100.00 M / 99.97 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 283.232 / 283.241, stores 1.315 / 1.315; instructions 100.00 M / 99.96 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 283.230 / 283.222, stores 1.315 / 1.315; instructions 100.00 M / 99.95 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 283.241 / 283.224, stores 1.315 / 1.315; instructions 100.00 M / 99.95 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 283.253 / 283.236, stores 1.315 / 1.315; instructions 100.00 M / 99.96 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 283.243 / 283.228, stores 1.315 / 1.315; instructions 100.00 M / 99.96 M
+          t9 (counter gem5 1 / gem5 CPU 9, reported): loads 283.248 / 283.234, stores 1.315 / 1.315; instructions 100.00 M / 99.96 M
+          t10 (counter gem5 1 / gem5 CPU 10, reported): loads 283.235 / 283.245, stores 1.315 / 1.315; instructions 100.00 M / 99.96 M
+          t11 (counter gem5 1 / gem5 CPU 11, reported): loads 283.240 / 283.234, stores 1.315 / 1.315; instructions 100.00 M / 99.96 M
+          t12 (counter gem5 1 / gem5 CPU 12, reported): loads 283.250 / 283.232, stores 1.315 / 1.315; instructions 100.00 M / 99.96 M
+          t13 (counter gem5 1 / gem5 CPU 13, reported): loads 283.241 / 283.244, stores 1.315 / 1.315; instructions 100.00 M / 99.96 M
+          t14 (counter gem5 1 / gem5 CPU 14, reported): loads 283.230 / 283.233, stores 1.315 / 1.315; instructions 100.00 M / 99.96 M
+          t15 (counter gem5 1 / gem5 CPU 15, reported): loads 283.257 / 283.222, stores 1.315 / 1.317; instructions 100.00 M / 99.96 M
+          t16 (counter gem5 1 / gem5 CPU 16, reported): loads 283.240 / 283.250, stores 1.315 / 1.315; instructions 100.00 M / 99.96 M
+   500   holds: gem5 counts 38033 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== fluidanimate_16 (Part B, B16 (16 cores; P22-P24)); traced threads 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 215000000); instructions t1 215.0 M, t2 215.0 M, t3 215.0 M, t4 215.0 M, t5 215.0 M, t6 215.0 M, t7 215.0 M, t8 215.0 M, t9 215.0 M, t10 215.0 M, t11 215.0 M, t12 215.0 M, t13 215.0 M, t14 215.0 M, t15 215.0 M, t16 215.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 17 CPUs, /home/harshraj/heldout2_static/fluidanimate, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+   QW    holds: untraced CPUs 0 commit 0.000% of the traced CPUs' 1266.8 M window instructions (under 1% needed); per CPU 0:0.00M 1:84.18M 2:71.61M 3:96.01M 4:80.68M 5:69.78M 6:58.79M 7:79.27M 8:66.22M 9:94.93M 10:80.52M 11:100.88M 12:90.30M 13:74.65M 14:62.84M 15:85.09M 16:71.09M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 227.975 in [228.716, 228.716]; stores 48.305 in [48.436, 48.436]; RMWs 5.424 in [5.437, 5.437]; host run 228.716, 48.436, 5.437
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 217.620 in [222.642, 223.956]; stores 47.026 in [47.308, 48.430]; RMWs 5.290 in [5.283, 5.473]; counter windows (reported): loads [228.716, 228.716], stores [48.436, 48.436], RMWs [5.437, 5.437]
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 222.677 / 215.494, stores 45.842 / 44.431; instructions 100.00 M / 84.18 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 228.226 / 212.299, stores 46.422 / 44.271; instructions 100.00 M / 71.61 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 226.857 / 223.238, stores 43.554 / 49.448; instructions 100.00 M / 96.01 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 233.127 / 213.869, stores 54.189 / 42.421; instructions 100.00 M / 80.68 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 231.295 / 211.811, stores 46.536 / 44.205; instructions 100.00 M / 69.78 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 226.566 / 207.775, stores 47.645 / 43.691; instructions 100.00 M / 58.79 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 232.470 / 221.012, stores 43.218 / 51.354; instructions 100.00 M / 79.27 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 227.499 / 211.028, stores 51.073 / 43.949; instructions 100.00 M / 66.22 M
+          t9 (counter gem5 1 / gem5 CPU 9, reported): loads 225.454 / 223.003, stores 49.929 / 49.027; instructions 100.00 M / 94.93 M
+          t10 (counter gem5 1 / gem5 CPU 10, reported): loads 226.494 / 219.799, stores 45.023 / 48.628; instructions 100.00 M / 80.52 M
+          t11 (counter gem5 1 / gem5 CPU 11, reported): loads 224.742 / 227.429, stores 50.077 / 51.795; instructions 100.00 M / 100.88 M
+          t12 (counter gem5 1 / gem5 CPU 12, reported): loads 231.223 / 221.596, stores 44.976 / 47.823; instructions 100.00 M / 90.30 M
+          t13 (counter gem5 1 / gem5 CPU 13, reported): loads 230.810 / 214.347, stores 51.579 / 45.358; instructions 100.00 M / 74.65 M
+          t14 (counter gem5 1 / gem5 CPU 14, reported): loads 230.758 / 210.316, stores 47.878 / 44.821; instructions 100.00 M / 62.84 M
+          t15 (counter gem5 1 / gem5 CPU 15, reported): loads 232.502 / 223.006, stores 55.926 / 51.573; instructions 100.00 M / 85.09 M
+          t16 (counter gem5 1 / gem5 CPU 16, reported): loads 228.754 / 213.191, stores 51.115 / 44.393; instructions 100.00 M / 71.09 M
+   500   holds: gem5 counts 3803 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no F-C log
+
+== vips_16 (Part B, B16 (16 cores; P22-P24)); traced threads 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 215000000); instructions t3 215.0 M, t4 215.0 M, t5 215.0 M, t6 215.0 M, t7 215.0 M, t8 215.0 M, t9 215.0 M, t10 215.0 M, t11 215.0 M, t12 215.0 M, t13 215.0 M, t14 215.0 M, t15 215.0 M, t16 215.0 M, t17 215.0 M, t18 215.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 19 CPUs, /home/harshraj/heldout2_static/vips, L2 2 MB, randomization false, stop on CPUs 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
+   QW    holds: untraced CPUs 0,1,2 commit 0.006% of the traced CPUs' 1596.2 M window instructions (under 1% needed); per CPU 0:0.09M 1:0.00M 2:0.01M 3:99.60M 4:99.28M 5:99.96M 6:99.86M 7:100.59M 8:99.86M 9:100.07M 10:99.44M 11:100.16M 12:99.49M 13:99.45M 14:100.24M 15:99.75M 16:99.74M 17:99.29M 18:99.39M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 189.800 in [189.785, 189.877]; stores 56.389 in [56.116, 56.197]; RMWs 0.208 in [0.208, 0.209]; host run 189.662, 56.106, 0.207
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 189.830 in [189.869, 189.959]; stores 56.522 in [56.265, 56.332]; RMWs 0.210 in [0.208, 0.209]; counter windows (reported): loads [189.842, 189.935], stores [56.239, 56.313], RMWs [0.208, 0.209]
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 189.242 / 189.734, stores 55.370 / 55.951; instructions 100.00 M / 99.60 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 191.036 / 189.672, stores 56.388 / 57.970; instructions 100.00 M / 99.28 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 190.079 / 189.561, stores 56.759 / 55.803; instructions 100.00 M / 99.96 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 190.014 / 189.922, stores 55.922 / 56.735; instructions 100.00 M / 99.86 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 190.283 / 190.263, stores 58.059 / 56.231; instructions 100.00 M / 100.59 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 190.097 / 189.362, stores 55.868 / 57.084; instructions 100.00 M / 99.86 M
+          t9 (counter gem5 1 / gem5 CPU 9, reported): loads 189.860 / 189.497, stores 56.710 / 56.153; instructions 100.00 M / 100.07 M
+          t10 (counter gem5 1 / gem5 CPU 10, reported): loads 190.313 / 190.484, stores 56.079 / 58.568; instructions 100.00 M / 99.44 M
+          t11 (counter gem5 1 / gem5 CPU 11, reported): loads 190.732 / 190.134, stores 57.441 / 56.773; instructions 100.00 M / 100.16 M
+          t12 (counter gem5 1 / gem5 CPU 12, reported): loads 189.558 / 190.075, stores 56.964 / 56.062; instructions 100.00 M / 99.49 M
+          t13 (counter gem5 1 / gem5 CPU 13, reported): loads 189.676 / 190.049, stores 55.813 / 55.852; instructions 100.00 M / 99.45 M
+          t14 (counter gem5 1 / gem5 CPU 14, reported): loads 189.519 / 190.331, stores 55.789 / 56.271; instructions 100.00 M / 100.24 M
+          t15 (counter gem5 1 / gem5 CPU 15, reported): loads 189.514 / 189.338, stores 54.922 / 55.663; instructions 100.00 M / 99.75 M
+          t16 (counter gem5 1 / gem5 CPU 16, reported): loads 190.436 / 189.289, stores 57.304 / 55.878; instructions 100.00 M / 99.74 M
+          t17 (counter gem5 1 / gem5 CPU 17, reported): loads 188.794 / 189.978, stores 54.859 / 56.381; instructions 100.00 M / 99.29 M
+          t18 (counter gem5 1 / gem5 CPU 18, reported): loads 189.804 / 189.586, stores 55.574 / 56.984; instructions 100.00 M / 99.39 M
+   500   holds: gem5 counts 13593 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no reference log
+
+== bodytrack_16 (Part B, B16 (16 cores; P22-P24)); traced threads 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+   QB    holds: SIZED (written only after QB held)
+   QT    holds: tracer 02ff8f48, CPUID 74d72229, length rule applied (LEN 215000000); instructions t1 215.0 M, t2 215.0 M, t3 215.0 M, t4 215.0 M, t5 215.0 M, t6 215.0 M, t7 215.0 M, t8 215.0 M, t9 215.0 M, t10 215.0 M, t11 215.0 M, t12 215.0 M, t13 215.0 M, t14 215.0 M, t15 215.0 M, t16 215.0 M
+   Q3    FAILS: no run log; no rows
+   QG    holds: 18 CPUs, /home/harshraj/heldout2_static/bodytrack, L2 2 MB, randomization false, stop on CPUs 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+   QW    FAILS: untraced CPUs 0,17 commit 2.358% of the traced CPUs' 1586.9 M window instructions (under 1% needed); per CPU 0:23.44M 1:100.00M 2:99.67M 3:98.60M 4:98.88M 5:98.88M 6:99.05M 7:98.89M 8:99.51M 9:99.03M 10:99.36M 11:98.93M 12:98.89M 13:99.04M 14:99.52M 15:98.89M 16:99.74M 17:13.98M
+   QC    holds: per 1,000 records, the trace in the three gem5-CPUID runs' range (widened 1%; RMWs or 0.01): loads 195.184 in [195.228, 195.266]; stores 53.747 in [53.487, 53.672]; RMWs 24.583 in [24.519, 24.637]; host run 195.997, 53.232, 24.472
+   v2    holds: per 1,000 instructions (gem5 units), gem5 in the three counter runs' located range (amendment 12) (widened 5%; RMWs or 0.05): loads 201.336 in [201.391, 201.418]; stores 58.142 in [58.059, 58.205]; RMWs 24.501 in [24.588, 24.622]; counter windows (reported): loads [201.366, 201.423], stores [57.989, 58.184], RMWs [24.519, 24.637]
+          t1 (counter gem5 1 / gem5 CPU 1, reported): loads 201.812 / 201.318, stores 57.679 / 58.164; instructions 100.00 M / 100.00 M
+          t2 (counter gem5 1 / gem5 CPU 2, reported): loads 201.221 / 201.403, stores 58.398 / 58.062; instructions 100.00 M / 99.67 M
+          t3 (counter gem5 1 / gem5 CPU 3, reported): loads 201.601 / 201.282, stores 57.935 / 58.182; instructions 100.00 M / 98.60 M
+          t4 (counter gem5 1 / gem5 CPU 4, reported): loads 201.639 / 201.350, stores 57.896 / 58.122; instructions 100.00 M / 98.88 M
+          t5 (counter gem5 1 / gem5 CPU 5, reported): loads 201.519 / 201.359, stores 58.064 / 58.120; instructions 100.00 M / 98.88 M
+          t6 (counter gem5 1 / gem5 CPU 6, reported): loads 201.304 / 201.310, stores 58.261 / 58.174; instructions 100.00 M / 99.05 M
+          t7 (counter gem5 1 / gem5 CPU 7, reported): loads 201.734 / 201.344, stores 57.803 / 58.126; instructions 100.00 M / 98.89 M
+          t8 (counter gem5 1 / gem5 CPU 8, reported): loads 201.392 / 201.327, stores 58.151 / 58.162; instructions 100.00 M / 99.51 M
+          t9 (counter gem5 1 / gem5 CPU 9, reported): loads 201.014 / 201.319, stores 58.674 / 58.171; instructions 100.00 M / 99.03 M
+          t10 (counter gem5 1 / gem5 CPU 10, reported): loads 201.813 / 201.356, stores 57.619 / 58.118; instructions 100.00 M / 99.36 M
+          t11 (counter gem5 1 / gem5 CPU 11, reported): loads 200.915 / 201.314, stores 58.862 / 58.170; instructions 100.00 M / 98.93 M
+          t12 (counter gem5 1 / gem5 CPU 12, reported): loads 201.265 / 201.348, stores 58.409 / 58.122; instructions 100.00 M / 98.89 M
+          t13 (counter gem5 1 / gem5 CPU 13, reported): loads 201.537 / 201.313, stores 57.998 / 58.171; instructions 100.00 M / 99.04 M
+          t14 (counter gem5 1 / gem5 CPU 14, reported): loads 200.877 / 201.322, stores 58.872 / 58.163; instructions 100.00 M / 99.52 M
+          t15 (counter gem5 1 / gem5 CPU 15, reported): loads 201.195 / 201.345, stores 58.403 / 58.124; instructions 100.00 M / 98.89 M
+          t16 (counter gem5 1 / gem5 CPU 16, reported): loads 201.590 / 201.362, stores 57.921 / 58.127; instructions 100.00 M / 99.74 M
+   500   holds: gem5 counts 62137 store misses that find another core in the window (SS + MT L1_GETX; at least 500)
+   -> PENDING: no ChampSim run log yet (checked again once it exists)
+   FC    PENDING: no reference log
+
+== canneal_16 (Part B, canneal at 16 cores (its older procedure; P22-P24)); traced threads 1-16 (sync_mx/canneal16), run phaseA_b3_p2_canneal16 (step 5, LRU)
+   QG    holds: 17 CPUs, /home/harshraj/splash-static/CANNEAL, L2 2 MB, randomization false, stop on CPUs 1-16
+   v1    holds: same stream (every rate within 5%)
+         canneal16   with a load                      375.185   375.133      1.000
+         canneal16   with a store                     215.277   215.397      1.001
+         canneal16   read-modify-write                 11.537    11.561      1.002
+         canneal16   of which locked (gem5 only)                  5.208
+   Q3    FAILS: no LRU rows (its run log's view-order and deadlock checks: step 5's, policy_results_2026-11-10.md)
+   QW    reported only: untraced CPUs commit 0.000% of the traced CPUs' window instructions
+   500   holds: gem5 counts 568630 store misses that find another core in the window (at least 500)
+   -> NOT SCORED: fails Q3
+   FC    PENDING: no F-C log
+
+== Verdicts
+   fft_4              not scored (500)
+   volrend_4          not scored (QC)
+   fmm_4              not scored (v2)
+   ocean_8            pending: no ChampSim run log yet
+   oceannc_8          pending: no ChampSim run log yet
+   radix_8            pending: no ChampSim run log yet
+   barnes_8           pending: F-C rerun not complete
+   lunc_8             pending: F-C rerun not complete
+   fft_8              not scored (500)
+   volrend_8          not scored (QC, v2)
+   waternsq_8         pending: F-C rerun not complete
+   raytrace_8         pending: F-C rerun not complete
+   fmm_8              not scored (v2)
+   streamcluster_8    pending: F-C rerun not complete
+   fluidanimate_8     pending: no ChampSim run log yet
+   vips_8             pending: no ChampSim run log yet
+   bodytrack_8        pending: no ChampSim run log yet
+   ocean_16           pending: no ChampSim run log yet
+   oceannc_16         pending: no ChampSim run log yet
+   radix_16           pending: no ChampSim run log yet; gem5 runs at 1610 M and 1710 M not ended yet
+   barnes_16          pending: no ChampSim run log yet
+   lunc_16            pending: no ChampSim run log yet
+   fft_16             pending: no ChampSim run log yet
+   volrend_16         pending: no ChampSim run log yet
+   waternsq_16        pending: no ChampSim run log yet
+   raytrace_16        pending: no ChampSim run log yet
+   fmm_16             pending: no ChampSim run log yet
+   streamcluster_16   pending: no ChampSim run log yet
+   fluidanimate_16    pending: no ChampSim run log yet
+   vips_16            pending: no ChampSim run log yet
+   bodytrack_16       pending: no ChampSim run log yet
+   canneal_16         pending: F-C rerun not complete

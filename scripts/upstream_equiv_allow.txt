@@ -1,0 +1,17 @@
+# Part A (bench/policy_sanity/upstream_equiv_design_2026-11-10.md): the lines our
+# ChampSim prints that upstream does not -- our new statistics and settings lines.
+# One Python regular expression per line, searched in each added line. A line
+# of ours that is not one of upstream's must match one of these (or be blank).
+# Fixed before any server run; a change needs an amendment to the note.
+
+# RMW counters, per core (B3 v3 step 1; plain_printer.cc)
+^CPU \d+ RMW LOADS (ISSUED AS RFO|FORWARDED FROM THE STORE QUEUE): \d+$
+# coherence and sharer-directory counters, per cache (cache_stats; plain_printer.cc)
+^\S+ COHERENCE [A-Z0-9 ()/-]+:\s+\d+$
+# the sharer histogram, per cache
+^\S+ SHARER HIST TOTAL:\s+\d+$
+^\S+ SHARER HIST\[\s*\d+\]:\s+\d+\s+\(\s*[\d.]+%\)$
+# settings and overlay lines (main.cc)
+^VMEM ALIASED FILLS \(cross-CPU shared-page hits\): \d+$
+^PRIVATE-CACHE COHERENCE LEVEL: [012]$
+^RMW LOADS AS RFO: off$

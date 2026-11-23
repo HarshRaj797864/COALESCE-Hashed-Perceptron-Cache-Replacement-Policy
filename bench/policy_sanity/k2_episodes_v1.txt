@@ -1,0 +1,54 @@
+# K2 steps 1-2 (k2_sharing_gap_design_2026-11-17.md): python3 scripts/k2_episodes.py run, 2026-11-17, on simulator/results/h6b (H6(b)'s pull) and simulator/results/gem5_b3_view
+
+== K2 step 1: canneal
+   window: gem5 7483633397000 .. 7705267225000 ticks; ChampSim 22295274 .. 231802112 cycles; events outside it: gem5 0, ChampSim 90
+   C 91376, G 89307, s 0.9946; R 1.018 (H6(b) 1.018)
+   gamma 0.0001           episodes ChampSim 90968, gem5 88914; Ep 1.018, Per 1.000; share_I 0.004 -> E
+   gamma 0.001  (primary) episodes ChampSim 90325, gem5 88330; Ep 1.017, Per 1.001; share_I 0.033 -> E
+   gamma 0.01             episodes ChampSim 84714, gem5 82941; Ep 1.016, Per 1.002; share_I 0.100 -> E
+   READING (gamma 0.001): E
+   events per episode: gem5 median 1, p90 1; ChampSim median 1, p90 1
+   episodes by distinct cores: gem5 {2: 87700, 3: 619, 4: 11}; ChampSim {2: 89749, 3: 569, 4: 7}
+   stores only (gem5 traced CPUs [1, 2, 3, 4]): C 1, G 2, R 0.497; Ep 0.497, Per 1.000; share_I -0.000 -> E (reported)
+   events in 50 bins of the window: gem5 [1822, 1908, 1771, 1660, 1711, 1840, 1752, 1789, 1645, 1804, 1725, 1764, 1767, 1751, 1689, 1750, 1832, 1663, 1830, 1828, 1844, 1823, 1711, 1833, 1779, 1788, 1731, 1830, 1806, 1832, 1758, 1730, 1798, 1885, 1854, 1856, 1817, 1785, 1875, 1917, 1701, 1773, 1697, 1839, 1743, 1820, 1828, 1719, 1771, 1863]
+                                  ChampSim [1759, 1872, 1517, 1647, 1749, 1848, 1770, 1869, 1706, 1802, 1867, 1818, 1833, 1870, 1717, 1763, 1901, 1772, 1928, 1782, 1853, 1846, 1835, 1995, 1694, 1823, 1789, 1934, 1797, 1964, 1783, 1902, 1819, 1899, 1846, 1916, 1838, 1822, 1925, 1848, 1736, 1762, 1898, 1846, 1843, 1831, 1842, 1818, 1915, 1967]
+
+== K2 step 1: fluidanimate
+   window: gem5 346594439000 .. 517103703000 ticks; ChampSim 16347076 .. 109716018 cycles; events outside it: gem5 0, ChampSim 3
+   C 18744, G 43879, s 0.9358; R 0.400 (H6(b) 0.400)
+   gamma 0.0001           episodes ChampSim 10912, gem5 10814; Ep 0.944, Per 0.423; share_I 0.937 -> I
+   gamma 0.001  (primary) episodes ChampSim 10819, gem5 10670; Ep 0.949, Per 0.421; share_I 0.943 -> I
+   gamma 0.01             episodes ChampSim 10576, gem5 10215; Ep 0.969, Per 0.413; share_I 0.966 -> I
+   READING (gamma 0.001): I
+   events per episode: gem5 median 2, p90 10; ChampSim median 1, p90 2
+   episodes by distinct cores: gem5 {2: 10653, 3: 3, 4: 14}; ChampSim {2: 10799, 3: 8, 4: 12}
+   stores only (gem5 traced CPUs [1, 2, 3, 4]): C 17414, G 42043, R 0.388; Ep 0.988, Per 0.392; share_I 0.987 -> I (reported)
+   events in 50 bins of the window: gem5 [36, 55, 25, 40, 37, 48, 32, 36, 32, 12, 21067, 83, 45, 30, 30, 39, 44, 55, 51, 58, 44, 62, 60, 42, 49, 56, 72, 64, 29, 27, 25, 32, 28, 34, 37, 38, 47, 43, 32, 28, 33, 31, 34, 23, 37, 15, 8081, 12791, 88, 42]
+                                  ChampSim [24, 20, 30, 36, 32, 24, 9, 144, 5843, 2167, 1016, 21, 26, 30, 31, 33, 53, 42, 44, 58, 43, 61, 111, 21, 31, 40, 50, 23, 28, 35, 46, 43, 30, 28, 42, 28, 26, 40, 22, 28, 17, 126, 5558, 1568, 868, 20, 35, 27, 29, 37]
+
+== K2 step 1: vips
+   window: gem5 308473869000 .. 485707461000 ticks; ChampSim 14010139 .. 107331497 cycles; events outside it: gem5 0, ChampSim 0
+   C 1031, G 3242, s 0.9697; R 0.308 (H6(b) 0.308)
+   gamma 0.0001           episodes ChampSim 1017, gem5 2893; Ep 0.341, Per 0.905; share_I 0.085 -> E
+   gamma 0.001  (primary) episodes ChampSim 1006, gem5 2860; Ep 0.341, Per 0.904; share_I 0.086 -> E
+   gamma 0.01             episodes ChampSim 992, gem5 2808; Ep 0.343, Per 0.900; share_I 0.089 -> E
+   READING (gamma 0.001): E
+   events per episode: gem5 median 1, p90 1; ChampSim median 1, p90 1
+   episodes by distinct cores: gem5 {2: 2811, 3: 39, 4: 8, 5: 2}; ChampSim {2: 993, 3: 9, 4: 4}
+   stores only (gem5 traced CPUs [3, 4, 5, 6]): C 1020, G 3101, R 0.319; Ep 0.348, Per 0.916; share_I 0.077 -> E (reported)
+   events in 50 bins of the window: gem5 [0, 0, 203, 0, 0, 201, 0, 0, 68, 134, 0, 0, 211, 0, 0, 140, 0, 0, 202, 0, 0, 145, 67, 0, 0, 202, 0, 0, 370, 0, 0, 216, 0, 0, 102, 41, 0, 0, 203, 0, 0, 203, 0, 0, 256, 0, 0, 200, 78, 0]
+                                  ChampSim [0, 1, 66, 27, 0, 67, 8, 13, 67, 0, 11, 68, 0, 1, 66, 0, 2, 69, 0, 70, 66, 0, 0, 139, 0, 0, 67, 0, 0, 10, 0, 0, 67, 0, 0, 3, 0, 0, 67, 0, 0, 3, 0, 0, 67, 0, 0, 4, 2, 0]
+
+== Step 1 readings
+   control canneal 4c: holds (Ep 1.017, Per 1.001)
+   fluidanimate: I
+   vips: E
+
+== K2 step 2: vips (ChampSim only; reported)
+   heartbeat points per core: [16, 16, 15, 15]
+   spread of the cores (M instructions) per 2% bin: [6.78, 7.66, 8.95, 9.24, 9.53, 9.81, 10.07, 10.0, 9.93, 9.87, 9.8, 9.8, 9.9, 10.01, 10.12, 10.22, 10.38, 10.54, 10.7, 10.86, 11.01, 10.94, 10.97, 11.01, 11.04, 11.11, 11.36, 11.62, 11.87, 12.13, 12.22, 12.11, 11.93, 11.75, 11.57, 11.58, 11.9, 12.23, 12.56, 12.81, 12.89, 12.66, 12.37, 12.08, 11.86, 11.94, 12.15, 12.36, 12.57, 11.02]
+   events per bin: [0, 1, 66, 27, 0, 67, 8, 13, 67, 0, 11, 68, 0, 1, 66, 0, 2, 69, 0, 70, 66, 0, 0, 139, 0, 0, 67, 0, 0, 10, 0, 0, 67, 0, 0, 3, 0, 0, 67, 0, 0, 3, 0, 0, 67, 0, 0, 4, 2, 0]
+   Spearman rho (events against spread): -0.252
+
+== Step 3 condition
+   fluidanimate reads I: yes; vips reads E or mixed with rho <= -0.3: no -> step 3 INDICATED (an amendment first, then the owner's word)

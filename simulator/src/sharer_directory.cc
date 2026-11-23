@@ -5,7 +5,12 @@
 #include <cstdlib>
 #include <regex>
 #include <stdexcept>
+#include <map>
+#include <string>
 #include <unordered_map>
+#include <vector>
+
+#include <fmt/core.h>
 
 namespace
 {
@@ -43,6 +48,12 @@ unsigned& latency_cycles()
 {
   static unsigned c = 0;
   return c;
+}
+
+bool& rmw_rfo_flag()
+{
+  static bool on = true;
+  return on;
 }
 
 // One per private cache, indexed cpu*dir_levels + level.
@@ -153,6 +164,9 @@ void set_coherence_latency(unsigned cycles)
 }
 unsigned coherence_latency() { return latency_cycles(); }
 
+void set_rmw_as_rfo(bool on) { rmw_rfo_flag() = on; }
+bool rmw_as_rfo() { return rmw_rfo_flag(); }
+
 dir_lookup dir_peek(uint64_t line, unsigned cpu)
 {
   assert(cpu < dir_max_cpus);
@@ -213,6 +227,7 @@ dir_lookup dir_llc_request(uint64_t line, unsigned cpu, dir_req kind)
   r.protocol_others = e.protocol & ~me;
   r.bounded_others = e.bounded & ~me;
   r.g5_others = e.g5 & ~me;
+  r.g5_excl_others = e.g5_excl && (e.g5 & ~me) != 0; // C: read before the request changes the view
   switch (kind) {
   case dir_req::read:
     e.protocol |= me;
@@ -303,6 +318,76 @@ std::FILE* dir_event_log()
     return (path != nullptr && *path != '\0') ? std::fopen(path, "w") : nullptr;
   }();
   return f;
+}
+
+namespace
+{
+struct position_state {
+  std::vector<uint64_t> pos, from, to;
+  std::vector<std::map<uint64_t, uint64_t>> bins;
+  void grow(unsigned cpu)
+  {
+    if (cpu >= std::size(pos)) {
+      pos.resize(cpu + 1, 0);
+      from.resize(cpu + 1, 0);
+      to.resize(cpu + 1, 0);
+      bins.resize(cpu + 1);
+    }
+  }
+};
+position_state& positions()
+{
+  static position_state p;
+  return p;
+}
+} // namespace
+
+uint64_t position_bins()
+{
+  static const uint64_t b = [] {
+    const char* v = std::getenv("COHERENCE_POSITION_BINS");
+    return (v != nullptr && *v != '\0') ? std::stoull(v) : uint64_t{0};
+  }();
+  return b;
+}
+
+void note_position(unsigned cpu, uint64_t retired)
+{
+  auto& p = positions();
+  p.grow(cpu);
+  p.pos[cpu] = retired;
+}
+
+void note_phase_position(unsigned cpu, bool warmup, bool begin, uint64_t retired)
+{
+  if (warmup)
+    return;
+  auto& p = positions();
+  p.grow(cpu);
+  (begin ? p.from : p.to)[cpu] = retired;
+}
+
+void count_g5_rfo_at_position(unsigned cpu)
+{
+  auto& p = positions();
+  p.grow(cpu);
+  ++p.bins[cpu][p.pos[cpu] / position_bins()];
+}
+
+void print_position_bins()
+{
+  if (position_bins() == 0)
+    return;
+  const auto& p = positions();
+  fmt::print("B3 POSITION BINS: {} instructions\n", position_bins());
+  for (std::size_t cpu = 0; cpu < std::size(p.pos); ++cpu)
+    fmt::print("CPU {} MEASURED POSITIONS: from {} to {}\n", cpu, p.from[cpu], p.to[cpu]);
+  for (std::size_t cpu = 0; cpu < std::size(p.pos); ++cpu) {
+    std::string line = fmt::format("CPU {} GEM5-RULE RFO EVENTS BY POSITION:", cpu);
+    for (const auto& [k, n] : p.bins[cpu])
+      line += fmt::format(" {}:{}", k, n);
+    fmt::print("{}\n", line);
+  }
 }
 
 bool dir_is_stale(uint64_t line, unsigned cpu)

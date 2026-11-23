@@ -125,6 +125,10 @@ phase_stats do_phase(const phase_info& phase, modules::environment_module& env, 
   // Perform phase
   int stalled_cycle{0};
   std::vector<bool> phase_complete(std::size(cores), false);
+  const bool lead_on = champsim::sync::lead_limit() != 0; // K2 step 3 (sync_replay.h): a diagnostic, off by default
+  if (lead_on)
+    for (champsim::modules::core_module& cpu : cores)
+      champsim::sync::set_done(static_cast<unsigned>(cpu.get_cpu_num()), false);
   while (!std::accumulate(std::begin(phase_complete), std::end(phase_complete), true, std::logical_and{})) {
     auto next_phase_complete = phase_complete;
     global_clock.tick(time_quantum);
@@ -193,6 +197,8 @@ phase_stats do_phase(const phase_info& phase, modules::environment_module& env, 
 
     for (champsim::modules::core_module& cpu : cores) {
       if (next_phase_complete[cpu.get_cpu_num()] != phase_complete[cpu.get_cpu_num()]) {
+        if (lead_on)
+          champsim::sync::set_done(static_cast<unsigned>(cpu.get_cpu_num()), true);
         for (champsim::operable& op : operables) {
           op.end_phase(cpu.get_cpu_num());
         }

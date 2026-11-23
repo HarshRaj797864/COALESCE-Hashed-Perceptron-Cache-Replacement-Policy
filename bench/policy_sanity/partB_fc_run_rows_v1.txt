@@ -1,0 +1,33 @@
+# partB_score.py runrows simulator/results/partB/stage2fc/logs simulator/results/partB/stage2fc/driver.log
+CHAIN start binary champsim_fc_a2e88e46 | 2026-11-14 08:27:39 CHAIN START: 35 reruns, 8 at a time, each once its reference has completed (at most 14 days); binary champsim_fc_a2e88e46
+RUNLOG fft_4 complete 1 deadlock 0 eot 0 raw 0 bysilent 0 unexplained 0 mutex_order timing not_held 1 replay on_(4_threads_with_sync_records) traces 0:sync_pb/fft_4/raw0_aligned.champsimtrace.xz,1:sync_pb/fft_4/raw1.champsimtrace.xz,2:sync_pb/fft_4/raw2.champsimtrace.xz,3:sync_pb/fft_4/raw3.champsimtrace.xz
+RUNLOG volrend_4 complete 1 deadlock 0 eot 0 raw 25 bysilent 25 unexplained 0 mutex_order timing not_held 1 replay on_(4_threads_with_sync_records) traces 0:sync_pb/volrend_4/raw0_aligned.champsimtrace.xz,1:sync_pb/volrend_4/raw1.champsimtrace.xz,2:sync_pb/volrend_4/raw2.champsimtrace.xz,3:sync_pb/volrend_4/raw3.champsimtrace.xz
+RUNLOG fmm_4 complete 1 deadlock 0 eot 0 raw 59 bysilent 59 unexplained 0 mutex_order timing not_held 1 replay on_(4_threads_with_sync_records) traces 0:sync_pb/fmm_4/raw0_aligned.champsimtrace.xz,1:sync_pb/fmm_4/raw1.champsimtrace.xz,2:sync_pb/fmm_4/raw2.champsimtrace.xz,3:sync_pb/fmm_4/raw3.champsimtrace.xz
+RUNLOG ocean_8 ABSENT
+RUNLOG oceannc_8 ABSENT
+RUNLOG radix_8 ABSENT
+RUNLOG barnes_8 complete 0 deadlock 0 eot 0 raw - bysilent - unexplained - mutex_order - not_held - replay - traces -
+RUNLOG lunc_8 complete 0 deadlock 0 eot 0 raw - bysilent - unexplained - mutex_order - not_held - replay - traces -
+RUNLOG fft_8 complete 0 deadlock 0 eot 0 raw - bysilent - unexplained - mutex_order - not_held - replay - traces -
+RUNLOG volrend_8 complete 0 deadlock 0 eot 0 raw - bysilent - unexplained - mutex_order - not_held - replay - traces -
+RUNLOG waternsq_8 complete 0 deadlock 0 eot 0 raw - bysilent - unexplained - mutex_order - not_held - replay - traces -
+RUNLOG raytrace_8 complete 0 deadlock 0 eot 0 raw - bysilent - unexplained - mutex_order - not_held - replay - traces -
+RUNLOG fmm_8 complete 0 deadlock 0 eot 0 raw - bysilent - unexplained - mutex_order - not_held - replay - traces -
+RUNLOG streamcluster_8 complete 0 deadlock 0 eot 0 raw - bysilent - unexplained - mutex_order - not_held - replay - traces -
+RUNLOG fluidanimate_8 ABSENT
+RUNLOG vips_8 ABSENT
+RUNLOG bodytrack_8 ABSENT
+RUNLOG ocean_16 ABSENT
+RUNLOG oceannc_16 ABSENT
+RUNLOG radix_16 ABSENT
+RUNLOG barnes_16 ABSENT
+RUNLOG lunc_16 ABSENT
+RUNLOG fft_16 ABSENT
+RUNLOG volrend_16 ABSENT
+RUNLOG waternsq_16 ABSENT
+RUNLOG raytrace_16 ABSENT
+RUNLOG fmm_16 ABSENT
+RUNLOG streamcluster_16 ABSENT
+RUNLOG fluidanimate_16 ABSENT
+RUNLOG vips_16 ABSENT
+RUNLOG bodytrack_16 ABSENT
